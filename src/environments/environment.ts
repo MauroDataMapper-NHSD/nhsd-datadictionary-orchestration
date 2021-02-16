@@ -3,7 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  apiEndpoint: 'http://localhost:8080/api',
+  themeName: 'nhs-digital',
+  name: 'development',
+  appTitle: 'NHS Digital Data Dictionary Orchestrator',
+  appDescription: 'Orchestrates the data dictionary created by NHS Digital.',
 };
 
 /*
