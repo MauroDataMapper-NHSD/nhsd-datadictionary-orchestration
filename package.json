@@ -21,9 +21,11 @@
     "@angular/router": "~11.0.5",
     "@fortawesome/fontawesome-free": "5.15.1",
     "@maurodatamapper/mdm-resources": "github:MauroDataMapper/mdm-resources#4.2.0",
-    "@uirouter/angularjs": "^1.0.29",
+    "@uirouter/angular": "~8.0.0",
+    "@uirouter/core": "~6.0.7",
+    "@uirouter/rx": "~0.6.5",
     "rxjs": "~6.6.0",
-    "tslib": "^2.0.0",
+    "tslib": "^1.14.1",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
