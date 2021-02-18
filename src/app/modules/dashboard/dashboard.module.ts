@@ -18,16 +18,25 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from '@nhsd/home/home.component';
 import { AboutComponent } from '@nhsd/about/about.component';
+import { NavbarComponent } from '@nhsd/navbar/navbar.component';
+import { MaterialModule } from '../material/material.module';
+import { UIRouterModule } from '@uirouter/angular';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
+    NavbarComponent,
     HomeComponent,
     AboutComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MaterialModule,
+    UIRouterModule,
+    FlexLayoutModule
   ],
   exports: [
+    NavbarComponent,
     HomeComponent,
     AboutComponent
   ]

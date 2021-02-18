@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-@import './variables';
+import { TestBed } from '@angular/core/testing';
 
-@mixin size($width: 100%, $height: 100%) {
-  width: $width;
-  height: $height;
-}
+import { SharedService } from './shared.service';
 
-@mixin font($size: $size, $weight: $weight) {
-  font-size: $size;
-  font-weight: $weight;
-}
+describe('SharedService', () => {
+  let service: SharedService;
 
-@mixin respond-to($size,$query:max-width)
-{
-    @media ($query:$size)
-    {
-        @content;
-    }
-}
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(SharedService);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});

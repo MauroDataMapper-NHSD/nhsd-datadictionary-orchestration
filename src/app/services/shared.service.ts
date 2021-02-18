@@ -14,22 +14,16 @@
  * limitations under the License.
  */
 
-@import './variables';
+import { Injectable } from '@angular/core';
+import { environment } from '@env/environment';
 
-@mixin size($width: 100%, $height: 100%) {
-  width: $width;
-  height: $height;
-}
+@Injectable({
+  providedIn: 'root'
+})
+export class SharedService {
 
-@mixin font($size: $size, $weight: $weight) {
-  font-size: $size;
-  font-weight: $weight;
-}
+  backendUrl = environment.apiEndpoint;
+  appTitle = environment.appTitle;
 
-@mixin respond-to($size,$query:max-width)
-{
-    @media ($query:$size)
-    {
-        @content;
-    }
+  constructor() { }
 }
