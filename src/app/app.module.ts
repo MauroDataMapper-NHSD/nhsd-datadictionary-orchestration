@@ -23,6 +23,8 @@ import { states } from './routing/ui-states';
 import { UIRouterModule } from '@uirouter/angular';
 import { AppContainerComponent } from './app-container/app-container.component';
 import { UiViewComponent } from './shared/ui-view/ui-view.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './modules/material/material.module';
 
 @NgModule({
   declarations: [
@@ -32,8 +34,10 @@ import { UiViewComponent } from './shared/ui-view/ui-view.component';
   ],
   imports: [
     BrowserModule,        
+    MaterialModule,
     DashboardModule,
-    UIRouterModule.forRoot({ states: states, useHash: true })
+    UIRouterModule.forRoot({ states: states, useHash: true }),
+    BrowserAnimationsModule
   ],
   bootstrap: [UiViewComponent]
 })

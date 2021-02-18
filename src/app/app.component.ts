@@ -14,16 +14,35 @@
  * limitations under the License.
  */
 
-import { Component } from '@angular/core';
+import { OverlayContainer } from '@angular/cdk/overlay';
+import { Component, OnInit } from '@angular/core';
+import { ThemingService } from './services/theming.service';
 
 @Component({
   selector: 'nhsd-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   title = 'nhsd-datadictionary-orchestration';
   themeCssSelector: string = '';
+
+  constructor(
+    private theming: ThemingService,
+    private overlayContainer: OverlayContainer) { }
+
+  ngOnInit(): void {
+    this.setTheme();
+  }
+
+  private setTheme() {
+    this.themeCssSelector = this.theming.themeCssSelector;
+
+    // Material theme is wrapped inside a CSS class but the overlay container is not part of Angular
+    // Material. Have to manually set the correct theme class to this container too
+    this.overlayContainer.getContainerElement().classList.add(this.themeCssSelector);
+    this.overlayContainer.getContainerElement().classList.add('overlay-container');
+  }
 
 }

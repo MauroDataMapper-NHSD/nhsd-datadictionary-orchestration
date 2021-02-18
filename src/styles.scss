@@ -15,3 +15,29 @@
  */
 
 /* You can add global styles to this file, and also import other style files */
+
+@import "~@angular/material/theming";
+
+// Include the common styles for Angular Material. Only required to include this once!
+@include mat-core();
+
+/* 
+Themes 
+Import more theme SASS files here to make them available to the app
+*/
+@import "styles/themes/default";
+@import "styles/themes/nhs-digital";
+
+/* Abstracts */
+@import "styles/abstracts/variables";
+@import "styles/abstracts/mixins";
+@import "styles/abstracts/helpers";
+
+@import "@fortawesome/fontawesome-free/scss/fontawesome";
+@import "@fortawesome/fontawesome-free/scss/solid";
+@import "@fortawesome/fontawesome-free/scss/regular";
+
+@import "styles/material-overrides";
+@import "styles/main";
+@import "styles/default";
+

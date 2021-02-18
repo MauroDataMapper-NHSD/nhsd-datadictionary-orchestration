@@ -1,0 +1,152 @@
+/**
+ * Copyright 2021 NHS Digital
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Copyright 2021 NHS Digital
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/* Large Devices, Wide Screens */
+@media only screen and (max-width: 2400px) {
+    .resizableLeft {
+        min-height: 800px;
+    }
+    .resizableRight {
+        min-height: 800px;
+    }
+    div.scrollPanel {
+        max-height: 800px !important;
+    }
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (max-width: 1200px) {
+    .resizableLeft {
+        min-height: 800px;
+    }
+    .resizableRight {
+        min-height: 800px;
+    }
+    div.scrollPanel {
+        max-height: 800px !important;
+    }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width: 992px) {
+    .resizableLeft {
+        min-height: 400px;
+    }
+    .resizableRight {
+        min-height: 400px;
+    }
+    div.scrollPanel {
+        max-height: 800px !important;
+    }
+}
+
+@media only screen and (max-width: 960px) {
+    .leftMenu {
+        h4 {
+            font-size: 1.2em;
+        }
+        .list-group-item {
+            text-align: center;
+            div {
+                i {
+                    font-size: 1.5em;
+                    display: block;
+                }
+                span {
+                    font-size: 0.9em;
+                }
+            }
+        }
+    }
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width: 768px) {
+    .resizableLeft {
+        min-height: 400px;
+    }
+    .resizableRight {
+        min-height: 400px;
+    }
+    div.scrollPanel {
+        max-height: 800px !important;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    /* CSS goes here */
+    .resizableLeft {
+        min-height: 400px;
+    }
+    .resizableRight {
+        min-height: 400px;
+    }
+    div.scrollPanel {
+        max-height: 800px !important;
+    }
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width: 320px) {
+    /* CSS goes here */
+    .resizableLeft {
+        min-height: 400px;
+    }
+    .resizableRight {
+        min-height: 400px;
+    }
+    div.scrollPanel {
+        max-height: 800px !important;
+    }
+}
+
+.panel-table {
+    padding: 5px 10px !important;
+}
+
+//This will remove the focus line around elements in Safari
+*:focus {
+    outline: none;
+}
+
+.error-message {
+    color: #a94442;
+}
+
+img.profile-picture {
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.not-allowed-cursor {
+    cursor: not-allowed;
+}
