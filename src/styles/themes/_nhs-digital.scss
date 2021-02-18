@@ -155,7 +155,8 @@ $nhs-digital-typography: mat-typography-config(
 
     /* Style overrides for the NHS Digital theme */
 
-    .nhsd-app-component {
+    .nhsd-app-component,
+    .aside-container {
         background-color: $nhs-digital-background-color;
     }
 
