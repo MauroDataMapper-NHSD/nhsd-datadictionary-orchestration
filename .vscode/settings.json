@@ -1,0 +1,5 @@
+{
+    // Settings for "Licencer" VS Code extension. Install using "ext install licenser"
+    "licenser.author": "NHS Digital",
+    "licenser.useSingleLineStyle": false
+}
