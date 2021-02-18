@@ -22,10 +22,12 @@ import { NavbarComponent } from '@nhsd/navbar/navbar.component';
 import { MaterialModule } from '../material/material.module';
 import { UIRouterModule } from '@uirouter/angular';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FooterComponent } from '@nhsd/footer/footer.component';
 
 @NgModule({
   declarations: [
     NavbarComponent,
+    FooterComponent,
     HomeComponent,
     AboutComponent
   ],
@@ -37,6 +39,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
   ],
   exports: [
     NavbarComponent,
+    FooterComponent,
     HomeComponent,
     AboutComponent
   ]

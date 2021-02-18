@@ -29,7 +29,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   declarations: [
     AppComponent,
     AppContainerComponent,
-    UiViewComponent
+    UiViewComponent    
   ],
   imports: [
     BrowserModule,        
