@@ -16,6 +16,7 @@
 
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, OnInit } from '@angular/core';
+import { NavbarLinkGroup } from './navbar/navbar.model';
 import { ThemingService } from './services/theming.service';
 
 @Component({
@@ -27,6 +28,25 @@ export class AppComponent implements OnInit {
 
   title = 'nhsd-datadictionary-orchestration';
   themeCssSelector: string = '';
+
+  navbarLinks: NavbarLinkGroup[] = [
+    {
+      label: 'Main navigation',
+      isMain: true,
+      links: [
+        {
+          label: 'Home',
+          uiSref: 'app.container.home',
+          icon: 'fa-home'
+        },
+        {
+          label: 'About',
+          uiSref: 'app.container.about',
+          icon: 'fa-info-circle'
+        }
+      ]
+    }
+  ];
 
   constructor(
     private theming: ThemingService,

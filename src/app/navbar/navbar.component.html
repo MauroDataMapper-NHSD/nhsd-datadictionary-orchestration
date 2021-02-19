@@ -24,9 +24,8 @@
                     </a>
                 </div>
                 <span class="spacer"></span>
-                <div class="nhsd-navbar__items" fxShow="true" fxHide.lt-md="true">
-                    <a uiSref="app.container.home" uiSrefActive="active">Home</a>
-                    <a uiSref="app.container.about" uiSrefActive="active">About</a>
+                <div class="nhsd-navbar__items" fxShow="true" fxHide.lt-md="true" *ngFor="let link of mainNavbarLinks">
+                    <a [uiSref]="link.uiSref" uiSrefActive="active">{{link.label}}</a>
                 </div>
                 <span class="spacer"></span>
                 <div class="nhsd-navbar__menu" fxShow="true" fxHide.lt-md="true">
@@ -78,16 +77,16 @@
                     <div class="nhsd-navbar__user--role" *ngIf="profile.isAdmin">Administrator</div>
                 </div>
 
-                <div class="nhsd-navbar__link-group">
-                    <h5>Main navigation</h5>
-                    <a uiSref="app.container.home" (click)="sidenav.toggle()" uiSrefActive="active">
-                        <i class="fas fa-home"></i>
-                        <span>Home</span>
-                    </a>
-                    <a uiSref="app.container.about" (click)="sidenav.toggle()" uiSrefActive="active">
-                        <i class="fas fa-info-circle"></i>
-                        <span>About</span>
-                    </a>
+                <div class="nhsd-navbar__link-group">                    
+                    <div *ngFor="let group of linkGroups">
+                        <h5>{{group.label}}</h5>
+                        <div *ngFor="let link of group.links">
+                            <a [uiSref]="link.uiSref" (click)="sidenav.toggle()" uiSrefActive="active">
+                                <i class="fas" [class]="link.icon"></i>
+                                <span>{{link.label}}</span>
+                            </a>
+                        </div>
+                    </div>                    
                 </div>
             </nav>
             <div *ngIf="!isLoggedIn" class="nhsd-navbar__login">
