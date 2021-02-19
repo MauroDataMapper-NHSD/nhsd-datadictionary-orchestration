@@ -16,37 +16,40 @@
 
 <header class="nhsd-header">
     <div class="container">
-        <mat-toolbar color="primary" class="nhsd-navbar mb-0">
-            <nav flex fxLayout="row" fxLayoutAlign="space-between" class="nhsd-navbar--desktop">
+        <mat-toolbar color="primary" class="nhsd-navbar">
+            <nav flex fxLayout="row" fxLayoutAlign="space-between" class="nhsd-navbar--nav">
                 <div class="nhsd-navbar__brand">
-                    <a class="nhsd-navbar__logo" uiSref="app.container.home">
+                    <a class="nhsd-navbar__brand--logo" uiSref="app.container.home">
                         <img [src]="logoUrl" alt="logo">
                     </a>
                 </div>
-                <div class="nhsd-navbar__items">
+                <span class="spacer"></span>
+                <div class="nhsd-navbar__items" fxShow="true" fxHide.lt-md="true">
                     <a uiSref="app.container.home" uiSrefActive="active">Home</a>
                     <a uiSref="app.container.about" uiSrefActive="active">About</a>
                 </div>
-                <div class="nhsd-navbar__user">
-                    <div *ngIf="!isLoggedIn" class="nhsd-navbar__login">
-                        <button (click)="login()" mat-stroked-button class="custom inverted-button" color="primary-A700">Log in</button>
+                <span class="spacer"></span>
+                <div class="nhsd-navbar__menu" fxShow="true" fxHide.lt-md="true">
+                    <div *ngIf="!isLoggedIn">
+                        <button (click)="login()" mat-stroked-button class="custom inverted-button">Log in</button>
                     </div>
-                    <div *ngIf="isLoggedIn">
-                        <div *ngIf="profile" [matMenuTriggerFor]="menu" flex fxLayout="row" fxLayout.sm="column"
-                            fxLayout.xs="column" fxLayoutAlign="space-between" fxLayoutGap="8px"
-                            fxLayoutAlign="center center" class="nhsd-navbar__profile">
-                            <div class="nhsd-navbar__profile--img" fxFlex="30" fxFlex.sm="100" fxFlex.xs="100">
+                    <div *ngIf="isLoggedIn && profile">
+                        <div [matMenuTriggerFor]="menu" class="nhsd-navbar__user" flex fxLayout="row"
+                            fxLayoutAlign="center center" fxLayoutGap="8px">
+                            <div class="nhsd-navbar__user--img">
                                 <img src="{{backendUrl}}/catalogueUsers/{{profile.id}}/image" alt="User profile">
                             </div>
-                            <div fxFlex="60" fxFlex.sm="100" fxFlex.xs="100">
-                                <div class="nhsd-navbar__profile--name">{{profile.firstName}} {{profile.lastName}}</div>
-                                <div class="nhsd-navbar__profile--role" *ngIf="profile.isAdmin">Administrator</div>
+                            <span class="spacer"></span>
+                            <div fxFlex="60">
+                                <div class="nhsd-navbar__user--name">{{profile.firstName}} {{profile.lastName}}</div>
+                                <div class="nhsd-navbar__user--role" *ngIf="profile.isAdmin">Administrator</div>
                             </div>
+                            <span class="spacer"></span>
                             <div fxFlex="10" fxFlex.sm="100" fxFlex.xs="100">
                                 <i class="fas fa-chevron-down"></i>
                             </div>
                         </div>
-                        <mat-menu #menu="matMenu" yPosition="below" xPosition="before">                            
+                        <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
                             <button *ngIf="isLoggedIn" (click)="logout()" class="nhsd-navbar__logout">
                                 <i class="fas fa-sign-out-alt"></i>
                                 <span>Log out</span>
@@ -54,52 +57,48 @@
                         </mat-menu>
                     </div>
                 </div>
+                <div fxHide="true" fxShow.lt-md="true">
+                    <button mat-button (click)="sidenav.toggle()" aria-label="Toggle mobile menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
             </nav>
-            <button mat-button class="mobile-trigger" (click)="sidenav.toggle()" aria-label="Toggle mobile menu">
-                <i class="fas fa-bars"></i>
-            </button>
         </mat-toolbar>
     </div>
-</header>
 
-<mat-sidenav-container class="nhsd-navbar--mobile aside-container">
-    <mat-sidenav #sidenav class="nhsd-navbar__sidenav" mode="over" fixedInViewport="true" fixedTopGap="0" fixedBottomGap="0" opened="false" position="end" [autoFocus]="false">
-        <nav class="nhsd-navbar__side-content">
-            <div *ngIf="isLoggedIn">
-                <div *ngIf="profile" class="nhsd-navbar__user">
-                    <div class="nhsd-navbar__profile--img">
+    <mat-sidenav-container class="nhsd-navbar-sidenav-container">
+        <mat-sidenav #sidenav class="nhsd-navbar__sidenav" mode="over" fixedInViewport="true" fixedTopGap="0"
+            fixedBottomGap="0" opened="false" position="end" [autoFocus]="false" fxLayout="column" fxLayoutAlign="center center">
+            <nav>
+                <div *ngIf="isLoggedIn && profile"class="nhsd-navbar__user">
+                    <div class="nhsd-navbar__user--img">
                         <img src="{{backendUrl}}/catalogueUsers/{{profile.id}}/image" alt="User profile">
                     </div>
-                    <div class="nhsd-navbar__profile--details">
-                        <div class="nhsd-navbar__profile--name">{{profile.firstName}} {{profile.lastName}}</div>
-                        <div class="nhsd-navbar__profile--role" *ngIf="profile.isAdmin">Administrator</div>
-                    </div>
+                    <div class="nhsd-navbar__user--name">{{profile.firstName}} {{profile.lastName}}</div>
+                    <div class="nhsd-navbar__user--role" *ngIf="profile.isAdmin">Administrator</div>
                 </div>
-                <hr>
+
+                <div class="nhsd-navbar__link-group">
+                    <h5>Main navigation</h5>
+                    <a uiSref="app.container.home" (click)="sidenav.toggle()" uiSrefActive="active">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    <a uiSref="app.container.about" (click)="sidenav.toggle()" uiSrefActive="active">
+                        <i class="fas fa-info-circle"></i>
+                        <span>About</span>
+                    </a>
+                </div>
+            </nav>
+            <div *ngIf="!isLoggedIn" class="nhsd-navbar__login">
+                <button (click)="login()" mat-flat-button class="custom" color="primary">Log in</button>
             </div>
-
-            <div class="aside-main-navigation">
-                <div *ngIf="!isLoggedIn" class="aside-separator"></div>
-                <h5 class="menu-label text-muted pt-0 marginless">Main navigation</h5>
-                <a mat-menu-item uiSref="app.container.home" (click)="sidenav.toggle()" uiSrefActive="active">
-                    <i class="fas fa-home"></i>
-                    <span>Home</span>
-                </a>                
-                <a mat-menu-item uiSref="app.container.about" (click)="sidenav.toggle()" uiSrefActive="active">
-                    <i class="fas fa-info-circle"></i>
-                    <span>About</span>
-                </a>
-            </div>            
-        </nav>
-        <div *ngIf="!isLoggedIn" class="aside-user-actions mb-2">
-            <button (click)="login()" mat-flat-button class="custom" color="primary">Log in</button>
-        </div>
-
-        <button *ngIf="isLoggedIn" (click)="logout()" class="nhsd-navbar__logout">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>Log out</span>
-        </button>
-    </mat-sidenav>
-
-    <mat-sidenav-content></mat-sidenav-content>
-</mat-sidenav-container>
+            <button *ngIf="isLoggedIn" (click)="logout()" class="nhsd-navbar__logout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Log out</span>
+            </button>
+        </mat-sidenav>
+        <mat-sidenav-content>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</header>
