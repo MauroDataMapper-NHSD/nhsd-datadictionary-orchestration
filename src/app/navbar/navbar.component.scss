@@ -19,9 +19,11 @@
 
 @mixin nhsd-navbar-theme($theme) {
     $primary: map-get($theme, primary);
+    $warn: map-get($theme, warn);
 
     $backgroundColor: mat-color($primary);
     $textColor: mat-color($primary, default-contrast);
+    $warnColor: mat-color($warn);
 
     header.nhsd-header {
         background-color: $backgroundColor;
@@ -38,6 +40,10 @@
                 border-bottom: 2px solid $textColor;
             }            
         }   
+    }
+
+    .nhsd-navbar__logout {
+        color: $warnColor;
     }
 }
 
@@ -142,7 +148,6 @@ mat-sidenav-container.nhsd-navbar-sidenav-container {
     border: none;
     outline: none;
     background: #fcfafa;
-    color: #a5122a;
     margin-top: 12px;
 
     span {
