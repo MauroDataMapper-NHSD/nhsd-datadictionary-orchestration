@@ -23,11 +23,13 @@ import { MaterialModule } from '../material/material.module';
 import { UIRouterModule } from '@uirouter/angular';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FooterComponent } from '@nhsd/footer/footer.component';
+import { UserComponent } from '@nhsd/shared/user/user.component';
 
 @NgModule({
   declarations: [
     NavbarComponent,
     FooterComponent,
+    UserComponent,
     HomeComponent,
     AboutComponent
   ],
@@ -40,6 +42,7 @@ import { FooterComponent } from '@nhsd/footer/footer.component';
   exports: [
     NavbarComponent,
     FooterComponent,
+    UserComponent,
     HomeComponent,
     AboutComponent
   ]

@@ -32,22 +32,8 @@
                     <div *ngIf="!isLoggedIn">
                         <button (click)="login()" mat-stroked-button class="custom inverted-button">Log in</button>
                     </div>
-                    <div *ngIf="isLoggedIn && profile">
-                        <div [matMenuTriggerFor]="menu" class="nhsd-navbar__user" flex fxLayout="row"
-                            fxLayoutAlign="center center" fxLayoutGap="8px">
-                            <div class="nhsd-navbar__user--img">
-                                <img src="{{backendUrl}}/catalogueUsers/{{profile.id}}/image" alt="User profile">
-                            </div>
-                            <span class="spacer"></span>
-                            <div fxFlex="60">
-                                <div class="nhsd-navbar__user--name">{{profile.firstName}} {{profile.lastName}}</div>
-                                <div class="nhsd-navbar__user--role" *ngIf="profile.isAdmin">Administrator</div>
-                            </div>
-                            <span class="spacer"></span>
-                            <div fxFlex="10" fxFlex.sm="100" fxFlex.xs="100">
-                                <i class="fas fa-chevron-down"></i>
-                            </div>
-                        </div>
+                    <div *ngIf="isLoggedIn">
+                        <nhsd-user [user]="profile" layout="row" [matMenuTriggerFor]="menu"></nhsd-user>                        
                         <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
                             <button *ngIf="isLoggedIn" (click)="logout()" class="nhsd-navbar__logout">
                                 <i class="fas fa-sign-out-alt"></i>
@@ -69,14 +55,7 @@
         <mat-sidenav #sidenav class="nhsd-navbar__sidenav" mode="over" fixedInViewport="true" fixedTopGap="0"
             fixedBottomGap="0" opened="false" position="end" [autoFocus]="false" fxLayout="column" fxLayoutAlign="center center">
             <nav>
-                <div *ngIf="isLoggedIn && profile"class="nhsd-navbar__user">
-                    <div class="nhsd-navbar__user--img">
-                        <img src="{{backendUrl}}/catalogueUsers/{{profile.id}}/image" alt="User profile">
-                    </div>
-                    <div class="nhsd-navbar__user--name">{{profile.firstName}} {{profile.lastName}}</div>
-                    <div class="nhsd-navbar__user--role" *ngIf="profile.isAdmin">Administrator</div>
-                </div>
-
+                <nhsd-user *ngIf="isLoggedIn" [user]="profile" layout="column"></nhsd-user>
                 <div class="nhsd-navbar__link-group">                    
                     <div *ngFor="let group of linkGroups">
                         <h5>{{group.label}}</h5>

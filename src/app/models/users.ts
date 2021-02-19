@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
- @import "~@angular/material/theming";
-
- /* Import all custom components SASS files to access their mixins */
- @import "navbar/navbar.component.scss";
- @import "shared/user/user.component.scss";
- 
- /* Combine all custom component theme mixins into one */
- @mixin nhsd-custom-components-theme($theme) {
-   @include nhsd-navbar-theme($theme);
-   @include nhsd-user-theme($theme);
- }
+/**
+ * Represents the common details of a signed in user.
+ */
+export interface UserDetails {
+  id: string;
+  firstName: string;
+  lastName: string;
+  isAdmin?: boolean;
+}

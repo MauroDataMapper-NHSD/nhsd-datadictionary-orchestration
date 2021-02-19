@@ -15,6 +15,7 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
+import { UserDetails } from '@nhsd/models/users';
 import { SharedService } from '@nhsd/services/shared.service';
 import { ThemingService } from '@nhsd/services/theming.service';
 import { NavbarLink, NavbarLinkGroup } from './navbar.model';
@@ -28,7 +29,7 @@ export class NavbarComponent implements OnInit {
 
   @Input() linkGroups: NavbarLinkGroup[] = [];
 
-  profile: any; // TODO
+  profile!: UserDetails;
   logoUrl: string = this.theming.getAssetPath('logo.png');
   backendUrl: string = this.shared.backendUrl;
   isLoggedIn: boolean = true;
