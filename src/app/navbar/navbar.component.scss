@@ -22,11 +22,17 @@
     $warn: map-get($theme, warn);
 
     $backgroundColor: mat-color($primary);
+    $subheadingBackgroundColor: mat-color($primary, 300);
     $textColor: mat-color($primary, default-contrast);
     $warnColor: mat-color($warn);
 
     header.nhsd-header {
         background-color: $backgroundColor;
+    }
+
+    .nhsd-navbar__subheading {
+        background-color: $subheadingBackgroundColor;
+        color: $textColor;
     }
 
     header.nhsd-header {
@@ -84,6 +90,12 @@ header.nhsd-header {
             text-decoration: none;
         }
     }    
+}
+
+section.nhsd-navbar__subheading {
+    h1 {
+        padding: 4px 0px;
+    }
 }
 
 mat-sidenav-container.nhsd-navbar-sidenav-container {

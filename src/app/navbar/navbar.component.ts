@@ -28,11 +28,12 @@ import { NavbarLink, NavbarLinkGroup } from './navbar.model';
 export class NavbarComponent implements OnInit {
 
   @Input() linkGroups: NavbarLinkGroup[] = [];
-
-  profile!: UserDetails;
+  
+  appTitle: string = 'app';
   logoUrl: string = this.theming.getAssetPath('logo.png');
   backendUrl: string = this.shared.backendUrl;
   isLoggedIn: boolean = true;
+  profile!: UserDetails;
 
   get mainNavbarLinks(): NavbarLink[] {
     return this.linkGroups.find(group => group.isMain)?.links ?? [];
@@ -43,6 +44,8 @@ export class NavbarComponent implements OnInit {
     private theming: ThemingService) { }
 
   ngOnInit(): void {
+    this.appTitle = this.shared.appTitle;
+
     this.profile = {
       id: 'f3baa035-8743-449a-9455-5bf7cc7b0af5',
       firstName: 'Peter',
