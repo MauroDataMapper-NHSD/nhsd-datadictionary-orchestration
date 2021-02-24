@@ -16,7 +16,7 @@
 
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, OnInit } from '@angular/core';
-import { NavbarLinkGroup } from './navbar/navbar.model';
+import { NavbarLinkGroup } from './layout/navbar/navbar.model';
 import { ThemingService } from './services/theming.service';
 
 @Component({

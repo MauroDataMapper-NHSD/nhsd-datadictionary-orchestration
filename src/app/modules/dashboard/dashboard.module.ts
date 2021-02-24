@@ -18,11 +18,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from '@mdm/home/home.component';
 import { AboutComponent } from '@mdm/about/about.component';
-import { NavbarComponent } from '@mdm/navbar/navbar.component';
+import { NavbarComponent } from '@mdm/layout/navbar/navbar.component';
 import { MaterialModule } from '../material/material.module';
 import { UIRouterModule } from '@uirouter/angular';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FooterComponent } from '@mdm/footer/footer.component';
+import { FooterComponent } from '@mdm/layout/footer/footer.component';
 import { UserComponent } from '@mdm/shared/user/user.component';
 import { ToastrModule } from 'ngx-toastr';
 
