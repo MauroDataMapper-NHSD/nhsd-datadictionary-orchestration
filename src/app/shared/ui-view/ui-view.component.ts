@@ -17,7 +17,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'nhsd-ui-view',
+  selector: 'mdm-ui-view',
   templateUrl: './ui-view.component.html',
   styleUrls: ['./ui-view.component.scss']
 })

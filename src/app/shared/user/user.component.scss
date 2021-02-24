@@ -17,19 +17,19 @@
 @import "abstracts/mixins";
 @import "~@angular/material/theming";
 
-@mixin nhsd-user-theme($theme) {
+@mixin mdm-user-theme($theme) {
     $primary: map-get($theme, primary);
 
     $backgroundColor: mat-color($primary);
     $textColor: mat-color($primary, default-contrast);
 
-    .nhsd-user {
+    .mdm-user {
         background-color: $backgroundColor;
         color: $textColor;
     }
 }
 
-.nhsd-user {
+.mdm-user {
     font-size: 18px;
     text-align: center;
 
@@ -37,14 +37,14 @@
         flex: 1 1 auto;
     }
 
-    .nhsd-user--row {
+    .mdm-user--row {
         cursor: pointer;
     }
 
-    .nhsd-user--column {
+    .mdm-user--column {
         padding: 16px;
 
-        .nhsd-user__img {
+        .mdm-user__img {
             padding: 8px;
 
             img {
@@ -54,13 +54,13 @@
         }
     }
 
-    .nhsd-user__img {
+    .mdm-user__img {
         img {
             max-width: 50px;
         }
     }
 
-    .nhsd-user__name {
+    .mdm-user__name {
         line-height: 1;
         margin-bottom: 8px;
         white-space: nowrap;
@@ -68,7 +68,7 @@
         text-overflow: ellipsis;
     }
 
-    .nhsd-user__role {
+    .mdm-user__role {
         font-size: 14px;
         line-height: 1;
     }

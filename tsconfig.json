@@ -4,7 +4,7 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
-      "@nhsd/*": ["./app/*"],
+      "@mdm/*": ["./app/*"],
       "@env/*": ["./environments/*"]
     },
     "outDir": "./dist/",

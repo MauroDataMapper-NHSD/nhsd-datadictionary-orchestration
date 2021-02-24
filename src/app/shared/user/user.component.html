@@ -14,15 +14,15 @@
  limitations under the License.
 -->
 
-<div class="nhsd-user">
-    <div *ngIf="layout === 'row'" class="nhsd-user--row" flex fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
-        <div *ngIf="imageUrl" class="nhsd-user__img">
+<div class="mdm-user">
+    <div *ngIf="layout === 'row'" class="mdm-user--row" flex fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+        <div *ngIf="imageUrl" class="mdm-user__img">
             <img [src]="imageUrl" alt="User">
         </div>
         <span class="spacer"></span>
         <div fxFlex="60">
-            <div class="nhsd-user__name">{{user.firstName}} {{user.lastName}}</div>
-            <div class="nhsd-user__role" *ngIf="user.isAdmin">Administrator</div>
+            <div class="mdm-user__name">{{user.firstName}} {{user.lastName}}</div>
+            <div class="mdm-user__role" *ngIf="user.isAdmin">Administrator</div>
         </div>
         <span class="spacer"></span>
         <div fxFlex="10" fxFlex.sm="100" fxFlex.xs="100">
@@ -30,11 +30,11 @@
         </div>
     </div>
 
-    <div *ngIf="layout === 'column'" class="nhsd-user--column">
-        <div class="nhsd-user__img">
+    <div *ngIf="layout === 'column'" class="mdm-user--column">
+        <div class="mdm-user__img">
             <img [src]="imageUrl" alt="User profile">
         </div>
-        <div class="nhsd-user__name">{{user.firstName}} {{user.lastName}}</div>
-        <div class="nhsd-user__role" *ngIf="user.isAdmin">Administrator</div>
+        <div class="mdm-user__name">{{user.firstName}} {{user.lastName}}</div>
+        <div class="mdm-user__role" *ngIf="user.isAdmin">Administrator</div>
     </div>
 </div>

@@ -32,14 +32,14 @@
 
 html,
 body,
-nhsd-root,
-#nhsd-ui,
-nhsd-ui-view {
+mdm-root,
+#mdm-ui,
+mdm-ui-view {
     height: 100%;
 }
 
 body,
-nhsd-root {
+mdm-root {
     display: flex;
     flex-direction: column;
 }
@@ -71,7 +71,7 @@ ul li {
     }
 }
 
-.nhsd--container-fluid {
+.mdm--container-fluid {
     width: 100%;
     padding-right: 15px;
     padding-left: 15px;
@@ -136,7 +136,7 @@ hr {
     border-radius: 5px;
 }
 
-.nhsd--shadow-block {
+.mdm--shadow-block {
     box-shadow: 0 0 13px 0 rgba(82, 63, 105, 0.05);
     background-color: #fff;
     margin-bottom: 20px;

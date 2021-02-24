@@ -17,7 +17,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'nhsd-about',
+  selector: 'mdm-about',
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.scss']
 })

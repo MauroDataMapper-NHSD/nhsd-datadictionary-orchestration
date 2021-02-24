@@ -21,7 +21,7 @@
  @import "shared/user/user.component.scss";
  
  /* Combine all custom component theme mixins into one */
- @mixin nhsd-custom-components-theme($theme) {
-   @include nhsd-navbar-theme($theme);
-   @include nhsd-user-theme($theme);
+ @mixin mdm-custom-components-theme($theme) {
+   @include mdm-navbar-theme($theme);
+   @include mdm-user-theme($theme);
  }

@@ -15,7 +15,7 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "nhsd",
+      "prefix": "mdm",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",

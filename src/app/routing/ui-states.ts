@@ -15,10 +15,10 @@
  */
 
 import { Ng2StateDeclaration } from '@uirouter/angular';
-import { AppComponent } from '@nhsd/app.component';
-import { HomeComponent } from '@nhsd/home/home.component';
-import { AppContainerComponent } from '@nhsd/app-container/app-container.component';
-import { AboutComponent } from '@nhsd/about/about.component';
+import { AppComponent } from '@mdm/app.component';
+import { HomeComponent } from '@mdm/home/home.component';
+import { AppContainerComponent } from '@mdm/app-container/app-container.component';
+import { AboutComponent } from '@mdm/about/about.component';
 
 export const states: Ng2StateDeclaration[] = [
   {

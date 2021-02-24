@@ -14,28 +14,28 @@
  limitations under the License.
 -->
 
-<header class="nhsd-header">
+<header class="mdm-header">
     <div class="container">
-        <mat-toolbar color="primary" class="nhsd-navbar">
-            <nav flex fxLayout="row" fxLayoutAlign="space-between" class="nhsd-navbar--nav">
-                <div class="nhsd-navbar__brand">
-                    <a class="nhsd-navbar__brand--logo" uiSref="app.container.home">
+        <mat-toolbar color="primary" class="mdm-navbar">
+            <nav flex fxLayout="row" fxLayoutAlign="space-between" class="mdm-navbar--nav">
+                <div class="mdm-navbar__brand">
+                    <a class="mdm-navbar__brand--logo" uiSref="app.container.home">
                         <img [src]="logoUrl" alt="logo">
                     </a>
                 </div>
                 <span class="spacer"></span>
-                <div class="nhsd-navbar__items" fxShow="true" fxHide.lt-md="true" *ngFor="let link of mainNavbarLinks">
+                <div class="mdm-navbar__items" fxShow="true" fxHide.lt-md="true" *ngFor="let link of mainNavbarLinks">
                     <a [uiSref]="link.uiSref" uiSrefActive="active">{{link.label}}</a>
                 </div>
                 <span class="spacer"></span>
-                <div class="nhsd-navbar__menu" fxShow="true" fxHide.lt-md="true">
+                <div class="mdm-navbar__menu" fxShow="true" fxHide.lt-md="true">
                     <div *ngIf="!isLoggedIn">
                         <button (click)="login()" mat-stroked-button class="custom inverted-button">Log in</button>
                     </div>
                     <div *ngIf="isLoggedIn">
-                        <nhsd-user [user]="profile" layout="row" [matMenuTriggerFor]="menu"></nhsd-user>                        
+                        <mdm-user [user]="profile" layout="row" [matMenuTriggerFor]="menu"></mdm-user>                        
                         <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
-                            <button *ngIf="isLoggedIn" (click)="logout()" class="nhsd-navbar__logout">
+                            <button *ngIf="isLoggedIn" (click)="logout()" class="mdm-navbar__logout">
                                 <i class="fas fa-sign-out-alt"></i>
                                 <span>Log out</span>
                             </button>
@@ -51,12 +51,12 @@
         </mat-toolbar>        
     </div>    
 
-    <mat-sidenav-container class="nhsd-navbar-sidenav-container">
-        <mat-sidenav #sidenav class="nhsd-navbar__sidenav" mode="over" fixedInViewport="true" fixedTopGap="0"
+    <mat-sidenav-container class="mdm-navbar-sidenav-container">
+        <mat-sidenav #sidenav class="mdm-navbar__sidenav" mode="over" fixedInViewport="true" fixedTopGap="0"
             fixedBottomGap="0" opened="false" position="end" [autoFocus]="false" fxLayout="column" fxLayoutAlign="center center">
             <nav>
-                <nhsd-user *ngIf="isLoggedIn" [user]="profile" layout="column"></nhsd-user>
-                <div class="nhsd-navbar__link-group">                    
+                <mdm-user *ngIf="isLoggedIn" [user]="profile" layout="column"></mdm-user>
+                <div class="mdm-navbar__link-group">                    
                     <div *ngFor="let group of linkGroups">
                         <h5>{{group.label}}</h5>
                         <div *ngFor="let link of group.links">
@@ -68,10 +68,10 @@
                     </div>                    
                 </div>
             </nav>
-            <div *ngIf="!isLoggedIn" class="nhsd-navbar__login">
+            <div *ngIf="!isLoggedIn" class="mdm-navbar__login">
                 <button (click)="login()" mat-flat-button class="custom" color="primary">Log in</button>
             </div>
-            <button *ngIf="isLoggedIn" (click)="logout()" class="nhsd-navbar__logout">
+            <button *ngIf="isLoggedIn" (click)="logout()" class="mdm-navbar__logout">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Log out</span>
             </button>
@@ -81,7 +81,7 @@
     </mat-sidenav-container>
 </header>
 
-<section class="nhsd-navbar__subheading">
+<section class="mdm-navbar__subheading">
     <div class="container">
         <h1>{{appTitle}}</h1>
     </div>    

@@ -17,7 +17,7 @@
 @import "abstracts/mixins";
 @import "~@angular/material/theming";
 
-@mixin nhsd-navbar-theme($theme) {
+@mixin mdm-navbar-theme($theme) {
     $primary: map-get($theme, primary);
     $warn: map-get($theme, warn);
 
@@ -26,17 +26,17 @@
     $textColor: mat-color($primary, default-contrast);
     $warnColor: mat-color($warn);
 
-    header.nhsd-header {
+    header.mdm-header {
         background-color: $backgroundColor;
     }
 
-    .nhsd-navbar__subheading {
+    .mdm-navbar__subheading {
         background-color: $subheadingBackgroundColor;
         color: $textColor;
     }
 
-    header.nhsd-header {
-        .nhsd-navbar__items
+    header.mdm-header {
+        .mdm-navbar__items
         {
             a {
                 color: $textColor;
@@ -48,18 +48,18 @@
         }   
     }
 
-    .nhsd-navbar__logout {
+    .mdm-navbar__logout {
         color: $warnColor;
     }
 }
 
-header.nhsd-header {
+header.mdm-header {
     z-index: 1000;
 
-    .nhsd-navbar {
+    .mdm-navbar {
         height: 100px;
 
-        .nhsd-navbar--nav {
+        .mdm-navbar--nav {
             width: 100%;
         }
     }
@@ -68,15 +68,15 @@ header.nhsd-header {
         flex: 1 1 auto;
     }
 
-    .nhsd-navbar__brand {
-        .nhsd-navbar__brand--logo {
+    .mdm-navbar__brand {
+        .mdm-navbar__brand--logo {
             img {
                 max-width: 120px;
             }
         }
     }
 
-    .nhsd-navbar__items {
+    .mdm-navbar__items {
         display: flex;
         align-items: center;
 
@@ -92,18 +92,18 @@ header.nhsd-header {
     }    
 }
 
-section.nhsd-navbar__subheading {
+section.mdm-navbar__subheading {
     h1 {
         padding: 4px 0px;
     }
 }
 
-mat-sidenav-container.nhsd-navbar-sidenav-container {
-    .nhsd-navbar__sidenav {
+mat-sidenav-container.mdm-navbar-sidenav-container {
+    .mdm-navbar__sidenav {
         width: 320px;
         z-index: 1000;        
 
-        .nhsd-navbar__link-group {
+        .mdm-navbar__link-group {
             margin-top: 10px;
 
             h5 {
@@ -141,7 +141,7 @@ mat-sidenav-container.nhsd-navbar-sidenav-container {
             }
         }
 
-        .nhsd-navbar__login {
+        .mdm-navbar__login {
             padding-top: 40px;
             text-align: center;
     
@@ -152,7 +152,7 @@ mat-sidenav-container.nhsd-navbar-sidenav-container {
     }    
 }
 
-.nhsd-navbar__logout {
+.mdm-navbar__logout {
     width: 100%;
     text-align: center;
     font-size: 18px;

@@ -20,7 +20,7 @@ import { NavbarLinkGroup } from './navbar/navbar.model';
 import { ThemingService } from './services/theming.service';
 
 @Component({
-  selector: 'nhsd-root',
+  selector: 'mdm-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

@@ -15,13 +15,13 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { UserDetails } from '@nhsd/models/users';
-import { SharedService } from '@nhsd/services/shared.service';
+import { UserDetails } from '@mdm/models/users';
+import { SharedService } from '@mdm/services/shared.service';
 
 export type UserComponentLayoutMode = 'column' | 'row';
 
 @Component({
-  selector: 'nhsd-user',
+  selector: 'mdm-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })

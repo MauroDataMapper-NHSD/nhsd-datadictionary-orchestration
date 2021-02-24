@@ -15,13 +15,13 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { UserDetails } from '@nhsd/models/users';
-import { SharedService } from '@nhsd/services/shared.service';
-import { ThemingService } from '@nhsd/services/theming.service';
+import { UserDetails } from '@mdm/models/users';
+import { SharedService } from '@mdm/services/shared.service';
+import { ThemingService } from '@mdm/services/theming.service';
 import { NavbarLink, NavbarLinkGroup } from './navbar.model';
 
 @Component({
-  selector: 'nhsd-navbar',
+  selector: 'mdm-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
