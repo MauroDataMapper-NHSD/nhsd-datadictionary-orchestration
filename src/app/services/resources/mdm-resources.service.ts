@@ -14,18 +14,12 @@
  * limitations under the License.
  */
 
-import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '@env/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SharedService {
-
-  backendUrl = environment.apiEndpoint;
-  appTitle = environment.appTitle;
-  lastHttpError: HttpResponse<ArrayBuffer> | undefined;
+export class MdmResourcesService {
 
   constructor() { }
 }

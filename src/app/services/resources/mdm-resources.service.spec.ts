@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-import { HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { environment } from '@env/environment';
+import { TestBed } from '@angular/core/testing';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class SharedService {
+import { MdmResourcesService } from './mdm-resources.service';
 
-  backendUrl = environment.apiEndpoint;
-  appTitle = environment.appTitle;
-  lastHttpError: HttpResponse<ArrayBuffer> | undefined;
+describe('MdmResourcesService', () => {
+  let service: MdmResourcesService;
 
-  constructor() { }
-}
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(MdmResourcesService);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});

@@ -27,6 +27,7 @@
     "@uirouter/angular": "~8.0.0",
     "@uirouter/core": "~6.0.7",
     "@uirouter/rx": "~0.6.5",
+    "ngx-toastr": "^13.2.0",
     "rxjs": "~6.6.0",
     "tslib": "^1.14.1",
     "zone.js": "~0.10.2"

@@ -24,6 +24,7 @@ import { UIRouterModule } from '@uirouter/angular';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FooterComponent } from '@nhsd/footer/footer.component';
 import { UserComponent } from '@nhsd/shared/user/user.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,12 @@ import { UserComponent } from '@nhsd/shared/user/user.component';
     CommonModule,
     MaterialModule,
     UIRouterModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    ToastrModule.forRoot({
+      timeOut: 30000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: false
+    })
   ],
   exports: [
     NavbarComponent,

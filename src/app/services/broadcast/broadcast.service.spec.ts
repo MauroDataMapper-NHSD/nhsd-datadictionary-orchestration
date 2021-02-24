@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-import { HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { environment } from '@env/environment';
+import { TestBed } from '@angular/core/testing';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class SharedService {
+import { BroadcastService } from './broadcast.service';
 
-  backendUrl = environment.apiEndpoint;
-  appTitle = environment.appTitle;
-  lastHttpError: HttpResponse<ArrayBuffer> | undefined;
+describe('BroadcastService', () => {
+  let service: BroadcastService;
 
-  constructor() { }
-}
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(BroadcastService);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});

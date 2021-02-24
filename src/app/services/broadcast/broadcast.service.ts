@@ -14,18 +14,26 @@
  * limitations under the License.
  */
 
-import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '@env/environment';
+import { Observable, Subject } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+import { BroadcastEvent, BroadcastMessage } from './broadcast.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SharedService {
+export class BroadcastService {
 
-  backendUrl = environment.apiEndpoint;
-  appTitle = environment.appTitle;
-  lastHttpError: HttpResponse<ArrayBuffer> | undefined;
+  private handler = new Subject<BroadcastMessage<any>>();
 
-  constructor() { }
+  on<T = any>(event: BroadcastEvent): Observable<T> {
+    return this.handler.pipe(
+      filter(message => message.event === event),
+      map(message => message.payload)
+    );
+  }
+
+  dispatch<T = any>(event: BroadcastEvent, payload?: T) {
+    this.handler.next(new BroadcastMessage(event, payload));
+  }  
 }

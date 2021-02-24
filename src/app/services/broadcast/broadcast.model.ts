@@ -14,18 +14,12 @@
  * limitations under the License.
  */
 
-import { HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { environment } from '@env/environment';
+export enum BroadcastEvent {
+  ApplicationOffline
+}
 
-@Injectable({
-  providedIn: 'root'
-})
-export class SharedService {
-
-  backendUrl = environment.apiEndpoint;
-  appTitle = environment.appTitle;
-  lastHttpError: HttpResponse<ArrayBuffer> | undefined;
-
-  constructor() { }
+export class BroadcastMessage<T> {
+  constructor(
+    public event: BroadcastEvent,
+    public payload?: T) { }
 }
