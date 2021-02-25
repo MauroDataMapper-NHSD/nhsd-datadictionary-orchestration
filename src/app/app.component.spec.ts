@@ -14,14 +14,30 @@
  * limitations under the License.
  */
 
+import { Component, Input } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { NavbarLinkGroup } from './layout/navbar/navbar.model';
+import { TestingModule } from './modules/testing/testing.module';
+
+@Component({selector: 'mdm-navbar', template: ''})
+class NavbarStubComponent { 
+  @Input() linkGroups: NavbarLinkGroup[] = [];
+}
+
+@Component({selector: 'mdm-footer', template: ''})
+class FooterStubComponent { }
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        TestingModule
+      ],
       declarations: [
-        AppComponent
+        AppComponent,
+        NavbarStubComponent,
+        FooterStubComponent
       ],
     }).compileComponents();
   });
@@ -36,12 +52,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('nhsd-datadictionary-orchestration');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('nhsd-datadictionary-orchestration app is running!');
   });
 });

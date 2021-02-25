@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
+import { HttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { TestingModule } from '@mdm/modules/testing/testing.module';
 
 import { MdmRestHandlerService } from './mdm-rest-handler.service';
 
@@ -22,7 +24,17 @@ describe('MdmRestHandlerService', () => {
   let service: MdmRestHandlerService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [
+        TestingModule
+      ],
+      providers: [
+        {
+          provide: HttpClient,
+          useValue: jest.fn()
+        }
+      ]
+    });
     service = TestBed.inject(MdmRestHandlerService);
   });
 

@@ -14,9 +14,18 @@
  * limitations under the License.
  */
 
+import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { UserDetails } from '@mdm/models/users';
+import { TestingModule } from '@mdm/modules/testing/testing.module';
 
 import { NavbarComponent } from './navbar.component';
+
+@Component({selector: 'mdm-user', template: ''})
+class UserStubComponent { 
+  @Input() user!: UserDetails;
+}
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
@@ -24,7 +33,13 @@ describe('NavbarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NavbarComponent ]
+      imports: [
+        TestingModule
+      ],
+      declarations: [ 
+        NavbarComponent,
+        UserStubComponent
+      ]
     })
     .compileComponents();
   });

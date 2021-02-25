@@ -44,3 +44,9 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Test files
+/test-report.xml
+/test-report
+/test-report.html
+junit.xml

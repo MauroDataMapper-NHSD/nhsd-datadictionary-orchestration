@@ -15,6 +15,7 @@
  */
 
 import { TestBed } from '@angular/core/testing';
+import { TestingModule } from '@mdm/modules/testing/testing.module';
 
 import { ThemingService } from './theming.service';
 
@@ -22,7 +23,11 @@ describe('ThemingService', () => {
   let service: ThemingService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [
+        TestingModule
+      ]
+    });
     service = TestBed.inject(ThemingService);
   });
 

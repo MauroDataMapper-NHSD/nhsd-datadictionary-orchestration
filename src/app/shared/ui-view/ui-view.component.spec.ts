@@ -15,6 +15,7 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestingModule } from '@mdm/modules/testing/testing.module';
 
 import { UiViewComponent } from './ui-view.component';
 
@@ -24,6 +25,9 @@ describe('UiViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        TestingModule
+      ],
       declarations: [ UiViewComponent ]
     })
     .compileComponents();

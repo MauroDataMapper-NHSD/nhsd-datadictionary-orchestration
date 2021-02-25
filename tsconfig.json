@@ -21,6 +21,9 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "es2020",
+    "types": [
+      "jest"
+    ],
     "typeRoots": [
       "node_modules/@types"
     ],

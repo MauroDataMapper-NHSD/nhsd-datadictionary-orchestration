@@ -14,24 +14,5 @@
  * limitations under the License.
  */
 
-import { TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/modules/testing/testing.module';
-
-import { MdmResourcesService } from './mdm-resources.service';
-
-describe('MdmResourcesService', () => {
-  let service: MdmResourcesService;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        TestingModule
-      ]
-    });
-    service = TestBed.inject(MdmResourcesService);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+import 'jest-preset-angular';
+// import './jestGlobalMocks'; // browser mocks globally available for every test

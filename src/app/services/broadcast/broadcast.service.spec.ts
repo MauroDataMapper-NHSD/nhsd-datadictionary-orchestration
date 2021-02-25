@@ -15,6 +15,7 @@
  */
 
 import { TestBed } from '@angular/core/testing';
+import { TestingModule } from '@mdm/modules/testing/testing.module';
 
 import { BroadcastService } from './broadcast.service';
 
@@ -22,7 +23,11 @@ describe('BroadcastService', () => {
   let service: BroadcastService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [
+        TestingModule
+      ]
+    });
     service = TestBed.inject(BroadcastService);
   });
 

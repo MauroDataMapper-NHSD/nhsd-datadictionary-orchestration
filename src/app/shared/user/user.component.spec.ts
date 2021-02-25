@@ -15,6 +15,7 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestingModule } from '@mdm/modules/testing/testing.module';
 
 import { UserComponent } from './user.component';
 
@@ -24,6 +25,9 @@ describe('UserComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        TestingModule
+      ],
       declarations: [ UserComponent ]
     })
     .compileComponents();
@@ -32,10 +36,11 @@ describe('UserComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UserComponent);
     component = fixture.componentInstance;
+    component.user = { id: '123', firstName: 'test', lastName: 'test' };
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create', () => {    
     expect(component).toBeTruthy();
   });
 });
