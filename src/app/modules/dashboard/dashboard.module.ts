@@ -25,6 +25,12 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FooterComponent } from '@mdm/layout/footer/footer.component';
 import { UserComponent } from '@mdm/shared/user/user.component';
 import { ToastrModule } from 'ngx-toastr';
+import { ErrorComponent } from '@mdm/error/error.component';
+import { NotImplementedComponent } from '@mdm/error/not-implemented/not-implemented.component';
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
+import { NotAuthorizedComponent } from '@mdm/error/not-authorized/not-authorized.component';
+import { NotFoundComponent } from '@mdm/error/not-found/not-found.component';
+import { ServerErrorComponent } from '@mdm/error/server-error/server-error.component';
 
 @NgModule({
   declarations: [
@@ -32,12 +38,18 @@ import { ToastrModule } from 'ngx-toastr';
     FooterComponent,
     UserComponent,
     HomeComponent,
-    AboutComponent
+    AboutComponent,
+    ErrorComponent,
+    NotImplementedComponent,
+    NotAuthorizedComponent,
+    NotFoundComponent,
+    ServerErrorComponent
   ],
   imports: [
     CommonModule,
     MaterialModule,
     UIRouterModule,
+    NgxJsonViewerModule,
     FlexLayoutModule,
     ToastrModule.forRoot({
       timeOut: 30000,
@@ -50,7 +62,10 @@ import { ToastrModule } from 'ngx-toastr';
     FooterComponent,
     UserComponent,
     HomeComponent,
-    AboutComponent
+    AboutComponent,
+    ErrorComponent,
+    NotImplementedComponent,
+    NotAuthorizedComponent
   ]
 })
 export class DashboardModule { }

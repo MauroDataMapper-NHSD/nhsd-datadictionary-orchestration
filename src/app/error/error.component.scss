@@ -14,16 +14,28 @@
  * limitations under the License.
  */
 
-export enum BroadcastEvent {
-  ApplicationOffline,
-  NotAuthorized,
-  NotFound,
-  NotImplemented,
-  ServerError
-}
+ @mixin mdm-error-theme($theme) {
+    $warn: map-get($theme, warn);
 
-export class BroadcastMessage<T> {
-  constructor(
-    public event: BroadcastEvent,
-    public payload?: T) { }
-}
+    $warnColor: mat-color($warn);
+
+    .mdm-error__message {
+        color: $warnColor;
+    }
+ }
+
+ .mdm-error__message {
+    text-align: left;
+
+    i {
+        margin-right: 16px;
+    }
+ }
+
+ .mdm-error__details {
+     padding: 16px 0;
+
+     .mdm-error__details__controls {
+         margin: 16px 0;
+     }
+ }

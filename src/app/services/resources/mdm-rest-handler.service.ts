@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IMdmRestHandler, IMdmRestHandlerOptions } from '@maurodatamapper/mdm-resources';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { BroadcastEvent } from '../broadcast/broadcast.model';
 import { BroadcastService } from '../broadcast/broadcast.service';
-import { StateHandlerService } from '../handlers/state-handler.service';
-import { SharedService } from '../shared.service';
 
 @Injectable({
   providedIn: 'root'
@@ -31,9 +29,7 @@ export class MdmRestHandlerService implements IMdmRestHandler {
 
   constructor(
     private http: HttpClient,
-    private stateHandler: StateHandlerService,
-    private broadcast: BroadcastService,
-    private shared: SharedService) { }
+    private broadcast: BroadcastService) { }
 
   process(url: string, options: IMdmRestHandlerOptions) {
     if (options.withCredentials === undefined ||
@@ -64,32 +60,24 @@ export class MdmRestHandlerService implements IMdmRestHandler {
         }
       )
       .pipe(
-        catchError((response: HttpResponse<ArrayBuffer>) => {
+        catchError((response: HttpErrorResponse) => {
           if (response.status === 0 || response.status === -1) {
-            this.stateHandler.applicationOffline();
             this.broadcast.dispatch(BroadcastEvent.ApplicationOffline, response);
           } 
-          else if (response.status === 401) {
-            this.shared.lastHttpError = response;
-            if (options.login === undefined) {
-              this.stateHandler.notAuthorized();
-            }
+          else if (response.status === 401 && !options.login) {
+            this.broadcast.dispatch(BroadcastEvent.NotAuthorized, response);
           } 
           else if (response.status === 404) {
-            this.shared.lastHttpError = response;
-            this.stateHandler.notFound();
+            this.broadcast.dispatch(BroadcastEvent.NotFound, response);
           } 
           else if (response.status === 501) {
-            this.shared.lastHttpError = response;
-            this.stateHandler.notImplemented();
+            this.broadcast.dispatch(BroadcastEvent.NotImplemented, response);
           } 
           else if (response.status >= 400 && response.status < 500 && options.method === 'GET') {
-            this.shared.lastHttpError = response;
-            this.stateHandler.notFound();
+            this.broadcast.dispatch(BroadcastEvent.NotFound, response);
           } 
           else if (response.status >= 500) {
-            this.shared.lastHttpError = response;
-            this.stateHandler.serverError();
+            this.broadcast.dispatch(BroadcastEvent.ServerError, response);
           }
           return throwError(response);
         })

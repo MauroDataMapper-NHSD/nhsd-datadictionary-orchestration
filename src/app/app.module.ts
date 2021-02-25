@@ -24,6 +24,12 @@ import { UIRouterModule } from '@uirouter/angular';
 import { AppContainerComponent } from './app-container/app-container.component';
 import { UiViewComponent } from './shared/ui-view/ui-view.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SharedService } from './services/shared.service';
+import { BroadcastService } from './services/broadcast/broadcast.service';
+import { ToastrService } from 'ngx-toastr';
+import { BroadcastEvent } from './services/broadcast/broadcast.model';
+import { HttpErrorResponse } from '@angular/common/http';
+import { StateHandlerService } from './services/handlers/state-handler.service';
 
 @NgModule({
   declarations: [
@@ -32,11 +38,42 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     UiViewComponent
   ],
   imports: [
-    BrowserModule,        
+    BrowserModule,
     DashboardModule,
-    UIRouterModule.forRoot({ states: states, useHash: true }),    
+    UIRouterModule.forRoot({
+      states: states,
+      useHash: true,
+      otherwise: '/not-found'
+    }),
     BrowserAnimationsModule
   ],
   bootstrap: [UiViewComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(
+    private shared: SharedService,
+    private broadcast: BroadcastService,
+    private stateHandler: StateHandlerService,
+    private toastr: ToastrService
+  ) {
+    this.broadcast
+      .on(BroadcastEvent.ApplicationOffline)
+      .subscribe(() => this.toastr.warning('Application is offline!'));
+
+    this.subscribeHttpErrorEvent(BroadcastEvent.NotAuthorized, 'app.container.notAuthorized');
+    this.subscribeHttpErrorEvent(BroadcastEvent.NotFound, 'app.container.notFound');
+    this.subscribeHttpErrorEvent(BroadcastEvent.NotImplemented, 'app.container.notImplemented');
+    this.subscribeHttpErrorEvent(BroadcastEvent.ServerError, 'app.container.serverError');    
+  }
+
+  private subscribeHttpErrorEvent(event: BroadcastEvent, state: string) {
+    this.broadcast
+      .on<HttpErrorResponse>(event)
+      .subscribe(response => this.handleHttpError(response, state));
+  }
+
+  private handleHttpError(response: HttpErrorResponse, state: string) {
+    this.shared.lastHttpError = response;
+    this.stateHandler.go(state);
+  }
+}

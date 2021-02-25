@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 
@@ -25,7 +25,7 @@ export class SharedService {
 
   backendUrl = environment.apiEndpoint;
   appTitle = environment.appTitle;
-  lastHttpError: HttpResponse<ArrayBuffer> | undefined;
+  lastHttpError?: HttpErrorResponse;
 
   constructor() { }
 }

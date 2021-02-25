@@ -14,16 +14,8 @@
  * limitations under the License.
  */
 
-export enum BroadcastEvent {
-  ApplicationOffline,
-  NotAuthorized,
-  NotFound,
-  NotImplemented,
-  ServerError
-}
-
-export class BroadcastMessage<T> {
-  constructor(
-    public event: BroadcastEvent,
-    public payload?: T) { }
+export interface ErrorData {
+    name: string;
+    value: any;
+    code?: boolean;
 }

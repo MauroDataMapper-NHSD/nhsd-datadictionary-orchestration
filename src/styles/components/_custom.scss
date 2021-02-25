@@ -19,9 +19,11 @@
  /* Import all custom components SASS files to access their mixins */
  @import "layout/navbar/navbar.component.scss";
  @import "shared/user/user.component.scss";
+ @import "error/error.component.scss";
  
  /* Combine all custom component theme mixins into one */
  @mixin mdm-custom-components-theme($theme) {
    @include mdm-navbar-theme($theme);
    @include mdm-user-theme($theme);
+   @include mdm-error-theme($theme);
  }

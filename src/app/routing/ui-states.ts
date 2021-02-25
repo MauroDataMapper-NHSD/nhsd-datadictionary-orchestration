@@ -19,6 +19,10 @@ import { AppComponent } from '@mdm/app.component';
 import { HomeComponent } from '@mdm/home/home.component';
 import { AppContainerComponent } from '@mdm/app-container/app-container.component';
 import { AboutComponent } from '@mdm/about/about.component';
+import { NotImplementedComponent } from '@mdm/error/not-implemented/not-implemented.component';
+import { NotAuthorizedComponent } from '@mdm/error/not-authorized/not-authorized.component';
+import { ServerErrorComponent } from '@mdm/error/server-error/server-error.component';
+import { NotFoundComponent } from '@mdm/error/not-found/not-found.component';
 
 export const states: Ng2StateDeclaration[] = [
   {
@@ -43,5 +47,25 @@ export const states: Ng2StateDeclaration[] = [
     name: 'app.container.about',
     url: '/about',
     component: AboutComponent
+  },
+  {
+    name: 'app.container.notImplemented',
+    url: '/not-implemented',
+    component: NotImplementedComponent
+  },
+  {
+    name: 'app.container.notAuthorized',
+    url: '/not-authorized',
+    component: NotAuthorizedComponent
+  },
+  {
+    name: 'app.container.serverError',
+    url: '/server-error',
+    component: ServerErrorComponent
+  },
+  {
+    name: 'app.container.notFound',
+    url: '/not-found',
+    component: NotFoundComponent
   }
 ];

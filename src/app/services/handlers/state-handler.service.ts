@@ -16,42 +16,15 @@
 
 import { Injectable } from '@angular/core';
 import { RawParams, TransitionOptions, UIRouter } from '@uirouter/angular';
-import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StateHandlerService {
 
-  constructor(
-    private router: UIRouter,
-    private ngToast: ToastrService) { }
+  constructor(private router: UIRouter) { }
 
   go(name: string, params?: RawParams, options?: TransitionOptions) {
     return this.router.stateService.go(name, params, options);
-  }
-
-  applicationOffline() {
-    this.ngToast.warning('Application is offline!');
-  }
-
-  connectionError() {
-    this.ngToast.warning('Server connection failed');
-  }
-
-  serverError(options?: TransitionOptions) {
-    return this.router.stateService.go('app.container.serverError', {}, options);
-  }
-
-  notImplemented(options?: TransitionOptions) {
-    return this.router.stateService.go('app.container.notImplemented', {}, options);
-  }
-
-  notAuthorized(options?: TransitionOptions) {
-    return this.router.stateService.go('app.container.notAuthorized', {}, options);
-  }
-
-  notFound(options?: TransitionOptions) {
-    return this.router.stateService.go('app.container.notFound', {}, options);
   }
 }
