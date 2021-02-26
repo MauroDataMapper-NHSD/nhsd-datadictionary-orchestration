@@ -16,6 +16,8 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { UserDetails } from '@mdm/models/users';
+import { BroadcastEvent } from '@mdm/services/broadcast/broadcast.model';
+import { BroadcastService } from '@mdm/services/broadcast/broadcast.service';
 import { SharedService } from '@mdm/services/shared.service';
 import { ThemingService } from '@mdm/services/theming.service';
 import { NavbarLink, NavbarLinkGroup } from './navbar.model';
@@ -32,7 +34,7 @@ export class NavbarComponent implements OnInit {
   appTitle: string = 'app';
   logoUrl: string = this.theming.getAssetPath('logo.png');
   backendUrl: string = this.shared.backendUrl;
-  isLoggedIn: boolean = true;
+  isLoggedIn: boolean = false;
   profile!: UserDetails;
 
   get mainNavbarLinks(): NavbarLink[] {
@@ -41,6 +43,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private shared: SharedService,
+    private broadcast: BroadcastService,
     private theming: ThemingService) { }
 
   ngOnInit(): void {
@@ -50,14 +53,15 @@ export class NavbarComponent implements OnInit {
       id: 'f3baa035-8743-449a-9455-5bf7cc7b0af5',
       firstName: 'Peter',
       lastName: 'Monks',
+      userName: 'test',
       isAdmin: true
     };
   }
 
-  login() {    
+  login() {
+    this.broadcast.dispatch(BroadcastEvent.UserRequestsSignIn);
   }
 
   logout() {    
   }
-
 }

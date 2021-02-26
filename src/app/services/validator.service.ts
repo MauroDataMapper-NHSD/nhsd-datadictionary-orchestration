@@ -15,18 +15,35 @@
  */
 
 import { Injectable } from '@angular/core';
-import { MdmSecurityResource, MdmResourcesConfiguration, MdmSessionResource } from '@maurodatamapper/mdm-resources';
-import { MdmRestHandlerService } from './mdm-rest-handler.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MdmResourcesService {
+export class ValidatorService {
+  // eslint-disable-next-line no-useless-escape
+  readonly emailPattern = /^[_A-Za-z0-9-'!#%&=\/~\`\+\$\*\?\^\{\|\}]+(\.[_A-Za-z0-9-'!#%&=\/~\`\+\$\*\?\^\{\|\}]+)*@[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-\+]+)*(\.[A-Za-z]{2,})$/;
 
-  security = new MdmSecurityResource(this.resourcesConfig, this.restHandler);
-  session = new MdmSessionResource(this.resourcesConfig, this.restHandler);
+  isEmail(value: string): boolean {
+    return this.emailPattern.test(value);
+  }
 
-  constructor(
-    private resourcesConfig: MdmResourcesConfiguration, 
-    private restHandler: MdmRestHandlerService) { }
+  isDate(date: any): boolean {
+    if (!isNaN(date)) {
+      return date instanceof Date;
+    }
+
+    return false;
+  }
+
+  isEmpty(str: string): boolean {
+    if (str === null || str === undefined) {
+      return true;
+    }
+
+    if (typeof str === 'string' && str.trim().length === 0) {
+      return true;
+    }
+
+    return false;
+  }
 }

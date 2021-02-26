@@ -16,7 +16,11 @@
 
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { NavbarLinkGroup } from './layout/navbar/navbar.model';
+import { SignInModalComponent } from './modals/sign-in-modal/sign-in-modal.component';
+import { BroadcastEvent } from './services/broadcast/broadcast.model';
+import { BroadcastService } from './services/broadcast/broadcast.service';
 import { ThemingService } from './services/theming.service';
 
 @Component({
@@ -49,11 +53,15 @@ export class AppComponent implements OnInit {
   ];
 
   constructor(
+    private broadcast: BroadcastService,
+    private dialog: MatDialog,
     private theming: ThemingService,
     private overlayContainer: OverlayContainer) { }
 
   ngOnInit(): void {
     this.setTheme();
+
+    this.broadcast.on(BroadcastEvent.UserRequestsSignIn).subscribe(() => this.signIn());
   }
 
   private setTheme() {
@@ -63,6 +71,13 @@ export class AppComponent implements OnInit {
     // Material. Have to manually set the correct theme class to this container too
     this.overlayContainer.getContainerElement().classList.add(this.themeCssSelector);
     this.overlayContainer.getContainerElement().classList.add('overlay-container');
+  }
+
+  private signIn() {
+    this.dialog
+      .open(SignInModalComponent)
+      .afterClosed()
+      .subscribe(user => { });
   }
 
 }

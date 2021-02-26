@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-import { Injectable } from '@angular/core';
-import { MdmSecurityResource, MdmResourcesConfiguration, MdmSessionResource } from '@maurodatamapper/mdm-resources';
-import { MdmRestHandlerService } from './mdm-rest-handler.service';
+import { TestBed } from '@angular/core/testing';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class MdmResourcesService {
+import { ValidatorService } from './validator.service';
 
-  security = new MdmSecurityResource(this.resourcesConfig, this.restHandler);
-  session = new MdmSessionResource(this.resourcesConfig, this.restHandler);
+describe('ValidatorService', () => {
+  let service: ValidatorService;
 
-  constructor(
-    private resourcesConfig: MdmResourcesConfiguration, 
-    private restHandler: MdmRestHandlerService) { }
-}
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(ValidatorService);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});

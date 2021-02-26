@@ -28,8 +28,11 @@ import { SharedService } from './services/shared.service';
 import { BroadcastService } from './services/broadcast/broadcast.service';
 import { ToastrService } from 'ngx-toastr';
 import { BroadcastEvent } from './services/broadcast/broadcast.model';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { StateHandlerService } from './services/handlers/state-handler.service';
+import { ModalModule } from './modules/modal/modal.module';
+import { MdmResourcesModule } from './modules/mdm-resources/mdm-resources.module';
+import { environment } from '@env/environment';
 
 @NgModule({
   declarations: [
@@ -40,6 +43,12 @@ import { StateHandlerService } from './services/handlers/state-handler.service';
   imports: [
     BrowserModule,
     DashboardModule,
+    ModalModule,
+    HttpClientModule,
+    MdmResourcesModule.forRoot({
+      defaultHttpRequestOptions: { withCredentials: true },
+      apiEndpoint: environment.apiEndpoint
+    }),
     UIRouterModule.forRoot({
       states: states,
       useHash: true,

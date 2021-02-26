@@ -35,7 +35,11 @@
  */
 export interface UserDetails {
   id: string;
+  token?: string;
   firstName: string;
   lastName: string;
+  userName: string;
+  role?: string;
   isAdmin?: boolean;
+  needsToResetPassword?: boolean
 }

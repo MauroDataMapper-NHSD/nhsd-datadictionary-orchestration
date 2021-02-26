@@ -1,0 +1,60 @@
+<!--
+ Copyright 2021 NHS Digital
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+     http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<form class="mdm-form mdm-form--modal" [formGroup]="signInForm" (keyup)="$event.keyCode != 13;" role="form" autocomplete="on" name="signInForm">
+    <button mat-icon-button color="warn" type="button" (click)="close()" class="modal__close">
+        <i class="fas fa-times"></i>
+    </button>
+    <h1 class="modal__title text-center">Sign in</h1>
+    <p class="mb-2 text-center">Please sign in to continue using Mauro</p>
+    <div class="mdm-form__input">
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" name="email" formControlName="userName" autocomplete="on" placeholder="Enter your email" required>
+            <mat-error *ngIf="userName?.errors?.required">
+                Email is required
+            </mat-error>
+            <mat-error *ngIf="userName?.errors?.pattern">
+                Invalid email address
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="mdm-form__input">
+        <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" name="password" formControlName="password" autocomplete="off" placeholder="Enter your password" required>
+            <mat-error *ngIf="password?.errors?.required">
+                Password is required
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="mt-2 mb-2 text-center">
+        <button type="submit" (click)="signIn()" mat-flat-button class="mdm-form__button" color="primary" [disabled]="authenticating">
+            Sign in
+        </button>
+    </div>
+    <div class="text-center marginless">
+        <button (click)="forgotPassword()" mat-button class="mdm-form__button" color="primary" [disabled]="authenticating">
+            Forgot Password
+        </button>
+    </div>
+
+    <mat-progress-bar *ngIf="authenticating" color="accent" mode="indeterminate"></mat-progress-bar>
+
+    <div *ngIf="message" class="alert alert-danger">
+        {{message}}
+    </div>
+</form>

@@ -14,19 +14,24 @@
  * limitations under the License.
  */
 
-import { Injectable } from '@angular/core';
-import { MdmSecurityResource, MdmResourcesConfiguration, MdmSessionResource } from '@maurodatamapper/mdm-resources';
-import { MdmRestHandlerService } from './mdm-rest-handler.service';
+.modal__title {
+    @include respond-to($mobile) {
+        margin: 0;
+        font-size: 24px;
+    }
+}
 
-@Injectable({
-  providedIn: 'root'
-})
-export class MdmResourcesService {
+.modal__footer {
+    text-align: left;
+    padding: 0;
+}
 
-  security = new MdmSecurityResource(this.resourcesConfig, this.restHandler);
-  session = new MdmSessionResource(this.resourcesConfig, this.restHandler);
+.mdm-form--modal {
+    position: relative!important;
 
-  constructor(
-    private resourcesConfig: MdmResourcesConfiguration, 
-    private restHandler: MdmRestHandlerService) { }
+    .modal__close {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
 }

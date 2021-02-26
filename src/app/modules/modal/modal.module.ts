@@ -14,19 +14,25 @@
  * limitations under the License.
  */
 
-import { Injectable } from '@angular/core';
-import { MdmSecurityResource, MdmResourcesConfiguration, MdmSessionResource } from '@maurodatamapper/mdm-resources';
-import { MdmRestHandlerService } from './mdm-rest-handler.service';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MaterialModule } from '../material/material.module';
+import { SignInModalComponent } from '@mdm/modals/sign-in-modal/sign-in-modal.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
-@Injectable({
-  providedIn: 'root'
+@NgModule({
+  declarations: [
+    SignInModalComponent
+  ],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MaterialModule
+  ],
+  exports: [
+    SignInModalComponent
+  ]
 })
-export class MdmResourcesService {
-
-  security = new MdmSecurityResource(this.resourcesConfig, this.restHandler);
-  session = new MdmSessionResource(this.resourcesConfig, this.restHandler);
-
-  constructor(
-    private resourcesConfig: MdmResourcesConfiguration, 
-    private restHandler: MdmRestHandlerService) { }
-}
+export class ModalModule { }

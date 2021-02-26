@@ -19,7 +19,9 @@ export enum BroadcastEvent {
   NotAuthorized,
   NotFound,
   NotImplemented,
-  ServerError
+  ServerError,
+  UserRequestsSignIn,
+  UserSignedIn
 }
 
 export class BroadcastMessage<T> {
