@@ -19,6 +19,9 @@ import { Observable, Subject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { BroadcastEvent, BroadcastMessage } from './broadcast.model';
 
+/**
+ * Service to broadcast events and data payloads to any other part of the application that subscribes to those events.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -26,13 +29,28 @@ export class BroadcastService {
 
   private handler = new Subject<BroadcastMessage<any>>();
 
+  /**
+   * Request an observable to subscribe to when a particular `BroadcastEvent` occurs.
+   * @typedef T The type of the event payload
+   * @param event The `BroadcastEvent` type to watch.
+   * @returns An `Observable<T>` to subscribe to for watching for these events.
+   * 
+   * For any observable returned that is subscribed to, each must be correctly unsubscribed from when finished 
+   * to prevent memory leaks.
+   */
   on<T = any>(event: BroadcastEvent): Observable<T> {
     return this.handler.pipe(
       filter(message => message.event === event),
       map(message => message.payload)
     );
-  }
+  }  
 
+  /**
+   * Dispatch a new event to broadcast to any watchers.
+   * @typedef T The type of the event payload
+   * @param event The `BroadcastEvent` type to broadcast.
+   * @param payload The optional payload that is associated with the event.
+   */
   dispatch<T = any>(event: BroadcastEvent, payload?: T) {
     this.handler.next(new BroadcastMessage(event, payload));
   }  

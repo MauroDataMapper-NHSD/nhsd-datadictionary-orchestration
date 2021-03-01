@@ -24,12 +24,7 @@ import { UIRouterModule } from '@uirouter/angular';
 import { AppContainerComponent } from './app-container/app-container.component';
 import { UiViewComponent } from './shared/ui-view/ui-view.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SharedService } from './services/shared/shared.service';
-import { BroadcastService } from './services/broadcast/broadcast.service';
-import { ToastrService } from 'ngx-toastr';
-import { BroadcastEvent } from './services/broadcast/broadcast.model';
-import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
-import { StateHandlerService } from './services/state-handler/state-handler.service';
+import { HttpClientModule } from '@angular/common/http';
 import { ModalModule } from './modules/modal/modal.module';
 import { MdmResourcesModule } from './modules/mdm-resources/mdm-resources.module';
 import { environment } from '@env/environment';
@@ -58,31 +53,4 @@ import { environment } from '@env/environment';
   ],
   bootstrap: [UiViewComponent]
 })
-export class AppModule {
-  constructor(
-    private shared: SharedService,
-    private broadcast: BroadcastService,
-    private stateHandler: StateHandlerService,
-    private toastr: ToastrService
-  ) {
-    this.broadcast
-      .on(BroadcastEvent.ApplicationOffline)
-      .subscribe(() => this.toastr.warning('Application is offline!'));
-
-    this.subscribeHttpErrorEvent(BroadcastEvent.NotAuthorized, 'app.container.notAuthorized');
-    this.subscribeHttpErrorEvent(BroadcastEvent.NotFound, 'app.container.notFound');
-    this.subscribeHttpErrorEvent(BroadcastEvent.NotImplemented, 'app.container.notImplemented');
-    this.subscribeHttpErrorEvent(BroadcastEvent.ServerError, 'app.container.serverError');    
-  }
-
-  private subscribeHttpErrorEvent(event: BroadcastEvent, state: string) {
-    this.broadcast
-      .on<HttpErrorResponse>(event)
-      .subscribe(response => this.handleHttpError(response, state));
-  }
-
-  private handleHttpError(response: HttpErrorResponse, state: string) {
-    this.shared.lastHttpError = response;
-    this.stateHandler.go(state);
-  }
-}
+export class AppModule {  }

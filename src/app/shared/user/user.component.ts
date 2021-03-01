@@ -27,7 +27,7 @@ export type UserComponentLayoutMode = 'column' | 'row';
 })
 export class UserComponent implements OnInit {
 
-  @Input() user!: UserDetails;
+  @Input() user: UserDetails | null = null;
   @Input() layout: UserComponentLayoutMode = 'column';
 
   imageUrl: string = '';
@@ -35,7 +35,8 @@ export class UserComponent implements OnInit {
   constructor(private shared: SharedService) { }
 
   ngOnInit(): void {
-    this.imageUrl = `${this.shared.backendUrl}/catalogueUsers/${this.user.id}/image`;
+    if (this.user) {
+      this.imageUrl = `${this.shared.backendUrl}/catalogueUsers/${this.user.id}/image`;
+    }
   }
-
 }

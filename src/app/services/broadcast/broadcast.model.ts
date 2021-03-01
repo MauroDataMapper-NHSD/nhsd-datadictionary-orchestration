@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+/**
+ * Represents the global events that can happen throughout the application.
+ */
 export enum BroadcastEvent {
   ApplicationOffline,
   NotAuthorized,
@@ -24,6 +27,9 @@ export enum BroadcastEvent {
   UserSignedIn
 }
 
+/**
+ * Represents a message to broadcast with an optional data payload.
+ */
 export class BroadcastMessage<T> {
   constructor(
     public event: BroadcastEvent,

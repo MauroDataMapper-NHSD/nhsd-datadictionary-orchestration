@@ -15,12 +15,18 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NavbarLinkGroup } from './layout/navbar/navbar.model';
 import { SignInModalComponent } from './modals/sign-in-modal/sign-in-modal.component';
 import { BroadcastEvent } from './services/broadcast/broadcast.model';
 import { BroadcastService } from './services/broadcast/broadcast.service';
+import { SharedService } from './services/shared/shared.service';
+import { StateHandlerService } from './services/state-handler/state-handler.service';
 import { ThemingService } from './services/theming/theming.service';
 
 @Component({
@@ -28,10 +34,15 @@ import { ThemingService } from './services/theming/theming.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
 
   title = 'nhsd-datadictionary-orchestration';
   themeCssSelector: string = '';
+
+  /**
+   * Signal to attach to subscriptions to trigger when they should be unsubscribed.
+   */
+  private unsubscribe$ = new Subject();
 
   navbarLinks: NavbarLinkGroup[] = [
     {
@@ -53,15 +64,36 @@ export class AppComponent implements OnInit {
   ];
 
   constructor(
+    private shared: SharedService,
     private broadcast: BroadcastService,
+    private stateHandler: StateHandlerService,
     private dialog: MatDialog,
-    private theming: ThemingService,
-    private overlayContainer: OverlayContainer) { }
+    private toastr: ToastrService,
+    private theming: ThemingService,    
+    private overlayContainer: OverlayContainer) { }  
 
   ngOnInit(): void {
     this.setTheme();
 
-    this.broadcast.on(BroadcastEvent.UserRequestsSignIn).subscribe(() => this.signIn());
+    this.broadcast
+      .on(BroadcastEvent.ApplicationOffline)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => this.toastr.warning('Application is offline!'));
+
+    this.broadcast
+      .on(BroadcastEvent.UserRequestsSignIn)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => this.signIn());
+
+    this.subscribeHttpErrorEvent(BroadcastEvent.NotAuthorized, 'app.container.notAuthorized');
+    this.subscribeHttpErrorEvent(BroadcastEvent.NotFound, 'app.container.notFound');
+    this.subscribeHttpErrorEvent(BroadcastEvent.NotImplemented, 'app.container.notImplemented');
+    this.subscribeHttpErrorEvent(BroadcastEvent.ServerError, 'app.container.serverError');
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   private setTheme() {
@@ -71,6 +103,18 @@ export class AppComponent implements OnInit {
     // Material. Have to manually set the correct theme class to this container too
     this.overlayContainer.getContainerElement().classList.add(this.themeCssSelector);
     this.overlayContainer.getContainerElement().classList.add('overlay-container');
+  }
+
+  private subscribeHttpErrorEvent(event: BroadcastEvent, state: string) {
+    this.broadcast
+      .on<HttpErrorResponse>(event)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(response => this.handleHttpError(response, state));
+  }
+
+  private handleHttpError(response: HttpErrorResponse, state: string) {
+    this.shared.lastHttpError = response;
+    this.stateHandler.go(state);
   }
 
   private signIn() {

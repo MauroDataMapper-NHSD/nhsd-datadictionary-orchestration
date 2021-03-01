@@ -14,7 +14,7 @@
  limitations under the License.
 -->
 
-<div class="mdm-user">
+<div *ngIf="user" class="mdm-user">
     <div *ngIf="layout === 'row'" class="mdm-user--row" flex fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
         <div *ngIf="imageUrl" class="mdm-user__img">
             <img [src]="imageUrl" alt="User">

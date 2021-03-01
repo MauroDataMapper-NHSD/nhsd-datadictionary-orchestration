@@ -43,13 +43,13 @@ export class SecurityService {
         catchError((error: HttpErrorResponse) => {
           return throwError(new SignInError(error));
         }),
-        switchMap((signInResponse: SignInResponse) => 
+        switchMap((signInResponse: SignInResponse) =>
           this.resources.session
             .isApplicationAdministration()
             .pipe(
               map((adminResponse: AdministrationSessionResponse) => {
                 const signIn = signInResponse.body;
-                const admin = adminResponse.body;                
+                const admin = adminResponse.body;
                 const user: UserDetails = {
                   id: signIn.id,
                   token: signIn.token,
@@ -71,6 +71,10 @@ export class SecurityService {
 
   }
 
+  getCurrentUser(): UserDetails | null {
+    return this.getUserFromLocalStorage();
+  }
+
   private addUserToLocalStorage(user: UserDetails) {
     // Keep username for 100 days
     const expiryDate = new Date();
@@ -78,12 +82,30 @@ export class SecurityService {
 
     localStorage.setItem('userId', user.id);
     localStorage.setItem('token', user.token ?? '');
-    localStorage.setItem('email', JSON.stringify({ email: user.userName, expiry: expiryDate }));
+    localStorage.setItem('userName', JSON.stringify({ email: user.userName, expiry: expiryDate }));
     localStorage.setItem('firstName', user.firstName);
     localStorage.setItem('lastName', user.lastName);
+    localStorage.setItem('email', JSON.stringify({ email: user.userName, expiry: expiryDate }));
     localStorage.setItem('isAdmin', (user.isAdmin ?? false).toString());
     localStorage.setItem('role', user.role ?? '');
     localStorage.setItem('needsToResetPassword', (user.needsToResetPassword ?? false).toString());
   }
 
+  private getUserFromLocalStorage() {
+    const userName = localStorage.getItem('userName');
+    if (!userName || userName.length === 0) {
+      return null;
+    }
+
+    return {
+      id: localStorage.getItem('userId') ?? '',
+      token: localStorage.getItem('token') ?? undefined,
+      firstName: localStorage.getItem('firstName') ?? '',
+      lastName: localStorage.getItem('lastName') ?? '',
+      userName: userName,
+      role: localStorage.getItem('role') ?? undefined,
+      isAdmin: Boolean(localStorage.getItem('isAdmin')),
+      needsToResetPassword: Boolean(localStorage.getItem('needsToResetPassword'))
+    };
+  }
 }

@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BroadcastEvent } from '@mdm/services/broadcast/broadcast.model';
 import { BroadcastService } from '@mdm/services/broadcast/broadcast.service';
 import { UserDetails } from '@mdm/services/security/security.model';
+import { SecurityService } from '@mdm/services/security/security.service';
 import { SharedService } from '@mdm/services/shared/shared.service';
 import { ThemingService } from '@mdm/services/theming/theming.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NavbarLink, NavbarLinkGroup } from './navbar.model';
 
 @Component({
@@ -27,15 +30,23 @@ import { NavbarLink, NavbarLinkGroup } from './navbar.model';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
 
   @Input() linkGroups: NavbarLinkGroup[] = [];
   
   appTitle: string = 'app';
   logoUrl: string = this.theming.getAssetPath('logo.png');
   backendUrl: string = this.shared.backendUrl;
-  isLoggedIn: boolean = false;
-  profile!: UserDetails;
+  profile: UserDetails | null = null;
+
+  get isLoggedIn() {
+    return this.profile !== undefined && this.profile !== null;
+  }
+
+  /**
+   * Signal to attach to subscriptions to trigger when they should be unsubscribed.
+   */
+  private unsubscribe$ = new Subject();
 
   get mainNavbarLinks(): NavbarLink[] {
     return this.linkGroups.find(group => group.isMain)?.links ?? [];
@@ -43,19 +54,26 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private shared: SharedService,
+    private security: SecurityService,
     private broadcast: BroadcastService,
-    private theming: ThemingService) { }
+    private theming: ThemingService) { }  
 
   ngOnInit(): void {
     this.appTitle = this.shared.appTitle;
 
-    this.profile = {
-      id: 'f3baa035-8743-449a-9455-5bf7cc7b0af5',
-      firstName: 'Peter',
-      lastName: 'Monks',
-      userName: 'test',
-      isAdmin: true
-    };
+    this.broadcast
+      .on<UserDetails>(BroadcastEvent.UserSignedIn)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(user => {
+        this.profile = user;
+      });
+
+    this.profile = this.security.getCurrentUser();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   login() {
