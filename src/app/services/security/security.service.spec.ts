@@ -16,14 +16,14 @@
 
 import { TestBed } from '@angular/core/testing';
 
-import { SecurityHandlerService } from './security.service';
+import { SecurityService } from './security.service';
 
 describe('SecurityHandlerService', () => {
-  let service: SecurityHandlerService;
+  let service: SecurityService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SecurityHandlerService);
+    service = TestBed.inject(SecurityService);
   });
 
   it('should be created', () => {

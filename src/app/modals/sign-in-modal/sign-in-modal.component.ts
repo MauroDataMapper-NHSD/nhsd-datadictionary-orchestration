@@ -20,8 +20,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BroadcastEvent } from '@mdm/services/broadcast/broadcast.model';
 import { BroadcastService } from '@mdm/services/broadcast/broadcast.service';
-import { SecurityHandlerService } from '@mdm/services/security/security.service';
+import { SignInError, SignInErrorType } from '@mdm/services/security/security.model';
+import { SecurityService } from '@mdm/services/security/security.service';
 import { ValidatorService } from '@mdm/services/validator/validator.service';
+import { EMPTY, NEVER, never } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 
 @Component({
@@ -47,7 +49,7 @@ export class SignInModalComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<SignInModalComponent>,
     private validator: ValidatorService,
-    private securityHandler: SecurityHandlerService,
+    private securityHandler: SecurityService,
     private broadcast: BroadcastService) { }
 
   ngOnInit(): void {
@@ -60,7 +62,7 @@ export class SignInModalComponent implements OnInit {
         Validators.required
       ])
     });
-  }  
+  }
 
   close() {
     this.dialogRef.close();
@@ -81,22 +83,25 @@ export class SignInModalComponent implements OnInit {
     this.signInForm.disable();
 
     this.securityHandler
-      .signIn({ 
-        username: this.userName?.value, 
-        password: this.password?.value 
+      .signIn({
+        username: this.userName?.value,
+        password: this.password?.value
       })
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          if (error.status === 401) {
-            this.message = 'Invalid username or password!';
+      .pipe(        
+        catchError((error: SignInError) => {
+          switch (error.type) {
+            case SignInErrorType.InvalidCredentials:
+              this.message = 'Invalid username or password!';
+              break;
+            case SignInErrorType.AlreadySignedIn:
+              this.message = 'A user is already signed in, please sign out first.';
+              break;
+            default:
+              this.message = 'Unable to sign in. Please try again later.';
+              break;
           }
-          else if (error.status === 409) {
-            this.message = 'A user is already signed in, please sign out first.';
-          }
-          else if (error.status === -1) {
-            this.message = 'Unable to sign in. Please try again later.';
-          }
-          return [];
+
+          return EMPTY;
         }),
         finalize(() => {
           this.authenticating = false;

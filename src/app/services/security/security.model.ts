@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
+import { HttpErrorResponse } from "@angular/common/http";
 import { MdmResourcesResponse } from "@mdm/services/mdm-resources/mdm-resources.model";
 
-export interface SignInParameters {
+/**
+ * Credentials to send to `mdm-resources` for the sign-in operation.
+ */
+export interface SignInCredentials {
   username: string;
   password: string;
 }
 
+/**
+ * The result of a successful sign-in operation.
+ */
 export interface SignInResult {
   id: string;
   token?: string;
@@ -32,6 +39,37 @@ export interface SignInResult {
   createdBy: string;
   userRole?: string;
   needsToResetPassword?: boolean;
+}
+
+export enum SignInErrorType {
+  UnknownError,
+  InvalidCredentials,
+  AlreadySignedIn  
+}
+
+/**
+ * Represents an error that occurred during sign-in.
+ */
+export class SignInError {
+
+  /**
+   * The type of sign-in error that occurered, represented by the `SignInErrorType` enum constants.
+   */
+  type: SignInErrorType;
+
+  constructor(public response: HttpErrorResponse) {
+    switch (response.status) {
+      case 401: 
+        this.type = SignInErrorType.InvalidCredentials; 
+        break;
+      case 409:
+        this.type = SignInErrorType.AlreadySignedIn;
+        break;
+      default:
+        this.type = SignInErrorType.UnknownError;
+        break;
+    }
+  }
 }
 
 export interface AdministrationSessionResult {

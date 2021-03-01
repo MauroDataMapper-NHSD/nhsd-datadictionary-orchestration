@@ -14,25 +14,35 @@
  * limitations under the License.
  */
 
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AdministrationSessionResponse, SignInParameters, SignInResponse, UserDetails } from '@mdm/services/security/security.model';
-import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { AdministrationSessionResponse, SignInError, SignInCredentials, SignInResponse, UserDetails } from '@mdm/services/security/security.model';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { MdmResourcesService } from '../mdm-resources/mdm-resources.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SecurityHandlerService {
+export class SecurityService {
 
   constructor(private resources: MdmResourcesService) { }
 
-  signIn(parameters: SignInParameters): Observable<UserDetails> {
+  /**
+   * Sign in a user to the Mauro system.
+   * @param credentials The sign-in credentials to use.
+   * @returns An observable to return a `UserDetails` object representing the signed in user.
+   * @throws `SignInError` in the observable chain if sign-in failed.
+   */
+  signIn(credentials: SignInCredentials): Observable<UserDetails> {
     // This parameter is very important as we do not want to handle 401 if user credential is rejected on login modal form
     // as if the user credentials are rejected Back end server will return 401, we should not show the login modal form again
     return this.resources.security
-      .login(parameters, { login: true })
+      .login(credentials, { login: true })
       .pipe(
+        catchError((error: HttpErrorResponse) => {
+          return throwError(new SignInError(error));
+        }),
         switchMap((signInResponse: SignInResponse) => 
           this.resources.session
             .isApplicationAdministration()
