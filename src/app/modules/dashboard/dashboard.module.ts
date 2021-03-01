@@ -32,6 +32,7 @@ import { NotAuthorizedComponent } from '@mdm/error/not-authorized/not-authorized
 import { NotFoundComponent } from '@mdm/error/not-found/not-found.component';
 import { ServerErrorComponent } from '@mdm/error/server-error/server-error.component';
 import { UserIdleModule } from 'angular-user-idle';
+import { LoadingIndicatorComponent } from '@mdm/shared/loading-indicator/loading-indicator.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { UserIdleModule } from 'angular-user-idle';
     NotImplementedComponent,
     NotAuthorizedComponent,
     NotFoundComponent,
-    ServerErrorComponent
+    ServerErrorComponent,
+    LoadingIndicatorComponent
   ],
   imports: [
     CommonModule,
@@ -70,7 +72,8 @@ import { UserIdleModule } from 'angular-user-idle';
     AboutComponent,
     ErrorComponent,
     NotImplementedComponent,
-    NotAuthorizedComponent
+    NotAuthorizedComponent,
+    LoadingIndicatorComponent
   ]
 })
 export class DashboardModule { }

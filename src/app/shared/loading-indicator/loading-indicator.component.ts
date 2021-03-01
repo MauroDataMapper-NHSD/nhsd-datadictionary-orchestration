@@ -14,18 +14,24 @@
  * limitations under the License.
  */
 
- @import "~@angular/material/theming";
+import { Component, OnInit } from '@angular/core';
+import { LoadingService } from '@mdm/services/loading/loading.service';
+import { delay } from 'rxjs/operators';
 
- /* Import all custom components SASS files to access their mixins */
- @import "layout/navbar/navbar.component.scss";
- @import "shared/user/user.component.scss";
- @import "error/error.component.scss";
- @import "shared/loading-indicator/loading-indicator.component.scss";
- 
- /* Combine all custom component theme mixins into one */
- @mixin mdm-custom-components-theme($theme) {
-   @include mdm-navbar-theme($theme);
-   @include mdm-user-theme($theme);
-   @include mdm-error-theme($theme);
-   @include mdm-loading-indicator-theme($theme)
- }
+@Component({
+  selector: 'mdm-loading-indicator',
+  templateUrl: './loading-indicator.component.html',
+  styleUrls: ['./loading-indicator.component.scss']
+})
+export class LoadingIndicatorComponent implements OnInit {
+
+  visible = false;
+
+  constructor(private loading: LoadingService) { }
+
+  ngOnInit(): void {
+    this.loading.isLoading
+      .pipe(delay(0))
+      .subscribe((value) => this.visible = value);
+  }
+} 

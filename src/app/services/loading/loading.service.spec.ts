@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
- @import "~@angular/material/theming";
+import { TestBed } from '@angular/core/testing';
 
- /* Import all custom components SASS files to access their mixins */
- @import "layout/navbar/navbar.component.scss";
- @import "shared/user/user.component.scss";
- @import "error/error.component.scss";
- @import "shared/loading-indicator/loading-indicator.component.scss";
- 
- /* Combine all custom component theme mixins into one */
- @mixin mdm-custom-components-theme($theme) {
-   @include mdm-navbar-theme($theme);
-   @include mdm-user-theme($theme);
-   @include mdm-error-theme($theme);
-   @include mdm-loading-indicator-theme($theme)
- }
+import { LoadingService } from './loading.service';
+
+describe('LoadingService', () => {
+  let service: LoadingService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(LoadingService);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});

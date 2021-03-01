@@ -14,14 +14,8 @@
  limitations under the License.
 -->
 
-<div [class]="themeCssSelector">
-  <div class="mat-typography mdm-app-component">
-      <mdm-navbar [linkGroups]="navbarLinks"></mdm-navbar>
-
-      <main ui-view class="container"></main>
-
-      <mdm-footer></mdm-footer>
-      
-      <mdm-loading-indicator></mdm-loading-indicator>
-  </div>
-</div>
+<div *ngIf="visible" class="loading-container flex-content-center">
+    <mat-progress-spinner color="accent" mode="indeterminate" diameter="24">
+    </mat-progress-spinner>
+    <span class="loading-container__message">Working...</span>
+</div> 

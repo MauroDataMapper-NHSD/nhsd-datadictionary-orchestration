@@ -24,10 +24,12 @@ import { UIRouterModule } from '@uirouter/angular';
 import { AppContainerComponent } from './app-container/app-container.component';
 import { UiViewComponent } from './shared/ui-view/ui-view.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ModalModule } from './modules/modal/modal.module';
 import { MdmResourcesModule } from './modules/mdm-resources/mdm-resources.module';
 import { environment } from '@env/environment';
+import { HttpRequestProgressInterceptor } from './interceptors/http-request-progress.interceptor';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -50,6 +52,20 @@ import { environment } from '@env/environment';
       otherwise: '/not-found'
     }),
     BrowserAnimationsModule
+  ],
+  providers: [
+    { 
+      provide: MAT_DIALOG_DEFAULT_OPTIONS, 
+      useValue: {
+        hasBackdrop: true, 
+        autoFocus: false
+      } 
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpRequestProgressInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [UiViewComponent]
 })
