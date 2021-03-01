@@ -20,10 +20,13 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MaterialModule } from '../material/material.module';
 import { SignInModalComponent } from '@mdm/modals/sign-in-modal/sign-in-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ConfirmationModalComponent } from '@mdm/modals/confirmation-modal/confirmation-modal.component';
+import '@mdm/modals/mat-dialog.extensions'
 
 @NgModule({
   declarations: [
-    SignInModalComponent
+    SignInModalComponent,
+    ConfirmationModalComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +35,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MaterialModule
   ],
   exports: [
-    SignInModalComponent
+    SignInModalComponent,
+    ConfirmationModalComponent
   ]
 })
 export class ModalModule { }

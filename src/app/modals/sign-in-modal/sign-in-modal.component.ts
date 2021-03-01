@@ -17,7 +17,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { SignInError, SignInErrorType } from '@mdm/services/security/security.model';
+import { SignInError, SignInErrorType, UserDetails } from '@mdm/services/security/security.model';
 import { SecurityService } from '@mdm/services/security/security.service';
 import { ValidatorService } from '@mdm/services/validator/validator.service';
 import { EMPTY } from 'rxjs';
@@ -44,7 +44,7 @@ export class SignInModalComponent implements OnInit {
   }
 
   constructor(
-    private dialogRef: MatDialogRef<SignInModalComponent>,
+    private dialogRef: MatDialogRef<SignInModalComponent, UserDetails>,
     private validator: ValidatorService,
     private securityHandler: SecurityService) { }
 

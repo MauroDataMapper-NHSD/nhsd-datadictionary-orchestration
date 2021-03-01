@@ -31,6 +31,7 @@ import { SharedService } from './services/shared/shared.service';
 import { StateHandlerService } from './services/state-handler/state-handler.service';
 import { ThemingService } from './services/theming/theming.service';
 import { UserIdleService } from 'angular-user-idle';
+import { UserDetails } from './services/security/security.model';
 
 @Component({
   selector: 'mdm-root',
@@ -139,9 +140,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private signIn() {
     this.dialog
-      .open(SignInModalComponent)
+      .open<SignInModalComponent, any, UserDetails>(SignInModalComponent)
       .afterClosed()
-      .subscribe(user => this.broadcast.dispatch(BroadcastEvent.SignedIn, user));
+      .subscribe(user => {
+        if (user) {
+          this.broadcast.dispatch(BroadcastEvent.SignedIn, user);
+        }
+      });
   }
 
   private signOut() {
