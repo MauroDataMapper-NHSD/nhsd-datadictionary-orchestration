@@ -25,6 +25,7 @@ export const environment = {
   name: 'development',
   appTitle: 'Data Dictionary Orchestrator',
   appDescription: 'Orchestrates the data dictionary created by NHS Digital.',
+  checkSessionExpiryTimeout: 300000
 };
 
 /*

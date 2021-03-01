@@ -16,9 +16,10 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AdministrationSessionResponse, SignInError, SignInCredentials, SignInResponse, UserDetails } from '@mdm/services/security/security.model';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { AdministrationSessionResponse, SignInError, SignInCredentials, SignInResponse, UserDetails, AuthenticatedSessionResponse, AuthenticatedSessionError } from '@mdm/services/security/security.model';
+import { EMPTY, Observable, of, throwError } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { MdmResourcesError } from '../mdm-resources/mdm-resources.model';
 import { MdmResourcesService } from '../mdm-resources/mdm-resources.service';
 
 @Injectable({
@@ -40,9 +41,7 @@ export class SecurityService {
     return this.resources.security
       .login(credentials, { login: true })
       .pipe(
-        catchError((error: HttpErrorResponse) => {
-          return throwError(new SignInError(error));
-        }),
+        catchError((error: HttpErrorResponse) => throwError(new SignInError(error))),
         switchMap((signInResponse: SignInResponse) =>
           this.resources.session
             .isApplicationAdministration()
@@ -67,12 +66,72 @@ export class SecurityService {
       );
   }
 
-  signOut() {
-
+  /**
+   * Sign the current user out of the Mauro system.
+   * @returns An `Observable<never>` to subscribe to when sign out is successful.
+   * @throws `MdmResourcesError` in the observable stream if sign-out failed.
+   */
+  signOut(): Observable<never> {
+    return this.resources.security
+      .logout({ responseType: 'text'})
+      .pipe(
+        catchError((error: HttpErrorResponse) => throwError(new MdmResourcesError(error))),
+        tap(() => {
+          this.removeUserFromLocalStorage();
+        }),
+        map(() => EMPTY)
+      );
   }
 
+  /**
+   * Check if the current user session is authenticated. Will return `true` if signed in and the session 
+   * is still active.
+   * 
+   * @returns An observable returning a boolean stating if the current session is authenticated.
+   * @throws `MdmResourcesError` in the observable stream if the request failed.
+   */
+  isAuthenticated(): Observable<boolean> {
+    return this.resources.session
+      .isAuthenticated()
+      .pipe(
+        catchError((error: HttpErrorResponse) => throwError(new AuthenticatedSessionError(error))),
+        map((response: AuthenticatedSessionResponse) => response.body.authenticatedSession)
+      );
+  }
+
+  /** 
+   * Gets the current user signed in.
+   * @returns A `UserDetails` containing the current signed in user details, or `null` if not signed in.
+   */
   getCurrentUser(): UserDetails | null {
     return this.getUserFromLocalStorage();
+  }
+
+  /**
+   * Check if the current session is expired. If not signed in this returns `false`.
+   * @returns An observable that returns `true` if the current session has expired.
+   */
+  isCurrentSessionExpired(): Observable<boolean> {
+    if (!this.getCurrentUser()) {
+      return of(false);
+    }
+
+    return this.isAuthenticated()
+      .pipe(
+        catchError((error: AuthenticatedSessionError) => {
+          if (error.invalidated) {
+            this.removeUserFromLocalStorage();
+            return of(true);
+          }
+          
+          return of(false);
+        }),
+        tap(authenticated => {
+          if (!authenticated) {
+            this.removeUserFromLocalStorage();
+          }
+        })
+      );   
   }
 
   private addUserToLocalStorage(user: UserDetails) {
@@ -107,5 +166,17 @@ export class SecurityService {
       isAdmin: Boolean(localStorage.getItem('isAdmin')),
       needsToResetPassword: Boolean(localStorage.getItem('needsToResetPassword'))
     };
+  }
+
+  private removeUserFromLocalStorage() {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('token');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('firstName');
+    localStorage.removeItem('lastName');
+    localStorage.removeItem('email');
+    localStorage.removeItem('isAdmin');
+    localStorage.removeItem('role');
+    localStorage.removeItem('needsToResetPassword');
   }
 }

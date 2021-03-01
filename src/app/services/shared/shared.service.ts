@@ -17,6 +17,11 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
+import { ToastrService } from 'ngx-toastr';
+import { filter } from 'rxjs/operators';
+import { BroadcastEvent } from '../broadcast/broadcast.model';
+import { BroadcastService } from '../broadcast/broadcast.service';
+import { SecurityService } from '../security/security.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +30,22 @@ export class SharedService {
 
   backendUrl = environment.apiEndpoint;
   appTitle = environment.appTitle;
+  checkSessionExpiryTimeout = environment.checkSessionExpiryTimeout;
+  
   lastHttpError?: HttpErrorResponse;
 
-  constructor() { }
+  constructor(
+    private security: SecurityService,
+    private broadcast: BroadcastService,
+    private toastr: ToastrService) { }
+
+  checkSessionExpiry() {
+    this.security
+      .isCurrentSessionExpired()
+      .pipe(filter(authenticated => !authenticated))
+      .subscribe(() => {
+        this.toastr.error('Your session has expired! Please sign in.');
+        this.broadcast.dispatch(BroadcastEvent.RequestSignOut);
+      })
+  }
 }

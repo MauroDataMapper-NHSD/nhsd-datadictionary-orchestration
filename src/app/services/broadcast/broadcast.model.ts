@@ -23,8 +23,10 @@ export enum BroadcastEvent {
   NotFound,
   NotImplemented,
   ServerError,
-  UserRequestsSignIn,
-  UserSignedIn
+  RequestSignIn,
+  SignedIn,
+  RequestSignOut,
+  SignedOut
 }
 
 /**

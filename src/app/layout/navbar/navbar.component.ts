@@ -62,11 +62,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.appTitle = this.shared.appTitle;
 
     this.broadcast
-      .on<UserDetails>(BroadcastEvent.UserSignedIn)
+      .on<UserDetails>(BroadcastEvent.SignedIn)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(user => {
-        this.profile = user;
-      });
+      .subscribe(user => this.profile = user);
+
+    this.broadcast
+      .on(BroadcastEvent.SignedOut)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => this.profile = null);
 
     this.profile = this.security.getCurrentUser();
   }
@@ -77,9 +80,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   login() {
-    this.broadcast.dispatch(BroadcastEvent.UserRequestsSignIn);
+    this.broadcast.dispatch(BroadcastEvent.RequestSignIn);
   }
 
-  logout() {    
+  logout() {
+    this.broadcast.dispatch(BroadcastEvent.RequestSignOut);
   }
 }

@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
+import { HttpErrorResponse } from "@angular/common/http";
+
 /**
  * Represents a response from an `mdm-resources` API endpoint.
  *
  * @typedef T The type to represent the body of the response.
  */
 export interface MdmResourcesResponse<T = any> {
-    /**
-     * The body of the response from the API.
-     */
-    body: T;
+  /**
+   * The body of the response from the API.
+   */
+  body: T;
 }
 
 /**
@@ -32,15 +34,15 @@ export interface MdmResourcesResponse<T = any> {
  * @typedef T The type to represent each item in the list.
  */
 export interface MdmResourcesIndexBody<T = any> {
-    /**
-     * Gets the number of items in the returned list.
-     */
-    count: number;
+  /**
+   * Gets the number of items in the returned list.
+   */
+  count: number;
 
-    /**
-     * Gets the list of items returned from the API.
-     */
-    items: T[];
+  /**
+   * Gets the list of items returned from the API.
+   */
+  items: T[];
 }
 
 /**
@@ -49,3 +51,10 @@ export interface MdmResourcesIndexBody<T = any> {
  * @typedef T The type to represent each item in the list.
  */
 export type MdmResourcesIndexResponse<T = any> = MdmResourcesResponse<MdmResourcesIndexBody<T>>;
+
+/**
+ * Represents a generic error from an `mdm-resources` operation.
+ */
+export class MdmResourcesError {
+  constructor(public response: HttpErrorResponse) { }
+}

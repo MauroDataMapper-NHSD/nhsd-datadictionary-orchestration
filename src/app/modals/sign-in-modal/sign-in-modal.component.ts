@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { BroadcastEvent } from '@mdm/services/broadcast/broadcast.model';
-import { BroadcastService } from '@mdm/services/broadcast/broadcast.service';
 import { SignInError, SignInErrorType } from '@mdm/services/security/security.model';
 import { SecurityService } from '@mdm/services/security/security.service';
 import { ValidatorService } from '@mdm/services/validator/validator.service';
-import { EMPTY, NEVER, never } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 
 @Component({
@@ -49,8 +46,7 @@ export class SignInModalComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<SignInModalComponent>,
     private validator: ValidatorService,
-    private securityHandler: SecurityService,
-    private broadcast: BroadcastService) { }
+    private securityHandler: SecurityService) { }
 
   ngOnInit(): void {
     this.signInForm = new FormGroup({
@@ -108,9 +104,6 @@ export class SignInModalComponent implements OnInit {
           this.signInForm.enable();
         })
       )
-      .subscribe(user => {
-        this.broadcast.dispatch(BroadcastEvent.UserSignedIn, user);
-        this.dialogRef.close(user);
-      });
+      .subscribe(user => this.dialogRef.close(user));
   }
 }

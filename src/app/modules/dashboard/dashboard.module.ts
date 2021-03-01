@@ -31,6 +31,7 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { NotAuthorizedComponent } from '@mdm/error/not-authorized/not-authorized.component';
 import { NotFoundComponent } from '@mdm/error/not-found/not-found.component';
 import { ServerErrorComponent } from '@mdm/error/server-error/server-error.component';
+import { UserIdleModule } from 'angular-user-idle';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,10 @@ import { ServerErrorComponent } from '@mdm/error/server-error/server-error.compo
       timeOut: 30000,
       positionClass: 'toast-bottom-right',
       preventDuplicates: false
+    }),
+    UserIdleModule.forRoot({ 
+      idle: 600, 
+      timeout: 300 
     })
   ],
   exports: [

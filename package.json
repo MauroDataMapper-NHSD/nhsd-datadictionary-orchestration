@@ -28,6 +28,7 @@
     "@uirouter/angular": "~8.0.0",
     "@uirouter/core": "~6.0.7",
     "@uirouter/rx": "~0.6.5",
+    "angular-user-idle": "^2.2.4",
     "ngx-clipboard": "^14.0.1",
     "ngx-json-viewer": "^3.0.2",
     "ngx-toastr": "^13.2.0",

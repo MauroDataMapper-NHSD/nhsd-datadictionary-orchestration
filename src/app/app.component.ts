@@ -16,18 +16,21 @@
 
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { EMPTY, Subject } from 'rxjs';
+import { catchError, takeUntil } from 'rxjs/operators';
 import { NavbarLinkGroup } from './layout/navbar/navbar.model';
 import { SignInModalComponent } from './modals/sign-in-modal/sign-in-modal.component';
 import { BroadcastEvent } from './services/broadcast/broadcast.model';
 import { BroadcastService } from './services/broadcast/broadcast.service';
+import { MdmResourcesError } from './services/mdm-resources/mdm-resources.model';
+import { SecurityService } from './services/security/security.service';
 import { SharedService } from './services/shared/shared.service';
 import { StateHandlerService } from './services/state-handler/state-handler.service';
 import { ThemingService } from './services/theming/theming.service';
+import { UserIdleService } from 'angular-user-idle';
 
 @Component({
   selector: 'mdm-root',
@@ -67,10 +70,12 @@ export class AppComponent implements OnInit, OnDestroy {
     private shared: SharedService,
     private broadcast: BroadcastService,
     private stateHandler: StateHandlerService,
+    private security: SecurityService,
     private dialog: MatDialog,
     private toastr: ToastrService,
     private theming: ThemingService,    
-    private overlayContainer: OverlayContainer) { }  
+    private overlayContainer: OverlayContainer,
+    private userIdle: UserIdleService) { }  
 
   ngOnInit(): void {
     this.setTheme();
@@ -81,14 +86,29 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe(() => this.toastr.warning('Application is offline!'));
 
     this.broadcast
-      .on(BroadcastEvent.UserRequestsSignIn)
+      .on(BroadcastEvent.RequestSignIn)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => this.signIn());
+
+    this.broadcast
+      .on(BroadcastEvent.RequestSignOut)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => this.signOut());
 
     this.subscribeHttpErrorEvent(BroadcastEvent.NotAuthorized, 'app.container.notAuthorized');
     this.subscribeHttpErrorEvent(BroadcastEvent.NotFound, 'app.container.notFound');
     this.subscribeHttpErrorEvent(BroadcastEvent.NotImplemented, 'app.container.notImplemented');
     this.subscribeHttpErrorEvent(BroadcastEvent.ServerError, 'app.container.serverError');
+
+    // Check immediately if the last authenticated session is expired and setup a recurring
+    // check for this
+    this.shared.checkSessionExpiry();
+    this.setupIdleTimer();
+  }
+
+  @HostListener('window:mousemove', ['$event'])
+  onMouseMove() {
+    this.userIdle.resetTimer();
   }
 
   ngOnDestroy(): void {
@@ -121,7 +141,41 @@ export class AppComponent implements OnInit, OnDestroy {
     this.dialog
       .open(SignInModalComponent)
       .afterClosed()
-      .subscribe(user => { });
+      .subscribe(user => this.broadcast.dispatch(BroadcastEvent.SignedIn, user));
   }
 
+  private signOut() {
+    this.security
+      .signOut()
+      .pipe(
+        catchError((error: MdmResourcesError) => {
+          this.toastr.error(`There was a problem signing out: ${error.response.message}`);
+          return EMPTY;
+        })
+      )
+      .subscribe(() => this.broadcast.dispatch(BroadcastEvent.SignedOut));
+  }
+
+  private setupIdleTimer() {
+    this.userIdle.startWatching();
+    this.userIdle
+      .onTimerStart()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => { });
+
+    let lastCheck = new Date();
+    this.userIdle
+      .onTimeout()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        const now = new Date();
+
+        if (now.valueOf() - lastCheck.valueOf() > this.shared.checkSessionExpiryTimeout) {
+          this.shared.checkSessionExpiry();
+          this.userIdle.resetTimer();
+        }
+
+        lastCheck = now;
+      });
+  }
 }
