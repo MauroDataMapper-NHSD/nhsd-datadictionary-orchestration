@@ -16,7 +16,7 @@
 
 import { TestBed } from '@angular/core/testing';
 
-import { SecurityHandlerService } from './security-handler.service';
+import { SecurityHandlerService } from './security.service';
 
 describe('SecurityHandlerService', () => {
   let service: SecurityHandlerService;

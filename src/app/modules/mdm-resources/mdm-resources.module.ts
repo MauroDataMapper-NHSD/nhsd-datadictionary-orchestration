@@ -16,8 +16,8 @@
 
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from "@angular/core";
 import { MdmResourcesConfiguration } from "@maurodatamapper/mdm-resources";
-import { MdmResourcesService } from "@mdm/services/resources/mdm-resources.service";
-import { MdmRestHandlerService } from "@mdm/services/resources/mdm-rest-handler.service";
+import { MdmResourcesService } from "@mdm/services/mdm-resources/mdm-resources.service";
+import { MdmRestHandlerService } from "@mdm/services/mdm-resources/mdm-rest-handler.service";
 
 /**
  * A wrapper Angular module for @mdm-api/resources

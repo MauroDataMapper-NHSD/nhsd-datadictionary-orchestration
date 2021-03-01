@@ -15,11 +15,11 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { UserDetails } from '@mdm/models/users';
 import { BroadcastEvent } from '@mdm/services/broadcast/broadcast.model';
 import { BroadcastService } from '@mdm/services/broadcast/broadcast.service';
-import { SharedService } from '@mdm/services/shared.service';
-import { ThemingService } from '@mdm/services/theming.service';
+import { UserDetails } from '@mdm/services/security/security.model';
+import { SharedService } from '@mdm/services/shared/shared.service';
+import { ThemingService } from '@mdm/services/theming/theming.service';
 import { NavbarLink, NavbarLinkGroup } from './navbar.model';
 
 @Component({

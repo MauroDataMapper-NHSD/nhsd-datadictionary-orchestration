@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { MdmResourcesResponse } from "@mdm/services/resources/mdm-resources.model";
+import { MdmResourcesResponse } from "@mdm/services/mdm-resources/mdm-resources.model";
 
 export interface SignInParameters {
   username: string;
@@ -40,3 +40,17 @@ export interface AdministrationSessionResult {
 
 export type SignInResponse = MdmResourcesResponse<SignInResult>;
 export type AdministrationSessionResponse = MdmResourcesResponse<AdministrationSessionResult>;
+
+/**
+ * Represents the common details of a signed in user.
+ */
+export interface UserDetails {
+  id: string;
+  token?: string;
+  firstName: string;
+  lastName: string;
+  userName: string;
+  role?: string;
+  isAdmin?: boolean;
+  needsToResetPassword?: boolean
+}

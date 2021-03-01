@@ -20,8 +20,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BroadcastEvent } from '@mdm/services/broadcast/broadcast.model';
 import { BroadcastService } from '@mdm/services/broadcast/broadcast.service';
-import { SecurityHandlerService } from '@mdm/services/handlers/security-handler.service';
-import { ValidatorService } from '@mdm/services/validator.service';
+import { SecurityHandlerService } from '@mdm/services/security/security.service';
+import { ValidatorService } from '@mdm/services/validator/validator.service';
 import { catchError, finalize } from 'rxjs/operators';
 
 @Component({

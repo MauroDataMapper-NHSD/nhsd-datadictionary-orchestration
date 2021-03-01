@@ -15,12 +15,10 @@
  */
 
 import { Injectable } from '@angular/core';
-import { AdministrationSessionResponse, SignInParameters, SignInResponse } from '@mdm/models/security';
-import { UserDetails } from '@mdm/models/users';
+import { AdministrationSessionResponse, SignInParameters, SignInResponse, UserDetails } from '@mdm/services/security/security.model';
 import { Observable } from 'rxjs';
-import { concatMapTo, map, mergeMap, switchMap } from 'rxjs/operators';
-import { MdmResourcesResponse } from '../resources/mdm-resources.model';
-import { MdmResourcesService } from '../resources/mdm-resources.service';
+import { map, switchMap } from 'rxjs/operators';
+import { MdmResourcesService } from '../mdm-resources/mdm-resources.service';
 
 @Injectable({
   providedIn: 'root'

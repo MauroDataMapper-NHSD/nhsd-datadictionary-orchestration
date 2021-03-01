@@ -15,8 +15,8 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { UserDetails } from '@mdm/models/users';
-import { SharedService } from '@mdm/services/shared.service';
+import { UserDetails } from '@mdm/services/security/security.model';
+import { SharedService } from '@mdm/services/shared/shared.service';
 
 export type UserComponentLayoutMode = 'column' | 'row';
 

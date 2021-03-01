@@ -21,7 +21,7 @@ import { NavbarLinkGroup } from './layout/navbar/navbar.model';
 import { SignInModalComponent } from './modals/sign-in-modal/sign-in-modal.component';
 import { BroadcastEvent } from './services/broadcast/broadcast.model';
 import { BroadcastService } from './services/broadcast/broadcast.service';
-import { ThemingService } from './services/theming.service';
+import { ThemingService } from './services/theming/theming.service';
 
 @Component({
   selector: 'mdm-root',
