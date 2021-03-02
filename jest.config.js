@@ -46,6 +46,7 @@ module.exports = {
     ],
     watchPathIgnorePatterns: [
       'test-report/',
+      'test-report.html',
       'junit.xml'
     ],
     transformIgnorePatterns: [
