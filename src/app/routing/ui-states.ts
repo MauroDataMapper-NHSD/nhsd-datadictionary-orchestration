@@ -23,6 +23,7 @@ import { NotImplementedComponent } from '@mdm/error/not-implemented/not-implemen
 import { NotAuthorizedComponent } from '@mdm/error/not-authorized/not-authorized.component';
 import { ServerErrorComponent } from '@mdm/error/server-error/server-error.component';
 import { NotFoundComponent } from '@mdm/error/not-found/not-found.component';
+import { ModelsComponent } from '@mdm/models/models.component';
 
 export const states: Ng2StateDeclaration[] = [
   {
@@ -42,6 +43,11 @@ export const states: Ng2StateDeclaration[] = [
     name: 'app.container.home',
     url: '/home',
     component: HomeComponent
+  },
+  {
+    name: 'app.container.models',
+    url: '/models',
+    component: ModelsComponent
   },
   {
     name: 'app.container.about',

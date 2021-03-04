@@ -32,7 +32,7 @@ export class TerminologyService {
     private logging: LoggingService) { }
 
   list(): Observable<Terminology[]> {
-    return this.resources.codeSet
+    return this.resources.terminology
       .list()
       .pipe(
         catchError((error: HttpErrorResponse) => {

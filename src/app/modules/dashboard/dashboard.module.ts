@@ -33,6 +33,8 @@ import { NotFoundComponent } from '@mdm/error/not-found/not-found.component';
 import { ServerErrorComponent } from '@mdm/error/server-error/server-error.component';
 import { UserIdleModule } from 'angular-user-idle';
 import { LoadingIndicatorComponent } from '@mdm/shared/loading-indicator/loading-indicator.component';
+import { ModelsComponent } from '@mdm/models/models.component';
+import { ModelListComponent } from '@mdm/model-list/model-list.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,9 @@ import { LoadingIndicatorComponent } from '@mdm/shared/loading-indicator/loading
     NotAuthorizedComponent,
     NotFoundComponent,
     ServerErrorComponent,
-    LoadingIndicatorComponent
+    LoadingIndicatorComponent,
+    ModelsComponent,
+    ModelListComponent
   ],
   imports: [
     CommonModule,

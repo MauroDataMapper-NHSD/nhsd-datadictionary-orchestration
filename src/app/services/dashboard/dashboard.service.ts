@@ -20,7 +20,7 @@ import { map } from 'rxjs/operators';
 import { CodeSetsService } from '../mdm-resources/adapters/code-sets.service';
 import { DataModelsService } from '../mdm-resources/adapters/data-models.service';
 import { TerminologyService } from '../mdm-resources/adapters/terminology.service';
-import { DashboardModel } from './dashboard.model';
+import { ModelItem } from './dashboard.model';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +32,7 @@ export class DashboardService {
     private codeSet: CodeSetsService,
     private terminology: TerminologyService) { }
 
-  getModels(): Observable<DashboardModel[]> {
+  getModels(): Observable<ModelItem[]> {
     return combineLatest([
       this.dataModel.list(),
       this.codeSet.list(),
@@ -40,9 +40,9 @@ export class DashboardService {
     ])
       .pipe(
         map(([dataModels, codeSets, termologies]) => {
-          const d = dataModels.map(d => new DashboardModel(d));
-          const c = codeSets.map(c => new DashboardModel(c));
-          const t = termologies.map(t => new DashboardModel(t));
+          const d = dataModels.map(d => new ModelItem(d));
+          const c = codeSets.map(c => new ModelItem(c));
+          const t = termologies.map(t => new ModelItem(t));
           return d.concat(c, t);
         })
       )

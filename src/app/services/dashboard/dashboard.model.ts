@@ -16,7 +16,7 @@
 
 import { Authority, Branchable, DomainType, MauroModel, Versionable } from "../mdm-resources/mdm-resources.model";
 
-export class DashboardModel implements MauroModel, Versionable, Branchable {
+export class ModelItem implements MauroModel, Versionable, Branchable {
   id: string;
   domainType: DomainType;
   label: string;
@@ -26,11 +26,20 @@ export class DashboardModel implements MauroModel, Versionable, Branchable {
   modelVersionTag?: string;
   branchName?: string;
 
+  get hasBranch(): boolean {
+    return !!this.branchName;
+  }
+
+  get isFinalised(): boolean {
+    return !!this.modelVersion;
+  }
+
   constructor(data: MauroModel) {
     this.id = data.id;
     this.domainType = data.domainType;
     this.label = data.label;
     this.authority = data.authority;
+    this.branchName = data.branchName;
     this.documentationVersion = data.documentationVersion;
     this.modelVersion = data.modelVersion;
     this.modelVersionTag = data.modelVersionTag;      
