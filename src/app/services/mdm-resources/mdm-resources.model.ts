@@ -58,3 +58,32 @@ export type MdmResourcesIndexResponse<T = any> = MdmResourcesResponse<MdmResourc
 export class MdmResourcesError {
   constructor(public response: HttpErrorResponse) { }
 }
+
+export enum DomainType {
+  DataModel = 'DataModel',
+  CodeSet = 'CodeSet',
+  Terminology = 'Terminology'
+}
+
+export interface Versionable {
+  documentationVersion?: string;
+  modelVersion?: string;
+  modelVersionTag?: string;
+}
+
+export interface Branchable {
+  branchName?: string;
+}
+
+export interface Authority {
+  id: string;
+  url: string;
+  label: string;
+}
+
+export interface MauroModel extends Versionable, Branchable {
+  id: string;
+  domainType: DomainType;
+  label: string;
+  authority: Authority
+}
