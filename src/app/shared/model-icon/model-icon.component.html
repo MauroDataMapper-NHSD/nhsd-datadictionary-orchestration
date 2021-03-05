@@ -14,13 +14,9 @@
  limitations under the License.
 -->
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-            <mdm-model-list (selectedModel)="modelSelected($event)"></mdm-model-list>
-        </div>
-        <div class="col-lg-6 col-md-12 col-xs-12 col-sm-12">
-            <mdm-model-detail [model]="selectedModel"></mdm-model-detail>
-        </div>
-    </div>
-</div>
+<mat-icon 
+    fontSet="fas" 
+    [fontIcon]="model.getIcon()" 
+    class="{{size}} model-type" 
+    [attr.aria-label]="model.domainType + ' icon'">
+</mat-icon>

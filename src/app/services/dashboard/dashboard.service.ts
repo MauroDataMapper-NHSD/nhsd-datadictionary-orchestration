@@ -46,5 +46,5 @@ export class DashboardService {
           return d.concat(c, t);
         })
       )
-  }  
+  }
 }

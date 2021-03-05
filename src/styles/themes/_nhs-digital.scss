@@ -163,8 +163,12 @@ $nhs-digital-typography: mat-typography-config(
         padding: 20px;
     }
 
-    .mdm--shadow-block {
+    .mdm-shadow-block {
         padding: 10px;
+    }
+
+    .mdm-model-list {
+        background: #fff;
     }
 
     footer {

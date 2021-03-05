@@ -14,13 +14,21 @@
  * limitations under the License.
  */
 
-.mdm-model-list {
-    width: 100%;
-    height: calc(100vh - 200px);
-    overflow-y: auto;
+import { Component, Input, OnInit } from '@angular/core';
+import { ModelItem } from '@mdm/services/dashboard/dashboard.model';
 
-    .mdm-model-list__item {
-        font-size: 18px!important;
-    }
+@Component({
+  selector: 'mdm-model-detail',
+  templateUrl: './model-detail.component.html',
+  styleUrls: ['./model-detail.component.scss']
+})
+export class ModelDetailComponent implements OnInit {
+
+  @Input() model?: ModelItem;
+
+  constructor() { }
+
+  ngOnInit(): void {    
+  }
 
 }

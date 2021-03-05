@@ -63,4 +63,23 @@ export class ModelItem implements MauroModel {
       }
     }
   }
+
+  getIcon(): string {
+    switch (this.domainType) {
+      case DomainType.DataModel:     
+        if (this.type === ModelItemType.DataStandard) {
+          return 'fa-file-alt';
+        }
+        if (this.type === ModelItemType.DataAsset) {
+          return 'fa-database';
+        }
+        return '';
+      case DomainType.CodeSet:
+        return 'fa-list';
+      case DomainType.Terminology:
+        return 'fa-code';
+      default:
+        return '';
+    }
+  }
 }

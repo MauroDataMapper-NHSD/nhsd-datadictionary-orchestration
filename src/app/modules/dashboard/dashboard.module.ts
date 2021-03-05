@@ -35,6 +35,8 @@ import { UserIdleModule } from 'angular-user-idle';
 import { LoadingIndicatorComponent } from '@mdm/shared/loading-indicator/loading-indicator.component';
 import { ModelsComponent } from '@mdm/models/models.component';
 import { ModelListComponent } from '@mdm/model-list/model-list.component';
+import { ModelDetailComponent } from '../../model-detail/model-detail.component';
+import { ModelIconComponent } from '../../shared/model-icon/model-icon.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { ModelListComponent } from '@mdm/model-list/model-list.component';
     ServerErrorComponent,
     LoadingIndicatorComponent,
     ModelsComponent,
-    ModelListComponent
+    ModelListComponent,
+    ModelDetailComponent,
+    ModelIconComponent
   ],
   imports: [
     CommonModule,

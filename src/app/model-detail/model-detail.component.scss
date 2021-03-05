@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-.mdm-model-list {
-    width: 100%;
-    height: calc(100vh - 200px);
-    overflow-y: auto;
-
-    .mdm-model-list__item {
-        font-size: 18px!important;
-    }
-
-}
+ .mdm-model-detail__row {
+     margin: 8px 0px;
+ }

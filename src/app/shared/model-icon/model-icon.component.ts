@@ -14,13 +14,24 @@
  * limitations under the License.
  */
 
-.mdm-model-list {
-    width: 100%;
-    height: calc(100vh - 200px);
-    overflow-y: auto;
+import { Component, Input, OnInit } from '@angular/core';
+import { ModelItem } from '@mdm/services/dashboard/dashboard.model';
 
-    .mdm-model-list__item {
-        font-size: 18px!important;
-    }
+export type ModelIconSize = 'fa-sm' | 'fa-md' | 'fa-lg';
+
+@Component({
+  selector: 'mdm-model-icon',
+  templateUrl: './model-icon.component.html',
+  styleUrls: ['./model-icon.component.scss']
+})
+export class ModelIconComponent implements OnInit {
+
+  @Input() model!: ModelItem;
+  @Input() size: ModelIconSize = 'fa-sm';
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
 
 }

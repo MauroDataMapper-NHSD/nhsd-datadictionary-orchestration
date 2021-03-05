@@ -71,14 +71,6 @@ ul li {
     }
 }
 
-.mdm--container-fluid {
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-}
-
 label {
     @include font(20px, 600);
     margin-bottom: 0;
@@ -136,7 +128,7 @@ hr {
     border-radius: 5px;
 }
 
-.mdm--shadow-block {
+.mdm-shadow-block {
     box-shadow: 0 0 13px 0 rgba(82, 63, 105, 0.05);
     background-color: #fff;
     margin-bottom: 20px;

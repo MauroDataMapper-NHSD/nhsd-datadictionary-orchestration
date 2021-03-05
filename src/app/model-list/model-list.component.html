@@ -15,10 +15,10 @@
 -->
 <div class="mdm-model-list">
     <mat-progress-bar *ngIf="loading" mode="indeterminate" color="accent"></mat-progress-bar>
-    <mat-selection-list [multiple]="false">
-        <mat-list-option *ngFor="let model of models" [value]="model.id">
+    <mat-selection-list [multiple]="false" (selectionChange)="modelSelected($event)">
+        <mat-list-option *ngFor="let model of models" [value]="model">
             <div class="mdm-model-list__item">
-                <mat-icon fontSet="fas" [fontIcon]="getIcon(model)" class="fa-sm" [attr.aria-label]="model.domainType + ' icon'"></mat-icon>
+                <mdm-model-icon [model]="model" size="fa-sm"></mdm-model-icon>
                 <span>{{model.label}}</span>
                 <small *ngIf="model.hasBranch && !model.isFinalised">
                     <span> | </span>

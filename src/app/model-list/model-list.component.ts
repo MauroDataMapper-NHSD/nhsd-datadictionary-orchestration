@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { MatSelectionListChange } from '@angular/material/list';
 import { ModelItem, ModelItemType } from '@mdm/services/dashboard/dashboard.model';
 import { DashboardService } from '@mdm/services/dashboard/dashboard.service';
 import { DomainType } from '@mdm/services/mdm-resources/mdm-resources.model';
@@ -26,6 +27,8 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./model-list.component.scss']
 })
 export class ModelListComponent implements OnInit {
+
+  @Output() selectedModel = new EventEmitter<ModelItem>();
 
   models!: ModelItem[];
   loading = false;
@@ -40,24 +43,12 @@ export class ModelListComponent implements OnInit {
         finalize(() => this.loading = false)
       )
       .subscribe(models => this.models = models);
-  }
+  }  
 
-  getIcon(item: ModelItem): string {
-    switch (item.domainType) {
-      case DomainType.DataModel:     
-        if (item.type === ModelItemType.DataStandard) {
-          return 'fa-file-alt';
-        }
-        if (item.type === ModelItemType.DataAsset) {
-          return 'fa-database';
-        }
-        return '';
-      case DomainType.CodeSet:
-        return 'fa-list';
-      case DomainType.Terminology:
-        return 'fa-code';
-      default:
-        return '';
+  modelSelected(changes: MatSelectionListChange) {
+    if (changes.options && changes.options.length > 0) {
+      const option = changes.options[0];
+      this.selectedModel.emit(option.value);
     }
   }
 }

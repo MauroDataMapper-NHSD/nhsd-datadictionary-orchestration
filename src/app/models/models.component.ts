@@ -15,6 +15,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { ModelItem } from '@mdm/services/dashboard/dashboard.model';
 
 @Component({
   selector: 'mdm-models',
@@ -23,9 +24,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ModelsComponent implements OnInit {
 
+  selectedModel?: ModelItem;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  modelSelected(model: ModelItem) {
+    this.selectedModel = model;
   }
 
 }
