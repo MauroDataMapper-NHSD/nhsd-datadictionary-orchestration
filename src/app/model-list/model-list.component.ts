@@ -15,8 +15,9 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { ModelItem } from '@mdm/services/dashboard/dashboard.model';
+import { ModelItem, ModelItemType } from '@mdm/services/dashboard/dashboard.model';
 import { DashboardService } from '@mdm/services/dashboard/dashboard.service';
+import { DomainType } from '@mdm/services/mdm-resources/mdm-resources.model';
 
 @Component({
   selector: 'mdm-model-list',
@@ -35,4 +36,22 @@ export class ModelListComponent implements OnInit {
       .subscribe(models => this.models = models);
   }
 
+  getIcon(item: ModelItem): string {
+    switch (item.domainType) {
+      case DomainType.DataModel:     
+        if (item.type === ModelItemType.DataStandard) {
+          return 'fa-file-alt';
+        }
+        if (item.type === ModelItemType.DataAsset) {
+          return 'fa-database';
+        }
+        return '';
+      case DomainType.CodeSet:
+        return 'fa-list';
+      case DomainType.Terminology:
+        return 'fa-code';
+      default:
+        return '';
+    }
+  }
 }

@@ -14,3 +14,16 @@
  * limitations under the License.
  */
 
+ @import "styles/abstracts/variables";
+
+.mdm-model-list {
+
+    .mdm-model-list__item {
+        font-size: 18px!important;
+
+        mat-icon.mat-icon {
+            color: $defaultIconColor;
+        }
+    }
+
+}

@@ -14,9 +14,15 @@
  * limitations under the License.
  */
 
-import { Authority, Branchable, DomainType, MauroModel, Versionable } from "../mdm-resources/mdm-resources.model";
+import { DataModel, DataModelType } from "../mdm-resources/adapters/data-models.model";
+import { Authority, DomainType, MauroModel } from "../mdm-resources/mdm-resources.model";
 
-export class ModelItem implements MauroModel, Versionable, Branchable {
+export enum ModelItemType {  
+  DataStandard = 'Data Standard',
+  DataAsset = 'Data Asset'
+}
+
+export class ModelItem implements MauroModel {
   id: string;
   domainType: DomainType;
   label: string;
@@ -25,6 +31,7 @@ export class ModelItem implements MauroModel, Versionable, Branchable {
   modelVersion?: string;
   modelVersionTag?: string;
   branchName?: string;
+  type?: ModelItemType;
 
   get hasBranch(): boolean {
     return !!this.branchName;
@@ -42,6 +49,18 @@ export class ModelItem implements MauroModel, Versionable, Branchable {
     this.branchName = data.branchName;
     this.documentationVersion = data.documentationVersion;
     this.modelVersion = data.modelVersion;
-    this.modelVersionTag = data.modelVersionTag;      
+    this.modelVersionTag = data.modelVersionTag;     
+    
+    if ((<DataModel>data).type) { 
+      const dataModel = <DataModel>data;
+      switch (dataModel.type) {
+        case DataModelType.DataStandard:
+          this.type = ModelItemType.DataStandard;          
+          break;
+        case DataModelType.DataAsset:
+          this.type = ModelItemType.DataAsset;
+          break;
+      }
+    }
   }
 }
