@@ -17,7 +17,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoggingService } from '@mdm/services/logging/logging.service';
-import { EMPTY, Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { MdmResourcesService } from '../mdm-resources.service';
 import { CodeSet, CodeSetIndexResponse } from './code-sets.model';
@@ -37,7 +37,7 @@ export class CodeSetsService {
       .pipe(
         catchError((error: HttpErrorResponse) => {
           this.logging.error('There was a problem getting the Code Sets.', error);
-          return EMPTY;
+          return throwError(error);
         }),
         map((response: CodeSetIndexResponse) => response.body.items)
       )

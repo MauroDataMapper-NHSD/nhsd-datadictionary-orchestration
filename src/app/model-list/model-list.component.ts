@@ -18,6 +18,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModelItem, ModelItemType } from '@mdm/services/dashboard/dashboard.model';
 import { DashboardService } from '@mdm/services/dashboard/dashboard.service';
 import { DomainType } from '@mdm/services/mdm-resources/mdm-resources.model';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'mdm-model-list',
@@ -27,12 +28,17 @@ import { DomainType } from '@mdm/services/mdm-resources/mdm-resources.model';
 export class ModelListComponent implements OnInit {
 
   models!: ModelItem[];
+  loading = false;
 
   constructor(private dashboard: DashboardService) { }
 
   ngOnInit(): void {
+    this.loading = true;
     this.dashboard
       .getModels()
+      .pipe(
+        finalize(() => this.loading = false)
+      )
       .subscribe(models => this.models = models);
   }
 
