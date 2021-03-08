@@ -14,41 +14,85 @@
  * limitations under the License.
  */
 
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { MatSelectionListChange } from '@angular/material/list';
-import { ModelListItem, ModelItemType } from '@mdm/services/dashboard/dashboard.model';
+import { ModelListItem } from '@mdm/services/dashboard/dashboard.model';
 import { DashboardService } from '@mdm/services/dashboard/dashboard.service';
-import { DomainType } from '@mdm/services/mdm-resources/mdm-resources.model';
-import { finalize } from 'rxjs/operators';
+import { fromEvent, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, finalize, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'mdm-model-list',
   templateUrl: './model-list.component.html',
   styleUrls: ['./model-list.component.scss']
 })
-export class ModelListComponent implements OnInit {
+export class ModelListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Output() selectedModel = new EventEmitter<ModelListItem>();
 
-  models!: ModelListItem[];
+  @ViewChild('searchInput') searchInput!: ElementRef;
+
+  models: ModelListItem[] = [];
+  displayModels: ModelListItem[] = [];
   loading = false;
+
+  /**
+   * Signal to attach to subscriptions to trigger when they should be unsubscribed.
+   */
+  private unsubscribe$ = new Subject();
 
   constructor(private dashboard: DashboardService) { }
 
   ngOnInit(): void {
-    this.loading = true;
-    this.dashboard
-      .getModels()
-      .pipe(
-        finalize(() => this.loading = false)
-      )
-      .subscribe(models => this.models = models);
-  }  
+    this.loadModels();
+  }
+
+  ngAfterViewInit(): void {
+    this.setupSearchFilter();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
   modelSelected(changes: MatSelectionListChange) {
     if (changes.options && changes.options.length > 0) {
       const option = changes.options[0];
       this.selectedModel.emit(option.value);
     }
+  }
+
+  private loadModels() {
+    this.loading = true;
+    this.dashboard
+      .getModels()
+      .pipe(
+        finalize(() => this.loading = false)
+      )
+      .subscribe(models => {
+        this.models = models;
+        this.displayModels = this.models;
+      });
+  }
+
+  private setupSearchFilter() {    
+    fromEvent<any>(this.searchInput.nativeElement, 'input')
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        debounceTime(200),
+        distinctUntilChanged(),
+        map(event => event.target.value),
+        map(query => this.filterModels(query))
+      )
+      .subscribe(models => this.displayModels = models);
+  }
+
+  private filterModels(query: string) {
+    if ((query?.length ?? 0) === 0) {
+      return this.models;
+    }
+
+    return this.models.filter(model => model.label.toLowerCase().includes(query.toLowerCase()));
   }
 }

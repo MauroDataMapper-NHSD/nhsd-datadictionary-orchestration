@@ -14,23 +14,34 @@
  limitations under the License.
 -->
 <div class="mdm-model-list">
-    <mat-progress-bar *ngIf="loading" mode="indeterminate" color="accent"></mat-progress-bar>
-    <mat-selection-list [multiple]="false" (selectionChange)="modelSelected($event)">
-        <mat-list-option *ngFor="let model of models" [value]="model">
-            <div class="mdm-model-list__item">
-                <mdm-model-icon [model]="model" size="fa-sm"></mdm-model-icon>
-                <span>{{model.label}}</span>
-                <small *ngIf="model.hasBranch && !model.isFinalised">
-                    <span> | </span>
-                    <i class="fas fa-code-branch"></i>
-                    {{model.branchName}}
-                </small>
-                <small *ngIf="model.isFinalised">
-                    <span> | </span>
-                    <i class="fas fa-file-alt"></i>
-                    {{model.modelVersion}}
-                </small>
-            </div>
-        </mat-list-option>
-    </mat-selection-list>
+    <div class="mdm-model-list__toolbar">
+        <input #searchInput type="search" class="form-control" placeholder="Search" [disabled]="loading" />        
+    </div>    
+    <div class="mdm-model-list__list">
+        <mat-progress-bar *ngIf="loading" mode="indeterminate" color="accent"></mat-progress-bar>            
+    
+        <mat-selection-list [multiple]="false" (selectionChange)="modelSelected($event)">
+            <mat-list-option *ngIf="displayModels.length === 0" selectable="false">
+                <div class="mdm-model-list__item">
+                    No results found
+                </div>
+            </mat-list-option>
+            <mat-list-option *ngFor="let model of displayModels" [value]="model">
+                <div class="mdm-model-list__item">
+                    <mdm-model-icon [model]="model" size="fa-sm"></mdm-model-icon>
+                    <span>{{model.label}}</span>
+                    <small *ngIf="model.hasBranch && !model.isFinalised">
+                        <span> | </span>
+                        <i class="fas fa-code-branch"></i>
+                        {{model.branchName}}
+                    </small>
+                    <small *ngIf="model.isFinalised">
+                        <span> | </span>
+                        <i class="fas fa-file-alt"></i>
+                        {{model.modelVersion}}
+                    </small>
+                </div>
+            </mat-list-option>
+        </mat-selection-list>
+    </div>
 </div>
