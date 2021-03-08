@@ -19,7 +19,7 @@ import { MatSelectionListChange } from '@angular/material/list';
 import { ModelListItem } from '@mdm/services/dashboard/dashboard.model';
 import { DashboardService } from '@mdm/services/dashboard/dashboard.service';
 import { fromEvent, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, finalize, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, finalize, map, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'mdm-model-list',
@@ -32,7 +32,7 @@ export class ModelListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('searchInput') searchInput!: ElementRef;
 
-  models: ModelListItem[] = [];
+  dataSource: ModelListItem[] = [];
   displayModels: ModelListItem[] = [];
   loading = false;
 
@@ -71,8 +71,8 @@ export class ModelListComponent implements OnInit, AfterViewInit, OnDestroy {
         finalize(() => this.loading = false)
       )
       .subscribe(models => {
-        this.models = models;
-        this.displayModels = this.models;
+        this.dataSource = models;
+        this.displayModels = this.applyDataSource(this.dataSource);
       });
   }
 
@@ -83,16 +83,22 @@ export class ModelListComponent implements OnInit, AfterViewInit, OnDestroy {
         debounceTime(200),
         distinctUntilChanged(),
         map(event => event.target.value),
-        map(query => this.filterModels(query))
+        map(query => this.applyDataSource(this.dataSource, query))
       )
       .subscribe(models => this.displayModels = models);
   }
 
-  private filterModels(query: string) {
-    if ((query?.length ?? 0) === 0) {
-      return this.models;
+  private applyDataSource(source: ModelListItem[], query?: string) {
+    return this
+      .filterModels(source, query)
+      .sort((first, second) => first.compareTo(second));
+  }
+
+  private filterModels(source: ModelListItem[], query?: string) {
+    if (!query || query.length === 0) {
+      return source;
     }
 
-    return this.models.filter(model => model.label.toLowerCase().includes(query.toLowerCase()));
+    return source.filter(model => model.label.toLowerCase().includes(query.toLowerCase()));
   }
 }
