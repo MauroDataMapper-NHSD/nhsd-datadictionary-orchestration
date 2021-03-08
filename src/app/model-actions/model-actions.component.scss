@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-.mdm-model-detail__row {
-    margin: 4px 0px;
-
-    h4 {
-        margin-left: 8px;
+ .mdm-model-actions {
+    .row {
+        margin: 32px 0px;
     }
 
-    small {
-        strong {
-            padding: 0px 4px;
-        }
+    button {
+        width: 100%;
     }
 }

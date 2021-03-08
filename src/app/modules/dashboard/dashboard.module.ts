@@ -37,6 +37,7 @@ import { ModelsComponent } from '@mdm/models/models.component';
 import { ModelListComponent } from '@mdm/model-list/model-list.component';
 import { ModelDetailComponent } from '../../model-detail/model-detail.component';
 import { ModelIconComponent } from '../../shared/model-icon/model-icon.component';
+import { ModelActionsComponent } from '../../model-actions/model-actions.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { ModelIconComponent } from '../../shared/model-icon/model-icon.component
     ModelsComponent,
     ModelListComponent,
     ModelDetailComponent,
-    ModelIconComponent
+    ModelIconComponent,
+    ModelActionsComponent
   ],
   imports: [
     CommonModule,

@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-.mdm-model-detail__row {
-    margin: 4px 0px;
+import { Component, OnInit } from '@angular/core';
 
-    h4 {
-        margin-left: 8px;
-    }
+@Component({
+  selector: 'mdm-model-actions',
+  templateUrl: './model-actions.component.html',
+  styleUrls: ['./model-actions.component.scss']
+})
+export class ModelActionsComponent implements OnInit {
 
-    small {
-        strong {
-            padding: 0px 4px;
-        }
-    }
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
 }

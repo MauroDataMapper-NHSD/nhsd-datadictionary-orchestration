@@ -36,45 +36,49 @@
         <div *ngIf="model?.type" class="mdm-model-detail__row">
             <small>
                 <i class="fas fa-cube" matTooltip="Item type"></i>
-                <strong>Item type:</strong> 
+                <strong>Item type:</strong>
                 <span class="mdm-model-detail--item-type">{{model?.type}}</span>
             </small>
         </div>
         <div *ngIf="model?.hasBranch" class="mdm-model-detail__row">
             <small>
                 <i class="fas fa-code-branch" matTooltip="Branch name"></i>
-                <strong>Branch:</strong> 
+                <strong>Branch:</strong>
                 <span class="mdm-model-detail--branch">{{model?.branchName}}</span>
             </small>
         </div>
         <div *ngIf="model?.documentationVersion" class="mdm-model-detail__row">
             <small>
                 <i matTooltip="Documentation Version" class="fas fa-copy"></i>
-                <strong>Documentation version:</strong> 
+                <strong>Documentation version:</strong>
                 <span>{{model?.documentationVersion}}</span>
             </small>
         </div>
         <div *ngIf="model?.isFinalised" class="mdm-model-detail__row">
             <small>
                 <i matTooltip="Model Version" class="fas fa-file-alt"></i>
-                <strong>Model version:</strong> 
+                <strong>Model version:</strong>
                 <span>{{model?.modelVersion}}</span>
-                <span *ngIf="model?.modelVersionTag" class="mdm-model-detail--version-tag">{{model?.modelVersionTag}}</span>
+                <span *ngIf="model?.modelVersionTag"
+                    class="mdm-model-detail--version-tag">{{model?.modelVersionTag}}</span>
             </small>
         </div>
         <div class="mdm-model-detail__row">
             <small>
                 <i matTooltip="Last update" class="fas fa-calendar-alt"></i>
-                <strong>Last update:</strong> 
+                <strong>Last update:</strong>
                 <span>{{detail?.lastUpdated | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
             </small>
         </div>
         <div *ngIf="model?.isFinalised && detail?.dateFinalised" class="mdm-model-detail__row">
             <small>
                 <i matTooltip="Last update" class="fas fa-calendar-check"></i>
-                <strong>Finalised on:</strong> 
+                <strong>Finalised on:</strong>
                 <span>{{detail?.dateFinalised | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
             </small>
         </div>
     </div>
 </div>
+
+<mdm-model-actions *ngIf="model && !loading">    
+</mdm-model-actions>
