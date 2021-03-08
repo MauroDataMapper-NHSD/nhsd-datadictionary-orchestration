@@ -14,21 +14,53 @@
  * limitations under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
-import { ModelItem } from '@mdm/services/dashboard/dashboard.model';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ModelListItem } from '@mdm/services/dashboard/dashboard.model';
+import { DashboardService } from '@mdm/services/dashboard/dashboard.service';
+import { CodeSetDetail } from '@mdm/services/mdm-resources/adapters/code-sets.model';
+import { DataModelDetail } from '@mdm/services/mdm-resources/adapters/data-models.model';
+import { TerminologyDetail } from '@mdm/services/mdm-resources/adapters/terminology.model';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'mdm-model-detail',
   templateUrl: './model-detail.component.html',
   styleUrls: ['./model-detail.component.scss']
 })
-export class ModelDetailComponent implements OnInit {
+export class ModelDetailComponent implements OnInit, AfterViewInit, OnChanges {
 
-  @Input() model?: ModelItem;
+  @Input() model?: ModelListItem;
 
-  constructor() { }
+  detail: DataModelDetail | CodeSetDetail | TerminologyDetail | undefined;
+  loading = false;
 
-  ngOnInit(): void {    
+  constructor(private dashboard: DashboardService) { }    
+
+  ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
+    this.loadDetail();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.model) {
+      this.loadDetail();
+    }
+  }
+
+  private loadDetail() {
+    if (!this.model) {
+      return;
+    }
+
+    this.loading = true;
+    this.dashboard
+      .getModelDetail(this.model.domainType, this.model.id)
+      .pipe(
+        finalize(() => this.loading = false)
+      )
+      .subscribe(detail => this.detail = detail);
   }
 
 }

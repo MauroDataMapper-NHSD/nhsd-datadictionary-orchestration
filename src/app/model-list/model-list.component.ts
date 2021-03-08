@@ -16,7 +16,7 @@
 
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatSelectionListChange } from '@angular/material/list';
-import { ModelItem, ModelItemType } from '@mdm/services/dashboard/dashboard.model';
+import { ModelListItem, ModelItemType } from '@mdm/services/dashboard/dashboard.model';
 import { DashboardService } from '@mdm/services/dashboard/dashboard.service';
 import { DomainType } from '@mdm/services/mdm-resources/mdm-resources.model';
 import { finalize } from 'rxjs/operators';
@@ -28,9 +28,9 @@ import { finalize } from 'rxjs/operators';
 })
 export class ModelListComponent implements OnInit {
 
-  @Output() selectedModel = new EventEmitter<ModelItem>();
+  @Output() selectedModel = new EventEmitter<ModelListItem>();
 
-  models!: ModelItem[];
+  models!: ModelListItem[];
   loading = false;
 
   constructor(private dashboard: DashboardService) { }

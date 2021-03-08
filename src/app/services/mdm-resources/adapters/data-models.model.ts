@@ -14,15 +14,21 @@
  * limitations under the License.
  */
 
-import { MauroModel, MdmResourcesIndexResponse } from "../mdm-resources.model";
+import { MauroModel, MauroModelDetail, MdmResourcesIndexResponse, MdmResourcesResponse } from "../mdm-resources.model";
 
 export enum DataModelType {
   DataStandard = 'Data Standard',
   DataAsset = 'Data Asset'
 }
 
-export interface DataModel extends MauroModel {
-  type: DataModelType
+export interface DataModeTraits {
+  type: DataModelType;
 }
 
+export interface DataModel extends MauroModel, DataModeTraits { }
+
+export interface DataModelDetail extends MauroModelDetail, DataModeTraits { }
+
 export type DataModelIndexResponse = MdmResourcesIndexResponse<DataModel>;
+
+export type DataModelDetailResponse = MdmResourcesResponse<DataModelDetail>;

@@ -65,25 +65,53 @@ export enum DomainType {
   Terminology = 'Terminology'
 }
 
+/**
+ * Represents a model that can be versioned.
+ */
 export interface Versionable {
   documentationVersion?: string;
   modelVersion?: string;
   modelVersionTag?: string;
 }
 
+/**
+ * Represents a model that can be branched for editing new versions.
+ */
 export interface Branchable {
   branchName?: string;
 }
 
+/**
+ * Represents a model that provides security information.
+ */
+export interface Securable {
+  readableByEveryone: boolean;
+  readableByAuthenticatedUsers: boolean;
+}
+
+/**
+ * Represents the authority of who issued a model.
+ */
 export interface Authority {
   id: string;
   url: string;
   label: string;
 }
 
+/**
+ * Represents the basic model information of a Mauro model.
+ */
 export interface MauroModel extends Versionable, Branchable {
   id: string;
   domainType: DomainType;
   label: string;
   authority: Authority
+}
+
+/**
+ * Represents more detailed information of a Mauro model. Inherits all properties from `MauroModel` by default.
+ */
+export interface MauroModelDetail extends MauroModel, Securable {
+  lastUpdated: string;
+  dateFinalised?: string;
 }

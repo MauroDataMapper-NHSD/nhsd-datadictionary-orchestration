@@ -20,7 +20,7 @@ import { LoggingService } from '@mdm/services/logging/logging.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { MdmResourcesService } from '../mdm-resources.service';
-import { Terminology, TerminologyIndexResponse } from './terminology.model';
+import { Terminology, TerminologyDetail, TerminologyDetailResponse, TerminologyIndexResponse } from './terminology.model';
 
 @Injectable({
   providedIn: 'root'
@@ -41,5 +41,17 @@ export class TerminologyService {
         }),
         map((response: TerminologyIndexResponse) => response.body.items)
       )
+  }
+
+  get(id: string): Observable<TerminologyDetail> {
+    return this.resources.terminology
+      .get(id)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.logging.error(`There was a problem getting the Terminology ${id}.`, error);
+          return throwError(error);
+        }),
+        map((response: TerminologyDetailResponse) => response.body)
+      );
   }
 }

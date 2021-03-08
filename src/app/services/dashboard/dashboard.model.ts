@@ -22,7 +22,7 @@ export enum ModelItemType {
   DataAsset = 'Data Asset'
 }
 
-export class ModelItem implements MauroModel {
+export class ModelListItem implements MauroModel {
   id: string;
   domainType: DomainType;
   label: string;

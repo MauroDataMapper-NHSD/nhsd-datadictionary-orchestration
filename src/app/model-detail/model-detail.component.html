@@ -19,6 +19,9 @@
         <h3>Models</h3>
         <p>Please select a model from the list to view details.</p>
     </div>
+    <div *ngIf="loading">
+        <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+    </div>
     <div *ngIf="model">
         <div class="mdm-model-detail__row">
             <mdm-model-icon [model]="model" size="fa-lg"></mdm-model-icon>
@@ -60,10 +63,18 @@
             </small>
         </div>
         <div class="mdm-model-detail__row">
-            <!-- Last update -->
+            <small>
+                <i matTooltip="Last update" class="fas fa-calendar-alt"></i>
+                <strong>Last update:</strong> 
+                <span>{{detail?.lastUpdated | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
+            </small>
         </div>
-        <div class="mdm-model-detail__row">
-            <!-- Finalised on -->
+        <div *ngIf="model?.isFinalised && detail?.dateFinalised" class="mdm-model-detail__row">
+            <small>
+                <i matTooltip="Last update" class="fas fa-calendar-check"></i>
+                <strong>Finalised on:</strong> 
+                <span>{{detail?.dateFinalised | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
+            </small>
         </div>
     </div>
 </div>

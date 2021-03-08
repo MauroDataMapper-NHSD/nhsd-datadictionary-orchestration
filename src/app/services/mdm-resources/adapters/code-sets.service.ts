@@ -20,7 +20,7 @@ import { LoggingService } from '@mdm/services/logging/logging.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { MdmResourcesService } from '../mdm-resources.service';
-import { CodeSet, CodeSetIndexResponse } from './code-sets.model';
+import { CodeSet, CodeSetDetail, CodeSetDetailResponse, CodeSetIndexResponse } from './code-sets.model';
 
 @Injectable({
   providedIn: 'root'
@@ -41,5 +41,17 @@ export class CodeSetsService {
         }),
         map((response: CodeSetIndexResponse) => response.body.items)
       )
+  }
+
+  get(id: string): Observable<CodeSetDetail> {
+    return this.resources.codeSet
+      .get(id)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.logging.error(`There was a problem getting the Code Set ${id}.`, error);
+          return throwError(error);
+        }),
+        map((response: CodeSetDetailResponse) => response.body)
+      );
   }
 }

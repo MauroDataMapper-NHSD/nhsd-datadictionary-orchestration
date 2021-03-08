@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-import { MauroModel, MdmResourcesIndexResponse } from "../mdm-resources.model";
+import { MauroModel, MauroModelDetail, MdmResourcesIndexResponse, MdmResourcesResponse } from "../mdm-resources.model";
 
 export interface Terminology extends MauroModel { }
 
+export interface TerminologyDetail extends MauroModelDetail { }
+
 export type TerminologyIndexResponse = MdmResourcesIndexResponse<Terminology>;
+
+export type TerminologyDetailResponse = MdmResourcesResponse<TerminologyDetail>;

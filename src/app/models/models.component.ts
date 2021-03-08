@@ -15,7 +15,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { ModelItem } from '@mdm/services/dashboard/dashboard.model';
+import { ModelListItem } from '@mdm/services/dashboard/dashboard.model';
 
 @Component({
   selector: 'mdm-models',
@@ -24,14 +24,14 @@ import { ModelItem } from '@mdm/services/dashboard/dashboard.model';
 })
 export class ModelsComponent implements OnInit {
 
-  selectedModel?: ModelItem;
+  selectedModel?: ModelListItem;
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  modelSelected(model: ModelItem) {
+  modelSelected(model: ModelListItem) {
     this.selectedModel = model;
   }
 

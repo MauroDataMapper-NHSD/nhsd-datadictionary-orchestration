@@ -15,12 +15,16 @@
  */
 
 import { Injectable } from '@angular/core';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { CodeSetDetail } from '../mdm-resources/adapters/code-sets.model';
 import { CodeSetsService } from '../mdm-resources/adapters/code-sets.service';
+import { DataModelDetail } from '../mdm-resources/adapters/data-models.model';
 import { DataModelsService } from '../mdm-resources/adapters/data-models.service';
+import { TerminologyDetail } from '../mdm-resources/adapters/terminology.model';
 import { TerminologyService } from '../mdm-resources/adapters/terminology.service';
-import { ModelItem } from './dashboard.model';
+import { DomainType } from '../mdm-resources/mdm-resources.model';
+import { ModelListItem } from './dashboard.model';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +36,7 @@ export class DashboardService {
     private codeSet: CodeSetsService,
     private terminology: TerminologyService) { }
 
-  getModels(): Observable<ModelItem[]> {
+  getModels(): Observable<ModelListItem[]> {
     return combineLatest([
       this.dataModel.list(),
       this.codeSet.list(),
@@ -40,11 +44,27 @@ export class DashboardService {
     ])
       .pipe(
         map(([dataModels, codeSets, termologies]) => {
-          const d = dataModels.map(d => new ModelItem(d));
-          const c = codeSets.map(c => new ModelItem(c));
-          const t = termologies.map(t => new ModelItem(t));
+          const d = dataModels.map(d => new ModelListItem(d));
+          const c = codeSets.map(c => new ModelListItem(c));
+          const t = termologies.map(t => new ModelListItem(t));
           return d.concat(c, t);
         })
       )
+  }
+
+  getModelDetail(domainType: DomainType, id: string): Observable<DataModelDetail | CodeSetDetail | TerminologyDetail | undefined> {
+    if (domainType === DomainType.DataModel) {
+      return this.dataModel.get(id);
+    }
+
+    if (domainType === DomainType.CodeSet) {
+      return this.codeSet.get(id);
+    }
+
+    if (domainType === DomainType.Terminology) {
+      return this.terminology.get(id);
+    }
+
+    return of(undefined);
   }
 }

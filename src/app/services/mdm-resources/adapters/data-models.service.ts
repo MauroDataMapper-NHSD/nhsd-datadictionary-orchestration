@@ -20,7 +20,7 @@ import { LoggingService } from '@mdm/services/logging/logging.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { MdmResourcesService } from '../mdm-resources.service';
-import { DataModel, DataModelIndexResponse } from './data-models.model';
+import { DataModel, DataModelDetail, DataModelDetailResponse, DataModelIndexResponse } from './data-models.model';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +40,18 @@ export class DataModelsService {
           return throwError(error);
         }),
         map((response: DataModelIndexResponse) => response.body.items)
+      );
+  }
+
+  get(id: string): Observable<DataModelDetail> {
+    return this.resources.dataModel
+      .get(id)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.logging.error(`There was a problem getting the Data Model ${id}.`, error);
+          return throwError(error);
+        }),
+        map((response: DataModelDetailResponse) => response.body)
       );
   }
 }

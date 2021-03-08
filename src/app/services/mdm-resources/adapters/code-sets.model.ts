@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-import { MauroModel, MdmResourcesIndexResponse } from "../mdm-resources.model";
+import { MauroModel, MauroModelDetail, MdmResourcesIndexResponse, MdmResourcesResponse } from "../mdm-resources.model";
 
 export interface CodeSet extends MauroModel { }
 
+export interface CodeSetDetail extends MauroModelDetail { }
+
 export type CodeSetIndexResponse = MdmResourcesIndexResponse<CodeSet>;
+
+export type CodeSetDetailResponse = MdmResourcesResponse<CodeSetDetail>;
