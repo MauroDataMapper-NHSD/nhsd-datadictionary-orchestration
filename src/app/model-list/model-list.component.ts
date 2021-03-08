@@ -63,6 +63,11 @@ export class ModelListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  refresh() {
+    this.searchInput.nativeElement.value = '';
+    this.loadModels();
+  }
+
   private loadModels() {
     this.loading = true;
     this.dashboard

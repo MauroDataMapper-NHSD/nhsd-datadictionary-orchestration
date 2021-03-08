@@ -39,12 +39,19 @@
                 <strong>Item type:</strong>
                 <span class="mdm-model-detail--item-type">{{model?.type}}</span>
             </small>
-        </div>
+        </div>        
         <div *ngIf="model?.hasBranch" class="mdm-model-detail__row">
             <small>
                 <i class="fas fa-code-branch" matTooltip="Branch name"></i>
                 <strong>Branch:</strong>
                 <span class="mdm-model-detail--branch">{{model?.branchName}}</span>
+            </small>
+        </div>
+        <div *ngIf="model?.authority" class="mdm-model-detail__row">
+            <small>
+                <i class="fas fa-key" matTooltip="Authority"></i>
+                <strong>Authority:</strong>
+                <span>{{model?.authority?.label}}</span>
             </small>
         </div>
         <div *ngIf="model?.documentationVersion" class="mdm-model-detail__row">

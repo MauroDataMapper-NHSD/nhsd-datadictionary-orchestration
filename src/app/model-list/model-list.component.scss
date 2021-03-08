@@ -14,6 +14,28 @@
  * limitations under the License.
  */
 
+ $toolbarSize: 44px;
+
+ .mdm-model-list__toolbar {
+     position: relative;
+     display: flex;
+     flex-wrap: wrap;
+     align-items: stretch;
+     width: 100%;
+
+     input {
+         position: relative;
+         flex: 1 1 0%;
+         height: $toolbarSize;
+     }
+
+     button {
+         padding: 0;
+         min-width: $toolbarSize;
+         height: $toolbarSize;
+     }
+ }
+
 .mdm-model-list__list {
     width: 100%;
     height: calc(100vh - 200px);
