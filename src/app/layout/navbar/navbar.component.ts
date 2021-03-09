@@ -39,7 +39,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   backendUrl: string = this.shared.backendUrl;
   profile: UserDetails | null = null;
 
-  get isLoggedIn() {
+  get isSignedIn() {
     return this.profile !== undefined && this.profile !== null;
   }
 
@@ -79,11 +79,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  login() {
+  signIn() {
     this.broadcast.dispatch(BroadcastEvent.RequestSignIn);
   }
 
-  logout() {
+  signOut() {
     this.broadcast.dispatch(BroadcastEvent.RequestSignOut);
   }
 }

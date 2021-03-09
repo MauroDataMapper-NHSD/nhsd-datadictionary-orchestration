@@ -16,37 +16,37 @@
 
 <div class="mdm-shadow-block">
     <div class="container-fluid mdm-model-actions">
-        <div class="row">
-            <div class="col-md-6">
+        <div *ngIf="canPreview"class="row">
+            <div class="col-md-5">
                 <button mat-stroked-button type="button" color="primary" matTooltip="Preview" aria-label="Preview">
                     <i class="fas fa-file"></i>
                     Preview
                 </button>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-7">
                 Generate a preview of this data model to review as it would approximately appear in the data dictionary.
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6">
+        <div *ngIf="canCheckIntegrity" class="row">
+            <div class="col-md-5">
                 <button mat-stroked-button type="button" color="primary" matTooltip="Check Integrity"
                     aria-label="Check Integrity">
                     <i class="fas fa-tasks"></i>
-                    Check Integrity
+                    Integrity
                 </button>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-7">
                 Run integrity checks on this data model and review issues found.
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6">
+        <div *ngIf="canPublish" class="row">
+            <div class="col-md-5">
                 <button mat-stroked-button type="button" color="primary" matTooltip="Publish" aria-label="Publish">
                     <i class="fas fa-cloud-upload-alt"></i>
                     Publish
                 </button>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-7">
                 Publish this data model to the data dictionary.
             </div>
         </div>

@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ModelListItem } from '@mdm/services/dashboard/dashboard.model';
+import { SecurityService } from '@mdm/services/security/security.service';
 
 @Component({
   selector: 'mdm-model-actions',
@@ -23,7 +25,33 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ModelActionsComponent implements OnInit {
 
-  constructor() { }
+  @Input() model?: ModelListItem;
+
+  constructor(private security: SecurityService) { }
+
+  get canPreview(): boolean {
+    // TODO: add permissions checks for preview
+    return true;
+  }
+
+  get canCheckIntegrity(): boolean {
+    // TODO: add permissions checks for integrity checks
+    return true;
+  }
+
+  get canPublish(): boolean {
+    const user = this.security.getCurrentUser();
+    if (!user) {
+      return false;
+    }
+
+    if (!user.isAdmin) {
+      return false;
+    }
+
+    // TODO: add permissions checks for publish
+    return this.model?.isFinalised ?? false;
+  }
 
   ngOnInit(): void {
   }

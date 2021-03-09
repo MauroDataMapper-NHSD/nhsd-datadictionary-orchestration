@@ -29,8 +29,7 @@ import { MdmResourcesService } from '../mdm-resources/mdm-resources.service';
 export class SecurityService {
 
   constructor(
-    private resources: MdmResourcesService,
-    private logging: LoggingService) { }
+    private resources: MdmResourcesService) { }
 
   /**
    * Sign in a user to the Mauro system.

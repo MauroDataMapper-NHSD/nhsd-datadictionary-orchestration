@@ -20,6 +20,7 @@ import { DashboardService } from '@mdm/services/dashboard/dashboard.service';
 import { CodeSetDetail } from '@mdm/services/mdm-resources/adapters/code-sets.model';
 import { DataModelDetail } from '@mdm/services/mdm-resources/adapters/data-models.model';
 import { TerminologyDetail } from '@mdm/services/mdm-resources/adapters/terminology.model';
+import { SecurityService } from '@mdm/services/security/security.service';
 import { finalize } from 'rxjs/operators';
 
 @Component({
@@ -33,10 +34,14 @@ export class ModelDetailComponent implements OnInit, AfterViewInit, OnChanges {
 
   detail: DataModelDetail | CodeSetDetail | TerminologyDetail | undefined;
   loading = false;
+  isSignedIn = false;  
 
-  constructor(private dashboard: DashboardService) { }    
+  constructor(
+    private dashboard: DashboardService,
+    private security: SecurityService) { }      
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
+    this.setIsSignedIn()
   }
 
   ngAfterViewInit(): void {
@@ -47,6 +52,10 @@ export class ModelDetailComponent implements OnInit, AfterViewInit, OnChanges {
     if (changes.model) {
       this.loadDetail();
     }
+  }
+
+  private setIsSignedIn() {
+    this.isSignedIn = !!this.security.getCurrentUser();
   }
 
   private loadDetail() {

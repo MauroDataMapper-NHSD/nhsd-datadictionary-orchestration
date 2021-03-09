@@ -18,6 +18,10 @@
     <div *ngIf="!model">
         <h3>Models</h3>
         <p>Please select a model from the list to view details.</p>
+        <div *ngIf="!isSignedIn">
+            <h4>Cannot see any models?</h4>
+            <p>Please sign in to view all available models.</p>
+        </div>
     </div>
     <div *ngIf="loading">
         <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
@@ -87,5 +91,5 @@
     </div>
 </div>
 
-<mdm-model-actions *ngIf="model && !loading">    
+<mdm-model-actions *ngIf="model && !loading" [model]="model">
 </mdm-model-actions>
