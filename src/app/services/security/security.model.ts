@@ -34,9 +34,9 @@ export interface SignInResult {
   emailAddress: string;
   firstName: string;
   lastName: string;
-  pending: boolean;
-  disabled: boolean;
-  createdBy: string;
+  pending?: boolean;
+  disabled?: boolean;
+  createdBy?: string;
   userRole?: string;
   needsToResetPassword?: boolean;
 }

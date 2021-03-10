@@ -15,6 +15,9 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TestingModule } from '@mdm/modules/testing/testing.module';
 
 import { SignInModalComponent } from './sign-in-modal.component';
 
@@ -24,6 +27,20 @@ describe('SignInModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        TestingModule,
+        ReactiveFormsModule
+      ],
+      providers: [
+        {
+          provide: MatDialogRef,
+          useValue: jest.fn()
+        },
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: jest.fn()
+        }
+      ],
       declarations: [ SignInModalComponent ]
     })
     .compileComponents();

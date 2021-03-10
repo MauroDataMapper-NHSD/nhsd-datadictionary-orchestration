@@ -28,6 +28,9 @@ class NavbarStubComponent {
 @Component({selector: 'mdm-footer', template: ''})
 class FooterStubComponent { }
 
+@Component({selector: 'mdm-loading-indicator', template: ''})
+class LoadingIndicatorStubComponent { }
+
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -37,7 +40,8 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent,
         NavbarStubComponent,
-        FooterStubComponent
+        FooterStubComponent,
+        LoadingIndicatorStubComponent
       ],
     }).compileComponents();
   });
