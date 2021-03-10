@@ -14,9 +14,20 @@
  * limitations under the License.
  */
 
+import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestingModule } from '@mdm/modules/testing/testing.module';
+import { ModelListItem } from '@mdm/services/dashboard/dashboard.model';
 
 import { ModelsComponent } from './models.component';
+
+@Component({selector: 'mdm-model-list', template: ''})
+class ModelListStubComponent { }
+
+@Component({selector: 'mdm-model-detail', template: ''})
+class ModelDetailStubComponent { 
+  @Input() model!: ModelListItem;
+}
 
 describe('ModelsComponent', () => {
   let component: ModelsComponent;
@@ -24,7 +35,14 @@ describe('ModelsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ModelsComponent ]
+      imports: [
+        TestingModule
+      ],
+      declarations: [ 
+        ModelsComponent,
+        ModelListStubComponent,
+        ModelDetailStubComponent
+      ]
     })
     .compileComponents();
   });

@@ -14,17 +14,51 @@
  * limitations under the License.
  */
 
+import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestingModule } from '@mdm/modules/testing/testing.module';
+import { ModelListItem } from '@mdm/services/dashboard/dashboard.model';
+import { DashboardService } from '@mdm/services/dashboard/dashboard.service';
+import { of } from 'rxjs';
 
 import { ModelListComponent } from './model-list.component';
+
+@Component({selector: 'mdm-model-icon', template: ''})
+class ModelIconStubComponent { 
+  @Input() model!: ModelListItem;
+}
+
+interface DashboardServiceStub {
+  getModels: jest.Mock;
+}
 
 describe('ModelsListComponent', () => {
   let component: ModelListComponent;
   let fixture: ComponentFixture<ModelListComponent>;
 
+  const dashboardStub: DashboardServiceStub = {
+    getModels: jest.fn()
+  }
+
+  beforeEach(() => {
+    dashboardStub.getModels.mockImplementationOnce(() => of());
+  });
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ModelListComponent ]
+      imports: [
+        TestingModule
+      ],
+      providers: [
+        {
+          provide: DashboardService,
+          useValue: dashboardStub          
+        }
+      ],
+      declarations: [ 
+        ModelListComponent,
+        ModelIconStubComponent
+      ]
     })
     .compileComponents();
   });

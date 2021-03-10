@@ -14,9 +14,22 @@
  * limitations under the License.
  */
 
+import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestingModule } from '@mdm/modules/testing/testing.module';
+import { ModelListItem } from '@mdm/services/dashboard/dashboard.model';
 
 import { ModelDetailComponent } from './model-detail.component';
+
+@Component({selector: 'mdm-model-icon', template: ''})
+class ModelIconStubComponent { 
+  @Input() model!: ModelListItem;
+}
+
+@Component({selector: 'mdm-model-actions', template: ''})
+class ModelActionsStubComponent { 
+  @Input() model!: ModelListItem;
+}
 
 describe('ModelDetailComponent', () => {
   let component: ModelDetailComponent;
@@ -24,7 +37,14 @@ describe('ModelDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ModelDetailComponent ]
+      imports: [
+        TestingModule
+      ],
+      declarations: [ 
+        ModelDetailComponent,
+        ModelIconStubComponent,
+        ModelActionsStubComponent
+      ]
     })
     .compileComponents();
   });
