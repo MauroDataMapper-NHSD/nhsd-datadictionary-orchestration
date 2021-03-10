@@ -14,24 +14,14 @@
  * limitations under the License.
  */
 
-import { TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/modules/testing/testing.module';
-
-import { SecurityService } from './security.service';
-
-describe('SecurityHandlerService', () => {
-  let service: SecurityService;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        TestingModule
-      ]
-    });
-    service = TestBed.inject(SecurityService);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+module.exports = {
+    presets: [
+        [
+            '@babel/preset-env', {
+                targets: {
+                    node: 'current'
+                }
+            }
+        ]
+    ]
+}

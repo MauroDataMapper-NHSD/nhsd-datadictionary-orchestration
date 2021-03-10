@@ -16,6 +16,7 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestingModule } from '@mdm/modules/testing/testing.module';
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
 
 import { NotImplementedComponent } from './not-implemented.component';
 
@@ -26,7 +27,8 @@ describe('NotImplementedComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        TestingModule
+        TestingModule,
+        NgxJsonViewerModule
       ],
       declarations: [ NotImplementedComponent ]
     })

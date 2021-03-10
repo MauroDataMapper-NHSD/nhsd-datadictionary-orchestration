@@ -9,7 +9,7 @@
     ],
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
-    //"allowJs": true
+    "allowJs": true
   },
   "files": [
     "src/polyfills.ts"

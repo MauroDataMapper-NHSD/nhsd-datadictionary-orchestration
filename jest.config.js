@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-module.exports = {
+module.exports = {  
     preset: 'jest-preset-angular',
-    testEnvironment: 'jsdom',
     setupFilesAfterEnv: [
       '<rootDir>/src/setupJest.ts'
     ],
@@ -27,17 +26,18 @@ module.exports = {
       '.html'
     ],
     transform: {
-      '^.+\\.(ts|html)$': 'ts-jest'
+      '^.+\\.(ts|html)$': 'ts-jest',
+      '^.+\\.js$': 'babel-jest',
     },
     globals: {
-      'ts - jest': {
-        tsConfig: 'tsconfig.spec.json',
-        stringifyContentPathRegex: '\\.html'
+      'ts-jest': {
+        tsconfig: 'tsconfig.spec.json',
+        stringifyContentPathRegex: '\\.html$',
       }
     },
     moduleNameMapper: {
       '^@mdm/(.*)$': '<rootDir>/src/app/$1',
-      '^@env/(.*)$': '<rootDir>/src/environments/$1'
+      '^@env/(.*)$': '<rootDir>/src/environments/$1',
     },
     reporters: [
       'default',
@@ -51,7 +51,6 @@ module.exports = {
     ],
     transformIgnorePatterns: [
       'node_modules/(?!@ngrx|(?!deck.gl)|ng-dynamic)', // Ignore files inside node_modules folder
-      //'^.+\\.js$'
     ]
   };
   

@@ -15,6 +15,7 @@
  */
 
 import { TestBed } from '@angular/core/testing';
+import { TestingModule } from '@mdm/modules/testing/testing.module';
 
 import { LoadingService } from './loading.service';
 
@@ -22,7 +23,11 @@ describe('LoadingService', () => {
   let service: LoadingService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [
+        TestingModule
+      ]
+    });
     service = TestBed.inject(LoadingService);
   });
 

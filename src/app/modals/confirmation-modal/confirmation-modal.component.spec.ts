@@ -15,6 +15,8 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TestingModule } from '@mdm/modules/testing/testing.module';
 
 import { ConfirmationModalComponent } from './confirmation-modal.component';
 
@@ -24,6 +26,19 @@ describe('ConfirmationModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        TestingModule
+      ],
+      providers: [
+        {
+          provide: MatDialogRef,
+          useValue: jest.fn()
+        },
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: jest.fn()
+        }
+      ],
       declarations: [ ConfirmationModalComponent ]
     })
     .compileComponents();

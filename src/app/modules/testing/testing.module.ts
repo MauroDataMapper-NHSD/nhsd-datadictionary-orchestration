@@ -16,11 +16,13 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UIRouterModule } from '@uirouter/angular';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '@mdm/modules/material/material.module';
 import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { MdmResourcesModule } from '../mdm-resources/mdm-resources.module';
 
 @NgModule({
   declarations: [],
@@ -30,11 +32,13 @@ import { ToastrModule } from 'ngx-toastr';
     MaterialModule,
     FormsModule,
     UIRouterModule.forRoot({ useHash: true }),
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    MdmResourcesModule.forRoot({ }),
+    HttpClientTestingModule
   ],
   exports: [
     MaterialModule,
     UIRouterModule
-  ]
+  ],
 })
 export class TestingModule { }
