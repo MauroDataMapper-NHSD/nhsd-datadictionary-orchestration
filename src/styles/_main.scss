@@ -30,6 +30,8 @@
  * limitations under the License.
  */
 
+@import "styles/abstracts/variables";
+
 /* Large Devices, Wide Screens */
 @media only screen and (max-width: 2400px) {
     .resizableLeft {
@@ -149,4 +151,8 @@ img.profile-picture {
 
 .not-allowed-cursor {
     cursor: not-allowed;
+}
+
+mat-icon.model-type {
+    color: $defaultIconColor;
 }

@@ -17,14 +17,33 @@
 import { Injectable } from '@angular/core';
 import { RawParams, TransitionOptions, UIRouter } from '@uirouter/angular';
 
+export enum CommonUiStates {
+  Default,
+  Models
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class StateHandlerService {
 
+  private readonly commonStates: { key: CommonUiStates, state: string}[] = [
+    { key: CommonUiStates.Default, state: 'app.container.default' },
+    { key: CommonUiStates.Models, state: 'app.container.models' }
+  ];
+
   constructor(private router: UIRouter) { }
 
   go(name: string, params?: RawParams, options?: TransitionOptions) {
     return this.router.stateService.go(name, params, options);
+  }
+
+  goTo(state: CommonUiStates, params?: RawParams, options?: TransitionOptions) {
+    const commonState = this.commonStates.find(s => s.key === state);
+    if (!commonState) {
+      throw new Error(`Cannot find common state ${state}`);
+    }
+
+    return this.go(commonState.state, params, options);
   }
 }

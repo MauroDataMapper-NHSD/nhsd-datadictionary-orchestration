@@ -14,4 +14,9 @@
  limitations under the License.
 -->
 
-<p>TODO: about page content</p>
+<mat-icon 
+    fontSet="fas" 
+    [fontIcon]="model.getIcon()" 
+    class="{{size}} model-type" 
+    [attr.aria-label]="model.domainType + ' icon'">
+</mat-icon>

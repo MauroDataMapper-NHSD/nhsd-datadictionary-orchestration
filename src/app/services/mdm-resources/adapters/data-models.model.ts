@@ -14,13 +14,21 @@
  * limitations under the License.
  */
 
+import { MauroModel, MauroModelDetail, MdmResourcesIndexResponse, MdmResourcesResponse } from "../mdm-resources.model";
 
-$defaultFontSize: 17px;
-$defaultFontColour: #333;
-$defaultLinkColour: #337AB7;
-$defaultIconColor: #f19e3f;
+export enum DataModelType {
+  DataStandard = 'Data Standard',
+  DataAsset = 'Data Asset'
+}
 
-$mobile-xs: 460px;
-$mobile: 768px;
-$tablet: 992px;
-$desktop: 1600px;
+export interface DataModeTraits {
+  type: DataModelType;
+}
+
+export interface DataModel extends MauroModel, DataModeTraits { }
+
+export interface DataModelDetail extends MauroModelDetail, DataModeTraits { }
+
+export type DataModelIndexResponse = MdmResourcesIndexResponse<DataModel>;
+
+export type DataModelDetailResponse = MdmResourcesResponse<DataModelDetail>;

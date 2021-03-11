@@ -14,13 +14,25 @@
  * limitations under the License.
  */
 
+import { Component, OnInit } from '@angular/core';
+import { ModelListItem } from '@mdm/services/dashboard/dashboard.model';
 
-$defaultFontSize: 17px;
-$defaultFontColour: #333;
-$defaultLinkColour: #337AB7;
-$defaultIconColor: #f19e3f;
+@Component({
+  selector: 'mdm-models',
+  templateUrl: './models.component.html',
+  styleUrls: ['./models.component.scss']
+})
+export class ModelsComponent implements OnInit {
 
-$mobile-xs: 460px;
-$mobile: 768px;
-$tablet: 992px;
-$desktop: 1600px;
+  selectedModel?: ModelListItem;
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+  modelSelected(model: ModelListItem) {
+    this.selectedModel = model;
+  }
+
+}

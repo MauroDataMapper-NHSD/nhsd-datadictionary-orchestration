@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
+import { MauroModel, MauroModelDetail, MdmResourcesIndexResponse, MdmResourcesResponse } from "../mdm-resources.model";
 
-$defaultFontSize: 17px;
-$defaultFontColour: #333;
-$defaultLinkColour: #337AB7;
-$defaultIconColor: #f19e3f;
+export interface CodeSet extends MauroModel { }
 
-$mobile-xs: 460px;
-$mobile: 768px;
-$tablet: 992px;
-$desktop: 1600px;
+export interface CodeSetDetail extends MauroModelDetail { }
+
+export type CodeSetIndexResponse = MdmResourcesIndexResponse<CodeSet>;
+
+export type CodeSetDetailResponse = MdmResourcesResponse<CodeSetDetail>;

@@ -14,13 +14,35 @@
  * limitations under the License.
  */
 
+ $toolbarSize: 44px;
 
-$defaultFontSize: 17px;
-$defaultFontColour: #333;
-$defaultLinkColour: #337AB7;
-$defaultIconColor: #f19e3f;
+ .mdm-model-list__toolbar {
+     position: relative;
+     display: flex;
+     flex-wrap: wrap;
+     align-items: stretch;
+     width: 100%;
 
-$mobile-xs: 460px;
-$mobile: 768px;
-$tablet: 992px;
-$desktop: 1600px;
+     input {
+         position: relative;
+         flex: 1 1 0%;
+         height: $toolbarSize;
+     }
+
+     button {
+         padding: 0;
+         min-width: $toolbarSize;
+         height: $toolbarSize;
+     }
+ }
+
+.mdm-model-list__list {
+    width: 100%;
+    height: calc(100vh - 200px);
+    overflow-y: auto;
+
+    .mdm-model-list__item {
+        font-size: 18px!important;
+    }
+
+}

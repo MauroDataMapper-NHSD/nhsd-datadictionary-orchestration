@@ -20,7 +20,7 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { EMPTY, Subject } from 'rxjs';
-import { catchError, takeUntil } from 'rxjs/operators';
+import { catchError, finalize, takeUntil } from 'rxjs/operators';
 import { NavbarLinkGroup } from './layout/navbar/navbar.model';
 import { SignInModalComponent } from './modals/sign-in-modal/sign-in-modal.component';
 import { BroadcastEvent } from './services/broadcast/broadcast.model';
@@ -28,7 +28,7 @@ import { BroadcastService } from './services/broadcast/broadcast.service';
 import { MdmResourcesError } from './services/mdm-resources/mdm-resources.model';
 import { SecurityService } from './services/security/security.service';
 import { SharedService } from './services/shared/shared.service';
-import { StateHandlerService } from './services/state-handler/state-handler.service';
+import { CommonUiStates, StateHandlerService } from './services/state-handler/state-handler.service';
 import { ThemingService } from './services/theming/theming.service';
 import { UserIdleService } from 'angular-user-idle';
 import { UserDetails } from './services/security/security.model';
@@ -59,6 +59,11 @@ export class AppComponent implements OnInit, OnDestroy {
           icon: 'fa-home'
         },
         {
+          label: 'Models',
+          uiSref: 'app.container.models',
+          icon: 'fa-file-alt'
+        },
+        {
           label: 'About',
           uiSref: 'app.container.about',
           icon: 'fa-info-circle'
@@ -74,9 +79,9 @@ export class AppComponent implements OnInit, OnDestroy {
     private security: SecurityService,
     private dialog: MatDialog,
     private toastr: ToastrService,
-    private theming: ThemingService,    
+    private theming: ThemingService,
     private overlayContainer: OverlayContainer,
-    private userIdle: UserIdleService) { }  
+    private userIdle: UserIdleService) { }
 
   ngOnInit(): void {
     this.setTheme();
@@ -145,6 +150,8 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe(user => {
         if (user) {
           this.broadcast.dispatch(BroadcastEvent.SignedIn, user);
+          this.toastr.clear();
+          this.stateHandler.goTo(CommonUiStates.Models, { }, { reload: true, inherit: false });
         }
       });
   }
@@ -153,12 +160,14 @@ export class AppComponent implements OnInit, OnDestroy {
     this.security
       .signOut()
       .pipe(
-        catchError((error: MdmResourcesError) => {
-          this.toastr.error(`There was a problem signing out: ${error.response.message}`);
-          return EMPTY;
+        finalize(() => {
+          this.broadcast.dispatch(BroadcastEvent.SignedOut);
+          this.stateHandler.goTo(CommonUiStates.Default);
         })
       )
-      .subscribe(() => this.broadcast.dispatch(BroadcastEvent.SignedOut));
+      .subscribe(
+        () => { }, 
+        (error: MdmResourcesError) => console.error(`There was a problem signing out: ${error.response.status} ${error.response.message}`));      
   }
 
   private setupIdleTimer() {

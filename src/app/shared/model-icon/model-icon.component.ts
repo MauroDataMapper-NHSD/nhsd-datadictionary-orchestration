@@ -14,13 +14,24 @@
  * limitations under the License.
  */
 
+import { Component, Input, OnInit } from '@angular/core';
+import { ModelListItem } from '@mdm/services/dashboard/dashboard.model';
 
-$defaultFontSize: 17px;
-$defaultFontColour: #333;
-$defaultLinkColour: #337AB7;
-$defaultIconColor: #f19e3f;
+export type ModelIconSize = 'fa-sm' | 'fa-md' | 'fa-lg';
 
-$mobile-xs: 460px;
-$mobile: 768px;
-$tablet: 992px;
-$desktop: 1600px;
+@Component({
+  selector: 'mdm-model-icon',
+  templateUrl: './model-icon.component.html',
+  styleUrls: ['./model-icon.component.scss']
+})
+export class ModelIconComponent implements OnInit {
+
+  @Input() model!: ModelListItem;
+  @Input() size: ModelIconSize = 'fa-sm';
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}

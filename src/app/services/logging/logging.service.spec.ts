@@ -14,13 +14,24 @@
  * limitations under the License.
  */
 
+import { TestBed } from '@angular/core/testing';
+import { TestingModule } from '@mdm/modules/testing/testing.module';
 
-$defaultFontSize: 17px;
-$defaultFontColour: #333;
-$defaultLinkColour: #337AB7;
-$defaultIconColor: #f19e3f;
+import { LoggingService } from './logging.service';
 
-$mobile-xs: 460px;
-$mobile: 768px;
-$tablet: 992px;
-$desktop: 1600px;
+describe('LoggingService', () => {
+  let service: LoggingService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        TestingModule
+      ]
+    });
+    service = TestBed.inject(LoggingService);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});

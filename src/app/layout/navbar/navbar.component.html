@@ -29,15 +29,15 @@
                 </div>
                 <span class="spacer"></span>
                 <div class="mdm-navbar__menu" fxShow="true" fxHide.lt-md="true">
-                    <div *ngIf="!isLoggedIn">
-                        <button (click)="login()" mat-stroked-button class="custom inverted-button">Log in</button>
+                    <div *ngIf="!isSignedIn">
+                        <button (click)="signIn()" mat-stroked-button class="custom inverted-button">Sign in</button>
                     </div>
-                    <div *ngIf="isLoggedIn">
+                    <div *ngIf="isSignedIn">
                         <mdm-user [user]="profile" layout="row" [matMenuTriggerFor]="menu"></mdm-user>                        
                         <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
-                            <button *ngIf="isLoggedIn" (click)="logout()" class="mdm-navbar__logout">
+                            <button *ngIf="isSignedIn" (click)="signOut()" class="mdm-navbar__logout">
                                 <i class="fas fa-sign-out-alt"></i>
-                                <span>Log out</span>
+                                <span>Sign out</span>
                             </button>
                         </mat-menu>
                     </div>
@@ -55,7 +55,7 @@
         <mat-sidenav #sidenav class="mdm-navbar__sidenav" mode="over" fixedInViewport="true" fixedTopGap="0"
             fixedBottomGap="0" opened="false" position="end" [autoFocus]="false" fxLayout="column" fxLayoutAlign="center center">
             <nav>
-                <mdm-user *ngIf="isLoggedIn" [user]="profile" layout="column"></mdm-user>
+                <mdm-user *ngIf="isSignedIn" [user]="profile" layout="column"></mdm-user>
                 <div class="mdm-navbar__link-group">                    
                     <div *ngFor="let group of linkGroups">
                         <h5>{{group.label}}</h5>
@@ -68,12 +68,12 @@
                     </div>                    
                 </div>
             </nav>
-            <div *ngIf="!isLoggedIn" class="mdm-navbar__login">
-                <button (click)="login()" mat-flat-button class="custom" color="primary">Log in</button>
+            <div *ngIf="!isSignedIn" class="mdm-navbar__login">
+                <button (click)="signIn()" mat-flat-button class="custom" color="primary">Sign in</button>
             </div>
-            <button *ngIf="isLoggedIn" (click)="logout()" class="mdm-navbar__logout">
+            <button *ngIf="isSignedIn" (click)="signOut()" class="mdm-navbar__logout">
                 <i class="fas fa-sign-out-alt"></i>
-                <span>Log out</span>
+                <span>Sign out</span>
             </button>
         </mat-sidenav>
         <mat-sidenav-content>

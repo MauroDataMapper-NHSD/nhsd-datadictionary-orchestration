@@ -18,7 +18,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AdministrationSessionResponse, SignInError, SignInCredentials, SignInResponse, UserDetails, AuthenticatedSessionResponse, AuthenticatedSessionError } from '@mdm/services/security/security.model';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, finalize, map, switchMap, tap } from 'rxjs/operators';
+import { LoggingService } from '../logging/logging.service';
 import { MdmResourcesError } from '../mdm-resources/mdm-resources.model';
 import { MdmResourcesService } from '../mdm-resources/mdm-resources.service';
 
@@ -27,7 +28,8 @@ import { MdmResourcesService } from '../mdm-resources/mdm-resources.service';
 })
 export class SecurityService {
 
-  constructor(private resources: MdmResourcesService) { }
+  constructor(
+    private resources: MdmResourcesService) { }
 
   /**
    * Sign in a user to the Mauro system.
@@ -75,11 +77,13 @@ export class SecurityService {
     return this.resources.security
       .logout({ responseType: 'text'})
       .pipe(
-        catchError((error: HttpErrorResponse) => throwError(new MdmResourcesError(error))),
-        tap(() => {
+        catchError((error: HttpErrorResponse) => {
+          return throwError(new MdmResourcesError(error))
+        }),        
+        map(() => EMPTY),
+        finalize(() => {
           this.removeUserFromLocalStorage();
         }),
-        map(() => EMPTY)
       );
   }
 
