@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
- import * as packageFile from '../../package.json';
+ const webpack = require('webpack');
 
-export const environment = {
-  version: packageFile?.version ?? '',
-  production: true,
-  apiEndpoint: $ENV.apiEndpoint ?? 'api',
-  themeName: $ENV.themeName ?? 'nhs-digital',
-  name: 'production',
-  appTitle: 'NHS Digital Data Dictionary Orchestrator',
-  appDescription: 'Orchestrates the data dictionary created by NHS Digital.',
-};
+ module.exports = {
+   plugins: [
+     new webpack.DefinePlugin({
+       $ENV: {
+         apiEndpoint: JSON.stringify(process.env['MDM_UI_API_ENDPOINT']),
+         themeName: JSON.stringify(process.env['MDM_UI_THEME_NAME'])
+       }
+     })
+   ]
+ };

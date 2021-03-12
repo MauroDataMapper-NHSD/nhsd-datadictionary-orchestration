@@ -28,6 +28,7 @@ import { SecurityService } from '../security/security.service';
 })
 export class SharedService {
 
+  appVersion = environment.version;
   backendUrl = environment.apiEndpoint;
   appTitle = environment.appTitle;
   checkSessionExpiryTimeout = environment.checkSessionExpiryTimeout;

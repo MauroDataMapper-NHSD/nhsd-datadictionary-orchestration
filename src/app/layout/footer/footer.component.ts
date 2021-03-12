@@ -15,6 +15,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { SharedService } from '@mdm/services/shared/shared.service';
 
 @Component({
   selector: 'mdm-footer',
@@ -24,8 +25,9 @@ import { Component, OnInit } from '@angular/core';
 export class FooterComponent implements OnInit {
 
   year = new Date().getFullYear();
+  version = this.shared.appVersion;
 
-  constructor() { }
+  constructor(private shared: SharedService) { }
 
   ngOnInit(): void {
   }

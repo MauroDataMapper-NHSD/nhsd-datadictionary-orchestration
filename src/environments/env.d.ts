@@ -14,14 +14,9 @@
  * limitations under the License.
  */
 
- import * as packageFile from '../../package.json';
-
-export const environment = {
-  version: packageFile?.version ?? '',
-  production: true,
-  apiEndpoint: $ENV.apiEndpoint ?? 'api',
-  themeName: $ENV.themeName ?? 'nhs-digital',
-  name: 'production',
-  appTitle: 'NHS Digital Data Dictionary Orchestrator',
-  appDescription: 'Orchestrates the data dictionary created by NHS Digital.',
-};
+ interface Env {
+    apiEndpoint: string,
+    themeName: string;
+  }
+  
+  declare var $ENV: Env;
