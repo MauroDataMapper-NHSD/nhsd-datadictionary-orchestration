@@ -21,6 +21,8 @@ import { CodeSetDetail } from '../mdm-resources/adapters/code-sets.model';
 import { CodeSetsService } from '../mdm-resources/adapters/code-sets.service';
 import { DataModelDetail } from '../mdm-resources/adapters/data-models.model';
 import { DataModelsService } from '../mdm-resources/adapters/data-models.service';
+import { Statistics } from '../mdm-resources/adapters/nhs-data-dictionary.model';
+import { NhsDataDictionaryService } from '../mdm-resources/adapters/nhs-data-dictionary.service';
 import { TerminologyDetail } from '../mdm-resources/adapters/terminology.model';
 import { TerminologyService } from '../mdm-resources/adapters/terminology.service';
 import { DomainType } from '../mdm-resources/mdm-resources.model';
@@ -34,7 +36,8 @@ export class DashboardService {
   constructor(
     private dataModel: DataModelsService,
     private codeSet: CodeSetsService,
-    private terminology: TerminologyService) { }
+    private terminology: TerminologyService,
+    private nhsDataDictionary: NhsDataDictionaryService) { }
 
   getModels(): Observable<DataDictionaryModel[]> {
     return combineLatest([
@@ -66,5 +69,9 @@ export class DashboardService {
     }
 
     return of(undefined);
+  }
+
+  getStatistics(): Observable<Statistics> {
+    return this.nhsDataDictionary.statistics();
   }
 }

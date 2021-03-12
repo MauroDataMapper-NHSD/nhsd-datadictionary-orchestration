@@ -91,5 +91,8 @@
     </div>
 </div>
 
+<mdm-statistics-table *ngIf="model && !loading">
+</mdm-statistics-table>
+
 <mdm-model-actions *ngIf="model && !loading" [model]="model">
 </mdm-model-actions>

@@ -36,6 +36,7 @@ import { ModelDetailComponent } from '../../model-detail/model-detail.component'
 import { ModelActionsComponent } from '../../model-actions/model-actions.component';
 import { SharedModule } from '../shared/shared.module';
 import { UserComponent } from '@mdm/shared/user/user.component';
+import { StatisticsTableComponent } from '../../shared/statistics-table/statistics-table.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { UserComponent } from '@mdm/shared/user/user.component';
     ServerErrorComponent,
     ModelsComponent,
     ModelDetailComponent,
-    ModelActionsComponent
+    ModelActionsComponent,
+    StatisticsTableComponent
   ],
   imports: [
     CommonModule,
