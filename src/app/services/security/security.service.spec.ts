@@ -22,13 +22,16 @@ import { cold } from 'jest-marbles';
 
 import { SecurityService } from './security.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { EMPTY } from 'rxjs';
 
 interface MdmSecurityResourceStub {
   login: jest.Mock;
+  logout: jest.Mock;
 }
 
 interface MdmSessionResourceStub {
   isApplicationAdministration: jest.Mock;
+  isAuthenticated: jest.Mock;
 }
 
 interface MdmResourcesServiceStub {
@@ -41,9 +44,11 @@ describe('SecurityHandlerService', () => {
   const resourcesStub: MdmResourcesServiceStub = {
     security: {
       login: jest.fn(),
+      logout: jest.fn()
     },
     session: {
-      isApplicationAdministration: jest.fn()
+      isApplicationAdministration: jest.fn(),
+      isAuthenticated: jest.fn()
     }
   };
 
@@ -70,49 +75,87 @@ describe('SecurityHandlerService', () => {
     ['123', 'user@test.com', false],
     ['456', 'admin@test.com', true]
   ])
-  ('should sign in user %s %s when admin = %o', (id, userName, isAdmin) => {
-    const credentials: SignInCredentials = { username: userName, password: 'test' };
-    const expectedUser: UserDetails = {
-      id: id,
-      userName: userName,
-      firstName: 'first',
-      lastName: 'last',
-      isAdmin: isAdmin,
-      needsToResetPassword: false,
-      role: '',
-      token: undefined
-    };
+    ('should sign in user %s %s when admin = %o', (id, userName, isAdmin) => {
+      const credentials: SignInCredentials = { username: userName, password: 'test' };
+      const expectedUser: UserDetails = {
+        id: id,
+        userName: userName,
+        firstName: 'first',
+        lastName: 'last',
+        isAdmin: isAdmin,
+        needsToResetPassword: false,
+        role: '',
+        token: undefined
+      };
 
-    resourcesStub.security.login.mockImplementationOnce(() => cold('--a|', {
-      a: {
-        body: {
-          id: expectedUser.id,
-          emailAddress: expectedUser.userName,
-          firstName: expectedUser.firstName,
-          lastName: expectedUser.lastName
+      resourcesStub.security.login.mockImplementationOnce(() => cold('--a|', {
+        a: {
+          body: {
+            id: expectedUser.id,
+            emailAddress: expectedUser.userName,
+            firstName: expectedUser.firstName,
+            lastName: expectedUser.lastName
+          }
         }
-      }
-    }));
+      }));
 
-    resourcesStub.session.isApplicationAdministration.mockImplementationOnce(() => cold('--a|', { 
-      a: {
-        body: {
-          applicationAdministrationSession: expectedUser.isAdmin
+      resourcesStub.session.isApplicationAdministration.mockImplementationOnce(() => cold('--a|', {
+        a: {
+          body: {
+            applicationAdministrationSession: expectedUser.isAdmin
+          }
         }
-      }
-    }));
+      }));
 
-    const expected$ = cold('----a|', { a: expectedUser });
-    const actual$ = service.signIn(credentials);
+      const expected$ = cold('----a|', { a: expectedUser });
+      const actual$ = service.signIn(credentials);
 
-    expect(actual$).toBeObservable(expected$);
-  })
+      expect(actual$).toBeObservable(expected$);
+    })
 
   it('should throw error if sign in fails', () => {
     resourcesStub.security.login.mockImplementationOnce(() => cold('--#', null, new HttpErrorResponse({})));
-    
+
     const expected$ = cold('--#');
     const actual$ = service.signIn({ username: 'fail', password: 'fail' });
+    expect(actual$).toBeObservable(expected$);
+  })
+
+  it('should sign out user', () => {
+    resourcesStub.security.logout.mockImplementationOnce(() => cold('--a|', { a: EMPTY }));
+
+    const expected$ = cold('--a|', { a: undefined });
+    const actual$ = service.signOut();
+    expect(actual$).toBeObservable(expected$);
+  })
+
+  it('should throw error if sign out fails', () => {
+    resourcesStub.security.logout.mockImplementationOnce(() => cold('--#', null, new HttpErrorResponse({})));
+
+    const expected$ = cold('--#');
+    const actual$ = service.signOut();
+    expect(actual$).toBeObservable(expected$);
+  })
+
+  it.each([true, false])('should return %o for an authenticated session', (authenticated) => {
+    resourcesStub.session.isAuthenticated.mockImplementationOnce(() => cold('--a|', {
+      a: {
+        body: {
+          authenticatedSession: authenticated
+        }
+      }
+    }));
+
+    const expected$ = cold('--a|', { a: authenticated });
+    const actual$ = service.isAuthenticated();
+    expect(actual$).toBeObservable(expected$);
+  })
+
+  it('should throw error if authentication fails', () => {
+    resourcesStub.session.isAuthenticated.mockImplementationOnce(() => cold('--#', null, new HttpErrorResponse({})));
+
+    const expected$ = cold('--#');
+    const actual$ = service.isAuthenticated();
     expect(actual$).toBeObservable(expected$);
   })
 });

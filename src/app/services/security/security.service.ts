@@ -73,14 +73,14 @@ export class SecurityService {
    * @returns An `Observable<never>` to subscribe to when sign out is successful.
    * @throws `MdmResourcesError` in the observable stream if sign-out failed.
    */
-  signOut(): Observable<never> {
+  signOut(): Observable<void> {
     return this.resources.security
       .logout({ responseType: 'text'})
       .pipe(
         catchError((error: HttpErrorResponse) => {
           return throwError(new MdmResourcesError(error))
         }),        
-        map(() => EMPTY),
+        map(() => { }),
         finalize(() => {
           this.removeUserFromLocalStorage();
         }),
