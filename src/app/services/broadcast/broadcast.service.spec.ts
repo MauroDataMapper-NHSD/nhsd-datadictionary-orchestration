@@ -16,11 +16,13 @@
 
 import { TestBed } from '@angular/core/testing';
 import { TestingModule } from '@mdm/modules/testing/testing.module';
+import { cold } from 'jest-marbles';
+import { BroadcastEvent } from './broadcast.model';
 
 import { BroadcastService } from './broadcast.service';
 
 describe('BroadcastService', () => {
-  let service: BroadcastService;
+  let service: BroadcastService;  
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -33,5 +35,23 @@ describe('BroadcastService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
-  });
+  });    
+
+  const getBroadcastEvents = (): BroadcastEvent[] => {
+    return Object
+      .keys(BroadcastEvent)
+      .filter(value => !isNaN(Number(value)))
+      .map((key: any) => (<unknown>BroadcastEvent[key]) as BroadcastEvent);
+  };
+
+  it.each(getBroadcastEvents())('should dispatch events when %o is broadcast', (event) => {
+    const payload = 42;
+
+    cold('-a').subscribe(() => service.dispatch(event, payload));
+
+    const expected$ = cold('-a', { a: payload });
+    const actual$ = service.on(event);
+
+    expect(actual$).toBeObservable(expected$);
+  })
 });
