@@ -19,7 +19,7 @@
 export const environment = {
   version: packageFile?.version ?? '',
   production: true,
-  apiEndpoint: $ENV.apiEndpoint ?? 'api',
+  apiEndpoint: 'api',
   themeName: $ENV.themeName ?? 'nhs-digital',
   name: 'production',
   appTitle: 'NHS Digital Data Dictionary Orchestrator',

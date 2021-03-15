@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
- interface Env {
-    apiEndpoint: string,
+ interface EnvironmentVariables {
     themeName: string;
   }
   
-  declare var $ENV: Env;
+  declare var $ENV: EnvironmentVariables;

@@ -20,7 +20,6 @@
    plugins: [
      new webpack.DefinePlugin({
        $ENV: {
-         apiEndpoint: JSON.stringify(process.env['MDM_UI_API_ENDPOINT']),
          themeName: JSON.stringify(process.env['MDM_UI_THEME_NAME'])
        }
      })
