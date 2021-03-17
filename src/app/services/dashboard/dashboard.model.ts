@@ -71,7 +71,7 @@ export class Version {
   }
 }
 
-export class ModelListItem {
+export class DataDictionaryModel {
   id: string;
   domainType: DomainType;
   label: string;
@@ -138,7 +138,7 @@ export class ModelListItem {
     }
   }
 
-  compareTo(other?: ModelListItem) {
+  compareTo(other?: DataDictionaryModel) {
     if (this === other) {
       return 0;
     }

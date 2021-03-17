@@ -26,7 +26,8 @@ export enum BroadcastEvent {
   RequestSignIn,
   SignedIn,
   RequestSignOut,
-  SignedOut
+  SignedOut,
+  ModelChanged
 }
 
 /**

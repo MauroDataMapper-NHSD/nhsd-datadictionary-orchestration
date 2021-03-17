@@ -16,7 +16,7 @@
 
 import { AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { MatSelectionListChange } from '@angular/material/list';
-import { ModelListItem } from '@mdm/services/dashboard/dashboard.model';
+import { DataDictionaryModel } from '@mdm/services/dashboard/dashboard.model';
 import { DashboardService } from '@mdm/services/dashboard/dashboard.service';
 import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, map, takeUntil } from 'rxjs/operators';
@@ -28,12 +28,12 @@ import { debounceTime, distinctUntilChanged, finalize, map, takeUntil } from 'rx
 })
 export class ModelListComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  @Output() selectedModel = new EventEmitter<ModelListItem>();
+  @Output() selectedModel = new EventEmitter<DataDictionaryModel>();
 
   @ViewChild('searchInput') searchInput!: ElementRef;
 
-  dataSource: ModelListItem[] = [];
-  displayModels: ModelListItem[] = [];
+  dataSource: DataDictionaryModel[] = [];
+  displayModels: DataDictionaryModel[] = [];
   loading = false;
 
   /**
@@ -93,13 +93,13 @@ export class ModelListComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(models => this.displayModels = models);
   }
 
-  private applyDataSource(source: ModelListItem[], query?: string) {
+  private applyDataSource(source: DataDictionaryModel[], query?: string) {
     return this
       .filterModels(source, query)
       .sort((first, second) => first.compareTo(second));
   }
 
-  private filterModels(source: ModelListItem[], query?: string) {
+  private filterModels(source: DataDictionaryModel[], query?: string) {
     if (!query || query.length === 0) {
       return source;
     }

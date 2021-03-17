@@ -16,7 +16,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { ModelListItem } from '@mdm/services/dashboard/dashboard.model';
+import { DataDictionaryModel } from '@mdm/services/dashboard/dashboard.model';
 import { ModalDialogStatus } from '../modal.model';
 import { ModelSelectorModalResult } from './model-selector-modal.model';
 
@@ -27,7 +27,7 @@ import { ModelSelectorModalResult } from './model-selector-modal.model';
 })
 export class ModelSelectorModalComponent implements OnInit {
 
-  selected?: ModelListItem;
+  selected?: DataDictionaryModel;
 
   get isSelected() {
     return !!this.selected;
@@ -38,7 +38,7 @@ export class ModelSelectorModalComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  modelSelected(model: ModelListItem) {
+  modelSelected(model: DataDictionaryModel) {
     this.selected = model;
   }
 

@@ -14,25 +14,44 @@
  * limitations under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
-import { ModelListItem } from '@mdm/services/dashboard/dashboard.model';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { BroadcastEvent } from '@mdm/services/broadcast/broadcast.model';
+import { BroadcastService } from '@mdm/services/broadcast/broadcast.service';
+import { DataDictionaryModel } from '@mdm/services/dashboard/dashboard.model';
+import { SharedService } from '@mdm/services/shared/shared.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'mdm-models',
   templateUrl: './models.component.html',
   styleUrls: ['./models.component.scss']
 })
-export class ModelsComponent implements OnInit {
+export class ModelsComponent implements OnInit, OnDestroy {
 
-  selectedModel?: ModelListItem;
+  selectedModel?: DataDictionaryModel;
 
-  constructor() { }
+  /**
+   * Signal to attach to subscriptions to trigger when they should be unsubscribed.
+   */
+  private unsubscribe$ = new Subject();
+
+  constructor(
+    private shared: SharedService,
+    private broadcast: BroadcastService) { }  
 
   ngOnInit(): void {
+    this.selectedModel = this.shared.currentModel;
+
+    this.broadcast
+      .on<DataDictionaryModel>(BroadcastEvent.ModelChanged)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(model => this.selectedModel = model);
   }
 
-  modelSelected(model: ModelListItem) {
-    this.selectedModel = model;
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

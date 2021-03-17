@@ -15,7 +15,7 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { ModelListItem } from '@mdm/services/dashboard/dashboard.model';
+import { DataDictionaryModel } from '@mdm/services/dashboard/dashboard.model';
 
 @Component({
   selector: 'mdm-model-item-banner',
@@ -24,7 +24,7 @@ import { ModelListItem } from '@mdm/services/dashboard/dashboard.model';
 })
 export class ModelItemBannerComponent implements OnInit {
 
-  @Input() model?: ModelListItem;
+  @Input() model?: DataDictionaryModel;
 
   constructor() { }
 

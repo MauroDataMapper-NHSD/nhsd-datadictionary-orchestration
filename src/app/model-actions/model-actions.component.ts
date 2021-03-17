@@ -15,7 +15,7 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { ModelListItem } from '@mdm/services/dashboard/dashboard.model';
+import { DataDictionaryModel } from '@mdm/services/dashboard/dashboard.model';
 import { SecurityService } from '@mdm/services/security/security.service';
 
 @Component({
@@ -25,7 +25,7 @@ import { SecurityService } from '@mdm/services/security/security.service';
 })
 export class ModelActionsComponent implements OnInit {
 
-  @Input() model?: ModelListItem;
+  @Input() model?: DataDictionaryModel;
 
   constructor(private security: SecurityService) { }
 

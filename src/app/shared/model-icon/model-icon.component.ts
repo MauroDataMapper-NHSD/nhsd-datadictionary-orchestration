@@ -15,7 +15,7 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { ModelListItem } from '@mdm/services/dashboard/dashboard.model';
+import { DataDictionaryModel } from '@mdm/services/dashboard/dashboard.model';
 
 export type ModelIconSize = 'fa-sm' | 'fa-md' | 'fa-lg';
 
@@ -26,7 +26,7 @@ export type ModelIconSize = 'fa-sm' | 'fa-md' | 'fa-lg';
 })
 export class ModelIconComponent implements OnInit {
 
-  @Input() model!: ModelListItem;
+  @Input() model!: DataDictionaryModel;
   @Input() size: ModelIconSize = 'fa-sm';
 
   constructor() { }

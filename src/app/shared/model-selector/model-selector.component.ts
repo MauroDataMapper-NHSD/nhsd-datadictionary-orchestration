@@ -19,7 +19,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { ModalDialogStatus } from '@mdm/modals/modal.model';
 import { ModelSelectorModalComponent } from '@mdm/modals/model-selector-modal/model-selector-modal.component';
 import { ModelSelectorModalConfig, ModelSelectorModalResult } from '@mdm/modals/model-selector-modal/model-selector-modal.model';
-import { ModelListItem } from '@mdm/services/dashboard/dashboard.model';
+import { BroadcastEvent } from '@mdm/services/broadcast/broadcast.model';
+import { BroadcastService } from '@mdm/services/broadcast/broadcast.service';
+import { DataDictionaryModel } from '@mdm/services/dashboard/dashboard.model';
+import { SharedService } from '@mdm/services/shared/shared.service';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -29,11 +32,15 @@ import { filter } from 'rxjs/operators';
 })
 export class ModelSelectorComponent implements OnInit {
 
-  selected?: ModelListItem;
+  selected?: DataDictionaryModel;
 
-  constructor(private dialog: MatDialog) { }
+  constructor(
+    private dialog: MatDialog,
+    private shared: SharedService,
+    private broadcast: BroadcastService) { }
 
   ngOnInit(): void {
+    this.selected = this.shared.currentModel;
   }
 
   selectModel() {
@@ -45,6 +52,7 @@ export class ModelSelectorComponent implements OnInit {
       )
       .subscribe(result => {
         this.selected = result?.model;
+        this.broadcast.dispatch(BroadcastEvent.ModelChanged, this.selected);
       })
   }
 

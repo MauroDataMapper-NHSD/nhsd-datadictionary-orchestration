@@ -15,7 +15,7 @@
  */
 
 import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { ModelListItem } from '@mdm/services/dashboard/dashboard.model';
+import { DataDictionaryModel } from '@mdm/services/dashboard/dashboard.model';
 import { DashboardService } from '@mdm/services/dashboard/dashboard.service';
 import { CodeSetDetail } from '@mdm/services/mdm-resources/adapters/code-sets.model';
 import { DataModelDetail } from '@mdm/services/mdm-resources/adapters/data-models.model';
@@ -30,7 +30,7 @@ import { finalize } from 'rxjs/operators';
 })
 export class ModelDetailComponent implements OnInit, AfterViewInit, OnChanges {
 
-  @Input() model?: ModelListItem;
+  @Input() model?: DataDictionaryModel;
 
   detail: DataModelDetail | CodeSetDetail | TerminologyDetail | undefined;
   loading = false;
