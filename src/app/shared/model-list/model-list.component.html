@@ -32,7 +32,8 @@
                 </div>
             </mat-list-option>
             <mat-list-option *ngFor="let model of displayModels" [value]="model">
-                <div class="mdm-model-list__item">
+                <mdm-model-item-banner [model]="model"></mdm-model-item-banner>
+                <!-- <div class="mdm-model-list__item">
                     <mdm-model-icon [model]="model" size="fa-sm"></mdm-model-icon>
                     <span>{{model.label}}</span>
                     <small *ngIf="model.hasBranch && !model.isFinalised">
@@ -45,7 +46,7 @@
                         <i class="fas fa-file-alt"></i>
                         {{model.modelVersion}}
                     </small>
-                </div>
+                </div> -->
             </mat-list-option>
         </mat-selection-list>
     </div>

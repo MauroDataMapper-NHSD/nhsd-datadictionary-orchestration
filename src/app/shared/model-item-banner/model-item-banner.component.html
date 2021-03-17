@@ -14,16 +14,17 @@
  limitations under the License.
 -->
 
-<div class="container-fluid">
-    <div class="row">
-        <mdm-model-selector></mdm-model-selector>
-    </div>
-    <div class="row">
-        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-            <mdm-model-list (selectedModel)="modelSelected($event)"></mdm-model-list>
-        </div>
-        <div class="col-lg-6 col-md-12 col-xs-12 col-sm-12">
-            <mdm-model-detail [model]="selectedModel"></mdm-model-detail>
-        </div>
-    </div>
+<div *ngIf="model" class="mdm-model-item-banner">
+    <mdm-model-icon [model]="model" size="fa-sm"></mdm-model-icon>
+    <span>{{model.label}}</span>
+    <small *ngIf="model.hasBranch && !model.isFinalised">
+        <span> | </span>
+        <i class="fas fa-code-branch"></i>
+        {{model.branchName}}
+    </small>
+    <small *ngIf="model.isFinalised">
+        <span> | </span>
+        <i class="fas fa-file-alt"></i>
+        {{model.modelVersion}}
+    </small>
 </div>
