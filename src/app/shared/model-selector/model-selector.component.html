@@ -15,10 +15,15 @@
 -->
 
 <div class="mdm-shadow-block">
-    <div *ngIf="selected">
-        <mdm-model-item-banner [model]="selected"></mdm-model-item-banner>
-    </div>    
-    <button type="button" mat-stroked-button color="primary" matTooltip="Change model" aria-label="Change model" (click)="selectModel()">
-        <i class="fas fa-exchange-alt"></i>
-    </button>
+    <div class="mdm-model-selector">
+        <div class="mdm-model-selector__model">
+            <mdm-model-item-banner *ngIf="selected" [model]="selected"></mdm-model-item-banner>
+            <div *ngIf="!selected" class="mdm-model-selector--placeholder">
+                Select a model
+            </div>
+        </div>    
+        <button type="button" mat-stroked-button color="primary" matTooltip="Change model" aria-label="Change model" (click)="selectModel()">
+            <i class="fas fa-exchange-alt"></i>
+        </button>
+    </div>
 </div>

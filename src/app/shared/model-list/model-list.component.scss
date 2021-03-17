@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
- $toolbarSize: 44px;
+@import "styles/abstracts/variables";
 
- .mdm-model-list__toolbar {
-     position: relative;
-     display: flex;
-     flex-wrap: wrap;
-     align-items: stretch;
-     width: 100%;
+.mdm-model-list__toolbar {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    width: 100%;
 
-     input {
-         position: relative;
-         flex: 1 1 0%;
-         height: $toolbarSize;
-     }
+    input {
+        position: relative;
+        flex: 1 1 0%;
+        height: $toolbarButtonOnlySize;
+    }
 
-     button {
-         padding: 0;
-         min-width: $toolbarSize;
-         height: $toolbarSize;
-     }
- }
+    button {
+        padding: 0;
+        min-width: $toolbarButtonOnlySize;
+        height: $toolbarButtonOnlySize;
+    }
+}
 
 .mdm-model-list__list {
     width: 100%;
