@@ -24,9 +24,13 @@ import { ModelItemBannerComponent } from './model-item-banner/model-item-banner.
 import { MaterialModule } from '@mdm/material/material.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UiViewComponent } from './ui-view/ui-view.component';
+import { AppContainerComponent } from './app-container/app-container.component';
 
 @NgModule({
   declarations: [
+    AppContainerComponent,
+    UiViewComponent,
     ModelListComponent,
     ModelIconComponent,
     LoadingIndicatorComponent,
@@ -40,6 +44,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MaterialModule
   ],
   exports: [
+    AppContainerComponent,
+    UiViewComponent,
     ModelListComponent,
     ModelIconComponent,
     LoadingIndicatorComponent,

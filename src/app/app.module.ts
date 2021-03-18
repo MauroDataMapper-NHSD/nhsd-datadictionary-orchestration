@@ -18,7 +18,6 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
-import { AppContainerComponent } from './app-container/app-container.component';
 import { UiViewComponent } from './shared/ui-view/ui-view.component';
 import { ModalModule } from './modules/modal/modal.module';
 import { SharedModule } from './shared/shared.module';
@@ -28,9 +27,7 @@ import { states } from './routing/ui-states';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    AppContainerComponent,
-    UiViewComponent
+    AppComponent
   ],
   imports: [
     CoreModule,
