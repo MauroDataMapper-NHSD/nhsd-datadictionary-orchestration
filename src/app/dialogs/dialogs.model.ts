@@ -22,3 +22,13 @@ export enum DialogStatus {
   Cancel = 'cancel',
   Close = 'close'
 };
+
+/**
+ * Represents the general result from a modal dialog.
+ */
+export interface DialogResult {
+  /**
+   * The status value returned from the closed modal dialog.
+   */
+  status: DialogStatus
+}

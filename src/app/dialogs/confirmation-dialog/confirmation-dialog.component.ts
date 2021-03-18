@@ -17,13 +17,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DialogStatus } from '../dialogs.model';
-import { ConfirmationModalConfig, ConfirmationModalResult } from './confirmation-modal.model';
+import { DialogResult, DialogStatus } from '../dialogs.model';
+import { ConfirmationDialogOptions } from './confirmation-dialog.model';
 
 @Component({
-  selector: 'mdm-confirmation-modal',
-  templateUrl: './confirmation-modal.component.html',
-  styleUrls: ['./confirmation-modal.component.scss']
+  selector: 'mdm-confirmation-dialog',
+  templateUrl: './confirmation-dialog.component.html',
+  styleUrls: ['./confirmation-dialog.component.scss']
 })
 export class ConfirmationModalComponent implements OnInit {
 
@@ -35,8 +35,8 @@ export class ConfirmationModalComponent implements OnInit {
   btnType: ThemePalette = 'primary';
 
   constructor(
-    private dialogRef: MatDialogRef<ConfirmationModalComponent, ConfirmationModalResult>,
-    @Inject(MAT_DIALOG_DATA) public data: ConfirmationModalConfig
+    private dialogRef: MatDialogRef<ConfirmationModalComponent, DialogResult>,
+    @Inject(MAT_DIALOG_DATA) public data: ConfirmationDialogOptions
   ) { }
 
   ngOnInit() {

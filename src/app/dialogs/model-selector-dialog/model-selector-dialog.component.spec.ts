@@ -15,39 +15,26 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TestingModule } from '@mdm/testing/testing.module';
 
-import { SignInModalComponent } from './sign-in-modal.component';
+import { ModelSelectorModalComponent } from './model-selector-dialog.component';
 
-describe('SignInModalComponent', () => {
-  let component: SignInModalComponent;
-  let fixture: ComponentFixture<SignInModalComponent>;
+describe('ModelSelectorModalComponent', () => {
+  let component: ModelSelectorModalComponent;
+  let fixture: ComponentFixture<ModelSelectorModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        TestingModule,
-        ReactiveFormsModule
+        TestingModule
       ],
-      providers: [
-        {
-          provide: MatDialogRef,
-          useValue: jest.fn()
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: jest.fn()
-        }
-      ],
-      declarations: [ SignInModalComponent ]
+      declarations: [ ModelSelectorModalComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SignInModalComponent);
+    fixture = TestBed.createComponent(ModelSelectorModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

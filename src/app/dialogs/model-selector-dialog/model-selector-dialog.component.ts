@@ -18,12 +18,12 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { DataDictionaryModel } from '@mdm/core/dashboard/dashboard.model';
 import { DialogStatus } from '../dialogs.model';
-import { ModelSelectorModalResult } from './model-selector-modal.model';
+import { ModelSelectorDialogResult } from './model-selector-dialog.model';
 
 @Component({
-  selector: 'mdm-model-selector-modal',
-  templateUrl: './model-selector-modal.component.html',
-  styleUrls: ['./model-selector-modal.component.scss']
+  selector: 'mdm-model-selector-dialog',
+  templateUrl: './model-selector-dialog.component.html',
+  styleUrls: ['./model-selector-dialog.component.scss']
 })
 export class ModelSelectorModalComponent implements OnInit {
 
@@ -33,7 +33,7 @@ export class ModelSelectorModalComponent implements OnInit {
     return !!this.selected;
   }
 
-  constructor(private dialogRef: MatDialogRef<ModelSelectorModalComponent, ModelSelectorModalResult>) { }
+  constructor(private dialogRef: MatDialogRef<ModelSelectorModalComponent, ModelSelectorDialogResult>) { }
 
   ngOnInit(): void {
   }

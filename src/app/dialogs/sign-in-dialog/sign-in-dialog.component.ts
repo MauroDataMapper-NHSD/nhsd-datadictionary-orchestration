@@ -24,9 +24,9 @@ import { EMPTY } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 
 @Component({
-  selector: 'mdm-sign-in-modal',
-  templateUrl: './sign-in-modal.component.html',
-  styleUrls: ['./sign-in-modal.component.scss']
+  selector: 'mdm-sign-in-dialog',
+  templateUrl: './sign-in-dialog.component.html',
+  styleUrls: ['./sign-in-dialog.component.scss']
 })
 export class SignInModalComponent implements OnInit {
 

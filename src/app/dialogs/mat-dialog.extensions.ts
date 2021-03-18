@@ -17,8 +17,8 @@
 import { MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dialog";
 import { Observable } from "rxjs";
 import { filter, map, mergeMap } from "rxjs/operators";
-import { ConfirmationModalComponent } from "./confirmation-modal/confirmation-modal.component";
-import { ConfirmationModalConfig, ConfirmationModalResult } from "./confirmation-modal/confirmation-modal.model";
+import { ConfirmationModalComponent } from "./confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogOptions, ConfirmationDialogResult } from "./confirmation-dialog/confirmation-dialog.model";
 import { DialogStatus } from "./dialogs.model";
 
 declare module '@angular/material/dialog/dialog' {
@@ -36,7 +36,7 @@ declare module '@angular/material/dialog/dialog' {
      * @see `ConfirmationModalConfig`
      * @see `ConfirmationModalResult`
      */
-    openConfirmationDialog(config: MatDialogConfig<ConfirmationModalConfig>): MatDialogRef<ConfirmationModalComponent, ConfirmationModalResult>;
+    openConfirmationDialog(config: MatDialogConfig<ConfirmationDialogOptions>): MatDialogRef<ConfirmationModalComponent, ConfirmationDialogResult>;
 
     /**
      * Extension method to open a modal dialog containing the `ConfirmationModalComponent` and asynchronously
@@ -60,7 +60,7 @@ declare module '@angular/material/dialog/dialog' {
      * @see `openConfirmationDialog()`
      * @see `openDoubleConfirmation()`
      */
-    openConfirmation(config: MatDialogConfig<ConfirmationModalConfig>): Observable<void>;
+    openConfirmation(config: MatDialogConfig<ConfirmationDialogOptions>): Observable<void>;
 
     /**
      * Extension method to open two modal dialogs in succession containing the `ConfirmationModalComponent` and asynchronously
@@ -86,21 +86,21 @@ declare module '@angular/material/dialog/dialog' {
      * @see `openConfirmationDialog()`
      * @see `openConfirmation()`
      */
-    openDoubleConfirmation(firstConfig: MatDialogConfig<ConfirmationModalConfig>, finalConfig: MatDialogConfig<ConfirmationModalConfig>): Observable<void>;
+    openDoubleConfirmation(firstConfig: MatDialogConfig<ConfirmationDialogOptions>, finalConfig: MatDialogConfig<ConfirmationDialogOptions>): Observable<void>;
   }
 }
 
 MatDialog.prototype.openConfirmationDialog = function (
   this: MatDialog,
-  config: MatDialogConfig<ConfirmationModalConfig>): MatDialogRef<ConfirmationModalComponent, ConfirmationModalResult> {
-  return this.open<ConfirmationModalComponent, ConfirmationModalConfig, ConfirmationModalResult>(
+  config: MatDialogConfig<ConfirmationDialogOptions>): MatDialogRef<ConfirmationModalComponent, ConfirmationDialogResult> {
+  return this.open<ConfirmationModalComponent, ConfirmationDialogOptions, ConfirmationDialogResult>(
     ConfirmationModalComponent,
     config);
 };
 
 MatDialog.prototype.openConfirmation = function (
   this: MatDialog,
-  config: MatDialogConfig<ConfirmationModalConfig>): Observable<void> {
+  config: MatDialogConfig<ConfirmationDialogOptions>): Observable<void> {
   return this
     .openConfirmationDialog(config)
     .afterClosed()
@@ -112,8 +112,8 @@ MatDialog.prototype.openConfirmation = function (
 
 MatDialog.prototype.openDoubleConfirmation = function (
   this: MatDialog,
-  firstConfig: MatDialogConfig<ConfirmationModalConfig>,
-  finalConfig: MatDialogConfig<ConfirmationModalConfig>): Observable<void> {
+  firstConfig: MatDialogConfig<ConfirmationDialogOptions>,
+  finalConfig: MatDialogConfig<ConfirmationDialogOptions>): Observable<void> {
   return this
     .openConfirmationDialog(firstConfig)
     .afterClosed()

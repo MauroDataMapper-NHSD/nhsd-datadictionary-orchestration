@@ -15,17 +15,12 @@
  */
 
 import { ThemePalette } from "@angular/material/core";
-import { DialogStatus } from "../dialogs.model";
 
-export interface ConfirmationModalConfig {
+export interface ConfirmationDialogOptions {
   title?: string;
   message: string;
   okBtnTitle?: string;
   cancelBtnTitle?: string;
   showCancel?: boolean;
   btnType?: ThemePalette;
-}
-
-export interface ConfirmationModalResult {
-  status: DialogStatus;
 }

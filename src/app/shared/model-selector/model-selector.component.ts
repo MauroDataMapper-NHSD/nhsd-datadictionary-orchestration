@@ -16,8 +16,8 @@
 
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ModelSelectorModalComponent } from '@mdm/dialogs/model-selector-modal/model-selector-modal.component';
-import { ModelSelectorModalConfig, ModelSelectorModalResult } from '@mdm/dialogs/model-selector-modal/model-selector-modal.model';
+import { ModelSelectorModalComponent } from '@mdm/dialogs/model-selector-dialog/model-selector-dialog.component';
+import { ModelSelectorDialogOptions, ModelSelectorDialogResult } from '@mdm/dialogs/model-selector-dialog/model-selector-dialog.model';
 import { BroadcastEvent } from '@mdm/core/broadcast/broadcast.model';
 import { BroadcastService } from '@mdm/core/broadcast/broadcast.service';
 import { DataDictionaryModel } from '@mdm/core/dashboard/dashboard.model';
@@ -45,7 +45,7 @@ export class ModelSelectorComponent implements OnInit {
 
   selectModel() {
     this.dialog
-      .open<ModelSelectorModalComponent, ModelSelectorModalConfig, ModelSelectorModalResult>(ModelSelectorModalComponent, { })
+      .open<ModelSelectorModalComponent, ModelSelectorDialogOptions, ModelSelectorDialogResult>(ModelSelectorModalComponent, { })
       .afterClosed()
       .pipe(
         filter(result => result?.status === DialogStatus.Ok)

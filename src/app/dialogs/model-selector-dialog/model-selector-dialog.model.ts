@@ -15,13 +15,12 @@
  */
 
 import { DataDictionaryModel } from "@mdm/core/dashboard/dashboard.model";
-import { DialogStatus } from "../dialogs.model";
+import { DialogResult } from "../dialogs.model";
 
-export interface ModelSelectorModalConfig {
+export interface ModelSelectorDialogOptions {
 
 }
 
-export interface ModelSelectorModalResult {
-  status: DialogStatus;
+export interface ModelSelectorDialogResult extends DialogResult {
   model?: DataDictionaryModel;
 }

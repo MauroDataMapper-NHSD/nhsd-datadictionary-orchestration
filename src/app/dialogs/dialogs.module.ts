@@ -15,9 +15,9 @@
  */
 
 import { NgModule } from '@angular/core';
-import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
-import { SignInModalComponent } from './sign-in-modal/sign-in-modal.component';
-import { ModelSelectorModalComponent } from './model-selector-modal/model-selector-modal.component';
+import { ConfirmationModalComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { SignInModalComponent } from './sign-in-dialog/sign-in-dialog.component';
+import { ModelSelectorModalComponent } from './model-selector-dialog/model-selector-dialog.component';
 import { SharedModule } from '@mdm/shared/shared.module';
 
 @NgModule({
