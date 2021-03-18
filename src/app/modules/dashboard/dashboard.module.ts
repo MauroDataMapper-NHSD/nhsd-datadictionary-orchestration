@@ -17,10 +17,8 @@
 import { NgModule } from '@angular/core';
 import { HomeComponent } from '@mdm/home/home.component';
 import { AboutComponent } from '@mdm/about/about.component';
-import { NavbarComponent } from '@mdm/layout/navbar/navbar.component';
 import { UIRouterModule } from '@uirouter/angular';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FooterComponent } from '@mdm/layout/footer/footer.component';
 import { ErrorComponent } from '@mdm/error/error.component';
 import { NotImplementedComponent } from '@mdm/error/not-implemented/not-implemented.component';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
@@ -30,15 +28,11 @@ import { ServerErrorComponent } from '@mdm/error/server-error/server-error.compo
 import { ModelsComponent } from '@mdm/models/models.component';
 import { ModelDetailComponent } from '../../model-detail/model-detail.component';
 import { ModelActionsComponent } from '../../model-actions/model-actions.component';
-import { UserComponent } from '@mdm/shared/user/user.component';
 import { StatisticsTableComponent } from '../../shared/statistics-table/statistics-table.component';
 import { SharedModule } from '@mdm/shared/shared.module';
 
 @NgModule({
   declarations: [
-    NavbarComponent,
-    FooterComponent,
-    UserComponent,
     HomeComponent,
     AboutComponent,
     ErrorComponent,
@@ -58,9 +52,6 @@ import { SharedModule } from '@mdm/shared/shared.module';
     SharedModule
   ],
   exports: [
-    NavbarComponent,
-    FooterComponent,
-    UserComponent,
     HomeComponent,
     AboutComponent,
     ErrorComponent,

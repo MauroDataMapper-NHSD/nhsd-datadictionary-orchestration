@@ -24,13 +24,13 @@ import { ModelItemBannerComponent } from './model-item-banner/model-item-banner.
 import { MaterialModule } from '@mdm/material/material.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { UiViewComponent } from './ui-view/ui-view.component';
 import { AppContainerComponent } from './app-container/app-container.component';
+import { UIRouterModule } from '@uirouter/angular';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
     AppContainerComponent,
-    UiViewComponent,
     ModelListComponent,
     ModelIconComponent,
     LoadingIndicatorComponent,
@@ -41,17 +41,19 @@ import { AppContainerComponent } from './app-container/app-container.component';
     CommonModule,
     BrowserModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    FlexLayoutModule
   ],
   exports: [
     AppContainerComponent,
-    UiViewComponent,
     ModelListComponent,
     ModelIconComponent,
     LoadingIndicatorComponent,
     ModelSelectorComponent,
     CommonModule,
-    MaterialModule
+    MaterialModule,
+    UIRouterModule,
+    FlexLayoutModule
   ]
 })
 export class SharedModule { }

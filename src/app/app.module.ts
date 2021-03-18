@@ -18,20 +18,23 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
-import { UiViewComponent } from './shared/ui-view/ui-view.component';
+import { UiViewComponent } from './ui-view/ui-view.component';
 import { ModalModule } from './modules/modal/modal.module';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
-import { UIRouterModule } from '@uirouter/angular';
+import { trace, UIRouterModule } from '@uirouter/angular';
 import { states } from './routing/ui-states';
+import { LayoutModule } from './layout/layout.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    UiViewComponent
   ],
   imports: [
     CoreModule,
     SharedModule,
+    LayoutModule,
     DashboardModule,
     ModalModule,    
     UIRouterModule.forRoot({
@@ -42,4 +45,8 @@ import { states } from './routing/ui-states';
   ],
   bootstrap: [UiViewComponent]
 })
-export class AppModule {  }
+export class AppModule {  
+  constructor() {
+    trace.enable();
+  }
+}
