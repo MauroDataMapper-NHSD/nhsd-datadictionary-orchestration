@@ -17,7 +17,7 @@
 import { Ng2StateDeclaration } from '@uirouter/angular';
 import { AppComponent } from '@mdm/app.component';
 import { HomeComponent } from '@mdm/home/home.component';
-import { AppContainerComponent } from '@mdm/shared/app-container/app-container.component';
+import { AppContainerComponent } from '@mdm/app-container/app-container.component';
 import { AboutComponent } from '@mdm/about/about.component';
 import { NotImplementedComponent } from '@mdm/error/not-implemented/not-implemented.component';
 import { NotAuthorizedComponent } from '@mdm/error/not-authorized/not-authorized.component';

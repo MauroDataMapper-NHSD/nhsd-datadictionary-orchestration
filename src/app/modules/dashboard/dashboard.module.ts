@@ -19,12 +19,6 @@ import { HomeComponent } from '@mdm/home/home.component';
 import { AboutComponent } from '@mdm/about/about.component';
 import { UIRouterModule } from '@uirouter/angular';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ErrorComponent } from '@mdm/error/error.component';
-import { NotImplementedComponent } from '@mdm/error/not-implemented/not-implemented.component';
-import { NgxJsonViewerModule } from 'ngx-json-viewer';
-import { NotAuthorizedComponent } from '@mdm/error/not-authorized/not-authorized.component';
-import { NotFoundComponent } from '@mdm/error/not-found/not-found.component';
-import { ServerErrorComponent } from '@mdm/error/server-error/server-error.component';
 import { ModelsComponent } from '@mdm/models/models.component';
 import { ModelDetailComponent } from '../../model-detail/model-detail.component';
 import { ModelActionsComponent } from '../../model-actions/model-actions.component';
@@ -35,11 +29,6 @@ import { SharedModule } from '@mdm/shared/shared.module';
   declarations: [
     HomeComponent,
     AboutComponent,
-    ErrorComponent,
-    NotImplementedComponent,
-    NotAuthorizedComponent,
-    NotFoundComponent,
-    ServerErrorComponent,
     ModelsComponent,
     ModelDetailComponent,
     ModelActionsComponent,
@@ -47,16 +36,12 @@ import { SharedModule } from '@mdm/shared/shared.module';
   ],
   imports: [
     UIRouterModule,
-    NgxJsonViewerModule,
     FlexLayoutModule,    
     SharedModule
   ],
   exports: [
     HomeComponent,
     AboutComponent,
-    ErrorComponent,
-    NotImplementedComponent,
-    NotAuthorizedComponent
   ]
 })
 export class DashboardModule { }

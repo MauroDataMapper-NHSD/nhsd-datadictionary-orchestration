@@ -24,13 +24,11 @@ import { ModelItemBannerComponent } from './model-item-banner/model-item-banner.
 import { MaterialModule } from '@mdm/material/material.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppContainerComponent } from './app-container/app-container.component';
 import { UIRouterModule } from '@uirouter/angular';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
-    AppContainerComponent,
     ModelListComponent,
     ModelIconComponent,
     LoadingIndicatorComponent,
@@ -45,7 +43,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     FlexLayoutModule
   ],
   exports: [
-    AppContainerComponent,
     ModelListComponent,
     ModelIconComponent,
     LoadingIndicatorComponent,
