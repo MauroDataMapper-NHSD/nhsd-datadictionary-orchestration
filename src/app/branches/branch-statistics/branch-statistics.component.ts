@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
-import { DashboardService } from '@mdm/core/dashboard/dashboard.service';
-import { Statistics, StatisticsItem } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
+import { BranchDetails, Statistics, StatisticsItem } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { finalize } from 'rxjs/operators';
 
 interface StatisticsTableRow {
@@ -25,27 +25,39 @@ interface StatisticsTableRow {
 }
 
 @Component({
-  selector: 'mdm-statistics-table',
-  templateUrl: './statistics-table.component.html',
-  styleUrls: ['./statistics-table.component.scss']
+  selector: 'mdm-branch-statistics',
+  templateUrl: './branch-statistics.component.html',
+  styleUrls: ['./branch-statistics.component.scss']
 })
-export class StatisticsTableComponent implements OnInit {
+export class BranchStatisticsComponent implements OnInit, OnChanges {
+
+  @Input() branch?: BranchDetails;
 
   loading = false;
   statistics: Statistics = {};
   rows: StatisticsTableRow[] = [];
 
-  constructor(private dashboard: DashboardService) { }
+  constructor(private dataDictionary: DataDictionaryService) { }  
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.load();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.branch) {
+      this.load();
+    }
+  }
+
   private load() {
+    if (!this.branch) {
+      return;
+    }
+
     this.loading = true;
 
-    this.dashboard
-      .getStatistics()
+    this.dataDictionary
+      .getBranchStatistics(this.branch.label)
       .pipe(
         finalize(() => this.loading = false)
       )

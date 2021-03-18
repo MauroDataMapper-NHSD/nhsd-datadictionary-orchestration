@@ -15,26 +15,22 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/testing/testing.module';
 
-import { StatisticsTableComponent } from './statistics-table.component';
+import { BranchStatisticsComponent } from './branch-statistics.component';
 
-describe('StatisticsTableComponent', () => {
-  let component: StatisticsTableComponent;
-  let fixture: ComponentFixture<StatisticsTableComponent>;
+describe('BranchStatisticsComponent', () => {
+  let component: BranchStatisticsComponent;
+  let fixture: ComponentFixture<BranchStatisticsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        TestingModule
-      ],
-      declarations: [ StatisticsTableComponent ]
+      declarations: [ BranchStatisticsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StatisticsTableComponent);
+    fixture = TestBed.createComponent(BranchStatisticsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

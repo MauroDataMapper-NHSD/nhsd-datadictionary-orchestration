@@ -20,13 +20,14 @@ import { SharedModule } from '@mdm/shared/shared.module';
 import { BranchDefaultComponent } from './branch-default/branch-default.component';
 import { BranchDetailComponent } from './branch-detail/branch-detail.component';
 import { BranchOverviewComponent } from './branch-overview/branch-overview.component';
+import { BranchStatisticsComponent } from './branch-statistics/branch-statistics.component';
 
 @NgModule({
   declarations: [
     BranchViewComponent, 
     BranchDefaultComponent, 
     BranchDetailComponent, 
-    BranchOverviewComponent
+    BranchOverviewComponent, BranchStatisticsComponent
   ],
   imports: [
     SharedModule

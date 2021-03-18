@@ -59,7 +59,7 @@ export class NhsDataDictionaryService {
     .pipe(delay(1000));
   }
 
-  statistics(): Observable<Statistics> {
+  statistics(name: string): Observable<Statistics> {
     // TODO: replace with real endpoint
     return of({
       'Attributes': {

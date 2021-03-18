@@ -15,10 +15,10 @@
 -->
 
 <div class="mdm-shadow-block">
-    <div *ngIf="loading">
+    <div *ngIf="loading || !branch">
         <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
     </div>
-    <table *ngIf="!loading" class="table">
+    <table *ngIf="!loading && branch" class="table">
         <thead>
             <tr>
                 <th></th>
