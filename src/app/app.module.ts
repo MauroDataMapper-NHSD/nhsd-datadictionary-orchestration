@@ -19,18 +19,12 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
-import { states } from './routing/ui-states';
-import { UIRouterModule } from '@uirouter/angular';
 import { AppContainerComponent } from './app-container/app-container.component';
 import { UiViewComponent } from './shared/ui-view/ui-view.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ModalModule } from './modules/modal/modal.module';
-import { MdmResourcesModule } from './modules/mdm-resources/mdm-resources.module';
-import { environment } from '@env/environment';
-import { HttpRequestProgressInterceptor } from './interceptors/http-request-progress.interceptor';
-import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { SharedModule } from './modules/shared/shared.module';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
@@ -43,31 +37,8 @@ import { SharedModule } from './modules/shared/shared.module';
     SharedModule,
     DashboardModule,
     ModalModule,
-    HttpClientModule,
-    MdmResourcesModule.forRoot({
-      defaultHttpRequestOptions: { withCredentials: true },
-      apiEndpoint: environment.apiEndpoint
-    }),
-    UIRouterModule.forRoot({
-      states: states,
-      useHash: true,
-      otherwise: '/not-found'
-    }),
+    CoreModule,
     BrowserAnimationsModule
-  ],
-  providers: [
-    { 
-      provide: MAT_DIALOG_DEFAULT_OPTIONS, 
-      useValue: {
-        hasBackdrop: true, 
-        autoFocus: false
-      } 
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HttpRequestProgressInterceptor,
-      multi: true
-    }
   ],
   bootstrap: [UiViewComponent]
 })

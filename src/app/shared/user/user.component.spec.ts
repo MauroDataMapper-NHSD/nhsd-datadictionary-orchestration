@@ -16,7 +16,7 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestingModule } from '@mdm/modules/testing/testing.module';
-import { SharedService } from '@mdm/services/shared/shared.service';
+import { SharedService } from '@mdm/core/shared/shared.service';
 
 import { UserComponent } from './user.component';
 

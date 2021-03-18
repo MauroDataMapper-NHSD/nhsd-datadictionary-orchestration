@@ -15,10 +15,10 @@
  */
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BroadcastEvent } from '@mdm/services/broadcast/broadcast.model';
-import { BroadcastService } from '@mdm/services/broadcast/broadcast.service';
-import { DataDictionaryModel } from '@mdm/services/dashboard/dashboard.model';
-import { SharedService } from '@mdm/services/shared/shared.service';
+import { BroadcastEvent } from '@mdm/core/broadcast/broadcast.model';
+import { BroadcastService } from '@mdm/core/broadcast/broadcast.service';
+import { DataDictionaryModel } from '@mdm/core/dashboard/dashboard.model';
+import { SharedService } from '@mdm/core/shared/shared.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

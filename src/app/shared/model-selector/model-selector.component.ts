@@ -19,10 +19,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { ModalDialogStatus } from '@mdm/modals/modal.model';
 import { ModelSelectorModalComponent } from '@mdm/modals/model-selector-modal/model-selector-modal.component';
 import { ModelSelectorModalConfig, ModelSelectorModalResult } from '@mdm/modals/model-selector-modal/model-selector-modal.model';
-import { BroadcastEvent } from '@mdm/services/broadcast/broadcast.model';
-import { BroadcastService } from '@mdm/services/broadcast/broadcast.service';
-import { DataDictionaryModel } from '@mdm/services/dashboard/dashboard.model';
-import { SharedService } from '@mdm/services/shared/shared.service';
+import { BroadcastEvent } from '@mdm/core/broadcast/broadcast.model';
+import { BroadcastService } from '@mdm/core/broadcast/broadcast.service';
+import { DataDictionaryModel } from '@mdm/core/dashboard/dashboard.model';
+import { SharedService } from '@mdm/core/shared/shared.service';
 import { filter } from 'rxjs/operators';
 
 @Component({

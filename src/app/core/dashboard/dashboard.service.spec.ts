@@ -17,14 +17,14 @@
 import { TestBed } from '@angular/core/testing';
 import { TestingModule } from '@mdm/modules/testing/testing.module';
 import { cold } from 'jest-marbles';
-import { CodeSet } from '../mdm-resources/adapters/code-sets.model';
-import { CodeSetsService } from '../mdm-resources/adapters/code-sets.service';
-import { DataModel, DataModelType } from '../mdm-resources/adapters/data-models.model';
-import { DataModelsService } from '../mdm-resources/adapters/data-models.service';
-import { Terminology } from '../mdm-resources/adapters/terminology.model';
-import { TerminologyService } from '../mdm-resources/adapters/terminology.service';
-import { Authority, DomainType } from '../mdm-resources/mdm-resources.model';
-import { ModelListItem } from './dashboard.model';
+import { CodeSet } from '../../mdm-resources/mdm-resources/adapters/code-sets.model';
+import { CodeSetsService } from '../../mdm-resources/mdm-resources/adapters/code-sets.service';
+import { DataModel, DataModelType } from '../../mdm-resources/mdm-resources/adapters/data-models.model';
+import { DataModelsService } from '../../mdm-resources/mdm-resources/adapters/data-models.service';
+import { Terminology } from '../../mdm-resources/mdm-resources/adapters/terminology.model';
+import { TerminologyService } from '../../mdm-resources/mdm-resources/adapters/terminology.service';
+import { Authority, DomainType } from '../../mdm-resources/mdm-resources/mdm-resources.model';
+import { DataDictionaryModel } from './dashboard.model';
 
 import { DashboardService } from './dashboard.service';
 
@@ -126,9 +126,9 @@ describe('DashboardService', () => {
 
     const expected$ = cold('---a', {
       a: [
-        new ModelListItem(dataModel),
-        new ModelListItem(codeSet),
-        new ModelListItem(terminology)
+        new DataDictionaryModel(dataModel),
+        new DataDictionaryModel(codeSet),
+        new DataDictionaryModel(terminology)
       ]
     });
 

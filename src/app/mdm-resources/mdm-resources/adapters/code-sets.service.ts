@@ -16,42 +16,42 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoggingService } from '@mdm/services/logging/logging.service';
+import { LoggingService } from '@mdm/core/logging/logging.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { MdmResourcesService } from '../mdm-resources.service';
-import { DataModel, DataModelDetail, DataModelDetailResponse, DataModelIndexResponse } from './data-models.model';
+import { CodeSet, CodeSetDetail, CodeSetDetailResponse, CodeSetIndexResponse } from './code-sets.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DataModelsService {
+export class CodeSetsService {
 
   constructor(
     private resources: MdmResourcesService,
     private logging: LoggingService) { }
 
-  list(): Observable<DataModel[]> {
-    return this.resources.dataModel
+  list(): Observable<CodeSet[]> {
+    return this.resources.codeSet
       .list()
       .pipe(
         catchError((error: HttpErrorResponse) => {
-          this.logging.error('There was a problem getting the Data Models.', error);
+          this.logging.error('There was a problem getting the Code Sets.', error);
           return throwError(error);
         }),
-        map((response: DataModelIndexResponse) => response.body.items)
-      );
+        map((response: CodeSetIndexResponse) => response.body.items)
+      )
   }
 
-  get(id: string): Observable<DataModelDetail> {
-    return this.resources.dataModel
+  get(id: string): Observable<CodeSetDetail> {
+    return this.resources.codeSet
       .get(id)
       .pipe(
         catchError((error: HttpErrorResponse) => {
-          this.logging.error(`There was a problem getting the Data Model ${id}.`, error);
+          this.logging.error(`There was a problem getting the Code Set ${id}.`, error);
           return throwError(error);
         }),
-        map((response: DataModelDetailResponse) => response.body)
+        map((response: CodeSetDetailResponse) => response.body)
       );
   }
 }

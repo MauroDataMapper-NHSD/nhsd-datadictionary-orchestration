@@ -16,7 +16,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { DataDictionaryModel } from '@mdm/services/dashboard/dashboard.model';
+import { DataDictionaryModel } from '@mdm/core/dashboard/dashboard.model';
 import { ModalDialogStatus } from '../modal.model';
 import { ModelSelectorModalResult } from './model-selector-modal.model';
 

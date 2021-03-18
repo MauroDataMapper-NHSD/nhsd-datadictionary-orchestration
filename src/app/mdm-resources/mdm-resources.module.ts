@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-import { ModuleWithProviders, NgModule, Optional, SkipSelf } from "@angular/core";
-import { MdmResourcesConfiguration } from "@maurodatamapper/mdm-resources";
-import { MdmResourcesService } from "@mdm/services/mdm-resources/mdm-resources.service";
-import { MdmRestHandlerService } from "@mdm/services/mdm-resources/mdm-rest-handler.service";
+import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
+import { MdmResourcesConfiguration } from '@maurodatamapper/mdm-resources';
+import { MdmResourcesService } from './mdm-resources/mdm-resources.service';
+import { MdmRestHandlerService } from './mdm-rest-handler/mdm-rest-handler.service';
 
-/**
- * A wrapper Angular module for @mdm-api/resources
- */
 @NgModule({
   providers: [
     MdmResourcesService,
@@ -31,7 +28,7 @@ import { MdmRestHandlerService } from "@mdm/services/mdm-resources/mdm-rest-hand
 export class MdmResourcesModule {
   constructor(@Optional() @SkipSelf() parentModule?: MdmResourcesModule) {
     if (parentModule) {
-      throw new Error('MdmResourcesModule is already loaded. Import it in the AppModule only');
+      throw new Error('MdmResourcesModule is already loaded. Import only once.');
     }
   }
 

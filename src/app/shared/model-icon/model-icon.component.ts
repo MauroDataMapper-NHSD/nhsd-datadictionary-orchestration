@@ -15,7 +15,7 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { DataDictionaryModel } from '@mdm/services/dashboard/dashboard.model';
+import { DataDictionaryModel } from '@mdm/core/dashboard/dashboard.model';
 
 export type ModelIconSize = 'fa-sm' | 'fa-md' | 'fa-lg';
 

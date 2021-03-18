@@ -17,9 +17,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { SignInError, SignInErrorType, UserDetails } from '@mdm/services/security/security.model';
-import { SecurityService } from '@mdm/services/security/security.service';
-import { ValidatorService } from '@mdm/services/validator/validator.service';
+import { SignInError, SignInErrorType, UserDetails } from '@mdm/core/security/security.model';
+import { SecurityService } from '@mdm/core/security/security.service';
+import { ValidatorService } from '@mdm/core/validator/validator.service';
 import { EMPTY } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 

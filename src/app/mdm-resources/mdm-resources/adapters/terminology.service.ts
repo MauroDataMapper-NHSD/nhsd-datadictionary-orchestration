@@ -16,42 +16,42 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoggingService } from '@mdm/services/logging/logging.service';
+import { LoggingService } from '@mdm/core/logging/logging.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { MdmResourcesService } from '../mdm-resources.service';
-import { CodeSet, CodeSetDetail, CodeSetDetailResponse, CodeSetIndexResponse } from './code-sets.model';
+import { Terminology, TerminologyDetail, TerminologyDetailResponse, TerminologyIndexResponse } from './terminology.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CodeSetsService {
+export class TerminologyService {
 
   constructor(
     private resources: MdmResourcesService,
     private logging: LoggingService) { }
 
-  list(): Observable<CodeSet[]> {
-    return this.resources.codeSet
+  list(): Observable<Terminology[]> {
+    return this.resources.terminology
       .list()
       .pipe(
         catchError((error: HttpErrorResponse) => {
-          this.logging.error('There was a problem getting the Code Sets.', error);
+          this.logging.error('There was a problem getting the Terminologies.', error);
           return throwError(error);
         }),
-        map((response: CodeSetIndexResponse) => response.body.items)
+        map((response: TerminologyIndexResponse) => response.body.items)
       )
   }
 
-  get(id: string): Observable<CodeSetDetail> {
-    return this.resources.codeSet
+  get(id: string): Observable<TerminologyDetail> {
+    return this.resources.terminology
       .get(id)
       .pipe(
         catchError((error: HttpErrorResponse) => {
-          this.logging.error(`There was a problem getting the Code Set ${id}.`, error);
+          this.logging.error(`There was a problem getting the Terminology ${id}.`, error);
           return throwError(error);
         }),
-        map((response: CodeSetDetailResponse) => response.body)
+        map((response: TerminologyDetailResponse) => response.body)
       );
   }
 }

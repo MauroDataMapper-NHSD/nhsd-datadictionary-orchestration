@@ -17,10 +17,10 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IMdmRestHandler, IMdmRestHandlerOptions } from '@maurodatamapper/mdm-resources';
+import { BroadcastEvent } from '@mdm/core/broadcast/broadcast.model';
+import { BroadcastService } from '@mdm/core/broadcast/broadcast.service';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { BroadcastEvent } from '../broadcast/broadcast.model';
-import { BroadcastService } from '../broadcast/broadcast.service';
 
 @Injectable({
   providedIn: 'root'

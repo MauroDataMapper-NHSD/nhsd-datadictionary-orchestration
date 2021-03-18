@@ -23,15 +23,15 @@ import { EMPTY, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
 import { NavbarLinkGroup } from './layout/navbar/navbar.model';
 import { SignInModalComponent } from './modals/sign-in-modal/sign-in-modal.component';
-import { BroadcastEvent } from './services/broadcast/broadcast.model';
-import { BroadcastService } from './services/broadcast/broadcast.service';
-import { MdmResourcesError } from './services/mdm-resources/mdm-resources.model';
-import { SecurityService } from './services/security/security.service';
-import { SharedService } from './services/shared/shared.service';
-import { CommonUiStates, StateHandlerService } from './services/state-handler/state-handler.service';
-import { ThemingService } from './services/theming/theming.service';
+import { BroadcastEvent } from './core/broadcast/broadcast.model';
+import { BroadcastService } from './core/broadcast/broadcast.service';
+import { MdmResourcesError } from './mdm-resources/mdm-resources/mdm-resources.model';
+import { SecurityService } from './core/security/security.service';
+import { SharedService } from './core/shared/shared.service';
+import { CommonUiStates, StateHandlerService } from './core/state-handler/state-handler.service';
+import { ThemingService } from './core/theming/theming.service';
 import { UserIdleService } from 'angular-user-idle';
-import { UserDetails } from './services/security/security.model';
+import { UserDetails } from './core/security/security.model';
 
 @Component({
   selector: 'mdm-root',

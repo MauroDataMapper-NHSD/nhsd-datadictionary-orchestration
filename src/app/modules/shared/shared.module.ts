@@ -19,9 +19,9 @@ import { CommonModule } from '@angular/common';
 import { ModelListComponent } from '@mdm/shared/model-list/model-list.component';
 import { ModelIconComponent } from '@mdm/shared/model-icon/model-icon.component';
 import { LoadingIndicatorComponent } from '@mdm/shared/loading-indicator/loading-indicator.component';
-import { MaterialModule } from '../material/material.module';
 import { ModelSelectorComponent } from '@mdm/shared/model-selector/model-selector.component';
 import { ModelItemBannerComponent } from '../../shared/model-item-banner/model-item-banner.component';
+import { MaterialModule } from '@mdm/material/material.module';
 
 
 

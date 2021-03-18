@@ -15,12 +15,12 @@
  */
 
 import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { DataDictionaryModel } from '@mdm/services/dashboard/dashboard.model';
-import { DashboardService } from '@mdm/services/dashboard/dashboard.service';
-import { CodeSetDetail } from '@mdm/services/mdm-resources/adapters/code-sets.model';
-import { DataModelDetail } from '@mdm/services/mdm-resources/adapters/data-models.model';
-import { TerminologyDetail } from '@mdm/services/mdm-resources/adapters/terminology.model';
-import { SecurityService } from '@mdm/services/security/security.service';
+import { DataDictionaryModel } from '@mdm/core/dashboard/dashboard.model';
+import { DashboardService } from '@mdm/core/dashboard/dashboard.service';
+import { CodeSetDetail } from '@mdm/mdm-resources/mdm-resources/adapters/code-sets.model';
+import { DataModelDetail } from '@mdm/mdm-resources/mdm-resources/adapters/data-models.model';
+import { TerminologyDetail } from '@mdm/mdm-resources/mdm-resources/adapters/terminology.model';
+import { SecurityService } from '@mdm/core/security/security.service';
 import { finalize } from 'rxjs/operators';
 
 @Component({

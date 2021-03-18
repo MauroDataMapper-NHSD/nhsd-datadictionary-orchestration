@@ -15,7 +15,7 @@
  */
 
 import { HttpErrorResponse } from "@angular/common/http";
-import { MdmResourcesError, MdmResourcesResponse } from "@mdm/services/mdm-resources/mdm-resources.model";
+import { MdmResourcesError, MdmResourcesResponse } from "@mdm/mdm-resources/mdm-resources/mdm-resources.model";
 
 /**
  * Credentials to send to `mdm-resources` for the sign-in operation.

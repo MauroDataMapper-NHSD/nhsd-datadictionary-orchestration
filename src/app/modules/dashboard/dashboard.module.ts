@@ -19,7 +19,6 @@ import { CommonModule } from '@angular/common';
 import { HomeComponent } from '@mdm/home/home.component';
 import { AboutComponent } from '@mdm/about/about.component';
 import { NavbarComponent } from '@mdm/layout/navbar/navbar.component';
-import { MaterialModule } from '../material/material.module';
 import { UIRouterModule } from '@uirouter/angular';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FooterComponent } from '@mdm/layout/footer/footer.component';
@@ -37,6 +36,7 @@ import { ModelActionsComponent } from '../../model-actions/model-actions.compone
 import { SharedModule } from '../shared/shared.module';
 import { UserComponent } from '@mdm/shared/user/user.component';
 import { StatisticsTableComponent } from '../../shared/statistics-table/statistics-table.component';
+import { MaterialModule } from '@mdm/material/material.module';
 
 @NgModule({
   declarations: [

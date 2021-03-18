@@ -16,7 +16,7 @@
 
 import { Injectable } from '@angular/core';
 import { MdmSecurityResource, MdmResourcesConfiguration, MdmSessionResource, MdmDataModelResource, MdmCodeSetResource, MdmTerminologyResource } from '@maurodatamapper/mdm-resources';
-import { MdmRestHandlerService } from './mdm-rest-handler.service';
+import { MdmRestHandlerService } from '../mdm-rest-handler/mdm-rest-handler.service';
 
 @Injectable({
   providedIn: 'root'

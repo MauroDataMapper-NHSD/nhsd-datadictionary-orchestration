@@ -16,7 +16,7 @@
 
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { SharedService } from '@mdm/services/shared/shared.service';
+import { SharedService } from '@mdm/core/shared/shared.service';
 import { ClipboardService } from 'ngx-clipboard';
 import { ErrorData } from './error.model';
 

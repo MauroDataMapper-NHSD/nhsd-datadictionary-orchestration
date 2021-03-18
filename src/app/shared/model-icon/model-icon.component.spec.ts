@@ -16,8 +16,8 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestingModule } from '@mdm/modules/testing/testing.module';
-import { DataDictionaryModel } from '@mdm/services/dashboard/dashboard.model';
-import { DomainType } from '@mdm/services/mdm-resources/mdm-resources.model';
+import { DataDictionaryModel } from '@mdm/core/dashboard/dashboard.model';
+import { DomainType } from '@mdm/mdm-resources/mdm-resources/mdm-resources.model';
 
 import { ModelIconComponent } from './model-icon.component';
 

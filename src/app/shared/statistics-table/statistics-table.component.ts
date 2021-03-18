@@ -15,8 +15,8 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { DashboardService } from '@mdm/services/dashboard/dashboard.service';
-import { Statistics, StatisticsItem } from '@mdm/services/mdm-resources/adapters/nhs-data-dictionary.model';
+import { DashboardService } from '@mdm/core/dashboard/dashboard.service';
+import { Statistics, StatisticsItem } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { finalize } from 'rxjs/operators';
 
 interface StatisticsTableRow {

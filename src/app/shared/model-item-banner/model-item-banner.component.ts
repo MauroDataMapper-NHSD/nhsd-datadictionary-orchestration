@@ -15,7 +15,7 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { DataDictionaryModel } from '@mdm/services/dashboard/dashboard.model';
+import { DataDictionaryModel } from '@mdm/core/dashboard/dashboard.model';
 
 @Component({
   selector: 'mdm-model-item-banner',

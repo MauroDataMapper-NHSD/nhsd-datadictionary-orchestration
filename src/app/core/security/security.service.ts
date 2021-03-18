@@ -16,12 +16,11 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AdministrationSessionResponse, SignInError, SignInCredentials, SignInResponse, UserDetails, AuthenticatedSessionResponse, AuthenticatedSessionError } from '@mdm/services/security/security.model';
-import { EMPTY, Observable, of, throwError } from 'rxjs';
+import { AdministrationSessionResponse, SignInError, SignInCredentials, SignInResponse, UserDetails, AuthenticatedSessionResponse, AuthenticatedSessionError } from '@mdm/core/security/security.model';
+import { MdmResourcesService } from '@mdm/mdm-resources/mdm-resources/mdm-resources.service';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, finalize, map, switchMap, tap } from 'rxjs/operators';
-import { LoggingService } from '../logging/logging.service';
-import { MdmResourcesError } from '../mdm-resources/mdm-resources.model';
-import { MdmResourcesService } from '../mdm-resources/mdm-resources.service';
+import { MdmResourcesError } from '../../mdm-resources/mdm-resources/mdm-resources.model';
 
 @Injectable({
   providedIn: 'root'

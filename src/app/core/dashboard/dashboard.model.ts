@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { DataModel, DataModelType } from "../mdm-resources/adapters/data-models.model";
-import { Authority, DomainType, MauroModel } from "../mdm-resources/mdm-resources.model";
+import { DataModel, DataModelType } from "../../mdm-resources/mdm-resources/adapters/data-models.model";
+import { Authority, DomainType, MauroModel } from "../../mdm-resources/mdm-resources/mdm-resources.model";
 
 export enum ModelItemType {  
   DataStandard = 'Data Standard',

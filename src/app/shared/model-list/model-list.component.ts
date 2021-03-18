@@ -16,8 +16,8 @@
 
 import { AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { MatSelectionListChange } from '@angular/material/list';
-import { DataDictionaryModel } from '@mdm/services/dashboard/dashboard.model';
-import { DashboardService } from '@mdm/services/dashboard/dashboard.service';
+import { DataDictionaryModel } from '@mdm/core/dashboard/dashboard.model';
+import { DashboardService } from '@mdm/core/dashboard/dashboard.service';
 import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, map, takeUntil } from 'rxjs/operators';
 

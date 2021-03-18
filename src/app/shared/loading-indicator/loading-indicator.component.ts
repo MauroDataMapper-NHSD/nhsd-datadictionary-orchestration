@@ -15,7 +15,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { LoadingService } from '@mdm/services/loading/loading.service';
+import { LoadingService } from '@mdm/core/loading/loading.service';
 import { delay } from 'rxjs/operators';
 
 @Component({

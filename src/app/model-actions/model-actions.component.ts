@@ -15,8 +15,8 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { DataDictionaryModel } from '@mdm/services/dashboard/dashboard.model';
-import { SecurityService } from '@mdm/services/security/security.service';
+import { DataDictionaryModel } from '@mdm/core/dashboard/dashboard.model';
+import { SecurityService } from '@mdm/core/security/security.service';
 
 @Component({
   selector: 'mdm-model-actions',

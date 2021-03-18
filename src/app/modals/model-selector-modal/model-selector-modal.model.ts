@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { DataDictionaryModel } from "@mdm/services/dashboard/dashboard.model";
+import { DataDictionaryModel } from "@mdm/core/dashboard/dashboard.model";
 import { ModalDialogStatus } from "../modal.model";
 
 export interface ModelSelectorModalConfig {

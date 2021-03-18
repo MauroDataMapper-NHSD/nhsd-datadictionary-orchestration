@@ -16,42 +16,42 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoggingService } from '@mdm/services/logging/logging.service';
+import { LoggingService } from '@mdm/core/logging/logging.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { MdmResourcesService } from '../mdm-resources.service';
-import { Terminology, TerminologyDetail, TerminologyDetailResponse, TerminologyIndexResponse } from './terminology.model';
+import { DataModel, DataModelDetail, DataModelDetailResponse, DataModelIndexResponse } from './data-models.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TerminologyService {
+export class DataModelsService {
 
   constructor(
     private resources: MdmResourcesService,
     private logging: LoggingService) { }
 
-  list(): Observable<Terminology[]> {
-    return this.resources.terminology
+  list(): Observable<DataModel[]> {
+    return this.resources.dataModel
       .list()
       .pipe(
         catchError((error: HttpErrorResponse) => {
-          this.logging.error('There was a problem getting the Terminologies.', error);
+          this.logging.error('There was a problem getting the Data Models.', error);
           return throwError(error);
         }),
-        map((response: TerminologyIndexResponse) => response.body.items)
-      )
+        map((response: DataModelIndexResponse) => response.body.items)
+      );
   }
 
-  get(id: string): Observable<TerminologyDetail> {
-    return this.resources.terminology
+  get(id: string): Observable<DataModelDetail> {
+    return this.resources.dataModel
       .get(id)
       .pipe(
         catchError((error: HttpErrorResponse) => {
-          this.logging.error(`There was a problem getting the Terminology ${id}.`, error);
+          this.logging.error(`There was a problem getting the Data Model ${id}.`, error);
           return throwError(error);
         }),
-        map((response: TerminologyDetailResponse) => response.body)
+        map((response: DataModelDetailResponse) => response.body)
       );
   }
 }
