@@ -16,17 +16,32 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestingModule } from '@mdm/modules/testing/testing.module';
+import { SharedService } from '@mdm/services/shared/shared.service';
 
 import { UserComponent } from './user.component';
+
+interface SharedServiceStub {
+  backendUrl: string;
+}
 
 describe('UserComponent', () => {
   let component: UserComponent;
   let fixture: ComponentFixture<UserComponent>;
 
+  const sharedStub: SharedServiceStub = {
+    backendUrl: 'http://test.com'
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         TestingModule
+      ],
+      providers: [
+        {
+          provide: SharedService,
+          useValue: sharedStub
+        }
       ],
       declarations: [ UserComponent ]
     })
@@ -43,4 +58,19 @@ describe('UserComponent', () => {
   it('should create', () => {    
     expect(component).toBeTruthy();
   });
+
+  it.each(['1', '2', '3'])('should set the correct image URL for user %s', (id) => {
+    component.user = {
+      id: id,
+      firstName: 'test',
+      lastName: 'test',
+      userName: 'test'
+    };
+
+    fixture.detectChanges();
+    component.ngOnInit();
+
+    const expected = `${sharedStub.backendUrl}/catalogueUsers/${id}/image`;
+    expect(component.imageUrl).toBe(expected);
+  })
 });
