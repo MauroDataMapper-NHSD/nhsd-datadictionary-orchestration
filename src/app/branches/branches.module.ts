@@ -21,13 +21,16 @@ import { BranchDefaultComponent } from './branch-default/branch-default.componen
 import { BranchDetailComponent } from './branch-detail/branch-detail.component';
 import { BranchOverviewComponent } from './branch-overview/branch-overview.component';
 import { BranchStatisticsComponent } from './branch-statistics/branch-statistics.component';
+import { BranchIntegrityComponent } from './branch-integrity/branch-integrity.component';
 
 @NgModule({
   declarations: [
     BranchViewComponent, 
     BranchDefaultComponent, 
     BranchDetailComponent, 
-    BranchOverviewComponent, BranchStatisticsComponent
+    BranchOverviewComponent, 
+    BranchStatisticsComponent, 
+    BranchIntegrityComponent
   ],
   imports: [
     SharedModule

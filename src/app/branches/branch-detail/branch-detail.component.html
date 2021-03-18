@@ -19,12 +19,12 @@
         <mdm-branch-overview [branch]="details"></mdm-branch-overview>
     </div>
     <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
-        <mat-tab-group>
+        <mat-tab-group [selectedIndex]="activeTab?.index" (selectedIndexChange)="tabSelected($event)">
             <mat-tab label="Statistics">
                 <mdm-branch-statistics [branch]="details"></mdm-branch-statistics>
             </mat-tab>
             <mat-tab label="Integrity">
-
+                <mdm-branch-integrity [branch]="details"></mdm-branch-integrity>
             </mat-tab>
         </mat-tab-group>
     </div>

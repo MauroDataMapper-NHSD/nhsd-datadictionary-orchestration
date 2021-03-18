@@ -17,7 +17,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
-import { StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
+import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
 import { Branch } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/core';
 
@@ -45,7 +45,7 @@ export class BranchSelectorComponent implements OnInit {
   }
 
   branchChanged(change: MatSelectChange) {
-    this.stateHandler.go('app.container.branches.detail', { name: change.value });
+    this.stateHandler.goTo(CommonUiStates.BranchDetail, { name: change.value, tabView: null });
   }
 
 }

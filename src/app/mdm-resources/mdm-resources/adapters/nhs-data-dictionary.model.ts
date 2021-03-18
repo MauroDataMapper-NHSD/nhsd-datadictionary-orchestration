@@ -52,3 +52,13 @@ export interface StatisticsItem {
 export interface Statistics {
   [key: string]: StatisticsItem;
 }
+
+/**
+ * Represents a single result from a collection of integrity check results.
+ */
+export interface IntegrityCheckResult {
+  /**
+   * The user-readable message of the result.
+   */
+  message: string;
+}

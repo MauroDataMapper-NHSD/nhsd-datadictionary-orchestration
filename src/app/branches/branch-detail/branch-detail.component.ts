@@ -16,9 +16,14 @@
 
 import { Component, OnInit } from '@angular/core';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
-import { StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
+import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
 import { BranchDetails } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/core';
+
+interface TabViewDetail {
+  index: number;
+  name: string;
+}
 
 @Component({
   selector: 'mdm-branch-detail',
@@ -29,6 +34,14 @@ export class BranchDetailComponent implements OnInit {
 
   branchName: string = '';
   details?: BranchDetails;
+  activeTab?: TabViewDetail;
+
+  readonly tabs: TabViewDetail[] = [
+    { index: 0, name: 'statistics' },
+    { index: 1, name: 'integrity'}
+  ];
+
+  readonly defaultTab = this.tabs[0];
 
   constructor(
     private dataDictionary: DataDictionaryService,
@@ -38,13 +51,28 @@ export class BranchDetailComponent implements OnInit {
   ngOnInit(): void {
     this.branchName = this.uiRouterGlobals.params.name;
     if (!this.branchName || this.branchName.length === 0) {
-      this.stateHandler.go('app.container.branches.default');
+      this.stateHandler.goTo(CommonUiStates.Branches);
       return;
     }
+
+    this.activeTab = this.getTabDetailByName(this.uiRouterGlobals.params.tabView);
 
     this.dataDictionary
       .getBranchDetails(this.branchName)
       .subscribe(details => this.details = details);
+  }
+
+  getTabDetailByName(name: string): TabViewDetail {
+    return this.tabs.find(tab => tab.name === name) ?? this.defaultTab;
+  }
+
+  getTabDetailByIndex(index: number): TabViewDetail {
+    return this.tabs.find(tab => tab.index === index) ?? this.defaultTab;
+  }
+
+  tabSelected(index: number) {
+    this.activeTab = this.getTabDetailByIndex(index);
+    this.stateHandler.goTo(CommonUiStates.BranchDetail, { tabView: this.activeTab.name }, { notify: false });
   }
 
 }
