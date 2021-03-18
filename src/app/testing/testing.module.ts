@@ -17,12 +17,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { UIRouterModule } from '@uirouter/angular';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from '@mdm/modules/material/material.module';
 import { FormsModule } from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from '@mdm/material/material.module';
+import { MdmResourcesModule } from '@mdm/mdm-resources/mdm-resources.module';
+import { UIRouterModule } from '@uirouter/angular';
 import { ToastrModule } from 'ngx-toastr';
-import { MdmResourcesModule } from '../mdm-resources/mdm-resources.module';
 
 @NgModule({
   declarations: [],
@@ -39,6 +39,6 @@ import { MdmResourcesModule } from '../mdm-resources/mdm-resources.module';
   exports: [
     MaterialModule,
     UIRouterModule
-  ],
+  ]
 })
 export class TestingModule { }

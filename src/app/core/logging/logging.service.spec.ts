@@ -15,7 +15,7 @@
  */
 
 import { TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/modules/testing/testing.module';
+import { TestingModule } from '@mdm/testing/testing.module';
 
 import { LoggingService } from './logging.service';
 

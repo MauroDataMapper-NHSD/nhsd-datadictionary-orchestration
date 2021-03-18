@@ -16,7 +16,7 @@
 
 import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/modules/testing/testing.module';
+import { TestingModule } from '@mdm/testing/testing.module';
 import { DataDictionaryModel } from '@mdm/core/dashboard/dashboard.model';
 import { DashboardService } from '@mdm/core/dashboard/dashboard.service';
 import { of } from 'rxjs';

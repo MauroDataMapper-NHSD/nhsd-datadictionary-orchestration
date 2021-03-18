@@ -15,14 +15,14 @@
  */
 
 import { TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/modules/testing/testing.module';
-import { MdmResourcesService } from '../mdm-resources/mdm-resources.service';
-import { SignInCredentials, SignInError, UserDetails } from './security.model';
+import { TestingModule } from '@mdm/testing/testing.module';
+import { SignInCredentials, UserDetails } from './security.model';
 import { cold } from 'jest-marbles';
 
 import { SecurityService } from './security.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EMPTY } from 'rxjs';
+import { MdmResourcesService } from '@mdm/mdm-resources/mdm-resources/mdm-resources.service';
 
 interface MdmSecurityResourceStub {
   login: jest.Mock;

@@ -15,6 +15,7 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestingModule } from '@mdm/testing/testing.module';
 
 import { ModelItemBannerComponent } from './model-item-banner.component';
 
@@ -24,6 +25,9 @@ describe('ModelItemBannerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        TestingModule
+      ],
       declarations: [ ModelItemBannerComponent ]
     })
     .compileComponents();

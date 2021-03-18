@@ -15,6 +15,7 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestingModule } from '@mdm/testing/testing.module';
 
 import { ModelSelectorComponent } from './model-selector.component';
 
@@ -24,6 +25,9 @@ describe('ModelSelectorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        TestingModule
+      ],
       declarations: [ ModelSelectorComponent ]
     })
     .compileComponents();

@@ -15,7 +15,7 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/modules/testing/testing.module';
+import { TestingModule } from '@mdm/testing/testing.module';
 
 import { HomeComponent } from './home.component';
 

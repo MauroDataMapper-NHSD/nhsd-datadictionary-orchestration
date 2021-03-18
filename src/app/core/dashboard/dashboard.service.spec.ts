@@ -15,7 +15,7 @@
  */
 
 import { TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/modules/testing/testing.module';
+import { TestingModule } from '@mdm/testing/testing.module';
 import { cold } from 'jest-marbles';
 import { CodeSet } from '../../mdm-resources/mdm-resources/adapters/code-sets.model';
 import { CodeSetsService } from '../../mdm-resources/mdm-resources/adapters/code-sets.service';
