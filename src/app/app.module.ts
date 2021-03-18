@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { AppContainerComponent } from './app-container/app-container.component';
 import { UiViewComponent } from './shared/ui-view/ui-view.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from './modules/modal/modal.module';
-import { SharedModule } from './modules/shared/shared.module';
+import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
+import { UIRouterModule } from '@uirouter/angular';
+import { states } from './routing/ui-states';
 
 @NgModule({
   declarations: [
@@ -33,12 +33,15 @@ import { CoreModule } from './core/core.module';
     UiViewComponent
   ],
   imports: [
-    BrowserModule,
+    CoreModule,
     SharedModule,
     DashboardModule,
-    ModalModule,
-    CoreModule,
-    BrowserAnimationsModule
+    ModalModule,    
+    UIRouterModule.forRoot({
+      states: states,
+      useHash: true,
+      otherwise: '/not-found',
+    }),
   ],
   bootstrap: [UiViewComponent]
 })

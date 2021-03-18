@@ -16,25 +16,18 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UIRouterModule } from '@uirouter/angular';
 import { ToastrModule } from 'ngx-toastr';
 import { UserIdleModule } from 'angular-user-idle';
 import { MdmResourcesModule } from '@mdm/mdm-resources/mdm-resources.module';
 import { environment } from '@env/environment';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpRequestProgressInterceptor } from './interceptors/http-request-progress.interceptor';
-import { states } from '@mdm/routing/ui-states';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    HttpClientModule,
-    UIRouterModule.forRoot({
-      states: states,
-      useHash: true,
-      otherwise: '/not-found'
-    }),
+    HttpClientModule,    
     ToastrModule.forRoot({
       timeOut: 30000,
       positionClass: 'toast-bottom-right',

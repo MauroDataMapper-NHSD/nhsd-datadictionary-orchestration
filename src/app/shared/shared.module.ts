@@ -20,10 +20,10 @@ import { ModelListComponent } from '@mdm/shared/model-list/model-list.component'
 import { ModelIconComponent } from '@mdm/shared/model-icon/model-icon.component';
 import { LoadingIndicatorComponent } from '@mdm/shared/loading-indicator/loading-indicator.component';
 import { ModelSelectorComponent } from '@mdm/shared/model-selector/model-selector.component';
-import { ModelItemBannerComponent } from '../../shared/model-item-banner/model-item-banner.component';
+import { ModelItemBannerComponent } from './model-item-banner/model-item-banner.component';
 import { MaterialModule } from '@mdm/material/material.module';
-
-
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -35,13 +35,17 @@ import { MaterialModule } from '@mdm/material/material.module';
   ],
   imports: [
     CommonModule,
+    BrowserModule,
+    BrowserAnimationsModule,
     MaterialModule
   ],
   exports: [
     ModelListComponent,
     ModelIconComponent,
     LoadingIndicatorComponent,
-    ModelSelectorComponent
+    ModelSelectorComponent,
+    CommonModule,
+    MaterialModule
   ]
 })
 export class SharedModule { }

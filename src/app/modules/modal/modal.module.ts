@@ -23,8 +23,8 @@ import { ConfirmationModalComponent } from '@mdm/modals/confirmation-modal/confi
 import { ModelSelectorModalComponent } from '@mdm/modals/model-selector-modal/model-selector-modal.component';
 
 import '@mdm/modals/mat-dialog.extensions'
-import { SharedModule } from '../shared/shared.module';
 import { MaterialModule } from '@mdm/material/material.module';
+import { SharedModule } from '@mdm/shared/shared.module';
 
 @NgModule({
   declarations: [

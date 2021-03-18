@@ -15,28 +15,24 @@
  */
 
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { HomeComponent } from '@mdm/home/home.component';
 import { AboutComponent } from '@mdm/about/about.component';
 import { NavbarComponent } from '@mdm/layout/navbar/navbar.component';
 import { UIRouterModule } from '@uirouter/angular';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FooterComponent } from '@mdm/layout/footer/footer.component';
-import { ToastrModule } from 'ngx-toastr';
 import { ErrorComponent } from '@mdm/error/error.component';
 import { NotImplementedComponent } from '@mdm/error/not-implemented/not-implemented.component';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { NotAuthorizedComponent } from '@mdm/error/not-authorized/not-authorized.component';
 import { NotFoundComponent } from '@mdm/error/not-found/not-found.component';
 import { ServerErrorComponent } from '@mdm/error/server-error/server-error.component';
-import { UserIdleModule } from 'angular-user-idle';
 import { ModelsComponent } from '@mdm/models/models.component';
 import { ModelDetailComponent } from '../../model-detail/model-detail.component';
 import { ModelActionsComponent } from '../../model-actions/model-actions.component';
-import { SharedModule } from '../shared/shared.module';
 import { UserComponent } from '@mdm/shared/user/user.component';
 import { StatisticsTableComponent } from '../../shared/statistics-table/statistics-table.component';
-import { MaterialModule } from '@mdm/material/material.module';
+import { SharedModule } from '@mdm/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -56,20 +52,9 @@ import { MaterialModule } from '@mdm/material/material.module';
     StatisticsTableComponent
   ],
   imports: [
-    CommonModule,
-    MaterialModule,
     UIRouterModule,
     NgxJsonViewerModule,
-    FlexLayoutModule,
-    ToastrModule.forRoot({
-      timeOut: 30000,
-      positionClass: 'toast-bottom-right',
-      preventDuplicates: false
-    }),
-    UserIdleModule.forRoot({ 
-      idle: 600, 
-      timeout: 300 
-    }),
+    FlexLayoutModule,    
     SharedModule
   ],
   exports: [
