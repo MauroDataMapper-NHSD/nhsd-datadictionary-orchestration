@@ -17,7 +17,6 @@
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { UiViewComponent } from './ui-view/ui-view.component';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
@@ -47,7 +46,6 @@ import { BranchesModule } from './branches/branches.module';
     LayoutModule,
     ErrorModule,
     PagesModule,
-    DashboardModule,
     DialogsModule,    
     BranchesModule
   ],

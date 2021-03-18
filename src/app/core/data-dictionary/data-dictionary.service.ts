@@ -15,7 +15,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Branch } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { Branch, BranchDetails } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { NhsDataDictionaryService } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.service';
 import { Observable } from 'rxjs';
 
@@ -28,5 +28,9 @@ export class DataDictionaryService {
 
   getAvailableBranches(): Observable<Branch[]> {
     return this.nhsDataDictionary.availableBranches();
+  }
+
+  getBranchDetails(name: string): Observable<BranchDetails> {
+    return this.nhsDataDictionary.branch(name);
   }
 }

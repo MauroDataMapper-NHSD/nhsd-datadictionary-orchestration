@@ -152,7 +152,7 @@ export class AppComponent implements OnInit, OnDestroy {
         if (user) {
           this.broadcast.dispatch(BroadcastEvent.SignedIn, user);
           this.toastr.clear();
-          this.stateHandler.goTo(CommonUiStates.Models, { }, { reload: true, inherit: false });
+          this.stateHandler.goTo(CommonUiStates.Branches, { }, { reload: true, inherit: false });
         }
       });
   }

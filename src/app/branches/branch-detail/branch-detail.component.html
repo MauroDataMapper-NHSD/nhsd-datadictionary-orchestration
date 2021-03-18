@@ -14,5 +14,11 @@
  limitations under the License.
 -->
 
-<p>branches-detail works!</p>
-<p>{{branchName}}</p>
+<div class="row">
+    <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+        <mdm-branch-overview [branch]="details"></mdm-branch-overview>
+    </div>
+    <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+        <p>{{branchName}}</p>
+    </div>
+</div>

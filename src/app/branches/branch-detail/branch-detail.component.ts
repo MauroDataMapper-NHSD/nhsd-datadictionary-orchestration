@@ -15,7 +15,9 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
+import { BranchDetails } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/core';
 
 @Component({
@@ -26,8 +28,10 @@ import { UIRouterGlobals } from '@uirouter/core';
 export class BranchDetailComponent implements OnInit {
 
   branchName: string = '';
+  details?: BranchDetails;
 
   constructor(
+    private dataDictionary: DataDictionaryService,
     private uiRouterGlobals: UIRouterGlobals,
     private stateHandler: StateHandlerService) { }
 
@@ -36,7 +40,11 @@ export class BranchDetailComponent implements OnInit {
     if (!this.branchName || this.branchName.length === 0) {
       this.stateHandler.go('app.container.branches.default');
       return;
-    }    
+    }
+
+    this.dataDictionary
+      .getBranchDetails(this.branchName)
+      .subscribe(details => this.details = details);
   }
 
 }

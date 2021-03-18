@@ -17,7 +17,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { Branch, Statistics } from './nhs-data-dictionary.model';
+import { DomainType } from '../mdm-resources.model';
+import { Branch, BranchDetails, Statistics } from './nhs-data-dictionary.model';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,22 @@ export class NhsDataDictionaryService {
         label: 'edits'
       }
     ])
+    .pipe(delay(1000));
+  }
+
+  branch(name: string): Observable<BranchDetails> {
+    // TODO: replace with real endpoint
+    return of({
+      id: '1234-5678',
+      label: name,
+      authority: {
+        id: '111',
+        label: 'NHS Digital',
+        url: 'http://localhost:8080'
+      },
+      domainType: DomainType.DataModel,
+      lastUpdated: '2021-03-10T15:17:05.459Z'
+    })
     .pipe(delay(1000));
   }
 

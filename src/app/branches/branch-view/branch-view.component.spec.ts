@@ -16,21 +16,21 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BranchesMainComponent } from './branches-main.component';
+import { BranchViewComponent } from './branch-view.component';
 
 describe('BranchesMainComponent', () => {
-  let component: BranchesMainComponent;
-  let fixture: ComponentFixture<BranchesMainComponent>;
+  let component: BranchViewComponent;
+  let fixture: ComponentFixture<BranchViewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BranchesMainComponent ]
+      declarations: [ BranchViewComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BranchesMainComponent);
+    fixture = TestBed.createComponent(BranchViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

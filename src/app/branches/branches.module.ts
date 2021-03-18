@@ -15,16 +15,18 @@
  */
 
 import { NgModule } from '@angular/core';
-import { BranchesMainComponent } from './branches-main/branches-main.component';
+import { BranchViewComponent } from './branch-view/branch-view.component';
 import { SharedModule } from '@mdm/shared/shared.module';
 import { BranchDefaultComponent } from './branch-default/branch-default.component';
 import { BranchDetailComponent } from './branch-detail/branch-detail.component';
+import { BranchOverviewComponent } from './branch-overview/branch-overview.component';
 
 @NgModule({
   declarations: [
-    BranchesMainComponent, 
+    BranchViewComponent, 
     BranchDefaultComponent, 
-    BranchDetailComponent
+    BranchDetailComponent, 
+    BranchOverviewComponent
   ],
   imports: [
     SharedModule

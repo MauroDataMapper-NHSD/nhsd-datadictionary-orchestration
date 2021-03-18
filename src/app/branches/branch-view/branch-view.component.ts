@@ -14,24 +14,18 @@
  * limitations under the License.
  */
 
-import { TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/testing/testing.module';
+import { Component, OnInit } from '@angular/core';
 
-import { TerminologyService } from './terminology.service';
+@Component({
+  selector: 'mdm-branch-view',
+  templateUrl: './branch-view.component.html',
+  styleUrls: ['./branch-view.component.scss']
+})
+export class BranchViewComponent implements OnInit {
 
-describe('TerminologyService', () => {
-  let service: TerminologyService;
+  constructor() { }
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        TestingModule
-      ]
-    });
-    service = TestBed.inject(TerminologyService);
-  });
+  ngOnInit(): void {
+  }
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+}

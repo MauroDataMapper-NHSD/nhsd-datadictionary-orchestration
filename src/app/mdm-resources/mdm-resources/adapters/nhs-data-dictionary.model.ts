@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { Authority, DomainType } from "../mdm-resources.model";
+
 /**
  * Represents a branch of the NHS Data Dictionary.
  */
@@ -22,6 +24,14 @@ export interface Branch {
    * The name/label of the branch.
    */
   label: string
+}
+
+export interface BranchDetails {
+  id: string;
+  label: string;
+  domainType: DomainType;
+  authority: Authority;
+  lastUpdated?: string;
 }
 
 /**

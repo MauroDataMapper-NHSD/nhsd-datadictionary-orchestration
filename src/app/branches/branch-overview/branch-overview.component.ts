@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { BranchDetails } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 
 @Component({
-  selector: 'mdm-branches-main',
-  templateUrl: './branches-main.component.html',
-  styleUrls: ['./branches-main.component.scss']
+  selector: 'mdm-branch-overview',
+  templateUrl: './branch-overview.component.html',
+  styleUrls: ['./branch-overview.component.scss']
 })
-export class BranchesMainComponent implements OnInit {
+export class BranchOverviewComponent implements OnInit {
+
+  @Input() branch?: BranchDetails;
 
   constructor() { }
 

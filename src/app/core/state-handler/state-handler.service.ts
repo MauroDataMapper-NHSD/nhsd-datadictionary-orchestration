@@ -19,7 +19,7 @@ import { RawParams, TransitionOptions, UIRouter } from '@uirouter/angular';
 
 export enum CommonUiStates {
   Default,
-  Models
+  Branches
 }
 
 @Injectable({
@@ -29,7 +29,7 @@ export class StateHandlerService {
 
   private readonly commonStates: { key: CommonUiStates, state: string}[] = [
     { key: CommonUiStates.Default, state: 'app.container.default' },
-    { key: CommonUiStates.Models, state: 'app.container.models' }
+    { key: CommonUiStates.Branches, state: 'app.container.branches.default' }
   ];
 
   constructor(private router: UIRouter) { }
