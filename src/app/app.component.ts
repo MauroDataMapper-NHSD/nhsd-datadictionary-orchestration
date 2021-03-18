@@ -61,7 +61,8 @@ export class AppComponent implements OnInit, OnDestroy {
         {
           label: 'Models',
           uiSref: 'app.container.models',
-          icon: 'fa-file-alt'
+          icon: 'fa-file-alt',
+          onlySignedIn: true
         },
         {
           label: 'About',

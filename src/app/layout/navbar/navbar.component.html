@@ -25,7 +25,7 @@
                 </div>
                 <span class="spacer"></span>
                 <div class="mdm-navbar__items" fxShow="true" fxHide.lt-md="true" *ngFor="let link of mainNavbarLinks">
-                    <a [uiSref]="link.uiSref" uiSrefActive="active">{{link.label}}</a>
+                    <a *ngIf="!link.onlySignedIn || (link.onlySignedIn && isSignedIn)" [uiSref]="link.uiSref" uiSrefActive="active">{{link.label}}</a>
                 </div>
                 <span class="spacer"></span>
                 <div class="mdm-navbar__menu" fxShow="true" fxHide.lt-md="true">
