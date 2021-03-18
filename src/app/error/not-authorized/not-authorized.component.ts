@@ -15,7 +15,7 @@
  */
 
 import { Component } from '@angular/core';
-import { SharedService } from '@mdm/services/shared/shared.service';
+import { SharedService } from '@mdm/core/shared/shared.service';
 import { ClipboardService } from 'ngx-clipboard';
 import { ErrorComponent } from '../error.component';
 

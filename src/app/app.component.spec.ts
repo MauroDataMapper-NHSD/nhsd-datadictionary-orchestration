@@ -18,7 +18,7 @@ import { Component, Input } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { NavbarLinkGroup } from './layout/navbar/navbar.model';
-import { TestingModule } from './modules/testing/testing.module';
+import { TestingModule } from './testing/testing.module';
 
 @Component({selector: 'mdm-navbar', template: ''})
 class NavbarStubComponent { 

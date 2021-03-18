@@ -18,10 +18,10 @@
 
  /* Import all custom components SASS files to access their mixins */
  @import "layout/navbar/navbar.component.scss";
- @import "shared/user/user.component.scss";
+ @import "layout/user/user.component.scss";
  @import "error/error.component.scss";
  @import "shared/loading-indicator/loading-indicator.component.scss";
- @import "model-detail/model-detail.component.scss";
+ @import "branches/branch-overview/branch-overview.component.scss";
  
  /* Combine all custom component theme mixins into one */
  @mixin mdm-custom-components-theme($theme) {
@@ -29,5 +29,5 @@
    @include mdm-user-theme($theme);
    @include mdm-error-theme($theme);
    @include mdm-loading-indicator-theme($theme);
-   @include mdm-model-detail-theme($theme);
+   @include mdm-branch-overview-theme($theme);
  }

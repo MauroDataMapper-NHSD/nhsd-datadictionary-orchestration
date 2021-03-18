@@ -15,12 +15,12 @@
  */
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { BroadcastEvent } from '@mdm/services/broadcast/broadcast.model';
-import { BroadcastService } from '@mdm/services/broadcast/broadcast.service';
-import { UserDetails } from '@mdm/services/security/security.model';
-import { SecurityService } from '@mdm/services/security/security.service';
-import { SharedService } from '@mdm/services/shared/shared.service';
-import { ThemingService } from '@mdm/services/theming/theming.service';
+import { BroadcastEvent } from '@mdm/core/broadcast/broadcast.model';
+import { BroadcastService } from '@mdm/core/broadcast/broadcast.service';
+import { UserDetails } from '@mdm/core/security/security.model';
+import { SecurityService } from '@mdm/core/security/security.service';
+import { SharedService } from '@mdm/core/shared/shared.service';
+import { ThemingService } from '@mdm/core/theming/theming.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NavbarLink, NavbarLinkGroup } from './navbar.model';

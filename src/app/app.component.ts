@@ -19,19 +19,19 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { EMPTY, Subject } from 'rxjs';
-import { catchError, finalize, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { NavbarLinkGroup } from './layout/navbar/navbar.model';
-import { SignInModalComponent } from './modals/sign-in-modal/sign-in-modal.component';
-import { BroadcastEvent } from './services/broadcast/broadcast.model';
-import { BroadcastService } from './services/broadcast/broadcast.service';
-import { MdmResourcesError } from './services/mdm-resources/mdm-resources.model';
-import { SecurityService } from './services/security/security.service';
-import { SharedService } from './services/shared/shared.service';
-import { CommonUiStates, StateHandlerService } from './services/state-handler/state-handler.service';
-import { ThemingService } from './services/theming/theming.service';
+import { SignInModalComponent } from './dialogs/sign-in-dialog/sign-in-dialog.component';
+import { BroadcastEvent } from './core/broadcast/broadcast.model';
+import { BroadcastService } from './core/broadcast/broadcast.service';
+import { MdmResourcesError } from './mdm-resources/mdm-resources/mdm-resources.model';
+import { SecurityService } from './core/security/security.service';
+import { SharedService } from './core/shared/shared.service';
+import { CommonUiStates, StateHandlerService } from './core/state-handler/state-handler.service';
+import { ThemingService } from './core/theming/theming.service';
 import { UserIdleService } from 'angular-user-idle';
-import { UserDetails } from './services/security/security.model';
+import { UserDetails } from './core/security/security.model';
 
 @Component({
   selector: 'mdm-root',
@@ -59,9 +59,9 @@ export class AppComponent implements OnInit, OnDestroy {
           icon: 'fa-home'
         },
         {
-          label: 'Models',
-          uiSref: 'app.container.models',
-          icon: 'fa-file-alt',
+          label: 'Branches',
+          uiSref: 'app.container.branches.default',
+          icon: 'fa-code-branch',
           onlySignedIn: true
         },
         {
@@ -152,7 +152,7 @@ export class AppComponent implements OnInit, OnDestroy {
         if (user) {
           this.broadcast.dispatch(BroadcastEvent.SignedIn, user);
           this.toastr.clear();
-          this.stateHandler.goTo(CommonUiStates.Models, { }, { reload: true, inherit: false });
+          this.stateHandler.goTo(CommonUiStates.Branches, { }, { reload: true, inherit: false });
         }
       });
   }

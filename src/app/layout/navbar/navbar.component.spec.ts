@@ -16,8 +16,8 @@
 
 import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/modules/testing/testing.module';
-import { UserDetails } from '@mdm/services/security/security.model';
+import { TestingModule } from '@mdm/testing/testing.module';
+import { UserDetails } from '@mdm/core/security/security.model';
 
 import { NavbarComponent } from './navbar.component';
 

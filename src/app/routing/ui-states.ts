@@ -16,14 +16,16 @@
 
 import { Ng2StateDeclaration } from '@uirouter/angular';
 import { AppComponent } from '@mdm/app.component';
-import { HomeComponent } from '@mdm/home/home.component';
+import { HomeComponent } from '@mdm/pages/home/home.component';
 import { AppContainerComponent } from '@mdm/app-container/app-container.component';
-import { AboutComponent } from '@mdm/about/about.component';
+import { AboutComponent } from '@mdm/pages/about/about.component';
 import { NotImplementedComponent } from '@mdm/error/not-implemented/not-implemented.component';
 import { NotAuthorizedComponent } from '@mdm/error/not-authorized/not-authorized.component';
 import { ServerErrorComponent } from '@mdm/error/server-error/server-error.component';
 import { NotFoundComponent } from '@mdm/error/not-found/not-found.component';
-import { ModelsComponent } from '@mdm/models/models.component';
+import { BranchViewComponent } from '@mdm/branches/branch-view/branch-view.component';
+import { BranchDefaultComponent } from '@mdm/branches/branch-default/branch-default.component';
+import { BranchDetailComponent } from '@mdm/branches/branch-detail/branch-detail.component';
 
 export const states: Ng2StateDeclaration[] = [
   {
@@ -43,12 +45,7 @@ export const states: Ng2StateDeclaration[] = [
     name: 'app.container.home',
     url: '/home',
     component: HomeComponent
-  },
-  {
-    name: 'app.container.models',
-    url: '/models',
-    component: ModelsComponent
-  },
+  },  
   {
     name: 'app.container.about',
     url: '/about',
@@ -73,5 +70,19 @@ export const states: Ng2StateDeclaration[] = [
     name: 'app.container.notFound',
     url: '/not-found',
     component: NotFoundComponent
-  }
+  },
+  {
+    name: 'app.container.branches',
+    component: BranchViewComponent
+  },
+  {
+    name: 'app.container.branches.default',
+    url: '/branches',
+    component: BranchDefaultComponent
+  },
+  {
+    name: 'app.container.branches.detail',
+    url: '/branches/:name',
+    component: BranchDetailComponent
+  },
 ];
