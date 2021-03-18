@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-import { DataDictionaryModel } from "@mdm/core/dashboard/dashboard.model";
-import { DialogResult } from "../dialogs.model";
+import { Injectable } from '@angular/core';
+import { Branch } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { NhsDataDictionaryService } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.service';
+import { Observable } from 'rxjs';
 
-export interface ModelSelectorDialogOptions {
+@Injectable({
+  providedIn: 'root'
+})
+export class DataDictionaryService {
 
-}
+  constructor(private nhsDataDictionary: NhsDataDictionaryService) { }
 
-export interface ModelSelectorDialogResult extends DialogResult {
-  model?: DataDictionaryModel;
+  getAvailableBranches(): Observable<Branch[]> {
+    return this.nhsDataDictionary.availableBranches();
+  }
 }

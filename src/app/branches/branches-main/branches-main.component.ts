@@ -14,7 +14,18 @@
  * limitations under the License.
  */
 
-.mdm-model-item-banner {
-    //margin-top: 10px;
-    font-size: 16px;
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'mdm-branches-main',
+  templateUrl: './branches-main.component.html',
+  styleUrls: ['./branches-main.component.scss']
+})
+export class BranchesMainComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
 }

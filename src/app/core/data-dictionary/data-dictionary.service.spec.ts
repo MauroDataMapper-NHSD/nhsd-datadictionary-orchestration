@@ -14,24 +14,19 @@
  * limitations under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
-import { DataDictionaryModel } from '@mdm/core/dashboard/dashboard.model';
+import { TestBed } from '@angular/core/testing';
 
-export type ModelIconSize = 'fa-sm' | 'fa-md' | 'fa-lg';
+import { DataDictionaryService } from './data-dictionary.service';
 
-@Component({
-  selector: 'mdm-model-icon',
-  templateUrl: './model-icon.component.html',
-  styleUrls: ['./model-icon.component.scss']
-})
-export class ModelIconComponent implements OnInit {
+describe('DataDictionaryService', () => {
+  let service: DataDictionaryService;
 
-  @Input() model!: DataDictionaryModel;
-  @Input() size: ModelIconSize = 'fa-sm';
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(DataDictionaryService);
+  });
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});

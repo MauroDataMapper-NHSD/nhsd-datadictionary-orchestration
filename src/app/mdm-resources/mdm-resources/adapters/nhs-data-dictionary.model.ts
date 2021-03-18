@@ -15,6 +15,16 @@
  */
 
 /**
+ * Represents a branch of the NHS Data Dictionary.
+ */
+export interface Branch {
+  /**
+   * The name/label of the branch.
+   */
+  label: string
+}
+
+/**
  * Represents a statistics item to attach to a list of statistics.
  * 
  * @see Statistics

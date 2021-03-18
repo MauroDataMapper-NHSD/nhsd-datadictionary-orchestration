@@ -15,26 +15,22 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/testing/testing.module';
 
-import { ModelSelectorComponent } from './model-selector.component';
+import { BranchSelectorComponent } from './branch-selector.component';
 
-describe('ModelSelectorComponent', () => {
-  let component: ModelSelectorComponent;
-  let fixture: ComponentFixture<ModelSelectorComponent>;
+describe('BranchSelectorComponent', () => {
+  let component: BranchSelectorComponent;
+  let fixture: ComponentFixture<BranchSelectorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        TestingModule
-      ],
-      declarations: [ ModelSelectorComponent ]
+      declarations: [ BranchSelectorComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ModelSelectorComponent);
+    fixture = TestBed.createComponent(BranchSelectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -17,22 +17,19 @@
 import { NgModule } from '@angular/core';
 import { ConfirmationModalComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { SignInModalComponent } from './sign-in-dialog/sign-in-dialog.component';
-import { ModelSelectorModalComponent } from './model-selector-dialog/model-selector-dialog.component';
 import { SharedModule } from '@mdm/shared/shared.module';
 
 @NgModule({
   declarations: [
     ConfirmationModalComponent,
-    SignInModalComponent,
-    ModelSelectorModalComponent
+    SignInModalComponent
   ],
   imports: [
     SharedModule
   ],
   exports: [
     ConfirmationModalComponent,
-    SignInModalComponent,
-    ModelSelectorModalComponent
+    SignInModalComponent
   ]
 })
 export class DialogsModule { }

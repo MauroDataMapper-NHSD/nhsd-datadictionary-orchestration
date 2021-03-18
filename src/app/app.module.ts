@@ -28,6 +28,7 @@ import { ErrorModule } from './error/error.module';
 import { AppContainerComponent } from './app-container/app-container.component';
 import { PagesModule } from './pages/pages.module';
 import { DialogsModule } from './dialogs/dialogs.module';
+import { BranchesModule } from './branches/branches.module';
 
 @NgModule({
   declarations: [
@@ -38,16 +39,17 @@ import { DialogsModule } from './dialogs/dialogs.module';
   imports: [
     CoreModule,
     SharedModule,
-    LayoutModule,
-    ErrorModule,
-    PagesModule,
-    DashboardModule,
-    DialogsModule,    
     UIRouterModule.forRoot({
       states: states,
       useHash: true,
       otherwise: '/not-found',
     }),
+    LayoutModule,
+    ErrorModule,
+    PagesModule,
+    DashboardModule,
+    DialogsModule,    
+    BranchesModule
   ],
   bootstrap: [UiViewComponent]
 })

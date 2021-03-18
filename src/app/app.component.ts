@@ -19,8 +19,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { EMPTY, Subject } from 'rxjs';
-import { catchError, finalize, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { NavbarLinkGroup } from './layout/navbar/navbar.model';
 import { SignInModalComponent } from './dialogs/sign-in-dialog/sign-in-dialog.component';
 import { BroadcastEvent } from './core/broadcast/broadcast.model';
@@ -59,9 +59,9 @@ export class AppComponent implements OnInit, OnDestroy {
           icon: 'fa-home'
         },
         {
-          label: 'Models',
-          uiSref: 'app.container.models',
-          icon: 'fa-file-alt',
+          label: 'Branches',
+          uiSref: 'app.container.branches.default',
+          icon: 'fa-code-branch',
           onlySignedIn: true
         },
         {

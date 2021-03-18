@@ -14,30 +14,20 @@
  * limitations under the License.
  */
 
-@import "styles/abstracts/variables";
+import { NgModule } from '@angular/core';
+import { BranchesMainComponent } from './branches-main/branches-main.component';
+import { SharedModule } from '@mdm/shared/shared.module';
+import { BranchDefaultComponent } from './branch-default/branch-default.component';
+import { BranchDetailComponent } from './branch-detail/branch-detail.component';
 
-.mdm-model-list__toolbar {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: stretch;
-    width: 100%;
-
-    input {
-        position: relative;
-        flex: 1 1 0%;
-        height: $toolbarButtonOnlySize;
-    }
-
-    button {
-        padding: 0;
-        min-width: $toolbarButtonOnlySize;
-        height: $toolbarButtonOnlySize;
-    }
-}
-
-.mdm-model-list__list {
-    width: 100%;
-    height: calc(100vh - 400px);
-    overflow-y: auto;
-}
+@NgModule({
+  declarations: [
+    BranchesMainComponent, 
+    BranchDefaultComponent, 
+    BranchDetailComponent
+  ],
+  imports: [
+    SharedModule
+  ]
+})
+export class BranchesModule { }

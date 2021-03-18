@@ -15,26 +15,22 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/testing/testing.module';
 
-import { ModelItemBannerComponent } from './model-item-banner.component';
+import { BranchesMainComponent } from './branches-main.component';
 
-describe('ModelItemBannerComponent', () => {
-  let component: ModelItemBannerComponent;
-  let fixture: ComponentFixture<ModelItemBannerComponent>;
+describe('BranchesMainComponent', () => {
+  let component: BranchesMainComponent;
+  let fixture: ComponentFixture<BranchesMainComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        TestingModule
-      ],
-      declarations: [ ModelItemBannerComponent ]
+      declarations: [ BranchesMainComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ModelItemBannerComponent);
+    fixture = TestBed.createComponent(BranchesMainComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

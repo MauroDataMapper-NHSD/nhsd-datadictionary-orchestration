@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
-import { DataDictionaryModel } from '@mdm/core/dashboard/dashboard.model';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'mdm-model-item-banner',
-  templateUrl: './model-item-banner.component.html',
-  styleUrls: ['./model-item-banner.component.scss']
+  selector: 'mdm-branch-default',
+  templateUrl: './branch-default.component.html',
+  styleUrls: ['./branch-default.component.scss']
 })
-export class ModelItemBannerComponent implements OnInit {
-
-  @Input() model?: DataDictionaryModel;
+export class BranchDefaultComponent implements OnInit {
 
   constructor() { }
 

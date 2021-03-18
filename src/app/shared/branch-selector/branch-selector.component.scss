@@ -14,28 +14,8 @@
  * limitations under the License.
  */
 
-@import "styles/abstracts/variables";
-
-.mdm-model-selector {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: stretch;
-    width: 100%;
-
-    .mdm-model-selector__model {
-        position: relative;
-        flex: 1 1 0%;
-        margin: 8px 16px;
-    }
-
-    button {
-        padding: 0;
-        min-width: $toolbarButtonOnlySize;
-        height: $toolbarButtonOnlySize;
-    }
-
-    .mdm-model-selector--placeholder {
-        color: rgb(94, 94, 94);
-    }
-}
+ .mdm-branch-selector__label {
+     i {
+         margin: 0px 8px;
+     }
+ }

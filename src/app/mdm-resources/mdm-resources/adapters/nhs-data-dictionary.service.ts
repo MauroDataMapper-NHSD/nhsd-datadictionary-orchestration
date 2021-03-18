@@ -17,7 +17,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { Statistics } from './nhs-data-dictionary.model';
+import { Branch, Statistics } from './nhs-data-dictionary.model';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +25,22 @@ import { Statistics } from './nhs-data-dictionary.model';
 export class NhsDataDictionaryService {
 
   constructor() { }
+
+  availableBranches(): Observable<Branch[]> {
+    // TODO: replace with real endpoint
+    return of([
+      {
+        label: 'main'
+      },
+      {
+        label: 'test-branch'
+      },
+      {
+        label: 'edits'
+      }
+    ])
+    .pipe(delay(1000));
+  }
 
   statistics(): Observable<Statistics> {
     // TODO: replace with real endpoint
