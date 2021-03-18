@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
+import { DataDictionaryModel } from "@mdm/services/dashboard/dashboard.model";
+import { ModalDialogStatus } from "../modal.model";
 
-$defaultFontSize: 17px;
-$defaultFontColour: #333;
-$defaultLinkColour: #337AB7;
-$defaultIconColor: #f19e3f;
+export interface ModelSelectorModalConfig {
 
-$mobile-xs: 460px;
-$mobile: 768px;
-$tablet: 992px;
-$desktop: 1600px;
+}
 
-$toolbarButtonOnlySize: 44px;
+export interface ModelSelectorModalResult {
+  status: ModalDialogStatus;
+  model?: DataDictionaryModel;
+}

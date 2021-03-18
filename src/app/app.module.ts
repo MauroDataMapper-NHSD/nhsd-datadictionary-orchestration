@@ -30,6 +30,7 @@ import { MdmResourcesModule } from './modules/mdm-resources/mdm-resources.module
 import { environment } from '@env/environment';
 import { HttpRequestProgressInterceptor } from './interceptors/http-request-progress.interceptor';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { SharedModule } from './modules/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
   ],
   imports: [
     BrowserModule,
+    SharedModule,
     DashboardModule,
     ModalModule,
     HttpClientModule,

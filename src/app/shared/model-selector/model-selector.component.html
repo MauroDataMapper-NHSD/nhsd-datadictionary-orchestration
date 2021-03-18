@@ -14,18 +14,16 @@
  limitations under the License.
 -->
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <mdm-model-selector></mdm-model-selector>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-            
-        </div>
-        <div class="col-lg-6 col-md-12 col-xs-12 col-sm-12">
-            <mdm-model-detail [model]="selectedModel"></mdm-model-detail>
-        </div>
+<div class="mdm-shadow-block">
+    <div class="mdm-model-selector">
+        <div class="mdm-model-selector__model">
+            <mdm-model-item-banner *ngIf="selected" [model]="selected"></mdm-model-item-banner>
+            <div *ngIf="!selected" class="mdm-model-selector--placeholder">
+                Select a model
+            </div>
+        </div>    
+        <button type="button" mat-stroked-button color="primary" matTooltip="Change model" aria-label="Change model" (click)="selectModel()">
+            <i class="fas fa-exchange-alt"></i>
+        </button>
     </div>
 </div>

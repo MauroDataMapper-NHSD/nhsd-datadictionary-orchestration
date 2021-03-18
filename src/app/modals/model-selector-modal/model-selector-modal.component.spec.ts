@@ -15,39 +15,23 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/modules/testing/testing.module';
-import { DataDictionaryModel } from '@mdm/services/dashboard/dashboard.model';
-import { DomainType } from '@mdm/services/mdm-resources/mdm-resources.model';
 
-import { ModelIconComponent } from './model-icon.component';
+import { ModelSelectorModalComponent } from './model-selector-modal.component';
 
-describe('ModelIconComponent', () => {
-  let component: ModelIconComponent;
-  let fixture: ComponentFixture<ModelIconComponent>;
+describe('ModelSelectorModalComponent', () => {
+  let component: ModelSelectorModalComponent;
+  let fixture: ComponentFixture<ModelSelectorModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        TestingModule
-      ],
-      declarations: [ ModelIconComponent ]
+      declarations: [ ModelSelectorModalComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ModelIconComponent);
+    fixture = TestBed.createComponent(ModelSelectorModalComponent);
     component = fixture.componentInstance;
-    component.model = new DataDictionaryModel({ 
-      id: '1', 
-      domainType: DomainType.CodeSet, 
-      label: 'test', 
-      authority: { 
-        id: '2',
-        label: 'test',
-        url: 'url'
-      } 
-    });
     fixture.detectChanges();
   });
 

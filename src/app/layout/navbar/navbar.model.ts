@@ -48,6 +48,11 @@ export interface NavbarLink {
    * The name of the font-awesome icon to optionally use.
    */
   icon?: string;
+
+  /**
+   * States if this link should only be visible if a user is signed in first.
+   */
+  onlySignedIn?: boolean;
 }
 
 /**
@@ -69,4 +74,6 @@ export interface NavbarLinkGroup {
    * in full screen mode.
    */
   isMain?: boolean;
+  
+  onlySignedIn?: boolean;
 }

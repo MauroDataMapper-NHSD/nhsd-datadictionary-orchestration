@@ -17,18 +17,18 @@
 import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestingModule } from '@mdm/modules/testing/testing.module';
-import { ModelListItem } from '@mdm/services/dashboard/dashboard.model';
+import { DataDictionaryModel } from '@mdm/services/dashboard/dashboard.model';
 
 import { ModelDetailComponent } from './model-detail.component';
 
 @Component({selector: 'mdm-model-icon', template: ''})
 class ModelIconStubComponent { 
-  @Input() model!: ModelListItem;
+  @Input() model!: DataDictionaryModel;
 }
 
 @Component({selector: 'mdm-model-actions', template: ''})
 class ModelActionsStubComponent { 
-  @Input() model!: ModelListItem;
+  @Input() model!: DataDictionaryModel;
 }
 
 describe('ModelDetailComponent', () => {

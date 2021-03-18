@@ -14,18 +14,13 @@
  limitations under the License.
 -->
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <mdm-model-selector></mdm-model-selector>
-        </div>
+<form role="form">
+    <h1 class="modal-title text-center">Select a model</h1>
+    <div class="modal-body">
+        <mdm-model-list (selectedModel)="modelSelected($event)"></mdm-model-list>
     </div>
-    <div class="row">
-        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-            
-        </div>
-        <div class="col-lg-6 col-md-12 col-xs-12 col-sm-12">
-            <mdm-model-detail [model]="selectedModel"></mdm-model-detail>
-        </div>
+    <div class="modal-footer" style="padding: 10px;">
+        <button mat-button color="warn" class="mr-1" type="button" (click)="cancel()">Cancel</button>
+        <button mat-flat-button color="primary" type="button" [disabled]="!isSelected" (click)="ok()">Select</button>
     </div>
-</div>
+</form>

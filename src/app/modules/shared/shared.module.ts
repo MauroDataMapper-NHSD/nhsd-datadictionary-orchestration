@@ -16,33 +16,32 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatDialogModule } from '@angular/material/dialog';
+import { ModelListComponent } from '@mdm/shared/model-list/model-list.component';
+import { ModelIconComponent } from '@mdm/shared/model-icon/model-icon.component';
+import { LoadingIndicatorComponent } from '@mdm/shared/loading-indicator/loading-indicator.component';
 import { MaterialModule } from '../material/material.module';
-import { SignInModalComponent } from '@mdm/modals/sign-in-modal/sign-in-modal.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { ConfirmationModalComponent } from '@mdm/modals/confirmation-modal/confirmation-modal.component';
-import { ModelSelectorModalComponent } from '@mdm/modals/model-selector-modal/model-selector-modal.component';
+import { ModelSelectorComponent } from '@mdm/shared/model-selector/model-selector.component';
+import { ModelItemBannerComponent } from '../../shared/model-item-banner/model-item-banner.component';
 
-import '@mdm/modals/mat-dialog.extensions'
-import { SharedModule } from '../shared/shared.module';
+
 
 @NgModule({
   declarations: [
-    SignInModalComponent,
-    ConfirmationModalComponent,
-    ModelSelectorModalComponent
+    ModelListComponent,
+    ModelIconComponent,
+    LoadingIndicatorComponent,
+    ModelSelectorComponent,
+    ModelItemBannerComponent
   ],
   imports: [
     CommonModule,
-    ReactiveFormsModule,
-    MatDialogModule,
-    MaterialModule,
-    SharedModule
+    MaterialModule
   ],
   exports: [
-    SignInModalComponent,
-    ConfirmationModalComponent,
-    ModelSelectorModalComponent
+    ModelListComponent,
+    ModelIconComponent,
+    LoadingIndicatorComponent,
+    ModelSelectorComponent
   ]
 })
-export class ModalModule { }
+export class SharedModule { }

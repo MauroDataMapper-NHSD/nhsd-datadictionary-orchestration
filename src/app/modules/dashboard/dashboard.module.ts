@@ -23,7 +23,6 @@ import { MaterialModule } from '../material/material.module';
 import { UIRouterModule } from '@uirouter/angular';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FooterComponent } from '@mdm/layout/footer/footer.component';
-import { UserComponent } from '@mdm/shared/user/user.component';
 import { ToastrModule } from 'ngx-toastr';
 import { ErrorComponent } from '@mdm/error/error.component';
 import { NotImplementedComponent } from '@mdm/error/not-implemented/not-implemented.component';
@@ -32,12 +31,11 @@ import { NotAuthorizedComponent } from '@mdm/error/not-authorized/not-authorized
 import { NotFoundComponent } from '@mdm/error/not-found/not-found.component';
 import { ServerErrorComponent } from '@mdm/error/server-error/server-error.component';
 import { UserIdleModule } from 'angular-user-idle';
-import { LoadingIndicatorComponent } from '@mdm/shared/loading-indicator/loading-indicator.component';
 import { ModelsComponent } from '@mdm/models/models.component';
-import { ModelListComponent } from '@mdm/model-list/model-list.component';
 import { ModelDetailComponent } from '../../model-detail/model-detail.component';
-import { ModelIconComponent } from '../../shared/model-icon/model-icon.component';
 import { ModelActionsComponent } from '../../model-actions/model-actions.component';
+import { SharedModule } from '../shared/shared.module';
+import { UserComponent } from '@mdm/shared/user/user.component';
 
 @NgModule({
   declarations: [
@@ -51,11 +49,8 @@ import { ModelActionsComponent } from '../../model-actions/model-actions.compone
     NotAuthorizedComponent,
     NotFoundComponent,
     ServerErrorComponent,
-    LoadingIndicatorComponent,
     ModelsComponent,
-    ModelListComponent,
     ModelDetailComponent,
-    ModelIconComponent,
     ModelActionsComponent
   ],
   imports: [
@@ -72,7 +67,8 @@ import { ModelActionsComponent } from '../../model-actions/model-actions.compone
     UserIdleModule.forRoot({ 
       idle: 600, 
       timeout: 300 
-    })
+    }),
+    SharedModule
   ],
   exports: [
     NavbarComponent,
@@ -82,8 +78,7 @@ import { ModelActionsComponent } from '../../model-actions/model-actions.compone
     AboutComponent,
     ErrorComponent,
     NotImplementedComponent,
-    NotAuthorizedComponent,
-    LoadingIndicatorComponent
+    NotAuthorizedComponent
   ]
 })
 export class DashboardModule { }

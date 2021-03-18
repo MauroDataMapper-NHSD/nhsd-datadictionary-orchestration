@@ -14,15 +14,21 @@
  * limitations under the License.
  */
 
+import { Component, Input, OnInit } from '@angular/core';
+import { DataDictionaryModel } from '@mdm/services/dashboard/dashboard.model';
 
-$defaultFontSize: 17px;
-$defaultFontColour: #333;
-$defaultLinkColour: #337AB7;
-$defaultIconColor: #f19e3f;
+@Component({
+  selector: 'mdm-model-item-banner',
+  templateUrl: './model-item-banner.component.html',
+  styleUrls: ['./model-item-banner.component.scss']
+})
+export class ModelItemBannerComponent implements OnInit {
 
-$mobile-xs: 460px;
-$mobile: 768px;
-$tablet: 992px;
-$desktop: 1600px;
+  @Input() model?: DataDictionaryModel;
 
-$toolbarButtonOnlySize: 44px;
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}

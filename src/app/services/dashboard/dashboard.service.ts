@@ -24,7 +24,7 @@ import { DataModelsService } from '../mdm-resources/adapters/data-models.service
 import { TerminologyDetail } from '../mdm-resources/adapters/terminology.model';
 import { TerminologyService } from '../mdm-resources/adapters/terminology.service';
 import { DomainType } from '../mdm-resources/mdm-resources.model';
-import { ModelListItem } from './dashboard.model';
+import { DataDictionaryModel } from './dashboard.model';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +36,7 @@ export class DashboardService {
     private codeSet: CodeSetsService,
     private terminology: TerminologyService) { }
 
-  getModels(): Observable<ModelListItem[]> {
+  getModels(): Observable<DataDictionaryModel[]> {
     return combineLatest([
       this.dataModel.list(),
       this.codeSet.list(),
@@ -44,9 +44,9 @@ export class DashboardService {
     ])
       .pipe(
         map(([dataModels, codeSets, termologies]) => {
-          const d = dataModels.map(d => new ModelListItem(d));
-          const c = codeSets.map(c => new ModelListItem(c));
-          const t = termologies.map(t => new ModelListItem(t));
+          const d = dataModels.map(d => new DataDictionaryModel(d));
+          const c = codeSets.map(c => new DataDictionaryModel(c));
+          const t = termologies.map(t => new DataDictionaryModel(t));
           return d.concat(c, t);
         })
       )
