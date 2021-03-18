@@ -19,7 +19,7 @@ import { Observable } from "rxjs";
 import { filter, map, mergeMap } from "rxjs/operators";
 import { ConfirmationModalComponent } from "./confirmation-modal/confirmation-modal.component";
 import { ConfirmationModalConfig, ConfirmationModalResult } from "./confirmation-modal/confirmation-modal.model";
-import { ModalDialogStatus } from "./modal.model";
+import { DialogStatus } from "./dialogs.model";
 
 declare module '@angular/material/dialog/dialog' {
   interface MatDialog {
@@ -105,7 +105,7 @@ MatDialog.prototype.openConfirmation = function (
     .openConfirmationDialog(config)
     .afterClosed()
     .pipe(
-      filter(result => result?.status === ModalDialogStatus.Ok),
+      filter(result => result?.status === DialogStatus.Ok),
       map(() => { })
     );
 };
@@ -118,13 +118,13 @@ MatDialog.prototype.openDoubleConfirmation = function (
     .openConfirmationDialog(firstConfig)
     .afterClosed()
     .pipe(
-      filter(result => result?.status === ModalDialogStatus.Ok),
+      filter(result => result?.status === DialogStatus.Ok),
       mergeMap(() => {
         return this
           .openConfirmationDialog(finalConfig)
           .afterClosed()
           .pipe(
-            filter(result2 => result2?.status === ModalDialogStatus.Ok),
+            filter(result2 => result2?.status === DialogStatus.Ok),
             map(() => { })
           );
       })

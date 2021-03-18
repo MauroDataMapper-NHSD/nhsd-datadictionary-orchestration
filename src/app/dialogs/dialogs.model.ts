@@ -17,7 +17,7 @@
  /**
   * Enums representing the different status valus a modal dialog could return.
   */
-export enum ModalDialogStatus {
+export enum DialogStatus {
   Ok = 'ok',
   Cancel = 'cancel',
   Close = 'close'

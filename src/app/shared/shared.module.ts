@@ -26,31 +26,37 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UIRouterModule } from '@uirouter/angular';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+const components = [
+  ModelListComponent,
+  ModelIconComponent,
+  LoadingIndicatorComponent,
+  ModelSelectorComponent,
+  ModelItemBannerComponent
+];
 
 @NgModule({
   declarations: [
-    ModelListComponent,
-    ModelIconComponent,
-    LoadingIndicatorComponent,
-    ModelSelectorComponent,
-    ModelItemBannerComponent
+    ...components
   ],
   imports: [
     CommonModule,
     BrowserModule,
     BrowserAnimationsModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
-    ModelListComponent,
-    ModelIconComponent,
-    LoadingIndicatorComponent,
-    ModelSelectorComponent,
+    ...components,
     CommonModule,
     MaterialModule,
     UIRouterModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class SharedModule { }

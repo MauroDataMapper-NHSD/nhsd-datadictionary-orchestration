@@ -17,7 +17,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ModalDialogStatus } from '../modal.model';
+import { DialogStatus } from '../dialogs.model';
 import { ConfirmationModalConfig, ConfirmationModalResult } from './confirmation-modal.model';
 
 @Component({
@@ -51,10 +51,10 @@ export class ConfirmationModalComponent implements OnInit {
   }
 
   ok() {
-    return this.dialogRef.close({ status: ModalDialogStatus.Ok });
+    return this.dialogRef.close({ status: DialogStatus.Ok });
   };
 
   cancel() {
-    return this.dialogRef.close({ status: ModalDialogStatus.Cancel });
+    return this.dialogRef.close({ status: DialogStatus.Cancel });
   };
 }

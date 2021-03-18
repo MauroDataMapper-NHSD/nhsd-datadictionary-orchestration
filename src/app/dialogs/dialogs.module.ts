@@ -15,34 +15,24 @@
  */
 
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatDialogModule } from '@angular/material/dialog';
-import { SignInModalComponent } from '@mdm/modals/sign-in-modal/sign-in-modal.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { ConfirmationModalComponent } from '@mdm/modals/confirmation-modal/confirmation-modal.component';
-import { ModelSelectorModalComponent } from '@mdm/modals/model-selector-modal/model-selector-modal.component';
-
-import '@mdm/modals/mat-dialog.extensions'
-import { MaterialModule } from '@mdm/material/material.module';
+import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
+import { SignInModalComponent } from './sign-in-modal/sign-in-modal.component';
+import { ModelSelectorModalComponent } from './model-selector-modal/model-selector-modal.component';
 import { SharedModule } from '@mdm/shared/shared.module';
 
 @NgModule({
   declarations: [
-    SignInModalComponent,
     ConfirmationModalComponent,
+    SignInModalComponent,
     ModelSelectorModalComponent
   ],
   imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatDialogModule,
-    MaterialModule,
     SharedModule
   ],
   exports: [
-    SignInModalComponent,
     ConfirmationModalComponent,
+    SignInModalComponent,
     ModelSelectorModalComponent
   ]
 })
-export class ModalModule { }
+export class DialogsModule { }

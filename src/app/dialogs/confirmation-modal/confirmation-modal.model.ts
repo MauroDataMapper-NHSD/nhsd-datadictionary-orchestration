@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-import { DataDictionaryModel } from "@mdm/core/dashboard/dashboard.model";
-import { ModalDialogStatus } from "../modal.model";
+import { ThemePalette } from "@angular/material/core";
+import { DialogStatus } from "../dialogs.model";
 
-export interface ModelSelectorModalConfig {
-
+export interface ConfirmationModalConfig {
+  title?: string;
+  message: string;
+  okBtnTitle?: string;
+  cancelBtnTitle?: string;
+  showCancel?: boolean;
+  btnType?: ThemePalette;
 }
 
-export interface ModelSelectorModalResult {
-  status: ModalDialogStatus;
-  model?: DataDictionaryModel;
+export interface ConfirmationModalResult {
+  status: DialogStatus;
 }

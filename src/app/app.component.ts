@@ -22,7 +22,7 @@ import { ToastrService } from 'ngx-toastr';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
 import { NavbarLinkGroup } from './layout/navbar/navbar.model';
-import { SignInModalComponent } from './modals/sign-in-modal/sign-in-modal.component';
+import { SignInModalComponent } from './dialogs/sign-in-modal/sign-in-modal.component';
 import { BroadcastEvent } from './core/broadcast/broadcast.model';
 import { BroadcastService } from './core/broadcast/broadcast.service';
 import { MdmResourcesError } from './mdm-resources/mdm-resources/mdm-resources.model';

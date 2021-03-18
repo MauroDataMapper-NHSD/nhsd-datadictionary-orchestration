@@ -19,7 +19,6 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { UiViewComponent } from './ui-view/ui-view.component';
-import { ModalModule } from './modules/modal/modal.module';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { UIRouterModule } from '@uirouter/angular';
@@ -28,6 +27,7 @@ import { LayoutModule } from './layout/layout.module';
 import { ErrorModule } from './error/error.module';
 import { AppContainerComponent } from './app-container/app-container.component';
 import { PagesModule } from './pages/pages.module';
+import { DialogsModule } from './dialogs/dialogs.module';
 
 @NgModule({
   declarations: [
@@ -42,7 +42,7 @@ import { PagesModule } from './pages/pages.module';
     ErrorModule,
     PagesModule,
     DashboardModule,
-    ModalModule,    
+    DialogsModule,    
     UIRouterModule.forRoot({
       states: states,
       useHash: true,

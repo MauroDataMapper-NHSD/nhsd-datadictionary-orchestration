@@ -17,7 +17,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { DataDictionaryModel } from '@mdm/core/dashboard/dashboard.model';
-import { ModalDialogStatus } from '../modal.model';
+import { DialogStatus } from '../dialogs.model';
 import { ModelSelectorModalResult } from './model-selector-modal.model';
 
 @Component({
@@ -43,11 +43,11 @@ export class ModelSelectorModalComponent implements OnInit {
   }
 
   cancel() {
-    this.dialogRef.close({ status: ModalDialogStatus.Cancel });
+    this.dialogRef.close({ status: DialogStatus.Cancel });
   }
 
   ok() {
-    this.dialogRef.close({ status: ModalDialogStatus.Ok, model: this.selected });
+    this.dialogRef.close({ status: DialogStatus.Ok, model: this.selected });
   }
 
 }

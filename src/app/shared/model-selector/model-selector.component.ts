@@ -16,14 +16,14 @@
 
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ModalDialogStatus } from '@mdm/modals/modal.model';
-import { ModelSelectorModalComponent } from '@mdm/modals/model-selector-modal/model-selector-modal.component';
-import { ModelSelectorModalConfig, ModelSelectorModalResult } from '@mdm/modals/model-selector-modal/model-selector-modal.model';
+import { ModelSelectorModalComponent } from '@mdm/dialogs/model-selector-modal/model-selector-modal.component';
+import { ModelSelectorModalConfig, ModelSelectorModalResult } from '@mdm/dialogs/model-selector-modal/model-selector-modal.model';
 import { BroadcastEvent } from '@mdm/core/broadcast/broadcast.model';
 import { BroadcastService } from '@mdm/core/broadcast/broadcast.service';
 import { DataDictionaryModel } from '@mdm/core/dashboard/dashboard.model';
 import { SharedService } from '@mdm/core/shared/shared.service';
 import { filter } from 'rxjs/operators';
+import { DialogStatus } from '@mdm/dialogs/dialogs.model';
 
 @Component({
   selector: 'mdm-model-selector',
@@ -48,7 +48,7 @@ export class ModelSelectorComponent implements OnInit {
       .open<ModelSelectorModalComponent, ModelSelectorModalConfig, ModelSelectorModalResult>(ModelSelectorModalComponent, { })
       .afterClosed()
       .pipe(
-        filter(result => result?.status === ModalDialogStatus.Ok)
+        filter(result => result?.status === DialogStatus.Ok)
       )
       .subscribe(result => {
         this.selected = result?.model;
