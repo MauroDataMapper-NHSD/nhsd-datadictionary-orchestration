@@ -27,6 +27,7 @@ import { states } from './routing/ui-states';
 import { LayoutModule } from './layout/layout.module';
 import { ErrorModule } from './error/error.module';
 import { AppContainerComponent } from './app-container/app-container.component';
+import { PagesModule } from './pages/pages.module';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { AppContainerComponent } from './app-container/app-container.component';
     SharedModule,
     LayoutModule,
     ErrorModule,
+    PagesModule,
     DashboardModule,
     ModalModule,    
     UIRouterModule.forRoot({

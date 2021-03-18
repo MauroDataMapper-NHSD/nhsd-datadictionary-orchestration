@@ -15,27 +15,21 @@
  */
 
 import { NgModule } from '@angular/core';
-import { UIRouterModule } from '@uirouter/angular';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { ModelsComponent } from '@mdm/models/models.component';
-import { ModelDetailComponent } from '../../model-detail/model-detail.component';
-import { ModelActionsComponent } from '../../model-actions/model-actions.component';
-import { StatisticsTableComponent } from '../../shared/statistics-table/statistics-table.component';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
 import { SharedModule } from '@mdm/shared/shared.module';
 
 @NgModule({
   declarations: [
-    ModelsComponent,
-    ModelDetailComponent,
-    ModelActionsComponent,
-    StatisticsTableComponent
+    HomeComponent,
+    AboutComponent
   ],
   imports: [
-    UIRouterModule,
-    FlexLayoutModule,    
     SharedModule
   ],
   exports: [
+    HomeComponent,
+    AboutComponent
   ]
 })
-export class DashboardModule { }
+export class PagesModule { }
