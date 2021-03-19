@@ -17,6 +17,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSelectionListChange } from '@angular/material/list';
 import { IntegrityCheckCategory } from '@mdm/core/data-dictionary/data-dictionary.model';
+import { UrlGeneratorService } from '@mdm/core/url-generator/url-generator.service';
+import { IntegrityCheckItem } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 
 @Component({
   selector: 'mdm-branch-integrity-table',
@@ -26,16 +28,20 @@ import { IntegrityCheckCategory } from '@mdm/core/data-dictionary/data-dictionar
 export class BranchIntegrityTableComponent implements OnInit {
 
   @Input() categories: IntegrityCheckCategory[] = [];
-  
+
   selectedCategory?: IntegrityCheckCategory;
 
-  constructor() { }
+  constructor(private urlGenerator: UrlGeneratorService) { }
 
   ngOnInit(): void {
   }
 
   categorySelected(change: MatSelectionListChange) {
     this.selectedCategory = change.options[0].value;
+  }
+
+  getDomainTypeUrl(item: IntegrityCheckItem) {
+    return this.urlGenerator.getDomainTypeUrl(item.domainType, item.id, item.parentId);
   }
 
 }

@@ -56,7 +56,7 @@
                                 <em>{{error.type}}</em>
                             </div>
                             <div>
-                                <span>{{error.label}}</span>
+                                <a [href]="getDomainTypeUrl(error)" target="_blank">{{error.label}}</a>
                             </div>
                             <mat-divider inset="true"></mat-divider>
                         </div>

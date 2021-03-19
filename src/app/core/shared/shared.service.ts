@@ -30,6 +30,7 @@ export class SharedService {
 
   appVersion = environment.version;
   backendUrl = environment.apiEndpoint;
+  mauroBaseUrl = environment.mauroBaseUrl;
   appTitle = environment.appTitle;
   checkSessionExpiryTimeout = environment.checkSessionExpiryTimeout;
   
