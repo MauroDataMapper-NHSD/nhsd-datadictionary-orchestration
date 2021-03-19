@@ -33,6 +33,7 @@ export interface Branch {
  */
 export interface StatisticsItem {
   total?: number;
+  preparatory?: number;
   retired?: number;
 }
 

@@ -23,6 +23,7 @@
             <tr>
                 <th></th>
                 <th>Total</th>
+                <th>Preparatory</th>
                 <th>Retired</th>
             </tr>
         </thead>
@@ -30,6 +31,7 @@
             <tr *ngFor="let row of rows">
                 <td>{{row.name}}</td>
                 <td>{{row.values.total}}</td>
+                <td>{{row.values.preparatory}}</td>
                 <td>{{row.values.retired}}</td>
             </tr>
         </tbody>

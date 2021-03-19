@@ -47,26 +47,32 @@ export class NhsDataDictionaryService {
     return of({
       'Attributes': {
         total: 2480,
+        preparatory: 7,
         retired: 1174
       },
       'Data Field Notes': {
         total: 4785,
+        preparatory: 32,
         retired: 2184
       },
       'Classes': {
         total: 360,
+        preparatory: 0,
         retired: 138
       },
       'Business Definitions': {
         total: 0,
+        preparatory: 0,
         retired: 0
       },
       'Supporting Information': {
         total: 0,
+        preparatory: 0,
         retired: 0
       },
       'XML Schema Constraints': {
         total: 0,
+        preparatory: 0,
         retired: 0
       }
     })
