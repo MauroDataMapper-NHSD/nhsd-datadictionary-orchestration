@@ -26,14 +26,6 @@ export interface Branch {
   label: string
 }
 
-export interface BranchDetails {
-  id: string;
-  label: string;
-  domainType: DomainType;
-  authority: Authority;
-  lastUpdated?: string;
-}
-
 /**
  * Represents a statistics item to attach to a list of statistics.
  * 

@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
- @import "~@angular/material/theming";
+import { Ng2StateDeclaration } from "@uirouter/angular";
+import { AboutComponent } from "./about/about.component";
+import { HomeComponent } from "./home/home.component";
 
- /* Import all custom components SASS files to access their mixins */
- @import "layout/navbar/navbar.component.scss";
- @import "layout/user/user.component.scss";
- @import "error/error.component.scss";
- @import "shared/loading-indicator/loading-indicator.component.scss";
- 
- /* Combine all custom component theme mixins into one */
- @mixin mdm-custom-components-theme($theme) {
-   @include mdm-navbar-theme($theme);
-   @include mdm-user-theme($theme);
-   @include mdm-error-theme($theme);
-   @include mdm-loading-indicator-theme($theme);
- }
+export const states: Ng2StateDeclaration[] = [
+  {
+    name: 'app.container.home',
+    url: '/home',
+    component: HomeComponent
+  },
+  {
+    name: 'app.container.about',
+    url: '/about',
+    component: AboutComponent
+  }
+];

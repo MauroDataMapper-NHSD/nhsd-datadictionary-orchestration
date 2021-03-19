@@ -17,7 +17,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { LoggingService } from '@mdm/core/logging/logging.service';
-import { BranchDetails, IntegrityCheckResult } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { Branch, IntegrityCheckResult } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { catchError, finalize } from 'rxjs/operators';
 
 @Component({
@@ -27,7 +27,7 @@ import { catchError, finalize } from 'rxjs/operators';
 })
 export class BranchIntegrityComponent implements OnInit {
 
-  @Input() branch?: BranchDetails;
+  @Input() branch?: Branch;
 
   running = false;
   results: IntegrityCheckResult[] = [];

@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
-import { BranchDetails } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { NgModule } from '@angular/core';
+import { SharedModule } from '@mdm/shared/shared.module';
+import { PreviewContainerComponent } from './preview-container/preview-container.component';
 
-@Component({
-  selector: 'mdm-branch-overview',
-  templateUrl: './branch-overview.component.html',
-  styleUrls: ['./branch-overview.component.scss']
+@NgModule({
+  declarations: [PreviewContainerComponent],
+  imports: [
+    SharedModule
+  ]
 })
-export class BranchOverviewComponent implements OnInit {
-
-  @Input() branch?: BranchDetails;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class PreviewModule { }

@@ -16,7 +16,7 @@
 
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
-import { BranchDetails, Statistics, StatisticsItem } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { Branch, Statistics, StatisticsItem } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { finalize } from 'rxjs/operators';
 
 interface StatisticsTableRow {
@@ -31,7 +31,7 @@ interface StatisticsTableRow {
 })
 export class BranchStatisticsComponent implements OnInit, OnChanges {
 
-  @Input() branch?: BranchDetails;
+  @Input() branch?: Branch;
 
   loading = false;
   statistics: Statistics = {};

@@ -17,7 +17,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
-import { BranchDetails } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { Branch } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/core';
 
 interface TabViewDetail {
@@ -33,7 +33,7 @@ interface TabViewDetail {
 export class BranchDetailComponent implements OnInit {
 
   branchName: string = '';
-  details?: BranchDetails;
+  details?: Branch;
   activeTab?: TabViewDetail;
 
   readonly tabs: TabViewDetail[] = [
@@ -58,8 +58,10 @@ export class BranchDetailComponent implements OnInit {
     this.activeTab = this.getTabDetailByName(this.uiRouterGlobals.params.tabView);
 
     this.dataDictionary
-      .getBranchDetails(this.branchName)
-      .subscribe(details => this.details = details);
+      .getAvailableBranches()
+      .subscribe(branches => {
+        this.details = branches.find(b => b.label === this.branchName);
+      });
   }
 
   getTabDetailByName(name: string): TabViewDetail {
