@@ -33,6 +33,7 @@ export class BranchIntegrityComponent implements OnInit {
 
   running = false;
   categories: IntegrityCheckCategory[] = [];
+  selectedCategory?: IntegrityCheckCategory;
 
   get hasCategories() {
     return !!this.categories && this.categories.length > 0;
@@ -65,6 +66,7 @@ export class BranchIntegrityComponent implements OnInit {
   }
 
   categorySelected(change: MatSelectionListChange) {
+    this.selectedCategory = change.options[0].value;
   }
 
 }

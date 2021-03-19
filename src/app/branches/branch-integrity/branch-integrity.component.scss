@@ -23,11 +23,11 @@
     $successColor: mat-color($accent);
     $errorColor: mat-color($warn);    
 
-    .mdm-branch-integrity__category--success {
+    .mdm-branch-integrity__list-item--success {
         color: $successColor;
     }
 
-    .mdm-branch-integrity__category--errors {
+    .mdm-branch-integrity__list-item--errors {
         color: $errorColor;
     }
 }
@@ -37,13 +37,16 @@
         margin: 16px 0px;
     }
 
-    &__category {
+    .mat-list {
+        max-height: calc(100vh - 200px);
+        overflow-y: auto;
+    }
+
+    &__list-item {
         font-size: 16px!important;
-        margin: 8px 0;
 
         %integrity-check-state {
-            margin: 8px;
-            padding: 8px;
+            padding: 4px 8px;
         }
 
         &--success {
