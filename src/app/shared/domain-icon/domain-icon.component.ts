@@ -25,7 +25,7 @@ const domainTypeIcons = new Map<DomainType, string>([
   [DomainType.Terminology, 'fa-book'],
   [DomainType.CodeSet, 'fa-list'],
   [DomainType.Classification, 'fa-tags'],
-  [DomainType.Term, 'fa-code'],
+  [DomainType.Term, 'fa-pencil-alt'],
   [DomainType.ReferenceDataModel, 'fa-file-contract'],
   [DomainType.DataElement, 'fa-code'],
   [DomainType.EnumerationType, 'fa-database'],
