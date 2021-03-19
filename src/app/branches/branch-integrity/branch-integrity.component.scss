@@ -14,47 +14,16 @@
  * limitations under the License.
  */
 
-@import "~@angular/material/theming";
-
-@mixin mdm-branch-integrity-theme($theme) {
-    $accent: map-get($theme, accent);
-    $warn: map-get($theme, warn);
-
-    $successColor: mat-color($accent);
-    $errorColor: mat-color($warn);    
-
-    .mdm-branch-integrity__list-item--success {
-        color: $successColor;
-    }
-
-    .mdm-branch-integrity__list-item--errors {
-        color: $errorColor;
-    }
-}
-
 .mdm-branch-integrity {
+    %view-row {
+        margin: 16px 16px;
+    }
+
+    &__toolbar {
+        @extend %view-row;        
+    }
+
     &__results {
-        margin: 16px 0px;
+        @extend %view-row;
     }
-
-    .mat-list {
-        max-height: calc(100vh - 200px);
-        overflow-y: auto;
-    }
-
-    &__list-item {
-        font-size: 16px!important;
-
-        %integrity-check-state {
-            padding: 4px 8px;
-        }
-
-        &--success {
-            @extend %integrity-check-state;
-        }
-
-        &--errors {
-            @extend %integrity-check-state;
-        }
-    }    
 }

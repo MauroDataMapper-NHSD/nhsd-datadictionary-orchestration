@@ -31,48 +31,7 @@
                 <p>No results found. Please try clicking "Run" to start integrity checks.</p>
             </div>
             <div *ngIf="!running && hasCategories">
-                <div class="row">
-                    <div class="col-md-5">
-                        <mat-selection-list multiple="false" (selectionChange)="categorySelected($event)">
-                            <mat-list-option *ngFor="let category of categories" [value]="category" height="60px">
-                                <div class="mdm-branch-integrity__list-item">
-                                    <span *ngIf="!category.hasErrors" class="mdm-branch-integrity__list-item--success">
-                                        <i class="fas fa-check-circle fa-lg"></i>
-                                    </span>
-                                    <span *ngIf="category.hasErrors" class="mdm-branch-integrity__list-item--errors">
-                                        <i class="fas fa-times-circle fa-lg"></i>                                        
-                                    </span>
-                                    <span>{{category.checkName}}</span>
-                                    <span *ngIf="category.hasErrors" class="mdm-branch-integrity__list-item--errors">{{category.errors.length}}</span>
-                                </div>
-                            </mat-list-option>
-                        </mat-selection-list>
-                    </div>
-                    <div class="col-md-7">                        
-                        <div *ngIf="!selectedCategory">
-                            <p>Select a category to view further details.</p>
-                        </div>
-                        <div *ngIf="selectedCategory">
-                            <h3>{{selectedCategory.checkName}}</h3>
-                            <p>{{selectedCategory.description}}</p>
-                            <div *ngIf="!selectedCategory.hasErrors" class="mdm-branch-integrity__list-item--success">
-                                <i class="fas fa-check-circle fa-lg"></i>
-                                No errors found
-                            </div>
-                            <div *ngIf="selectedCategory.hasErrors" class="mdm-branch-integrity__list-item--errors">
-                                <i class="fas fa-times-circle fa-lg"></i>
-                                {{selectedCategory.errors.length}} error(s) found
-                            </div>
-                            <mat-list>
-                                <mat-list-item *ngFor="let error of selectedCategory.errors">
-                                    <div class="mdm-branch-integrity__list-item">
-                                        {{error.label}}
-                                    </div>
-                                </mat-list-item>
-                            </mat-list>
-                        </div>
-                    </div>
-                </div>
+                <mdm-branch-integrity-table [categories]="categories"></mdm-branch-integrity-table>                
             </div>
         </div>
     </div>

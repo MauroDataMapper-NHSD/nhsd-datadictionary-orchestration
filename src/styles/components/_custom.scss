@@ -21,7 +21,7 @@
  @import "layout/user/user.component.scss";
  @import "error/error.component.scss";
  @import "shared/loading-indicator/loading-indicator.component.scss";
- @import "branches/branch-integrity/branch-integrity.component.scss";
+ @import "branches/branch-integrity-table/branch-integrity-table.component.scss";
  
  /* Combine all custom component theme mixins into one */
  @mixin mdm-custom-components-theme($theme) {
@@ -29,5 +29,5 @@
    @include mdm-user-theme($theme);
    @include mdm-error-theme($theme);
    @include mdm-loading-indicator-theme($theme);
-   @include mdm-branch-integrity-theme($theme);
+   @include mdm-branch-integrity-table-theme($theme);
  }

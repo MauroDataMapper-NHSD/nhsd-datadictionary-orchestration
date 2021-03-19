@@ -21,6 +21,7 @@ import { BranchDefaultComponent } from './branch-default/branch-default.componen
 import { BranchDetailComponent } from './branch-detail/branch-detail.component';
 import { BranchStatisticsComponent } from './branch-statistics/branch-statistics.component';
 import { BranchIntegrityComponent } from './branch-integrity/branch-integrity.component';
+import { BranchIntegrityTableComponent } from './branch-integrity-table/branch-integrity-table.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { BranchIntegrityComponent } from './branch-integrity/branch-integrity.co
     BranchDefaultComponent, 
     BranchDetailComponent, 
     BranchStatisticsComponent, 
-    BranchIntegrityComponent
+    BranchIntegrityComponent, 
+    BranchIntegrityTableComponent
   ],
   imports: [
     SharedModule
