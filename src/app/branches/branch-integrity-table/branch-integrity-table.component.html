@@ -51,7 +51,8 @@
                 <mat-list>
                     <mat-list-item *ngFor="let error of selectedCategory.errors">
                         <div class="mdm-branch-integrity-table__list-item">
-                            {{error.label}}
+                            <mdm-domain-icon [type]="error.domainType"></mdm-domain-icon>
+                            <span>{{error.label}}</span>
                         </div>
                     </mat-list-item>
                 </mat-list>

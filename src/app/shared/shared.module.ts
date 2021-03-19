@@ -24,15 +24,17 @@ import { UIRouterModule } from '@uirouter/angular';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BranchSelectorComponent } from './branch-selector/branch-selector.component';
+import { DomainIconComponent } from './domain-icon/domain-icon.component';
 
 const components = [
   LoadingIndicatorComponent,
-  BranchSelectorComponent
+  BranchSelectorComponent,
+  DomainIconComponent
 ];
 
 @NgModule({
   declarations: [
-    ...components    
+    ...components        
   ],
   imports: [
     CommonModule,
