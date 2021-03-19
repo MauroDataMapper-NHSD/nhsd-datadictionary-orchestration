@@ -27,11 +27,31 @@
                 <p>Running integrity checks now, please wait...</p>
                 <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
             </div>
-            <div *ngIf="!running && (!results || results.length === 0)">
+            <div *ngIf="!running && !hasCategories">
                 <p>No results found. Please try clicking "Run" to start integrity checks.</p>
             </div>
-            <div *ngIf="!running && results && results.length > 0">
-                <p *ngFor="let result of results">{{result.message}}</p>
+            <div *ngIf="!running && hasCategories">
+                <div class="row">
+                    <div class="col-md-5">
+                        <mat-selection-list multiple="false" (selectionChange)="categorySelected($event)">
+                            <mat-list-option *ngFor="let category of categories" [value]="category" height="60px">
+                                <div class="mdm-branch-integrity__category">
+                                    <span *ngIf="!category.hasErrors" class="mdm-branch-integrity__category--success">
+                                        <i class="fas fa-check-circle fa-lg"></i>
+                                    </span>
+                                    <span *ngIf="category.hasErrors" class="mdm-branch-integrity__category--errors">
+                                        <i class="fas fa-times-circle fa-lg"></i>                                        
+                                    </span>
+                                    <span>{{category.checkName}}</span>
+                                    <span *ngIf="category.hasErrors" class="mdm-branch-integrity__category--errors">{{category.errors.length}}</span>
+                                </div>
+                            </mat-list-option>
+                        </mat-selection-list>
+                    </div>
+                    <div class="col-md-7">
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -14,6 +14,44 @@
  * limitations under the License.
  */
 
-.mdm-branch-integrity__results {
-    margin: 16px 0px;
+@import "~@angular/material/theming";
+
+@mixin mdm-branch-integrity-theme($theme) {
+    $accent: map-get($theme, accent);
+    $warn: map-get($theme, warn);
+
+    $successColor: mat-color($accent);
+    $errorColor: mat-color($warn);    
+
+    .mdm-branch-integrity__category--success {
+        color: $successColor;
+    }
+
+    .mdm-branch-integrity__category--errors {
+        color: $errorColor;
+    }
+}
+
+.mdm-branch-integrity {
+    &__results {
+        margin: 16px 0px;
+    }
+
+    &__category {
+        font-size: 16px!important;
+        margin: 8px 0;
+
+        %integrity-check-state {
+            margin: 8px;
+            padding: 8px;
+        }
+
+        &--success {
+            @extend %integrity-check-state;
+        }
+
+        &--errors {
+            @extend %integrity-check-state;
+        }
+    }    
 }

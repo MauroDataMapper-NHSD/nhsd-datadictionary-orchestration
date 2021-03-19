@@ -15,9 +15,11 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Branch, IntegrityCheckResult, Statistics } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { Branch, IntegrityCheck, Statistics } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { NhsDataDictionaryService } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.service';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { IntegrityCheckCategory } from './data-dictionary.model';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +36,11 @@ export class DataDictionaryService {
     return this.nhsDataDictionary.statistics(name);
   }
 
-  runIntegrityChecks(branchName: string): Observable<IntegrityCheckResult[]> {
-    return this.nhsDataDictionary.integrityChecks(branchName);
+  runIntegrityChecks(branchName: string): Observable<IntegrityCheckCategory[]> {
+    return this.nhsDataDictionary
+      .integrityChecks(branchName)
+      .pipe(
+        map(data => data.map(d => new IntegrityCheckCategory(d)))
+      );
   }
 }

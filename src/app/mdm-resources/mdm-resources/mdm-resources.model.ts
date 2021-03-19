@@ -60,9 +60,16 @@ export class MdmResourcesError {
 }
 
 export enum DomainType {
-  DataModel = 'DataModel',
-  CodeSet = 'CodeSet',
-  Terminology = 'Terminology'
+  Folder = 'Folder',
+    DataModel = 'DataModel',
+    DataClass = 'DataClass',
+    DataElement = 'DataElement',
+    Terminology = 'Terminology',
+    Term = 'Term',
+    CodeSet = 'CodeSet',
+    Classification = 'Classification',
+    ReferenceDataModel = 'ReferenceDataModel',
+    EnumerationType = 'EnumerationType'
 }
 
 /**

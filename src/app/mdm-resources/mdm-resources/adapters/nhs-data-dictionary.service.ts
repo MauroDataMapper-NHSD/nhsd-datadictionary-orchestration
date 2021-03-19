@@ -17,7 +17,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { Branch, IntegrityCheckResult, Statistics } from './nhs-data-dictionary.model';
+import { Branch, IntegrityCheck, Statistics } from './nhs-data-dictionary.model';
+
+import * as testIntegrityChecks from '@mdm/testing/nhsdd-integrity-checks.json';
 
 @Injectable({
   providedIn: 'root'
@@ -79,19 +81,9 @@ export class NhsDataDictionaryService {
       .pipe(delay(1000));
   }
 
-  integrityChecks(branchName: string): Observable<IntegrityCheckResult[]> {
-    // TODO: replace with real endpoint
-    return of([
-      {
-        message: 'Integrity message 1'
-      },
-      {
-        message: 'Integrity message 2'
-      },
-      {
-        message: 'Integrity message 3'
-      }
-    ])
-    .pipe(delay(5000));
+  integrityChecks(branchName: string): Observable<IntegrityCheck[]> {
+    // TODO: replace with real endpoint    
+    const json = JSON.parse(JSON.stringify(testIntegrityChecks));
+    return of(json.default).pipe(delay(2000));
   }
 }
