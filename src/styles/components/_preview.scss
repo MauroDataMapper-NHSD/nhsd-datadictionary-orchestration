@@ -124,6 +124,10 @@
             border-top: 1px solid $tableBorderColor;
         }
 
+        td {
+            border-right: 1px solid $tableBorderColor;
+        }
+
         .thead-light {
             th {
                 background-color: $tableHeadBackgroundColor;

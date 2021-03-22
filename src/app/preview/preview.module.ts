@@ -21,13 +21,16 @@ import { PreviewDefaultComponent } from './preview-default/preview-default.compo
 import { PreviewIndexComponent } from './preview-index/preview-index.component';
 import { PreviewHomeComponent } from './preview-home/preview-home.component';
 import { PreviewTileComponent } from './preview-tile/preview-tile.component';
+import { PreviewDetailComponent } from './preview-detail/preview-detail.component';
 
 @NgModule({
   declarations: [
     PreviewContainerComponent, 
     PreviewDefaultComponent, 
     PreviewIndexComponent, 
-    PreviewHomeComponent, PreviewTileComponent],
+    PreviewHomeComponent, 
+    PreviewTileComponent, 
+    PreviewDetailComponent],
   imports: [
     SharedModule
   ]

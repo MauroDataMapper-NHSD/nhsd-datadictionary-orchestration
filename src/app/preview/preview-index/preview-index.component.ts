@@ -26,7 +26,7 @@ import { UIRouterGlobals } from '@uirouter/core';
 })
 export class PreviewIndexComponent implements OnInit {
 
-  indexName: string = '';
+  index: string = '';
   navigationLinks = [
     'A',
     'B',
@@ -40,11 +40,14 @@ export class PreviewIndexComponent implements OnInit {
     private viewportScroller: ViewportScroller) { }
 
   ngOnInit(): void {
-    this.indexName = this.uiRouterGlobals.params.indexName;
-    if (!this.indexName) {
+    this.index = this.uiRouterGlobals.params.index;
+    if (!this.index) {
       this.stateHandler.goTo(CommonUiStates.PreviewHome);
       return;
     }
+
+    // Simulate a new static page loaded
+    this.viewportScroller.scrollToPosition([0, 0]);
   }
 
   onAnchorClick(anchor: string) {

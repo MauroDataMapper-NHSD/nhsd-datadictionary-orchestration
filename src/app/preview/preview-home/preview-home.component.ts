@@ -45,7 +45,7 @@ export class PreviewHomeComponent implements OnInit {
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        indexName: 'data-sets'
+        index: 'data-sets'
       }
     },
     {
@@ -55,7 +55,7 @@ export class PreviewHomeComponent implements OnInit {
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        indexName: 'data-elements'
+        index: 'data-elements'
       }
     },
     {
@@ -65,7 +65,7 @@ export class PreviewHomeComponent implements OnInit {
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        indexName: 'attributes'
+        index: 'attributes'
       }
     },
     {
@@ -75,7 +75,7 @@ export class PreviewHomeComponent implements OnInit {
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        indexName: 'classes'
+        index: 'classes'
       }
     },
     {
@@ -85,7 +85,7 @@ export class PreviewHomeComponent implements OnInit {
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        indexName: 'business-definitions'
+        index: 'business-definitions'
       }
     },
     {
@@ -95,7 +95,7 @@ export class PreviewHomeComponent implements OnInit {
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        indexName: 'supporting-information'
+        index: 'supporting-information'
       }
     },
     {
