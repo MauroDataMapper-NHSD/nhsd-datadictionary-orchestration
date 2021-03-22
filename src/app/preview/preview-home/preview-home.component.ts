@@ -15,6 +15,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { UIRouterGlobals } from '@uirouter/core';
 import { PreviewTile } from '../preview-tile/preview-tile.model';
 
 @Component({
@@ -41,37 +42,61 @@ export class PreviewHomeComponent implements OnInit {
       id: 'dataSet_overview',
       title: 'Data Sets',
       description: 'Data Sets provide the specification for data collections and for data analyses.',
-      uiSref: 'app.container.preview.about'
+      uiSref: 'app.container.preview.index',
+      uiParams: {
+        branch: this.uiRouterGlobals.params.branch,
+        indexName: 'data-sets'
+      }
     },
     {
       id: 'dataElement_overview',
       title: 'Data Elements',
       description: 'Data Elements are the data items used within Data Sets.',
-      uiSref: 'app.container.preview.about'
+      uiSref: 'app.container.preview.index',
+      uiParams: {
+        branch: this.uiRouterGlobals.params.branch,
+        indexName: 'data-elements'
+      }
     },
     {
       id: 'attribute_overview',
       title: 'Attributes',
       description: 'The part of the data model describing the characteristics of Classes. Attributes define the data within the data model.',
-      uiSref: 'app.container.preview.about'
+      uiSref: 'app.container.preview.index',
+      uiParams: {
+        branch: this.uiRouterGlobals.params.branch,
+        indexName: 'attributes'
+      }
     },
     {
       id: 'class_overview',
       title: 'Classes',
       description: 'The part of the data model describing the aspects of the health and care business with significant characteristics.',
-      uiSref: 'app.container.preview.about'
+      uiSref: 'app.container.preview.index',
+      uiParams: {
+        branch: this.uiRouterGlobals.params.branch,
+        indexName: 'classes'
+      }
     },
     {
       id: 'business_definitions_overview',
       title: 'NHS Business Definitions',
       description: 'The part of the data model that links the logical classes to the context of the health and care business.',
-      uiSref: 'app.container.preview.about'
+      uiSref: 'app.container.preview.index',
+      uiParams: {
+        branch: this.uiRouterGlobals.params.branch,
+        indexName: 'business-definitions'
+      }
     },
     {
       id: 'supporting_information_overview',
       title: 'Supporting Information',
       description: 'Provide information to help users understand content in the NHS Data Model and Dictionary.',
-      uiSref: 'app.container.preview.about'
+      uiSref: 'app.container.preview.index',
+      uiParams: {
+        branch: this.uiRouterGlobals.params.branch,
+        indexName: 'supporting-information'
+      }
     },
     {
       id: 'all_items_index_overview',
@@ -81,7 +106,7 @@ export class PreviewHomeComponent implements OnInit {
     },
   ];
 
-  constructor() { }
+  constructor(private uiRouterGlobals: UIRouterGlobals) { }
 
   ngOnInit(): void {
   }

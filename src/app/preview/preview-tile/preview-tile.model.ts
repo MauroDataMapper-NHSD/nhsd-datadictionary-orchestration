@@ -19,4 +19,5 @@ export interface PreviewTile {
   title: string;
   description: string;
   uiSref: string;
+  uiParams?: any;
 }

@@ -15,6 +15,8 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
+import { UIRouterGlobals } from '@uirouter/core';
 
 @Component({
   selector: 'mdm-preview-index',
@@ -23,9 +25,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PreviewIndexComponent implements OnInit {
 
-  constructor() { }
+  indexName: string = '';
+
+  constructor(
+    private uiRouterGlobals: UIRouterGlobals,
+    private stateHandler: StateHandlerService) { }
 
   ngOnInit(): void {
+    this.indexName = this.uiRouterGlobals.params.indexName;
+    if (!this.indexName) {
+      this.stateHandler.goTo(CommonUiStates.PreviewHome);
+      return;
+    }
+
+    
   }
 
 }
