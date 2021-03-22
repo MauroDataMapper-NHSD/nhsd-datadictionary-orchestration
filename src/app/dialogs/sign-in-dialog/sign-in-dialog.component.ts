@@ -20,8 +20,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { SignInError, SignInErrorType, UserDetails } from '@mdm/core/security/security.model';
 import { SecurityService } from '@mdm/core/security/security.service';
 import { ValidatorService } from '@mdm/core/validator/validator.service';
-import { EMPTY } from 'rxjs';
-import { catchError, finalize } from 'rxjs/operators';
+import { EMPTY, of } from 'rxjs';
+import { catchError, finalize, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'mdm-sign-in-dialog',
@@ -102,6 +102,14 @@ export class SignInModalComponent implements OnInit {
         finalize(() => {
           this.authenticating = false;
           this.signInForm.enable();
+        }),
+        switchMap(user => {
+          if (user.isAdmin) {
+            return of(user);
+          }
+
+          this.message = 'This application is only available to administrators. Please sign in using an administrator account.';
+          return this.securityHandler.signOut().pipe(switchMap(() => EMPTY));
         })
       )
       .subscribe(user => this.dialogRef.close(user));

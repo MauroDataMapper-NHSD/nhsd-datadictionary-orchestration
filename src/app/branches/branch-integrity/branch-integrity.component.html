@@ -27,11 +27,11 @@
                 <p>Running integrity checks now, please wait...</p>
                 <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
             </div>
-            <div *ngIf="!running && (!results || results.length === 0)">
+            <div *ngIf="!running && !hasCategories">
                 <p>No results found. Please try clicking "Run" to start integrity checks.</p>
             </div>
-            <div *ngIf="!running && results && results.length > 0">
-                <p *ngFor="let result of results">{{result.message}}</p>
+            <div *ngIf="!running && hasCategories">
+                <mdm-branch-integrity-table [categories]="categories"></mdm-branch-integrity-table>                
             </div>
         </div>
     </div>

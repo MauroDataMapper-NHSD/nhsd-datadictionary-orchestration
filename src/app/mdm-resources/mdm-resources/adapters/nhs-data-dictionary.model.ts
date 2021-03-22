@@ -33,6 +33,7 @@ export interface Branch {
  */
 export interface StatisticsItem {
   total?: number;
+  preparatory?: number;
   retired?: number;
 }
 
@@ -46,11 +47,21 @@ export interface Statistics {
 }
 
 /**
- * Represents a single result from a collection of integrity check results.
+ * Represents the details of a model from Mauro with respect to an integrity check on the Data Dictionary.
  */
-export interface IntegrityCheckResult {
-  /**
-   * The user-readable message of the result.
-   */
-  message: string;
+export interface IntegrityCheckItem {
+  type: string;
+  id: string;
+  label: string;
+  domainType: DomainType;
+  parentId: string;
+}
+
+/**
+ * Represents a category, or collection, of integrity check errors found under a certain rule.
+ */
+export interface IntegrityCheck {
+  checkName: string;
+  description: string;
+  errors: IntegrityCheckItem[];
 }

@@ -14,16 +14,3 @@
  * limitations under the License.
  */
 
-.mdm-branch-integrity {
-    %view-row {
-        margin: 16px 16px;
-    }
-
-    &__toolbar {
-        @extend %view-row;        
-    }
-
-    &__results {
-        @extend %view-row;
-    }
-}

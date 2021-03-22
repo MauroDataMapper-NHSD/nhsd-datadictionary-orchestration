@@ -31,7 +31,7 @@ export const states: Ng2StateDeclaration[] = [
   },
   {
     name: 'app.container.branches.detail',
-    url: '/branches/:name/{tabView:string}',
+    url: '/branches/:branch/{tabView:string}',
     component: BranchDetailComponent,
     params: {
       tabView: {

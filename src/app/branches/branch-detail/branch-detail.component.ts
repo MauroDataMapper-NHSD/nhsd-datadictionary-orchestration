@@ -49,7 +49,7 @@ export class BranchDetailComponent implements OnInit {
     private stateHandler: StateHandlerService) { }
 
   ngOnInit(): void {
-    this.branchName = this.uiRouterGlobals.params.name;
+    this.branchName = this.uiRouterGlobals.params.branch;
     if (!this.branchName || this.branchName.length === 0) {
       this.stateHandler.goTo(CommonUiStates.Branches);
       return;

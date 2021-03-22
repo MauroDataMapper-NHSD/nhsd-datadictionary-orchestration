@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
-import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
-import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
 import { Branch } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
-import { UIRouterGlobals } from '@uirouter/core';
 
 @Component({
   selector: 'mdm-branch-selector',
@@ -28,24 +25,22 @@ import { UIRouterGlobals } from '@uirouter/core';
 })
 export class BranchSelectorComponent implements OnInit {
 
+  @Input()
   branches: Branch[] = [];
-  selectedBranch: string = ''
 
-  constructor(
-    private dataDictionary: DataDictionaryService,
-    private uiRouterGlobals: UIRouterGlobals,
-    private stateHandler: StateHandlerService) { }
+  @Input()
+  selectedBranch: string = '';
+
+  @Output()
+  selectedBranchChange = new EventEmitter<string>();
+
+  constructor() { }
 
   ngOnInit(): void {
-    this.selectedBranch = this.uiRouterGlobals.params.name;
-
-    this.dataDictionary
-      .getAvailableBranches()
-      .subscribe(branches => { this.branches = branches });
   }
 
-  branchChanged(change: MatSelectChange) {
-    this.stateHandler.goTo(CommonUiStates.BranchDetail, { name: change.value, tabView: null });
+  onBranchChanged(change: MatSelectChange) {
+    this.selectedBranchChange.emit(change.value);
   }
 
 }

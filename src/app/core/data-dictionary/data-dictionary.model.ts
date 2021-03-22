@@ -14,16 +14,24 @@
  * limitations under the License.
  */
 
-.mdm-branch-integrity {
-    %view-row {
-        margin: 16px 16px;
-    }
+import { IntegrityCheck } from "@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model";
 
-    &__toolbar {
-        @extend %view-row;        
-    }
+export class IntegrityCheckCategory {
+  get checkName() {
+    return this.source.checkName;
+  }
 
-    &__results {
-        @extend %view-row;
-    }
+  get description() {
+    return this.source.description;
+  }
+
+  get errors() {
+    return this.source.errors;
+  }
+
+  get hasErrors() {
+    return !!this.errors && this.errors.length > 0;
+  }
+
+  constructor(private source: IntegrityCheck) { }
 }

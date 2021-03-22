@@ -25,6 +25,7 @@ export const environment = {
   production: false,
   apiEndpoint: 'http://localhost:8080/api',
   themeName: 'nhs-digital',
+  mauroBaseUrl: 'http://localhost:4200',
   name: 'development',
   appTitle: 'Data Dictionary Orchestrator',
   appDescription: 'Orchestrates the data dictionary created by NHS Digital.',

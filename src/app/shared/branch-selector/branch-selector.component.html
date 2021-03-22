@@ -17,10 +17,10 @@
 <div class="mdm-shadow-block">
     <div class="mdm-branch-selector">
         <div fxFlex fxLayout="row" fxLayoutAlign="space-around">
-            <span class="mdm-branch-selector__label" fxFlex fxLayoutAlign="flex-start" fxFlex="10" fxFlex.md="10" fxFlex.sm="10">
-                <i class="fas fa-code-branch"></i> Branch:        
+            <span class="mdm-branch-selector__label" fxFlex fxLayoutAlign="flex-start" fxFlex="15" fxFlex.md="10" fxFlex.sm="10">
+                <i class="fas fa-code-branch"></i> Current branch:        
             </span>            
-            <mat-select placeholder="Select a branch" [(value)]="selectedBranch" (selectionChange)="branchChanged($event)">
+            <mat-select placeholder="Select a branch" [(value)]="selectedBranch" (selectionChange)="onBranchChanged($event)">
                 <mat-option *ngFor="let branch of branches" [value]="branch.label">
                     {{branch.label}}
                 </mat-option>

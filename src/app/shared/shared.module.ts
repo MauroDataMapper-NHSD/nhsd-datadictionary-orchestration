@@ -24,15 +24,18 @@ import { UIRouterModule } from '@uirouter/angular';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BranchSelectorComponent } from './branch-selector/branch-selector.component';
+import { DomainIconComponent } from './domain-icon/domain-icon.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 const components = [
   LoadingIndicatorComponent,
-  BranchSelectorComponent
+  BranchSelectorComponent,
+  DomainIconComponent
 ];
 
 @NgModule({
   declarations: [
-    ...components    
+    ...components        
   ],
   imports: [
     CommonModule,
@@ -41,7 +44,8 @@ const components = [
     MaterialModule,
     FlexLayoutModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxSkeletonLoaderModule
   ],
   exports: [
     ...components,
@@ -50,7 +54,8 @@ const components = [
     UIRouterModule,
     FlexLayoutModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxSkeletonLoaderModule
   ]
 })
 export class SharedModule { }

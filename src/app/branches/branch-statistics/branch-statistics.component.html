@@ -14,22 +14,29 @@
  limitations under the License.
 -->
 
-<div class="mdm-shadow-block">
-    <div *ngIf="loading || !branch">
-        <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
-    </div>
-    <table *ngIf="!loading && branch" class="table">
+<div class="mdm-shadow-block">   
+    <table class="table">
         <thead>
             <tr>
                 <th></th>
                 <th>Total</th>
+                <th>Preparatory</th>
                 <th>Retired</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody *ngIf="loading || !branch">
+            <tr>
+                <td><ngx-skeleton-loader count="1"></ngx-skeleton-loader></td>
+                <td><ngx-skeleton-loader count="1"></ngx-skeleton-loader></td>
+                <td><ngx-skeleton-loader count="1"></ngx-skeleton-loader></td>
+                <td><ngx-skeleton-loader count="1"></ngx-skeleton-loader></td>
+            </tr>
+        </tbody>
+        <tbody *ngIf="!loading && branch">
             <tr *ngFor="let row of rows">
                 <td>{{row.name}}</td>
                 <td>{{row.values.total}}</td>
+                <td>{{row.values.preparatory}}</td>
                 <td>{{row.values.retired}}</td>
             </tr>
         </tbody>

@@ -15,6 +15,10 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
+import { StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
+import { Branch } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { UIRouterGlobals } from '@uirouter/core';
 
 @Component({
   selector: 'mdm-preview-container',
@@ -23,9 +27,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PreviewContainerComponent implements OnInit {
 
-  constructor() { }
+  branches: Branch[] = [];
+  selectedBranch = '';
+
+  constructor(
+    private dataDictionary: DataDictionaryService,
+    private uiRouterGlobals: UIRouterGlobals,
+    private stateHandler: StateHandlerService) { }
 
   ngOnInit(): void {
+    this.selectedBranch = this.uiRouterGlobals.params.branch;
+
+    this.dataDictionary
+      .getAvailableBranches()
+      .subscribe(branches => { this.branches = branches });
+  }
+
+  onSelectedBranchChange(name: string) {
+    // TODO
+    //this.stateHandler.goTo(CommonUiStates.BranchDetail, { branch: name, tabView: null });
   }
 
 }

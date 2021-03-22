@@ -14,15 +14,10 @@
  limitations under the License.
 -->
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <mdm-branch-selector [branches]="branches" [(selectedBranch)]="selectedBranch" (selectedBranchChange)="onSelectedBranchChange($event)"></mdm-branch-selector>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div ui-view></div>
-        </div>
-    </div>
-</div>
+<mat-icon 
+    fontSet="fas" 
+    [fontIcon]="getIcon()" 
+    class="{{size}} model-type" 
+    [matTooltip]="type"
+    [attr.aria-label]="type + ' icon'">
+</mat-icon>

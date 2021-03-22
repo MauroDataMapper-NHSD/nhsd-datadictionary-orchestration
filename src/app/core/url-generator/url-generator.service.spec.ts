@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-.mdm-branch-integrity {
-    %view-row {
-        margin: 16px 16px;
-    }
+import { TestBed } from '@angular/core/testing';
 
-    &__toolbar {
-        @extend %view-row;        
-    }
+import { UrlGeneratorService } from './url-generator.service';
 
-    &__results {
-        @extend %view-row;
-    }
-}
+describe('UrlGeneratorService', () => {
+  let service: UrlGeneratorService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(UrlGeneratorService);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});

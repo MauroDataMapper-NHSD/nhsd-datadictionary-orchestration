@@ -15,9 +15,11 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
+import { MatSelectionListChange } from '@angular/material/list';
+import { IntegrityCheckCategory } from '@mdm/core/data-dictionary/data-dictionary.model';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { LoggingService } from '@mdm/core/logging/logging.service';
-import { Branch, IntegrityCheckResult } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { Branch } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { catchError, finalize } from 'rxjs/operators';
 
 @Component({
@@ -30,7 +32,11 @@ export class BranchIntegrityComponent implements OnInit {
   @Input() branch?: Branch;
 
   running = false;
-  results: IntegrityCheckResult[] = [];
+  categories: IntegrityCheckCategory[] = [];
+
+  get hasCategories() {
+    return !!this.categories && this.categories.length > 0;
+  }
 
   constructor(
     private dataDictionary: DataDictionaryService,
@@ -55,7 +61,6 @@ export class BranchIntegrityComponent implements OnInit {
         }),
         finalize(() => this.running = false)
       )
-      .subscribe(results => this.results = results);
+      .subscribe(categories => this.categories = categories);
   }
-
 }
