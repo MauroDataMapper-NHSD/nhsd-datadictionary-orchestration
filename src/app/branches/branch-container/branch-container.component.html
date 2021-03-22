@@ -17,7 +17,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <mdm-branch-selector></mdm-branch-selector>
+            <mdm-branch-selector [branches]="branches" [(selectedBranch)]="selectedBranch" (selectedBranchChange)="onSelectedBranchChange($event)"></mdm-branch-selector>
         </div>
     </div>
     <div class="row">
