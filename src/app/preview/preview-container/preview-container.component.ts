@@ -44,7 +44,7 @@ export class PreviewContainerComponent implements OnInit {
   }
 
   onSelectedBranchChange(name: string) {
-    this.stateHandler.goTo(CommonUiStates.PreviewIndex, { branch: name, tabView: null });
+    this.stateHandler.goTo(CommonUiStates.PreviewHome, { branch: name, tabView: null });
   }
 
 }

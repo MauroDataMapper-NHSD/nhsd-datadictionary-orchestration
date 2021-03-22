@@ -21,7 +21,7 @@ export enum CommonUiStates {
   Default,
   Branches,
   BranchDetail,
-  PreviewIndex
+  PreviewHome
 }
 
 @Injectable({
@@ -33,7 +33,7 @@ export class StateHandlerService {
     [CommonUiStates.Default, 'app.container.default'],
     [CommonUiStates.Branches, 'app.container.branches.default'],
     [CommonUiStates.BranchDetail, 'app.container.branches.detail'],
-    [CommonUiStates.PreviewIndex, 'app.container.preview.index']
+    [CommonUiStates.PreviewHome, 'app.container.preview.home']
   ]);
 
   constructor(private router: UIRouter) { }
