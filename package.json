@@ -31,6 +31,7 @@
     "angular-user-idle": "^2.2.4",
     "ngx-clipboard": "^14.0.1",
     "ngx-json-viewer": "^3.0.2",
+    "ngx-skeleton-loader": "^2.9.1",
     "ngx-toastr": "^13.2.0",
     "rxjs": "~6.6.0",
     "tslib": "^1.14.1",
