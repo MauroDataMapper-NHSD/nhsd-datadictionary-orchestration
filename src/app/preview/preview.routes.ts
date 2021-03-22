@@ -17,6 +17,7 @@
 import { Ng2StateDeclaration } from "@uirouter/angular";
 import { PreviewContainerComponent } from "./preview-container/preview-container.component";
 import { PreviewDefaultComponent } from "./preview-default/preview-default.component";
+import { PreviewIndexComponent } from "./preview-index/preview-index.component";
 
 export const states: Ng2StateDeclaration[] = [
   {
@@ -28,4 +29,9 @@ export const states: Ng2StateDeclaration[] = [
     url: '/preview',
     component: PreviewDefaultComponent
   },
+  {
+    name: 'app.container.preview.index',
+    url: '/preview/:branch',
+    component: PreviewIndexComponent    
+  }
 ];
