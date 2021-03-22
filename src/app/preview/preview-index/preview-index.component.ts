@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
 import { UIRouterGlobals } from '@uirouter/core';
@@ -26,10 +27,17 @@ import { UIRouterGlobals } from '@uirouter/core';
 export class PreviewIndexComponent implements OnInit {
 
   indexName: string = '';
+  navigationLinks = [
+    'A',
+    'B',
+    'C',
+    'D'
+  ]
 
   constructor(
     private uiRouterGlobals: UIRouterGlobals,
-    private stateHandler: StateHandlerService) { }
+    private stateHandler: StateHandlerService,
+    private viewportScroller: ViewportScroller) { }
 
   ngOnInit(): void {
     this.indexName = this.uiRouterGlobals.params.indexName;
@@ -37,8 +45,11 @@ export class PreviewIndexComponent implements OnInit {
       this.stateHandler.goTo(CommonUiStates.PreviewHome);
       return;
     }
+  }
 
-    
+  onAnchorClick(anchor: string) {
+    // Simulate an <a href="page#section"> link click
+    this.viewportScroller.scrollToAnchor(anchor);
   }
 
 }

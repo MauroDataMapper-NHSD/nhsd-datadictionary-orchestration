@@ -14,3 +14,28 @@
  * limitations under the License.
  */
 
+.mdm-preview-index__toc {
+    border-left: 1px solid #cfe2f5;
+    margin-left: 0;
+    padding-left: 0.5em;
+
+    &__label {
+        font-weight: 600;
+
+        &:after {
+            content: ': ';
+        }
+    }
+
+    ul {
+        padding-left: 0;
+        margin-left: 0;
+        list-style: none;
+    }
+
+    a {
+        color: #3279b5;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}

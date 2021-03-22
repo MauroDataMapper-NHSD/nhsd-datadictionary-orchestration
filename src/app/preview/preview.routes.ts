@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Ng2StateDeclaration, UIRouter, UIRouterGlobals } from "@uirouter/angular";
+import { Ng2StateDeclaration } from "@uirouter/angular";
 import { PreviewContainerComponent } from "./preview-container/preview-container.component";
 import { PreviewDefaultComponent } from "./preview-default/preview-default.component";
 import { PreviewHomeComponent } from "./preview-home/preview-home.component";
