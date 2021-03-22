@@ -66,7 +66,7 @@ export class AppComponent implements OnInit, OnDestroy {
         },
         {
           label: 'Preview',
-          uiSref: 'app.container.preview',
+          uiSref: 'app.container.preview.default',
           icon: 'fa-book-reader',
           onlySignedIn: true
         },

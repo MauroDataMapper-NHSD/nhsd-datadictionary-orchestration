@@ -16,10 +16,16 @@
 
 import { Ng2StateDeclaration } from "@uirouter/angular";
 import { PreviewContainerComponent } from "./preview-container/preview-container.component";
+import { PreviewDefaultComponent } from "./preview-default/preview-default.component";
 
 export const states: Ng2StateDeclaration[] = [
   {
     name: 'app.container.preview',
     component: PreviewContainerComponent
+  },
+  {
+    name: 'app.container.preview.default',
+    url: '/preview',
+    component: PreviewDefaultComponent
   },
 ];

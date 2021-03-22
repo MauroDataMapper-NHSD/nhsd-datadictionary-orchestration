@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-import { NgModule } from '@angular/core';
-import { SharedModule } from '@mdm/shared/shared.module';
-import { PreviewContainerComponent } from './preview-container/preview-container.component';
-import { PreviewDefaultComponent } from './preview-default/preview-default.component';
+import { Component, OnInit } from '@angular/core';
 
-@NgModule({
-  declarations: [PreviewContainerComponent, PreviewDefaultComponent],
-  imports: [
-    SharedModule
-  ]
+@Component({
+  selector: 'mdm-preview-default',
+  templateUrl: './preview-default.component.html',
+  styleUrls: ['./preview-default.component.scss']
 })
-export class PreviewModule { }
+export class PreviewDefaultComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}

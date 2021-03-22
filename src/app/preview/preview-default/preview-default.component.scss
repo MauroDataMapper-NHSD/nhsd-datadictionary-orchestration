@@ -14,15 +14,7 @@
  * limitations under the License.
  */
 
-import { NgModule } from '@angular/core';
-import { SharedModule } from '@mdm/shared/shared.module';
-import { PreviewContainerComponent } from './preview-container/preview-container.component';
-import { PreviewDefaultComponent } from './preview-default/preview-default.component';
-
-@NgModule({
-  declarations: [PreviewContainerComponent, PreviewDefaultComponent],
-  imports: [
-    SharedModule
-  ]
-})
-export class PreviewModule { }
+ .mdm-preview-default {
+    text-align: center;
+    margin: 60px 0px;
+}
