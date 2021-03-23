@@ -16,17 +16,16 @@
 
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
-import { Branch, IntegrityCheck, Statistics } from './nhs-data-dictionary.model';
-
-import * as testIntegrityChecks from '@mdm/testing/nhsdd-integrity-checks.json';
+import { delay, map } from 'rxjs/operators';
+import { Branch, IntegrityCheck, IntegrityCheckResponse, Statistics, StatisticsResponse } from './nhs-data-dictionary.model';
+import { MdmResourcesService } from '../mdm-resources.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NhsDataDictionaryService {
 
-  constructor() { }
+  constructor(private resources: MdmResourcesService) { }
 
   availableBranches(): Observable<Branch[]> {
     // TODO: replace with real endpoint
@@ -34,56 +33,30 @@ export class NhsDataDictionaryService {
       {
         label: 'main'
       },
-      {
-        label: 'test-branch'
-      },
-      {
-        label: 'edits'
-      }
+      // {
+      //   label: 'test-branch'
+      // },
+      // {
+      //   label: 'edits'
+      // }
     ])
     .pipe(delay(1000));
   }  
 
-  statistics(name: string): Observable<Statistics> {
-    // TODO: replace with real endpoint
-    return of({
-      'Attributes': {
-        total: 2480,
-        preparatory: 7,
-        retired: 1174
-      },
-      'Data Field Notes': {
-        total: 4785,
-        preparatory: 32,
-        retired: 2184
-      },
-      'Classes': {
-        total: 360,
-        preparatory: 0,
-        retired: 138
-      },
-      'Business Definitions': {
-        total: 0,
-        preparatory: 0,
-        retired: 0
-      },
-      'Supporting Information': {
-        total: 0,
-        preparatory: 0,
-        retired: 0
-      },
-      'XML Schema Constraints': {
-        total: 0,
-        preparatory: 0,
-        retired: 0
-      }
-    })
-      .pipe(delay(1000));
+  statistics(branch: string): Observable<Statistics> {
+    return this.resources.dataDictionary
+      .statistics(branch)
+      .pipe(
+        map((response: StatisticsResponse) => response.body)
+      );    
   }
 
-  integrityChecks(branchName: string): Observable<IntegrityCheck[]> {
-    // TODO: replace with real endpoint    
-    const json = JSON.parse(JSON.stringify(testIntegrityChecks));
-    return of(json.default).pipe(delay(2000));
+  integrityChecks(branch: string): Observable<IntegrityCheck[]> {
+    return this.resources.dataDictionary
+      .integrityChecks(branch)
+      .pipe(
+        map((response: IntegrityCheckResponse) => response.body)
+      );
   }
 }
+

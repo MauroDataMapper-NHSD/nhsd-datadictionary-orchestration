@@ -46,6 +46,6 @@ export class UrlGeneratorService {
       return '';
     }
 
-    return `${this.shared.mauroBaseUrl}/#${converter(id, parentId)}`;
+    return `${this.shared.mauroBaseUrl}/#/catalogue${converter(id, parentId)}`;
   }  
 }
