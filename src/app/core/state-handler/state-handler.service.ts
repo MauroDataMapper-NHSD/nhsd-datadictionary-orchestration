@@ -20,7 +20,8 @@ import { RawParams, TransitionOptions, UIRouter } from '@uirouter/angular';
 export enum CommonUiStates {
   Default,
   Branches,
-  BranchDetail
+  BranchDetail,
+  PreviewHome
 }
 
 @Injectable({
@@ -28,11 +29,12 @@ export enum CommonUiStates {
 })
 export class StateHandlerService {
 
-  private readonly commonStates: { key: CommonUiStates, state: string}[] = [
-    { key: CommonUiStates.Default, state: 'app.container.default' },
-    { key: CommonUiStates.Branches, state: 'app.container.branches.default' },
-    { key: CommonUiStates.BranchDetail, state: 'app.container.branches.detail' }
-  ];
+  private readonly commonStates = new Map<CommonUiStates, string>([
+    [CommonUiStates.Default, 'app.container.default'],
+    [CommonUiStates.Branches, 'app.container.branches.default'],
+    [CommonUiStates.BranchDetail, 'app.container.branches.detail'],
+    [CommonUiStates.PreviewHome, 'app.container.preview.home']
+  ]);
 
   constructor(private router: UIRouter) { }
 
@@ -41,11 +43,11 @@ export class StateHandlerService {
   }
 
   goTo(state: CommonUiStates, params?: RawParams, options?: TransitionOptions) {
-    const commonState = this.commonStates.find(s => s.key === state);
-    if (!commonState) {
+    const stateName = this.commonStates.get(state);
+    if (!stateName) {
       throw new Error(`Cannot find common state ${state}`);
     }
 
-    return this.go(commonState.state, params, options);
+    return this.go(stateName, params, options);
   }
 }

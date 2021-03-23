@@ -14,15 +14,9 @@
  limitations under the License.
 -->
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <mdm-branch-selector [branches]="branches" [(selectedBranch)]="selectedBranch" (selectedBranchChange)="onSelectedBranchChange($event)"></mdm-branch-selector>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div ui-view class="mdm-dd-preview"></div>
-        </div>
-    </div>
+<div class="mdm-shadow-block">
+    <div class="mdm-preview-default">
+        <h3>Data Dictionary Preview</h3>
+        <p>Please select a branch to preview the data dictionary content.</p>
+    </div>    
 </div>

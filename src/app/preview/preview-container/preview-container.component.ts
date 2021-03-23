@@ -16,7 +16,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
-import { StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
+import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
 import { Branch } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/core';
 
@@ -44,8 +44,7 @@ export class PreviewContainerComponent implements OnInit {
   }
 
   onSelectedBranchChange(name: string) {
-    // TODO
-    //this.stateHandler.goTo(CommonUiStates.BranchDetail, { branch: name, tabView: null });
+    this.stateHandler.goTo(CommonUiStates.PreviewHome, { branch: name, tabView: null });
   }
 
 }

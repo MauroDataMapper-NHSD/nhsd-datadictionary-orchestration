@@ -1,0 +1,139 @@
+/**
+ * Copyright 2021 NHS Digital
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+ /* Wrap all Data Dictionary preview content inside a top-level class to separate from main UI */
+.mdm-dd-preview {
+
+    $nhsDarkBlueColor: #003087;
+
+    /* Element link colors*/
+    $dataElementColor: #006747;    
+    $dataSetColor: #ed8b00;    
+    $attributeColor: #330072;
+    $dataClassColor: #8a1538;
+    $businessDefinitionColor: $nhsDarkBlueColor;
+    $supportingInfoColor: $nhsDarkBlueColor;
+    $xmlSchemaConstraintColor: $nhsDarkBlueColor;
+    $retiredColor: #dfe2e5;
+
+    $shortDescColor: $nhsDarkBlueColor;
+    $tableBorderColor: #425563;
+    $tableHeadBackgroundColor: $nhsDarkBlueColor;
+
+    $previewFontSize: 14px;
+
+    font-family: 'Frutiger W01', Helvetica, Arial, Sans-serif;
+    font-size: $previewFontSize;
+
+    ol li,
+    ul li {
+        font-size: $previewFontSize;
+    }
+
+    a {
+        text-decoration: underline;
+    }
+
+    %element-link-border-style {
+        border-width: thin;
+        border-style: solid;
+        background-color: white;
+        border-radius: 5px;
+        border-width: 1px;
+        padding-left: 3px;
+        padding-right: 3px;
+        margin-left: 2px;
+        font-weight: bold;
+    }
+
+    /**
+    * Define styles for element links
+    */
+    @mixin mdm-dd-preview-element-link($name, $color, $content, $fontWeight: bold) {
+        .#{$name} {
+            color: $color;
+            font-weight: $fontWeight;
+
+            &:after {
+                @extend %element-link-border-style;
+                color: $color;
+                border-color: $color;
+                content: $content;
+            }
+        }
+    }
+
+    
+
+    @include mdm-dd-preview-element-link(element, $dataElementColor, 'e');
+    @include mdm-dd-preview-element-link(dataSet, $dataSetColor, 'ds');
+    @include mdm-dd-preview-element-link(attribute, $attributeColor, 'a');
+    @include mdm-dd-preview-element-link(class, $dataClassColor, 'c');
+    @include mdm-dd-preview-element-link(businessDefinition, $businessDefinitionColor, 'bd');
+    @include mdm-dd-preview-element-link(supportingInformation, $supportingInfoColor, 'i', normal);
+    @include mdm-dd-preview-element-link(xmlSchemaConstraint, $xmlSchemaConstraintColor, '\{...\}', normal);
+
+    .retired {
+        background-color: $retiredColor;
+        color: black;
+        font-weight: normal;
+    }
+
+    .title {
+        padding-left: .7em;
+
+        &.topictitle1 {
+            font-size: 2em;
+            margin-bottom: 1em;
+            font-weight: 400;
+        }
+
+        &.topictitle2 {
+            margin: 1.5em 0 .5em 0;
+            font-size: 1.7em;
+            font-weight: 400;
+        }
+    }
+
+    .shortdesc {
+        background-color: #ffffff;
+        color: $shortDescColor;
+        font-size: large;
+        border-radius: 3px;
+        padding: 1em 1em 1em 1em;
+    }
+
+    .table {
+        border: 1px solid $tableBorderColor;
+        margin-left: 0;
+
+        td, th {
+            border-top: 1px solid $tableBorderColor;
+        }
+
+        td {
+            border-right: 1px solid $tableBorderColor;
+        }
+
+        .thead-light {
+            th {
+                background-color: $tableHeadBackgroundColor;
+                color: white;
+                border: 1px solid $tableBorderColor;
+            }
+        }
+    }
+}

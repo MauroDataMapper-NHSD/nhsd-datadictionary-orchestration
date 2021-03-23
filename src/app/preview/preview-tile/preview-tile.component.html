@@ -14,15 +14,17 @@
  limitations under the License.
 -->
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <mdm-branch-selector [branches]="branches" [(selectedBranch)]="selectedBranch" (selectedBranchChange)="onSelectedBranchChange($event)"></mdm-branch-selector>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div ui-view class="mdm-dd-preview"></div>
+<div *ngIf="tile" class="mdm-preview-tile" [attr.data-id]="tile.id">
+    <div>
+        <div class="mdm-preview-tile__text">
+            <div class="mdm-preview-tile__text__title">
+                <span>
+                    <a [uiSref]="tile.uiSref" [uiParams]="tile.uiParams" [attr.data-id]="tile.id">{{tile.title}}</a>
+                </span>
+            </div>
+            <div class="mdm-preview-tile__text__description">
+                {{tile.description}}
+            </div>
         </div>
     </div>
 </div>

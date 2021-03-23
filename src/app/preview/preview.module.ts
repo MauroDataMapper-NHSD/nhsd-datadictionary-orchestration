@@ -17,9 +17,23 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@mdm/shared/shared.module';
 import { PreviewContainerComponent } from './preview-container/preview-container.component';
+import { PreviewDefaultComponent } from './preview-default/preview-default.component';
+import { PreviewIndexComponent } from './preview-index/preview-index.component';
+import { PreviewHomeComponent } from './preview-home/preview-home.component';
+import { PreviewTileComponent } from './preview-tile/preview-tile.component';
+import { PreviewDetailComponent } from './preview-detail/preview-detail.component';
+import { PreviewTocComponent } from './preview-toc/preview-toc.component';
 
 @NgModule({
-  declarations: [PreviewContainerComponent],
+  declarations: [
+    PreviewContainerComponent, 
+    PreviewDefaultComponent, 
+    PreviewIndexComponent, 
+    PreviewHomeComponent, 
+    PreviewTileComponent, 
+    PreviewDetailComponent, 
+    PreviewTocComponent
+  ],
   imports: [
     SharedModule
   ]
