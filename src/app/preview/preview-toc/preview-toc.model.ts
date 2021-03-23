@@ -14,3 +14,17 @@
  * limitations under the License.
  */
 
+/**
+ * Represents a table of contents link to jump to an anchor point on a page.
+ */
+export interface TableOfContentsLink {
+  /**
+   * The text label to appear on the link.
+   */
+  label: string;
+
+  /**
+   * The ID to the anchor element to jump to.
+   */
+  anchor: string;
+}

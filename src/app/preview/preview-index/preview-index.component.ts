@@ -18,6 +18,7 @@ import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
 import { UIRouterGlobals } from '@uirouter/core';
+import { TableOfContentsLink } from '../preview-toc/preview-toc.model';
 
 @Component({
   selector: 'mdm-preview-index',
@@ -27,12 +28,25 @@ import { UIRouterGlobals } from '@uirouter/core';
 export class PreviewIndexComponent implements OnInit {
 
   index: string = '';
-  navigationLinks = [
-    'A',
-    'B',
-    'C',
-    'D'
-  ]
+
+  tableOfContentLinks: TableOfContentsLink[] = [
+    {
+      label: 'A',
+      anchor: 'topic.a'
+    },
+    {
+      label: 'B',
+      anchor: 'topic.b'
+    },
+    {
+      label: 'C',
+      anchor: 'topic.c'
+    },
+    {
+      label: 'D',
+      anchor: 'topic.d'
+    },
+  ];
 
   constructor(
     private uiRouterGlobals: UIRouterGlobals,
@@ -50,9 +64,9 @@ export class PreviewIndexComponent implements OnInit {
     this.viewportScroller.scrollToPosition([0, 0]);
   }
 
-  onAnchorClick(anchor: string) {
+  onTableOfContentsClick(link: TableOfContentsLink) {
     // Simulate an <a href="page#section"> link click
-    this.viewportScroller.scrollToAnchor(anchor);
+    this.viewportScroller.scrollToAnchor(link.anchor);
   }
 
 }

@@ -14,3 +14,29 @@
  * limitations under the License.
  */
 
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { TableOfContentsLink } from './preview-toc.model';
+
+@Component({
+  selector: 'mdm-preview-toc',
+  templateUrl: './preview-toc.component.html',
+  styleUrls: ['./preview-toc.component.scss']
+})
+export class PreviewTocComponent implements OnInit {
+
+  @Input()
+  links: TableOfContentsLink[] = [];
+
+  @Output()
+  navigating = new EventEmitter<TableOfContentsLink>();
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+  onNavigating(link: TableOfContentsLink) {
+    this.navigating.emit(link);
+  }
+
+}

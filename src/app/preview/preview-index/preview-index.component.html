@@ -21744,14 +21744,8 @@
             </article>
         </article>
     </div>
-    <nav role="navigation" id="topic_toc" class="col-lg-2 d-none d-lg-block navbar d-print-none">
-        <div class="mdm-preview-index__toc">
-            <div class="mdm-preview-index__toc__label">On this page</div>
-            <ul>
-                <li *ngFor="let link of navigationLinks">
-                    <a (click)="onAnchorClick('topic.' + link.toLowerCase())">{{link.toUpperCase()}}</a>
-                </li>                
-            </ul>
-        </div>
-    </nav>
+    <nav role="navigation" id="toc" class="col-lg-2 d-none d-lg-block navbar d-print-none">
+        <mdm-preview-toc [links]="tableOfContentLinks" (navigating)="onTableOfContentsClick($event)">        
+        </mdm-preview-toc>
+    </nav>    
 </div>

@@ -16,6 +16,7 @@
 
 import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { TableOfContentsLink } from '../preview-toc/preview-toc.model';
 
 @Component({
   selector: 'mdm-preview-detail',
@@ -24,6 +25,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PreviewDetailComponent implements OnInit {
 
+  tableOfContentLinks: TableOfContentsLink[] = [
+    {
+      label: 'Format / Length',
+      anchor: 'format-length'
+    },
+    {
+      label: 'Description',
+      anchor: 'description'
+    },
+    {
+      label: 'Also Known As',
+      anchor: 'also-known-as'
+    },
+    {
+      label: 'Where Used',
+      anchor: 'where-used'
+    },
+    {
+      label: 'Attribute',
+      anchor: 'attribute'
+    },
+  ];
+
   constructor(private viewportScroller: ViewportScroller) { }
 
   ngOnInit(): void {
@@ -31,4 +55,8 @@ export class PreviewDetailComponent implements OnInit {
     this.viewportScroller.scrollToPosition([0, 0]);
   }
 
+  onTableOfContentsClick(link: TableOfContentsLink) {
+    // Simulate an <a href="page#section"> link click
+    this.viewportScroller.scrollToAnchor(link.anchor);
+  }
 }
