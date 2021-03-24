@@ -14,3 +14,14 @@
  * limitations under the License.
  */
 
+ @import "styles/abstracts/variables";
+
+ .mdm-preview-container {
+     &__notice {
+         margin: 8px 0px 16px 0px;
+         padding: 8px 0px;
+         text-align: center;
+         border-radius: 8px;
+         background-color: lighten($defaultWarningColor, 35%);
+     }
+ }
