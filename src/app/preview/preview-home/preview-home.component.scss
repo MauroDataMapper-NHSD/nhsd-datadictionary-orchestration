@@ -21,4 +21,10 @@
         font-weight: 500;
         line-height: 1.2;
     }
+
+    &__tile-container {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-around;
+    }    
 }
