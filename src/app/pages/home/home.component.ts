@@ -15,6 +15,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { SharedService } from '@mdm/core/shared/shared.service';
 
 @Component({
   selector: 'mdm-home',
@@ -23,7 +24,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { 
+  mauroBaseUrl: string;
+
+  constructor(private shared: SharedService) { 
+    this.mauroBaseUrl = this.shared.mauroBaseUrl;
   }
 
   ngOnInit(): void {

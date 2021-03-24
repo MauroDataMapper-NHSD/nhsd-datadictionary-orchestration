@@ -111,6 +111,14 @@ export class SecurityService {
   }
 
   /**
+   * Determines if the current user is signed in.
+   * @returns True if the current user is signed in.
+   */
+  isSignedIn(): boolean {
+    return !!this.getCurrentUser();
+  }
+
+  /**
    * Check if the current session is expired. If not signed in this returns `false`.
    * @returns An observable that returns `true` if the current session has expired.
    */
