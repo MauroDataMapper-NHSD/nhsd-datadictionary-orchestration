@@ -14,18 +14,13 @@
  limitations under the License.
 -->
 
-<div class="container-fluid">
+<div class="mdm-alert {{cssModifier}}">
     <div class="row">
-        <div class="col-md-12">
-            <mdm-branch-selector [branches]="branches" [(selectedBranch)]="selectedBranch" (selectedBranchChange)="onSelectedBranchChange($event)"></mdm-branch-selector>
+        <div [class.col-md-1]="showIcon" class="mdm-alert__icon">
+            <i class="fas {{iconName}} fa-lg"></i>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <mdm-alert alertStyle="info" [showIcon]="true">
-                This is a <strong>preview</strong> only. Some content may not exactly match the final published data dictionary.
-            </mdm-alert>
-            <div ui-view class="mdm-dd-preview"></div>
+        <div [class.col-md-11]="showIcon" [class.col-md-12]="!showIcon" class="mdm-alert__content">
+            <ng-content></ng-content>
         </div>
-    </div>
+    </div>    
 </div>

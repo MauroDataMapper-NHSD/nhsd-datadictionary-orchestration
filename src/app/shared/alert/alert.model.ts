@@ -13,3 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+export type AlertStyle = 'none' | 'success' | 'info' | 'warning' | 'error';
+
+export interface AlertStyleMetadata {
+  icon: string;
+  cssModifier: string;
+}

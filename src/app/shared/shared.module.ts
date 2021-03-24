@@ -26,8 +26,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BranchSelectorComponent } from './branch-selector/branch-selector.component';
 import { DomainIconComponent } from './domain-icon/domain-icon.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { AlertComponent } from './alert/alert.component';
 
 const components = [
+  AlertComponent,
   LoadingIndicatorComponent,
   BranchSelectorComponent,
   DomainIconComponent
@@ -35,7 +37,7 @@ const components = [
 
 @NgModule({
   declarations: [
-    ...components        
+    ...components         
   ],
   imports: [
     CommonModule,

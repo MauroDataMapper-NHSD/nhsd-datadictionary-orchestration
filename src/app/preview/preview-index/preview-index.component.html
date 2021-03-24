@@ -22,6 +22,11 @@
         <article *ngIf="!isLoading" role="article" aria-labelledby="ariaid-title1">
             <article>
                 <h1 class="title topictitle1">{{pageTitles.get(index)}}</h1>
+                <div class="body">
+                    <mdm-alert alertStyle="info" [showIcon]="true">
+                        For preview only, this index page will not contain a description block. The final published output will include a description of this page.
+                    </mdm-alert>
+                </div>
 
                 <!-- <div class="- topic/body body">
                     <p class="- topic/shortdesc shortdesc">Data Elements are the data items used within Data Sets.</p>
