@@ -15,6 +15,12 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { SecurityService } from '@mdm/core/security/security.service';
+import { SharedService } from '@mdm/core/shared/shared.service';
+import { MauroDataMapperVersionStatusKey, NhsDataDictionaryPluginModuleKey } from '@mdm/mdm-resources/mdm-resources/adapters/mdm-admin.model';
+import { MdmAdminService } from '@mdm/mdm-resources/mdm-resources/adapters/mdm-admin.service';
+import { forkJoin } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'mdm-about',
@@ -23,9 +29,37 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AboutComponent implements OnInit {
 
-  constructor() { }
+  isLoading = false;
+  isSignedIn: boolean = false;
+  appVersion: string;
+  mauroVersion: string = '';
+  nhsDdPluginVersion: string = '';
+
+  constructor(
+    private shared: SharedService,
+    private security: SecurityService,
+    private admin: MdmAdminService) { 
+    this.appVersion = this.shared.appVersion
+  }
 
   ngOnInit(): void {
+    this.isSignedIn = this.security.isSignedIn();
+
+    if (this.isSignedIn) {
+      this.isLoading = true;
+
+      forkJoin([
+        this.admin.status(), 
+        this.admin.modules()
+      ])
+      .pipe(
+        finalize(() => this.isLoading = false)
+      )
+      .subscribe(([status, modules]) => {
+        this.mauroVersion = status[MauroDataMapperVersionStatusKey];
+        this.nhsDdPluginVersion = modules.find(module => module.name === NhsDataDictionaryPluginModuleKey)?.version ?? '';
+      })      
+    }
   }
 
 }

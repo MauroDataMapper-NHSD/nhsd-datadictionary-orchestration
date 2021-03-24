@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Authority, DomainType } from "../mdm-resources.model";
+import { DomainType, MdmResourcesResponse } from "../mdm-resources.model";
 
 /**
  * Represents a branch of the NHS Data Dictionary.
@@ -29,12 +29,14 @@ export interface Branch {
 /**
  * Represents a statistics item to attach to a list of statistics.
  * 
+ * **Note:** properties are uppercase due to JSON deserialization of response from the server.
+ * 
  * @see Statistics
  */
-export interface StatisticsItem {
-  total?: number;
-  preparatory?: number;
-  retired?: number;
+export interface StatisticsItem {  
+  Preparatory?: number;
+  Retired?: number;
+  Total?: number;
 }
 
 /**
@@ -45,6 +47,8 @@ export interface StatisticsItem {
 export interface Statistics {
   [key: string]: StatisticsItem;
 }
+
+export type StatisticsResponse = MdmResourcesResponse<Statistics>;
 
 /**
  * Represents the details of a model from Mauro with respect to an integrity check on the Data Dictionary.
@@ -65,3 +69,5 @@ export interface IntegrityCheck {
   description: string;
   errors: IntegrityCheckItem[];
 }
+
+export type IntegrityCheckResponse = MdmResourcesResponse<IntegrityCheck[]>

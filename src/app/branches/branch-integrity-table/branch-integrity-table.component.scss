@@ -18,10 +18,9 @@
 
 @mixin mdm-branch-integrity-table-theme($theme) {
     $accent: map-get($theme, accent);
-    $warn: map-get($theme, warn);
 
     $successColor: mat-color($accent);
-    $errorColor: mat-color($warn);
+    $errorColor: #f19e3f;
 
     .mdm-branch-integrity-table {
         &--success {

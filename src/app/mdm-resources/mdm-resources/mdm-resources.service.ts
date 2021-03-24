@@ -15,8 +15,9 @@
  */
 
 import { Injectable } from '@angular/core';
-import { MdmSecurityResource, MdmResourcesConfiguration, MdmSessionResource, MdmDataModelResource, MdmCodeSetResource, MdmTerminologyResource } from '@maurodatamapper/mdm-resources';
+import { MdmSecurityResource, MdmResourcesConfiguration, MdmSessionResource, MdmAdminResource } from '@maurodatamapper/mdm-resources';
 import { MdmRestHandlerService } from '../mdm-rest-handler/mdm-rest-handler.service';
+import { MdmPluginNhsDataDictionaryResource } from '../plugins/mdm-plugin-nhs-data-dictionary.resource';
 
 @Injectable({
   providedIn: 'root'
@@ -25,9 +26,8 @@ export class MdmResourcesService {
 
   security = new MdmSecurityResource(this.resourcesConfig, this.restHandler);
   session = new MdmSessionResource(this.resourcesConfig, this.restHandler);
-  dataModel = new MdmDataModelResource(this.resourcesConfig, this.restHandler);
-  codeSet = new MdmCodeSetResource(this.resourcesConfig, this.restHandler);
-  terminology = new MdmTerminologyResource(this.resourcesConfig, this.restHandler);
+  admin = new MdmAdminResource(this.resourcesConfig, this.restHandler);
+  dataDictionary = new MdmPluginNhsDataDictionaryResource(this.resourcesConfig, this.restHandler);
 
   constructor(
     private resourcesConfig: MdmResourcesConfiguration, 

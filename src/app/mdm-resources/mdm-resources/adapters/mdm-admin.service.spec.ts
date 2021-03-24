@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
- @import "styles/abstracts/mixins";
+import { TestBed } from '@angular/core/testing';
 
-.mdm-home {
-    &__hero {
-        padding-bottom: 24px;
+import { MdmAdminService } from './mdm-admin.service';
 
-        h3:first-child {
-            margin-top: 72px;
-            @include respond-to($tablet) {
-                margin-top: 0px;
-            }
-        }
-    }
-}
+describe('MdmAdminService', () => {
+  let service: MdmAdminService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(MdmAdminService);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});

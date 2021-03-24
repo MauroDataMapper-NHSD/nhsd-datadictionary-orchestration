@@ -14,4 +14,31 @@
  limitations under the License.
 -->
 
-<p>TODO: about page content</p>
+<h3>About</h3>
+<table *ngIf="isLoading" class="table">
+    <tbody>
+        <tr>
+            <th><ngx-skeleton-loader></ngx-skeleton-loader></th>
+            <td><ngx-skeleton-loader></ngx-skeleton-loader></td>
+        </tr>
+    </tbody>
+</table>
+<table *ngIf="!isLoading" class="table">
+    <tbody>
+        <tr>
+            <th>UI Version</th>
+            <td>{{this.appVersion}}</td>
+        </tr>
+        <tr *ngIf="isSignedIn">
+            <th>Mauro Data Mapper Version</th>
+            <td>{{this.mauroVersion}}</td>
+        </tr>
+        <tr *ngIf="isSignedIn">
+            <th>NHS Data Dictionary Plugin Version</th>
+            <td>{{this.nhsDdPluginVersion}}</td>
+        </tr>
+    </tbody>
+</table>
+<p *ngIf="!isSignedIn">
+    Further information can be viewed by signing in.
+</p>

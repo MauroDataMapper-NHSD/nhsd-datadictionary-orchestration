@@ -26,6 +26,7 @@ export class FooterComponent implements OnInit {
 
   year = new Date().getFullYear();
   version = this.shared.appVersion;
+  mauroBaseUrl = this.shared.mauroBaseUrl;
 
   constructor(private shared: SharedService) { }
 

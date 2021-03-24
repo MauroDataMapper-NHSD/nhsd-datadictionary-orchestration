@@ -18,10 +18,10 @@
     <table class="table">
         <thead>
             <tr>
-                <th></th>
-                <th>Total</th>
+                <th></th>                
                 <th>Preparatory</th>
                 <th>Retired</th>
+                <th>Total</th>
             </tr>
         </thead>
         <tbody *ngIf="loading || !branch">
@@ -34,10 +34,10 @@
         </tbody>
         <tbody *ngIf="!loading && branch">
             <tr *ngFor="let row of rows">
-                <td>{{row.name}}</td>
-                <td>{{row.values.total}}</td>
-                <td>{{row.values.preparatory}}</td>
-                <td>{{row.values.retired}}</td>
+                <td>{{row.name}}</td>                
+                <td>{{row.values.Preparatory}}</td>
+                <td>{{row.values.Retired}}</td>
+                <td>{{row.values.Total}}</td>
             </tr>
         </tbody>
     </table>

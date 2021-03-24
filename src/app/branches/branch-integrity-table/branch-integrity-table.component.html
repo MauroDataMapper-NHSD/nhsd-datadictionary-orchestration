@@ -21,12 +21,12 @@
                 <mat-list-option *ngFor="let category of categories" [value]="category">
                     <div class="mdm-branch-integrity-table__list-item">
                         <span *ngIf="!category.hasErrors" class="mdm-branch-integrity-table--success">
-                            <i class="fas fa-check-circle fa-lg"></i>
+                            <i class="fas fa-check-circle fa-lg" matTooltip="OK" aria-label="OK"></i>
                         </span>
                         <span *ngIf="category.hasErrors" class="mdm-branch-integrity-table--errors">
-                            <i class="fas fa-times-circle fa-lg"></i>
+                            <i class="fas fa-exclamation-triangle fa-lg" matTooltip="Issues found" aria-label="Issues found"></i>
                         </span>
-                        <span>{{category.checkName}}</span>
+                        <span [matTooltip]="category.description">{{category.checkName}}</span>
                         <span *ngIf="category.hasErrors"
                             class="mdm-branch-integrity-table--errors">{{category.errors.length}}</span>
                     </div>
@@ -35,18 +35,18 @@
         </div>
         <div class="col-md-7">
             <div *ngIf="!selectedCategory">
-                <p>Select a category to view further details.</p>
+                <p><em>Select a category to view further details.</em></p>
             </div>
             <div *ngIf="selectedCategory">
                 <h3>{{selectedCategory.checkName}}</h3>
                 <p>{{selectedCategory.description}}</p>
                 <div *ngIf="!selectedCategory.hasErrors" class="mdm-branch-integrity-table--success">
                     <i class="fas fa-check-circle fa-lg"></i>
-                    No errors found
+                    No issues found
                 </div>
                 <div *ngIf="selectedCategory.hasErrors" class="mdm-branch-integrity-table--errors">
-                    <i class="fas fa-times-circle fa-lg"></i>
-                    {{selectedCategory.errors.length}} error(s) found
+                    <i class="fas fa-exclamation-triangle fa-lg"></i>
+                    {{selectedCategory.errors.length}} issue(s) found
                 </div>
                 <mat-list>
                     <mat-list-item *ngFor="let error of selectedCategory.errors">

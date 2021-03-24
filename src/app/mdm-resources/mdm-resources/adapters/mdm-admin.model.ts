@@ -14,17 +14,21 @@
  * limitations under the License.
  */
 
- @import "styles/abstracts/mixins";
+import { MdmResourcesResponse } from "../mdm-resources.model";
 
-.mdm-home {
-    &__hero {
-        padding-bottom: 24px;
+export const MauroDataMapperVersionStatusKey = 'Mauro Data Mapper Version';
 
-        h3:first-child {
-            margin-top: 72px;
-            @include respond-to($tablet) {
-                margin-top: 0px;
-            }
-        }
-    }
+export interface Status {
+  [key: string]: string
 }
+
+export type StatusResponse = MdmResourcesResponse<Status>;
+
+export const NhsDataDictionaryPluginModuleKey = 'mdm.pluginNhsDataDictionary';
+
+export interface MauroModule {
+  name: string;
+  version: string;
+}
+
+export type ModulesResponse = MdmResourcesResponse<MauroModule[]>;

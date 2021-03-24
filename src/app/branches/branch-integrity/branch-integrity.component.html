@@ -17,6 +17,11 @@
 <div class="mdm-shadow-block">
     <div class="mdm-branch-integrity">
         <div class="mdm-branch-integrity__toolbar">
+            <p>Carry out checks on the integrity of the <span class="branch"><i class="fas fa-code-branch"></i>{{branch?.label}}</span> branch of the Data Dictionary.</p>
+            <p><strong>Note:</strong> These integrity checks only provide guidance on issues to investigate further. The Data Dictionary can still be modified with these
+            issues in place.</p>
+        </div>
+        <div class="mdm-branch-integrity__toolbar">
             <button mat-flat-button color="primary" type="button" [disabled]="running" (click)="run()" aria-label="Run integrity checks" matTooltip="Run integrity checks">
                 <i class="fas fa-play"></i>
                 Run
@@ -26,10 +31,7 @@
             <div *ngIf="running" class="mdm-branch-integrity--running">
                 <p>Running integrity checks now, please wait...</p>
                 <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
-            </div>
-            <div *ngIf="!running && !hasCategories">
-                <p>No results found. Please try clicking "Run" to start integrity checks.</p>
-            </div>
+            </div>            
             <div *ngIf="!running && hasCategories">
                 <mdm-branch-integrity-table [categories]="categories"></mdm-branch-integrity-table>                
             </div>
