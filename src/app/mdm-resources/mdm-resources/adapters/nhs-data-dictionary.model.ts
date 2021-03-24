@@ -71,4 +71,39 @@ export interface IntegrityCheck {
   errors: IntegrityCheckItem[];
 }
 
-export type IntegrityCheckResponse = MdmResourcesResponse<IntegrityCheck[]>
+export type IntegrityCheckResponse = MdmResourcesResponse<IntegrityCheck[]>;
+
+/**
+ * Represents the different domain types for the dynamic preview pages.
+ */
+export enum PreviewDomainType {
+  DataElements = 'elements',
+  Attributes = 'attributes',
+  DataClasses = 'classes',
+  DataSets = 'dataSets',
+  BusinessDefinitions = 'businessDefinitions',
+  SupportingInformation = 'supportingInformation',
+  XmlSchemaConstraint = 'xmlSchemaConstraint',
+  All = 'allItemsIndex'
+}
+
+/**
+ * Represents the stereotypes of each data element returned from the NHS Data Dictionary.
+ */
+export enum Stereotype {
+  DataElement = 'element',
+  Attribute = 'attribute',
+  DataClass = 'class',
+  DataSet = 'dataSet',
+  BusinessDefinition = 'businessDefinition',
+  SupportingInformation = 'supportingInformation',
+  XmlSchemaConstraint = 'xmlSchemaConstraint'
+}
+
+export interface PreviewIndexItem {
+  catalogueId: string;
+  name: string;
+  stereotype: Stereotype;
+}
+
+export type PreviewIndexResponse = MdmResourcesResponse<PreviewIndexItem[]>

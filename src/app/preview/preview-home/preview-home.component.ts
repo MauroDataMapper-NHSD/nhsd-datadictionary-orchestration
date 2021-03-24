@@ -15,6 +15,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { PreviewDomainType } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/core';
 import { PreviewTile } from '../preview-tile/preview-tile.model';
 
@@ -45,7 +46,7 @@ export class PreviewHomeComponent implements OnInit {
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        index: 'data-sets'
+        index: PreviewDomainType.DataSets
       }
     },
     {
@@ -55,7 +56,7 @@ export class PreviewHomeComponent implements OnInit {
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        index: 'data-elements'
+        index: PreviewDomainType.DataElements
       }
     },
     {
@@ -65,7 +66,7 @@ export class PreviewHomeComponent implements OnInit {
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        index: 'attributes'
+        index: PreviewDomainType.Attributes
       }
     },
     {
@@ -75,7 +76,7 @@ export class PreviewHomeComponent implements OnInit {
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        index: 'classes'
+        index: PreviewDomainType.DataClasses
       }
     },
     {
@@ -85,7 +86,7 @@ export class PreviewHomeComponent implements OnInit {
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        index: 'business-definitions'
+        index: PreviewDomainType.BusinessDefinitions
       }
     },
     {
@@ -95,7 +96,7 @@ export class PreviewHomeComponent implements OnInit {
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        index: 'supporting-information'
+        index: PreviewDomainType.SupportingInformation
       }
     },
     {

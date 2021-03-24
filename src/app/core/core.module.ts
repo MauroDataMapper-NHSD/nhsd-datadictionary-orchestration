@@ -23,6 +23,8 @@ import { environment } from '@env/environment';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpRequestProgressInterceptor } from './interceptors/http-request-progress.interceptor';
 
+import './array.extensions';
+
 @NgModule({
   declarations: [],
   imports: [

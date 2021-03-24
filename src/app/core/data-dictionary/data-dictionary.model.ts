@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IntegrityCheck } from "@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model";
+import { IntegrityCheck, PreviewIndexItem } from "@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model";
 
 export class IntegrityCheckCategory {
   get checkName() {
@@ -34,4 +34,9 @@ export class IntegrityCheckCategory {
   }
 
   constructor(private source: IntegrityCheck) { }
+}
+
+export interface PreviewIndexGroup {
+  key: string;
+  items: PreviewIndexItem[]
 }
