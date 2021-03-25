@@ -24,6 +24,7 @@ import { PreviewTileComponent } from './preview-tile/preview-tile.component';
 import { PreviewDetailComponent } from './preview-detail/preview-detail.component';
 import { PreviewTocComponent } from './preview-toc/preview-toc.component';
 import { PreviewExpandablePanelComponent } from './preview-expandable-panel/preview-expandable-panel.component';
+import { PreviewBreadcrumbComponent } from './preview-breadcrumb/preview-breadcrumb.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { PreviewExpandablePanelComponent } from './preview-expandable-panel/prev
     PreviewTileComponent, 
     PreviewDetailComponent, 
     PreviewTocComponent, 
-    PreviewExpandablePanelComponent
+    PreviewExpandablePanelComponent, 
+    PreviewBreadcrumbComponent
   ],
   imports: [
     SharedModule

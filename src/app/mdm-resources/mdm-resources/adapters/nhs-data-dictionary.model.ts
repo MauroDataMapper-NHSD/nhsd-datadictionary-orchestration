@@ -87,6 +87,16 @@ export enum PreviewDomainType {
   All = 'allItemsIndex'
 }
 
+export const previewIndexPageTitles = new Map<PreviewDomainType, string>([
+  [PreviewDomainType.DataElements, 'Data Elements'],
+  [PreviewDomainType.Attributes, 'Attributes'],
+  [PreviewDomainType.DataClasses, 'Classes'],
+  [PreviewDomainType.DataSets, 'Data Sets'],
+  [PreviewDomainType.BusinessDefinitions, 'Business Definitions'],
+  [PreviewDomainType.SupportingInformation, 'Supporting Information'],
+  [PreviewDomainType.XmlSchemaConstraint, 'XML Schema Constraints']
+]);
+
 /**
  * Represents the stereotypes of each data element returned from the NHS Data Dictionary.
  */

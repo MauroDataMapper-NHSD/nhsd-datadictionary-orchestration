@@ -18,10 +18,11 @@ import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
-import { PreviewDetail, PreviewDomainType } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { PreviewDetail, PreviewDomainType, previewIndexPageTitles } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/angular';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
+import { Breadcrumb } from '../preview-breadcrumb/preview-breadcrumb.model';
 import { TableOfContentsLink } from '../preview-toc/preview-toc.model';
 
 @Component({
@@ -36,6 +37,7 @@ export class PreviewDetailComponent implements OnInit {
   index: PreviewDomainType = PreviewDomainType.All;
   id: string = '';
   detail?: PreviewDetail;
+  breadcrumbs: Breadcrumb[] = [];
   tableOfContentLinks: TableOfContentsLink[] = [];  
 
   constructor(
@@ -57,7 +59,7 @@ export class PreviewDetailComponent implements OnInit {
     }
 
     // Simulate a new static page loaded
-    this.viewportScroller.scrollToPosition([0, 0]);
+    this.viewportScroller.scrollToPosition([0, 0]);    
 
     this.isLoading = true;
     this.dataDictionary
@@ -67,8 +69,31 @@ export class PreviewDetailComponent implements OnInit {
       )
       .subscribe(detail => {
         this.detail = detail;
+        this.breadcrumbs = this.createBreadcrumbs(detail);
         this.tableOfContentLinks = this.createTableOfContentLinks(detail);        
       });
+  }
+
+  private createBreadcrumbs(detail: PreviewDetail): Breadcrumb[] {
+    return [
+      {
+        label: previewIndexPageTitles.get(this.index) ?? '',
+        uiSref: 'app.container.preview.index',
+        uiParams: {
+          branch: this.branch,
+          index: this.index
+        }
+      },
+      {
+        label: detail.name,
+        uiSref: 'app.container.preview.detail',
+        uiParams: {
+          branch: this.branch,
+          index: this.index,
+          id: this.id
+        }
+      }
+    ];
   }
 
   private createTableOfContentLinks(detail: PreviewDetail): TableOfContentsLink[] {

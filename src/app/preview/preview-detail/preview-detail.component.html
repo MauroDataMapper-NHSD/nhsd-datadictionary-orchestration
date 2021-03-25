@@ -14,6 +14,8 @@
  limitations under the License.
 -->
 
+<mdm-preview-breadcrumb [items]="breadcrumbs"></mdm-preview-breadcrumb>
+
 <div class="row">
     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
         <div class="mdm-preview-detail">
@@ -40,7 +42,7 @@
                         </div>
                     </article> -->
 
-                    <mdm-preview-expandable-panel *ngIf="detail!.description" title="Description" [anchor]="getTableOfContentsLink('Description')">
+                    <mdm-preview-expandable-panel *ngIf="detail!.description" title="Description" [anchor]="getTableOfContentsLink('Description')?.anchor">
                         <div class="- topic/body body">
                             <div class="- topic/div div">
                                 <p class="- topic/p p" [innerHTML]="detail!.description">

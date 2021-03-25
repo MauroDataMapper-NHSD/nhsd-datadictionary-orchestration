@@ -19,10 +19,11 @@ import { Component, OnInit } from '@angular/core';
 import { PreviewIndexGroup } from '@mdm/core/data-dictionary/data-dictionary.model';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
-import { PreviewDomainType } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { PreviewDomainType, previewIndexPageTitles } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/core';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
+import { Breadcrumb } from '../preview-breadcrumb/preview-breadcrumb.model';
 import { TableOfContentsLink } from '../preview-toc/preview-toc.model';
 
 @Component({
@@ -30,22 +31,13 @@ import { TableOfContentsLink } from '../preview-toc/preview-toc.model';
   templateUrl: './preview-index.component.html',
   styleUrls: ['./preview-index.component.scss']
 })
-export class PreviewIndexComponent implements OnInit {
-
-  readonly pageTitles = new Map<PreviewDomainType, string>([
-    [PreviewDomainType.DataElements, 'Data Elements'],
-    [PreviewDomainType.Attributes, 'Attributes'],
-    [PreviewDomainType.DataClasses, 'Classes'],
-    [PreviewDomainType.DataSets, 'Data Sets'],
-    [PreviewDomainType.BusinessDefinitions, 'Business Definitions'],
-    [PreviewDomainType.SupportingInformation, 'Supporting Information'],
-    [PreviewDomainType.XmlSchemaConstraint, 'XML Schema Constraints']
-  ]);
+export class PreviewIndexComponent implements OnInit {  
 
   isLoading = false;
   branch: string = '';
   index: PreviewDomainType = PreviewDomainType.All;
   topics: PreviewIndexGroup[] = [];
+  breadcrumbs: Breadcrumb[] = [];
   tableOfContentLinks: TableOfContentsLink[] = [];  
 
   constructor(
@@ -68,6 +60,17 @@ export class PreviewIndexComponent implements OnInit {
     // Simulate a new static page loaded
     this.viewportScroller.scrollToPosition([0, 0]);
 
+    this.breadcrumbs = [
+      {
+        label: this.getIndexTitle(),
+        uiSref: 'app.container.preview.index',
+        uiParams: {
+          branch: this.branch,
+          index: this.index
+        }
+      }
+    ];
+
     this.isLoading = true;
     this.dataDictionary
       .getPreviewIndex(this.branch, this.index)
@@ -83,6 +86,10 @@ export class PreviewIndexComponent implements OnInit {
           }
         });
       });
+  }
+
+  getIndexTitle() {
+    return previewIndexPageTitles.get(this.index) ?? '';
   }
 
   getTableOfContentsLink(topic: PreviewIndexGroup): TableOfContentsLink | undefined {

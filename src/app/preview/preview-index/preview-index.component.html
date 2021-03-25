@@ -14,6 +14,8 @@
  limitations under the License.
 -->
 
+<mdm-preview-breadcrumb [items]="breadcrumbs"></mdm-preview-breadcrumb>
+
 <div class="row">
     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
         <div *ngIf="isLoading">
@@ -21,7 +23,7 @@
         </div>
         <article *ngIf="!isLoading" role="article" aria-labelledby="ariaid-title1">
             <article>
-                <h1 class="title topictitle1">{{pageTitles.get(index)}}</h1>
+                <h1 class="title topictitle1">{{getIndexTitle()}}</h1>
                 <div class="body">
                     <mdm-alert alertStyle="info" [showIcon]="true">
                         For preview only, this index page will not contain a description block. The final published output will include a description.                        
