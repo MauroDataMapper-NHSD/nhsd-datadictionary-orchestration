@@ -27,17 +27,20 @@ import { BranchSelectorComponent } from './branch-selector/branch-selector.compo
 import { DomainIconComponent } from './domain-icon/domain-icon.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { AlertComponent } from './alert/alert.component';
+import { ScrollToTopComponent } from './scroll-to-top/scroll-to-top.component';
 
 const components = [
   AlertComponent,
   LoadingIndicatorComponent,
   BranchSelectorComponent,
-  DomainIconComponent
+  DomainIconComponent,
+  ScrollToTopComponent 
 ];
 
 @NgModule({
   declarations: [
-    ...components         
+    ...components,
+            
   ],
   imports: [
     CommonModule,
