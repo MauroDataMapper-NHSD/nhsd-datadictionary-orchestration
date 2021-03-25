@@ -27,18 +27,18 @@ import { PreviewTile } from '../preview-tile/preview-tile.model';
 export class PreviewHomeComponent implements OnInit {
 
   readonly tiles: PreviewTile[] = [
-    {
-      id: 'about',
-      title: 'About the NHS Data Model and Dictionary',
-      description: 'The purpose of the NHS Data Model and Dictionary and other complementary resources and services.',
-      uiSref: 'app.container.preview.about'
-    },
-    {
-      id: 'contact_us_and_faq_overview_overview',
-      title: 'Help and guidance',
-      description: 'Contact our helpdesk to submit a query and guidance relating to the content of the NHS Data Model and Dictionary.',
-      uiSref: 'app.container.preview.about'
-    },
+    // {
+    //   id: 'about',
+    //   title: 'About the NHS Data Model and Dictionary',
+    //   description: 'The purpose of the NHS Data Model and Dictionary and other complementary resources and services.',
+    //   uiSref: 'app.container.preview.about'
+    // },
+    // {
+    //   id: 'contact_us_and_faq_overview_overview',
+    //   title: 'Help and guidance',
+    //   description: 'Contact our helpdesk to submit a query and guidance relating to the content of the NHS Data Model and Dictionary.',
+    //   uiSref: 'app.container.preview.about'
+    // },
     {
       id: 'dataSet_overview',
       title: 'Data Sets',
@@ -100,10 +100,24 @@ export class PreviewHomeComponent implements OnInit {
       }
     },
     {
+      id: 'xml_schema_constraints_overview',
+      title: 'XML Schema Constraints',
+      description: '',
+      uiSref: 'app.container.preview.index',
+      uiParams: {
+        branch: this.uiRouterGlobals.params.branch,
+        index: PreviewDomainType.XmlSchemaConstraint
+      }
+    },
+    {
       id: 'all_items_index_overview',
       title: 'All Items Index',
       description: 'Lists all the items in the dictionary in alphabetical order.',
-      uiSref: 'app.container.preview.about'
+      uiSref: 'app.container.preview.index',
+      uiParams: {
+        branch: this.uiRouterGlobals.params.branch,
+        index: PreviewDomainType.All
+      }
     },
   ];
 
