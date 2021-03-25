@@ -63,17 +63,19 @@
 }
 
 .mdm-alert {
-    text-align: center;
+    display: flex;
+    flex-direction: row;
     margin: 16px 0px;
     padding: 8px 0px;
     border-radius: 8px;
 
     &__icon {
+        margin: 8px;
         padding: 4px;
     }
 
     &__content {
+        margin: 8px;
         padding: 4px;
-        word-wrap: normal;
     }
 }
