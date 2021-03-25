@@ -15,7 +15,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Branch, PreviewDomainType, PreviewIndexItem, Statistics } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { Branch, PreviewDetail, PreviewDomainType, PreviewIndexItem, Statistics } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { NhsDataDictionaryService } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -70,7 +70,7 @@ export class DataDictionaryService {
       .previewIndex(branch, domainType)
       .pipe(
         catchError(error => {
-          this.logging.error(`There was a problem getting the preview index for the "${branch}" branch.`, error);
+          this.logging.error(`There was a problem getting the preview index ${domainType} for the "${branch}" branch.`, error);
           return throwError(error);
         }),
         map(items => { 
@@ -81,6 +81,17 @@ export class DataDictionaryService {
               items: groups[key]
             };           
           });
+        })
+      );
+  }
+
+  getPreviewDetail(branch: string, domainType: PreviewDomainType, id: string): Observable<PreviewDetail> {
+    return this.nhsDataDictionary
+      .previewDetail(branch, domainType, id)
+      .pipe(
+        catchError(error => {
+          this.logging.error(`There was a problem getting the preview detail ${domainType} for the "${branch}" branch.`, error);
+          return throwError(error);
         })
       );
   }

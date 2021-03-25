@@ -17,16 +17,18 @@
 <div class="row">
     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
         <div class="mdm-preview-detail">
-            <article role="article" aria-labelledby="ariaid-title1">
-                <article class="nested0" aria-labelledby="ariaid-title1" id="element_abbreviated_mental_test_score">
-                    <h1 class="- topic/title title topictitle1 element" id="ariaid-title1">ABBREVIATED MENTAL TEST SCORE
-                    </h1>
+            <div *ngIf="isLoading">
+                <ngx-skeleton-loader count="10"></ngx-skeleton-loader>
+            </div>
+            <article *ngIf="!isLoading" role="article" aria-labelledby="ariaid-title1">
+                <article class="nested0">
+                    <h1 class="title topictitle1 {{detail!.stereotype}}">{{detail!.name}}</h1>
 
-
-                    <div class="- topic/body body">
+                    <!-- <div class="- topic/body body">
                         <p class="- topic/shortdesc shortdesc">The score is&nbsp;in the range 0 to&nbsp;10.</p>
-                    </div>
-                    <article class="- topic/topic topic nested1" aria-labelledby="ariaid-title2"
+                    </div> -->
+
+                    <!-- <article class="- topic/topic topic nested1" aria-labelledby="ariaid-title2"
                         id="element_abbreviated_mental_test_score.format___length">
                         <h2 class="- topic/title title topictitle2" id="ariaid-title2"><span
                                 class="wh_expand_btn expanded" role="button" aria-expanded="true" tabindex="0"
@@ -36,8 +38,18 @@
                         <div class="- topic/body body">
                             <p class="- topic/p p">max n2</p>
                         </div>
-                    </article>
-                    <article class="- topic/topic topic nested1" aria-labelledby="ariaid-title3"
+                    </article> -->
+
+                    <mdm-preview-expandable-panel *ngIf="detail!.description" title="Description" [anchor]="getTableOfContentsLink('Description')">
+                        <div class="- topic/body body">
+                            <div class="- topic/div div">
+                                <p class="- topic/p p" [innerHTML]="detail!.description">
+                                </p>
+                            </div>
+                        </div>
+                    </mdm-preview-expandable-panel>
+
+                    <!-- <article class="- topic/topic topic nested1" aria-labelledby="ariaid-title3"
                         id="element_abbreviated_mental_test_score.description">
                         <h2 class="- topic/title title topictitle2" id="ariaid-title3"><span
                                 class="wh_expand_btn expanded" role="button" aria-expanded="true" tabindex="0"
@@ -65,8 +77,9 @@
                                 <p class="- topic/p p">The score is&nbsp;in the range 0 to&nbsp;10.</p>
                             </div>
                         </div>
-                    </article>
-                    <article class="- topic/topic topic nested1" aria-labelledby="ariaid-title4"
+                    </article> -->
+
+                    <!-- <article class="- topic/topic topic nested1" aria-labelledby="ariaid-title4"
                         id="element_abbreviated_mental_test_score.also_known_as">
                         <h2 class="- topic/title title topictitle2" id="ariaid-title4"><span
                                 class="wh_expand_btn expanded" role="button" aria-expanded="true" tabindex="0"
@@ -106,8 +119,9 @@
                                 </table>
                             </div>
                         </div>
-                    </article>
-                    <article class="- topic/topic topic nested1" aria-labelledby="ariaid-title5"
+                    </article> -->
+
+                    <!-- <article class="- topic/topic topic nested1" aria-labelledby="ariaid-title5"
                         id="element_abbreviated_mental_test_score.where_used">
                         <h2 class="- topic/title title topictitle2" id="ariaid-title5"><span
                                 class="wh_expand_btn expanded" role="button" aria-expanded="true" tabindex="0"
@@ -194,8 +208,9 @@
                                 </table>
                             </div>
                         </div>
-                    </article>
-                    <article class="- topic/topic topic nested1" aria-labelledby="ariaid-title6"
+                    </article> -->
+
+                    <!-- <article class="- topic/topic topic nested1" aria-labelledby="ariaid-title6"
                         id="element_abbreviated_mental_test_score.attribute">
                         <h2 class="- topic/title title topictitle2" id="ariaid-title6"><span
                                 class="wh_expand_btn expanded" role="button" aria-expanded="true" tabindex="0"
@@ -209,7 +224,7 @@
                                 </li>
                             </ul>
                         </div>
-                    </article>
+                    </article> -->
                 </article>
             </article>
         </div>

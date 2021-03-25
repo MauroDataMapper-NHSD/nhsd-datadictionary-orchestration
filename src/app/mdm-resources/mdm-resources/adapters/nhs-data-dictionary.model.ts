@@ -107,3 +107,15 @@ export interface PreviewIndexItem {
 }
 
 export type PreviewIndexResponse = MdmResourcesResponse<PreviewIndexItem[]>
+
+/**
+ * Represents the detail of a particular Data Dictionary preview page.
+ */
+export interface PreviewDetail {
+  catalogueId: string;
+  name: string;
+  stereotype: Stereotype;
+  description?: string;
+}
+
+export type PreviewDetailResponse = MdmResourcesResponse<PreviewDetail>
