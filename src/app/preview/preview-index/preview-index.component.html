@@ -27,13 +27,8 @@
                         For preview only, this index page will not contain a description block. The final published output will include a description.                        
                     </mdm-alert>
                 </div>                
-
-                <article *ngFor="let topic of topics" class="topic">
-                    <h2 class="title topictitle2">
-                        <!-- <span class="wh_expand_btn expanded" role="button" aria-expanded="true" tabindex="0" aria-label="Collapse"></span> -->
-                        {{topic.key}}
-                        <a [id]="getTableOfContentsLink(topic)?.anchor"></a>
-                    </h2>
+    
+                <mdm-preview-expandable-panel *ngFor="let topic of topics" [title]="topic.key" [anchor]="getTableOfContentsLink(topic)?.anchor">                    
                     <div class="body">
                         <div class="simpletable-container">
                             <table class="- topic/simpletable simpletable table table-striped table-sm">
@@ -57,7 +52,7 @@
                             </table>
                         </div>
                     </div>
-                </article>               
+                </mdm-preview-expandable-panel>
             </article>
         </article>
     </div>
