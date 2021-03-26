@@ -18,7 +18,7 @@ import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
-import { PreviewDetail, PreviewDomainType, previewIndexPageTitles } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { PreviewDetail, PreviewDomainType, previewDomainTypeNouns, previewIndexPageTitles } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/angular';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
@@ -38,7 +38,23 @@ export class PreviewDetailComponent implements OnInit {
   id: string = '';
   detail?: PreviewDetail;
   breadcrumbs: Breadcrumb[] = [];
-  tableOfContentLinks: TableOfContentsLink[] = [];  
+  tableOfContentLinks: TableOfContentsLink[] = [];
+
+  get noun() {
+    return previewDomainTypeNouns.get(this.index) ?? 'element';
+  }
+
+  get aliases() {
+    if (!this.detail?.alsoKnownAs) {
+      return [];
+    }
+
+    return Object
+      .entries(this.detail.alsoKnownAs)
+      .map(([context, value]) => { 
+        return { context, value } 
+      });
+  }
 
   constructor(
     private uiRouterGlobals: UIRouterGlobals,
@@ -59,7 +75,7 @@ export class PreviewDetailComponent implements OnInit {
     }
 
     // Simulate a new static page loaded
-    this.viewportScroller.scrollToPosition([0, 0]);    
+    this.viewportScroller.scrollToPosition([0, 0]);
 
     this.isLoading = true;
     this.dataDictionary
@@ -70,7 +86,7 @@ export class PreviewDetailComponent implements OnInit {
       .subscribe(detail => {
         this.detail = detail;
         this.breadcrumbs = this.createBreadcrumbs(detail);
-        this.tableOfContentLinks = this.createTableOfContentLinks(detail);        
+        this.tableOfContentLinks = this.createTableOfContentLinks(detail);
       });
   }
 
@@ -107,6 +123,13 @@ export class PreviewDetailComponent implements OnInit {
       links.push({
         label: 'Description',
         anchor: 'description'
+      });
+    }
+
+    if (detail.alsoKnownAs) {
+      links.push({
+        label: 'Also Known As',
+        anchor: 'also-known-as'
       });
     }
 

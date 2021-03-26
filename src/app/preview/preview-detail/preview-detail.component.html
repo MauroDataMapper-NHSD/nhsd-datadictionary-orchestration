@@ -26,9 +26,9 @@
                 <article class="nested0">
                     <h1 class="title topictitle1 {{detail!.stereotype}}">{{detail!.name}}</h1>
 
-                    <!-- <div class="- topic/body body">
-                        <p class="- topic/shortdesc shortdesc">The score is&nbsp;in the range 0 to&nbsp;10.</p>
-                    </div> -->
+                    <div *ngIf="detail!.shortDescription" class="- topic/body body">
+                        <p class="- topic/shortdesc shortdesc">{{detail!.shortDescription}}</p>
+                    </div>
 
                     <!-- <article class="- topic/topic topic nested1" aria-labelledby="ariaid-title2"
                         id="element_abbreviated_mental_test_score.format___length">
@@ -49,79 +49,34 @@
                                 </p>
                             </div>
                         </div>
-                    </mdm-preview-expandable-panel>
+                    </mdm-preview-expandable-panel>                   
 
-                    <!-- <article class="- topic/topic topic nested1" aria-labelledby="ariaid-title3"
-                        id="element_abbreviated_mental_test_score.description">
-                        <h2 class="- topic/title title topictitle2" id="ariaid-title3"><span
-                                class="wh_expand_btn expanded" role="button" aria-expanded="true" tabindex="0"
-                                aria-label="Collapse"></span>Description<span class="permalink"></span></h2>
-
+                    <mdm-preview-expandable-panel *ngIf="detail!.alsoKnownAs" title="Also Known As" [anchor]="getTableOfContentsLink('Also Known As')?.anchor">
                         <div class="- topic/body body">
-                            <div class="- topic/div div">
-                                <p class="- topic/p p">
-                                    <a class="- topic/xref xref element" href="abbreviated_mental_test_score.html"
-                                        title="The score is&nbsp;in the range 0 to&nbsp;10.">ABBREVIATED MENTAL TEST
-                                        SCORE</a>
-                                    &nbsp;is the&nbsp;
-                                    <a class="- topic/xref xref attribute" href="../attributes/person_score.html"
-                                        title="The score taken from an ASSESSMENT TOOL.">PERSON SCORE</a>
-                                    &nbsp;where the
-                                    <a class="- topic/xref xref attribute"
-                                        href="../attributes/assessment_tool_type.html"
-                                        title="The type of ASSESSMENT TOOL.">ASSESSMENT TOOL TYPE</a>
-                                    &nbsp;is
-                                    <em class="+ topic/ph hi-d/i ph i">'<a class="- topic/xref xref businessDefinition"
-                                            href="../nhs_business_definitions/abbreviated_mental_test_score.html"
-                                            title="The Abbreviated Mental Test Score&nbsp;(AMTS)&nbsp;is used&nbsp;to quickly assess elderly patients for the possibility of dementia.">Abbreviated
-                                            Mental Test Score</a>'</em>.
-                                </p>
-                                <p class="- topic/p p">The score is&nbsp;in the range 0 to&nbsp;10.</p>
-                            </div>
-                        </div>
-                    </article> -->
-
-                    <!-- <article class="- topic/topic topic nested1" aria-labelledby="ariaid-title4"
-                        id="element_abbreviated_mental_test_score.also_known_as">
-                        <h2 class="- topic/title title topictitle2" id="ariaid-title4"><span
-                                class="wh_expand_btn expanded" role="button" aria-expanded="true" tabindex="0"
-                                aria-label="Collapse"></span>Also Known As<span class="permalink"></span></h2>
-
-                        <div class="- topic/body body">
-                            <p class="- topic/p p">This data element is also known by these names:</p>
+                            <p class="- topic/p p">This {{noun}} is also known by these names:</p>
 
                             <div class="simpletable-container">
-                                <table class="- topic/simpletable simpletable table table-striped table-sm">
+                                <table class="simpletable table table-striped table-sm">
                                     <colgroup>
                                         <col style="width:33.33333333333333%">
                                         <col style="width:66.66666666666666%">
                                     </colgroup>
                                     <thead>
-                                        <tr class="- topic/sthead sthead thead-light">
-                                            <th class="- topic/stentry stentry" scope="col"
-                                                id="element_abbreviated_mental_test_score.also_known_as__stentry__1">
-                                                Context
-                                            </th>
-                                            <th class="- topic/stentry stentry" scope="col"
-                                                id="element_abbreviated_mental_test_score.also_known_as__stentry__2">
-                                                Alias</th>
+                                        <tr class="thead-light">
+                                            <th>Context</th>
+                                            <th>Alias</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="- topic/strow strow">
-                                            <td class="- topic/stentry stentry"
-                                                headers="element_abbreviated_mental_test_score.also_known_as__stentry__1">
-                                                Plural
-                                            </td>
-                                            <td class="- topic/stentry stentry"
-                                                headers="element_abbreviated_mental_test_score.also_known_as__stentry__2">
-                                                ABBREVIATED MENTAL TEST SCORES</td>
+                                        <tr *ngFor="let alias of aliases">
+                                            <td>{{alias.context}}</td>
+                                            <td>{{alias.value}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                    </article> -->
+                    </mdm-preview-expandable-panel>
 
                     <!-- <article class="- topic/topic topic nested1" aria-labelledby="ariaid-title5"
                         id="element_abbreviated_mental_test_score.where_used">

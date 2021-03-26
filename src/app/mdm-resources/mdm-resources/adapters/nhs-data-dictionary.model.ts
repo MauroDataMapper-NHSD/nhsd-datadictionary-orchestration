@@ -97,6 +97,16 @@ export const previewIndexPageTitles = new Map<PreviewDomainType, string>([
   [PreviewDomainType.XmlSchemaConstraint, 'XML Schema Constraints']
 ]);
 
+export const previewDomainTypeNouns = new Map<PreviewDomainType, string>([
+  [PreviewDomainType.DataElements, 'data alement'],
+  [PreviewDomainType.Attributes, 'attribute'],
+  [PreviewDomainType.DataClasses, 'class'],
+  [PreviewDomainType.DataSets, 'data set'],
+  [PreviewDomainType.BusinessDefinitions, 'business definition'],
+  [PreviewDomainType.SupportingInformation, 'supporting information'],
+  [PreviewDomainType.XmlSchemaConstraint, 'XML schema constraint']
+]);
+
 /**
  * Represents the stereotypes of each data element returned from the NHS Data Dictionary.
  */
@@ -118,6 +128,10 @@ export interface PreviewIndexItem {
 
 export type PreviewIndexResponse = MdmResourcesResponse<PreviewIndexItem[]>
 
+export interface PreviewAliases {
+  [context: string]: string;
+}
+
 /**
  * Represents the detail of a particular Data Dictionary preview page.
  */
@@ -125,7 +139,9 @@ export interface PreviewDetail {
   catalogueId: string;
   name: string;
   stereotype: Stereotype;
+  shortDescription?: string;
   description?: string;
+  alsoKnownAs?: PreviewAliases;
 }
 
 export type PreviewDetailResponse = MdmResourcesResponse<PreviewDetail>
