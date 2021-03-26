@@ -16,6 +16,13 @@
 
 import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
+import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
+import { PreviewDetail, PreviewDomainType, previewDomainTypeNouns, previewIndexPageTitles } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { UIRouterGlobals } from '@uirouter/angular';
+import { ToastrService } from 'ngx-toastr';
+import { finalize } from 'rxjs/operators';
+import { Breadcrumb } from '../preview-breadcrumb/preview-breadcrumb.model';
 import { TableOfContentsLink } from '../preview-toc/preview-toc.model';
 
 @Component({
@@ -25,34 +32,112 @@ import { TableOfContentsLink } from '../preview-toc/preview-toc.model';
 })
 export class PreviewDetailComponent implements OnInit {
 
-  tableOfContentLinks: TableOfContentsLink[] = [
-    {
-      label: 'Format / Length',
-      anchor: 'format-length'
-    },
-    {
-      label: 'Description',
-      anchor: 'description'
-    },
-    {
-      label: 'Also Known As',
-      anchor: 'also-known-as'
-    },
-    {
-      label: 'Where Used',
-      anchor: 'where-used'
-    },
-    {
-      label: 'Attribute',
-      anchor: 'attribute'
-    },
-  ];
+  isLoading = false;
+  branch: string = '';
+  index: PreviewDomainType = PreviewDomainType.All;
+  id: string = '';
+  detail?: PreviewDetail;
+  breadcrumbs: Breadcrumb[] = [];
+  tableOfContentLinks: TableOfContentsLink[] = [];
 
-  constructor(private viewportScroller: ViewportScroller) { }
+  get noun() {
+    return previewDomainTypeNouns.get(this.index) ?? 'element';
+  }
+
+  get aliases() {
+    if (!this.detail?.alsoKnownAs) {
+      return [];
+    }
+
+    return Object
+      .entries(this.detail.alsoKnownAs)
+      .map(([context, value]) => { 
+        return { context, value } 
+      });
+  }
+
+  constructor(
+    private uiRouterGlobals: UIRouterGlobals,
+    private stateHandler: StateHandlerService,
+    private dataDictionary: DataDictionaryService,
+    private viewportScroller: ViewportScroller,
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
+    this.branch = this.uiRouterGlobals.params.branch;
+    this.index = this.uiRouterGlobals.params.index;
+    this.id = this.uiRouterGlobals.params.id;
+
+    if (!this.branch || !this.index || !this.id) {
+      this.toastr.error('No branch and/or index type provided for Preview Index page.');
+      this.stateHandler.goTo(CommonUiStates.PreviewHome);
+      return;
+    }
+
     // Simulate a new static page loaded
     this.viewportScroller.scrollToPosition([0, 0]);
+
+    this.isLoading = true;
+    this.dataDictionary
+      .getPreviewDetail(this.branch, this.index, this.id)
+      .pipe(
+        finalize(() => this.isLoading = false)
+      )
+      .subscribe(detail => {
+        this.detail = detail;
+        this.breadcrumbs = this.createBreadcrumbs(detail);
+        this.tableOfContentLinks = this.createTableOfContentLinks(detail);
+      });
+  }
+
+  private createBreadcrumbs(detail: PreviewDetail): Breadcrumb[] {
+    return [
+      {
+        label: previewIndexPageTitles.get(this.index) ?? '',
+        uiSref: 'app.container.preview.index',
+        uiParams: {
+          branch: this.branch,
+          index: this.index
+        }
+      },
+      {
+        label: detail.name,
+        uiSref: 'app.container.preview.detail',
+        uiParams: {
+          branch: this.branch,
+          index: this.index,
+          id: this.id
+        }
+      }
+    ];
+  }
+
+  private createTableOfContentLinks(detail: PreviewDetail): TableOfContentsLink[] {
+    const links: TableOfContentsLink[] = [];
+
+    if (!detail) {
+      return links;
+    }
+
+    if (detail.description) {
+      links.push({
+        label: 'Description',
+        anchor: 'description'
+      });
+    }
+
+    if (detail.alsoKnownAs) {
+      links.push({
+        label: 'Also Known As',
+        anchor: 'also-known-as'
+      });
+    }
+
+    return links;
+  }
+
+  getTableOfContentsLink(section: string): TableOfContentsLink | undefined {
+    return this.tableOfContentLinks.find(toc => toc.label === section);
   }
 
   onTableOfContentsClick(link: TableOfContentsLink) {

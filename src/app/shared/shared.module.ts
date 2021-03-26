@@ -26,16 +26,21 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BranchSelectorComponent } from './branch-selector/branch-selector.component';
 import { DomainIconComponent } from './domain-icon/domain-icon.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { AlertComponent } from './alert/alert.component';
+import { ScrollToTopComponent } from './scroll-to-top/scroll-to-top.component';
 
 const components = [
+  AlertComponent,
   LoadingIndicatorComponent,
   BranchSelectorComponent,
-  DomainIconComponent
+  DomainIconComponent,
+  ScrollToTopComponent 
 ];
 
 @NgModule({
   declarations: [
-    ...components        
+    ...components,
+            
   ],
   imports: [
     CommonModule,

@@ -14,13 +14,8 @@
  limitations under the License.
 -->
 
-<div class="mdm-preview-toc">
-    <div class="mdm-preview-toc__label">On this page</div>
-    <ul>
-        <li *ngFor="let link of links">
-            <a (click)="onNavigating(link)">{{link.label}}</a>
-        </li>
-    </ul>
-</div>
-
-<mdm-scroll-to-top></mdm-scroll-to-top>
+<div class="mdm-scroll-to-top" [ngClass]="{ 'mdm-scroll-to-top--show': hasScrolled }">
+    <button (click)="scrollToTop()">
+        <i class="fa fa-chevron-up"></i>
+    </button>
+  </div>

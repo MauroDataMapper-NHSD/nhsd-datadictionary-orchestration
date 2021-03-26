@@ -14,17 +14,8 @@
  * limitations under the License.
  */
 
-import { PreviewDomainType } from "@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model";
-
-export interface PreviewTileUiParams {
-  branch?: string;
-  index?: PreviewDomainType;
-}
-
-export interface PreviewTile {
-  id: string;
-  title: string;
-  description: string;
+export interface Breadcrumb {
+  label: string;
   uiSref: string;
-  uiParams?: PreviewTileUiParams;
+  uiParams: any;
 }

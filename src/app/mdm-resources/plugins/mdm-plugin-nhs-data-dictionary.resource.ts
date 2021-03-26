@@ -26,39 +26,7 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
   integrityChecks(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/integrityChecks`;
     return this.simpleGet(url, queryStringParams, restHandlerOptions);
-  }
-
-  previewAllItemsIndex(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
-    return this.preview(branch, 'allItemsIndex', undefined, queryStringParams, restHandlerOptions);
-  }
-
-  previewElements(branch: string, id?: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
-    return this.preview(branch, 'elements', id, queryStringParams, restHandlerOptions);
-  }
-
-  previewAttributes(branch: string, id?: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
-    return this.preview(branch, 'attributes', id, queryStringParams, restHandlerOptions);
-  }
-
-  previewClasses(branch: string, id?: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
-    return this.preview(branch, 'classes', id, queryStringParams, restHandlerOptions);
-  }
-
-  previewDataSets(branch: string, id?: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
-    return this.preview(branch, 'dataSets', id, queryStringParams, restHandlerOptions);
-  }
-
-  previewBusinessDefinitions(branch: string, id?: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
-    return this.preview(branch, 'businessDefinitions', id, queryStringParams, restHandlerOptions);
-  }
-
-  previewSupportingInformation(branch: string, id?: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
-    return this.preview(branch, 'supportingInformation', id, queryStringParams, restHandlerOptions);
-  }
-
-  previewXmlSchemaConstraint(branch: string, id?: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
-    return this.preview(branch, 'xmlSchemaConstraint', id, queryStringParams, restHandlerOptions);
-  }
+  }  
   
   preview(branch: string, domainType: string, id?: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/preview/${domainType}` + (id ? `/${id}` : '');

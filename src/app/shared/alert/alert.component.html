@@ -14,13 +14,11 @@
  limitations under the License.
 -->
 
-<div class="mdm-preview-toc">
-    <div class="mdm-preview-toc__label">On this page</div>
-    <ul>
-        <li *ngFor="let link of links">
-            <a (click)="onNavigating(link)">{{link.label}}</a>
-        </li>
-    </ul>
+<div class="mdm-alert {{cssModifier}}">
+    <div *ngIf="showIcon" class="mdm-alert__icon">
+        <i class="fas {{iconName}} fa-lg"></i>
+    </div>
+    <div class="mdm-alert__content">
+        <ng-content></ng-content>
+    </div>    
 </div>
-
-<mdm-scroll-to-top></mdm-scroll-to-top>

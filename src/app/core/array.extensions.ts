@@ -14,17 +14,23 @@
  * limitations under the License.
  */
 
-import { PreviewDomainType } from "@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model";
+export { }
 
-export interface PreviewTileUiParams {
-  branch?: string;
-  index?: PreviewDomainType;
+declare global {
+  interface Array<T> {
+    groupBy<T, K extends keyof any>(keySelector: (item: T) => K): Record<K, T[]>;
+  }
 }
 
-export interface PreviewTile {
-  id: string;
-  title: string;
-  description: string;
-  uiSref: string;
-  uiParams?: PreviewTileUiParams;
+Array.prototype.groupBy = function <T, K extends keyof any>(this: Array<T>, keySelector: (item: T) => K): Record<K, T[]> {
+  return this.reduce(
+    (previous, currentItem) => {
+      const group = keySelector(currentItem);
+      if (!previous[group]) {
+        previous[group] = [];
+      }
+      previous[group].push(currentItem);
+      return previous;
+    }, 
+    { } as Record<K, T[]>);
 }

@@ -54,7 +54,7 @@
 
     <mat-progress-bar *ngIf="authenticating" color="accent" mode="indeterminate"></mat-progress-bar>
 
-    <div *ngIf="message" class="alert alert-danger">
+    <mdm-alert *ngIf="message" alertStyle="error" [showIcon]="true">
         {{message}}
-    </div>
+    </mdm-alert>
 </form>

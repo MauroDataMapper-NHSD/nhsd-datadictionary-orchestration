@@ -15,32 +15,84 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Branch, IntegrityCheck, Statistics } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { Branch, PreviewDetail, PreviewDomainType, PreviewIndexItem, Statistics } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { NhsDataDictionaryService } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.service';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { IntegrityCheckCategory } from './data-dictionary.model';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { LoggingService } from '../logging/logging.service';
+import { IntegrityCheckCategory, PreviewIndexGroup } from './data-dictionary.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataDictionaryService {
 
-  constructor(private nhsDataDictionary: NhsDataDictionaryService) { }
+  constructor(
+    private nhsDataDictionary: NhsDataDictionaryService,
+    private logging: LoggingService) { }
 
   getAvailableBranches(): Observable<Branch[]> {
-    return this.nhsDataDictionary.availableBranches();
-  }
-
-  getBranchStatistics(name: string): Observable<Statistics> {
-    return this.nhsDataDictionary.statistics(name);
-  }
-
-  runIntegrityChecks(branchName: string): Observable<IntegrityCheckCategory[]> {
     return this.nhsDataDictionary
-      .integrityChecks(branchName)
+      .availableBranches()
       .pipe(
+        catchError(error => {
+          this.logging.error('There was a problem finding available branches.', error);
+          return throwError(error);
+        })
+      );
+  }
+
+  getBranchStatistics(branch: string): Observable<Statistics> {
+    return this.nhsDataDictionary
+      .statistics(branch)
+      .pipe(
+        catchError(error => {
+          this.logging.error(`There was a problem getting statistics for the "${branch}" branch.`, error);
+          return throwError(error);
+        })
+      );
+  }
+
+  runIntegrityChecks(branch: string): Observable<IntegrityCheckCategory[]> {
+    return this.nhsDataDictionary
+      .integrityChecks(branch)
+      .pipe(
+        catchError(error => {
+          this.logging.error(`There was a problem running integrity checks for the "${branch}" branch.`, error);
+          return throwError(error);
+        }),
         map(data => data.map(d => new IntegrityCheckCategory(d)))
+      );
+  }
+
+  getPreviewIndex(branch: string, domainType: PreviewDomainType): Observable<PreviewIndexGroup[]> {
+    return this.nhsDataDictionary
+      .previewIndex(branch, domainType)
+      .pipe(
+        catchError(error => {
+          this.logging.error(`There was a problem getting the preview index ${domainType} for the "${branch}" branch.`, error);
+          return throwError(error);
+        }),
+        map(items => { 
+          const groups = items.groupBy((item: PreviewIndexItem) => item.name[0].toUpperCase());
+          return Object.keys(groups).map(key => {
+            return {
+              key: key,
+              items: groups[key]
+            };           
+          });
+        })
+      );
+  }
+
+  getPreviewDetail(branch: string, domainType: PreviewDomainType, id: string): Observable<PreviewDetail> {
+    return this.nhsDataDictionary
+      .previewDetail(branch, domainType, id)
+      .pipe(
+        catchError(error => {
+          this.logging.error(`There was a problem getting the preview detail ${domainType} for the "${branch}" branch.`, error);
+          return throwError(error);
+        })
       );
   }
 }

@@ -35,12 +35,8 @@ export class NotFoundComponent extends ErrorComponent {
     this.message = 'We\'re sorry, but the server returned a \'Not Found\' error';
     this.resolution = 'You may need to check that the item you have requested actually exists, and that you have permission to view it';
 
-    // this.data.push({ name: 'Message', value: this.lastHttpError?.message, code: false });
-    // this.data.push({ name: 'Status', value: this.lastHttpError?.status, code: false });
-    // this.data.push({ name: 'Path', value: this.lastHttpError?.url, code: false });
-
-    this.data.push({ name: 'Message', value: 'Test message', code: false });
-    this.data.push({ name: 'Status', value: '404', code: false });
-    this.data.push({ name: 'Path', value: '/some-url', code: false });
+    this.data.push({ name: 'Message', value: this.lastHttpError?.message, code: false });
+    this.data.push({ name: 'Status', value: this.lastHttpError?.status, code: false });
+    this.data.push({ name: 'Path', value: this.lastHttpError?.url, code: false });
   }
 }

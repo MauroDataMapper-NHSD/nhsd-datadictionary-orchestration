@@ -14,13 +14,17 @@
  limitations under the License.
 -->
 
-<div class="mdm-preview-toc">
-    <div class="mdm-preview-toc__label">On this page</div>
-    <ul>
-        <li *ngFor="let link of links">
-            <a (click)="onNavigating(link)">{{link.label}}</a>
-        </li>
-    </ul>
-</div>
-
-<mdm-scroll-to-top></mdm-scroll-to-top>
+<article class="mdm-preview-expandable-panel">
+    <div class="mdm-preview-expandable-panel__header">        
+        <h2 class="title topictitle2">
+            <button (click)="onExpandCollapse()">
+                <i class="fas {{expandButtonIcon}}"></i>
+            </button>
+            {{title}}
+            <a *ngIf="anchor" [id]="anchor"></a>
+        </h2>
+    </div>
+    <div class="mdm-preview-expandable-panel__content" [ngClass]="{ 'expanded': expanded, 'collapsed': !expanded }">
+        <ng-content></ng-content>
+    </div>
+</article>

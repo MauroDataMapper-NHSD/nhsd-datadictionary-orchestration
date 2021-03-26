@@ -14,17 +14,35 @@
  * limitations under the License.
  */
 
-import { PreviewDomainType } from "@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model";
+.mdm-preview-expandable-panel {
 
-export interface PreviewTileUiParams {
-  branch?: string;
-  index?: PreviewDomainType;
-}
+    .expanded {
+        opacity: 1;
+        height: auto;
+    }
 
-export interface PreviewTile {
-  id: string;
-  title: string;
-  description: string;
-  uiSref: string;
-  uiParams?: PreviewTileUiParams;
+    .collapsed {
+        opacity: 0;
+        height: 0;
+    }
+
+    &__header {
+        button {
+            border: none;            
+            color: #ffb81c;
+            background: none;
+            min-width: 44px;
+        }
+
+        button:focus {
+            outline: none;
+        }
+    }    
+
+    &__content {
+        display: block;
+        overflow: hidden;
+        transition: opacity 0.5s ease-out;
+    }
+
 }

@@ -14,17 +14,34 @@
  * limitations under the License.
  */
 
-import { PreviewDomainType } from "@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model";
+@import "~@angular/material/theming";
 
-export interface PreviewTileUiParams {
-  branch?: string;
-  index?: PreviewDomainType;
+@mixin mdm-preview-breadcrumb-theme($theme) {
+    $primary: map-get($theme, primary);
+
+    $backgroundColor: mat-color($primary);
+    $textColor: mat-color($primary, default-contrast);
+    
+    ul.mdm-preview-breadcrumb {
+        color: $textColor;
+        background-color: $backgroundColor;
+
+        a {
+            color: $textColor;
+        }
+    }
 }
 
-export interface PreviewTile {
-  id: string;
-  title: string;
-  description: string;
-  uiSref: string;
-  uiParams?: PreviewTileUiParams;
+ul.mdm-preview-breadcrumb {
+    list-style: none;
+    padding: 8px 16px;
+
+    li {
+        display: inline;
+
+        +li:before {
+            padding: 8px;
+            content: "/";
+        }
+    }
 }

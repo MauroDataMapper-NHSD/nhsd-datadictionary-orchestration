@@ -14,13 +14,9 @@
  limitations under the License.
 -->
 
-<div class="mdm-preview-toc">
-    <div class="mdm-preview-toc__label">On this page</div>
-    <ul>
-        <li *ngFor="let link of links">
-            <a (click)="onNavigating(link)">{{link.label}}</a>
-        </li>
-    </ul>
-</div>
-
-<mdm-scroll-to-top></mdm-scroll-to-top>
+<ul class="mdm-preview-breadcrumb">
+    <li *ngFor="let breadcrumb of breadcrumbs; let last = last">
+        <a *ngIf="!last" [uiSref]="breadcrumb.uiSref" [uiParams]="breadcrumb.uiParams">{{breadcrumb.label}}</a>
+        <span *ngIf="last">{{breadcrumb.label}}</span>
+    </li>
+</ul>

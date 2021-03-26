@@ -144,6 +144,10 @@
     color: #a94442;
 }
 
+.warning {
+    color: $defaultWarningColor;
+}
+
 img.profile-picture {
     border-radius: 10px;
     cursor: pointer;

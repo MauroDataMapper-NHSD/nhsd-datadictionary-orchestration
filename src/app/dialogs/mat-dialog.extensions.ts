@@ -18,8 +18,8 @@ import { MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dial
 import { Observable } from "rxjs";
 import { filter, map, mergeMap } from "rxjs/operators";
 import { ConfirmationModalComponent } from "./confirmation-dialog/confirmation-dialog.component";
-import { ConfirmationDialogOptions, ConfirmationDialogResult } from "./confirmation-dialog/confirmation-dialog.model";
-import { DialogStatus } from "./dialogs.model";
+import { ConfirmationDialogOptions } from "./confirmation-dialog/confirmation-dialog.model";
+import { DialogResult, DialogStatus } from "./dialogs.model";
 
 declare module '@angular/material/dialog/dialog' {
   interface MatDialog {
@@ -34,9 +34,9 @@ declare module '@angular/material/dialog/dialog' {
      *
      * @see `ConfirmationModalComponent`
      * @see `ConfirmationModalConfig`
-     * @see `ConfirmationModalResult`
+     * @see `DialogResult`
      */
-    openConfirmationDialog(config: MatDialogConfig<ConfirmationDialogOptions>): MatDialogRef<ConfirmationModalComponent, ConfirmationDialogResult>;
+    openConfirmationDialog(config: MatDialogConfig<ConfirmationDialogOptions>): MatDialogRef<ConfirmationModalComponent, DialogResult>;
 
     /**
      * Extension method to open a modal dialog containing the `ConfirmationModalComponent` and asynchronously
@@ -92,8 +92,8 @@ declare module '@angular/material/dialog/dialog' {
 
 MatDialog.prototype.openConfirmationDialog = function (
   this: MatDialog,
-  config: MatDialogConfig<ConfirmationDialogOptions>): MatDialogRef<ConfirmationModalComponent, ConfirmationDialogResult> {
-  return this.open<ConfirmationModalComponent, ConfirmationDialogOptions, ConfirmationDialogResult>(
+  config: MatDialogConfig<ConfirmationDialogOptions>): MatDialogRef<ConfirmationModalComponent, DialogResult> {
+  return this.open<ConfirmationModalComponent, ConfirmationDialogOptions, DialogResult>(
     ConfirmationModalComponent,
     config);
 };

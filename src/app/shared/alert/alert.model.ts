@@ -14,17 +14,9 @@
  * limitations under the License.
  */
 
-import { PreviewDomainType } from "@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model";
+export type AlertStyle = 'none' | 'success' | 'info' | 'warning' | 'error';
 
-export interface PreviewTileUiParams {
-  branch?: string;
-  index?: PreviewDomainType;
-}
-
-export interface PreviewTile {
-  id: string;
-  title: string;
-  description: string;
-  uiSref: string;
-  uiParams?: PreviewTileUiParams;
+export interface AlertStyleMetadata {
+  icon: string;
+  cssModifier: string;
 }

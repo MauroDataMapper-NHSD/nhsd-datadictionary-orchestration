@@ -14,29 +14,35 @@
  * limitations under the License.
  */
 
-import { IntegrityCheck, PreviewIndexItem } from "@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model";
+import { Component, Input, OnInit } from '@angular/core';
 
-export class IntegrityCheckCategory {
-  get checkName() {
-    return this.source.checkName;
+@Component({
+  selector: 'mdm-preview-expandable-panel',
+  templateUrl: './preview-expandable-panel.component.html',
+  styleUrls: ['./preview-expandable-panel.component.scss']
+})
+export class PreviewExpandablePanelComponent implements OnInit {
+
+  @Input()
+  title: string = '';
+
+  @Input()
+  anchor?: string;
+
+  @Input()
+  expanded: boolean = true;
+
+  get expandButtonIcon() {
+    return this.expanded ? 'fa-chevron-down' : 'fa-chevron-right';
   }
 
-  get description() {
-    return this.source.description;
+  constructor() { }
+
+  ngOnInit(): void {
   }
 
-  get errors() {
-    return this.source.errors;
+  onExpandCollapse() {
+    this.expanded = !this.expanded;
   }
 
-  get hasErrors() {
-    return !!this.errors && this.errors.length > 0;
-  }
-
-  constructor(private source: IntegrityCheck) { }
-}
-
-export interface PreviewIndexGroup {
-  key: string;
-  items: PreviewIndexItem[]
 }

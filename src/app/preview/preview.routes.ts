@@ -43,7 +43,7 @@ export const states: Ng2StateDeclaration[] = [
   },
   {
     name: 'app.container.preview.detail',
-    url: '/preview/:branch/:index/:detail',
+    url: '/preview/:branch/:index/:id',
     component: PreviewDetailComponent
   }
 ];

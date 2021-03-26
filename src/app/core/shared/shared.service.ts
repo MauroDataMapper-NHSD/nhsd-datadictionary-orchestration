@@ -45,6 +45,10 @@ export class SharedService {
     private toastr: ToastrService) { }
 
   checkSessionExpiry() {
+    if (!this.security.isSignedIn()) {
+      return;
+    }
+
     this.security
       .isCurrentSessionExpired()
       .pipe(filter(authenticated => !authenticated))
