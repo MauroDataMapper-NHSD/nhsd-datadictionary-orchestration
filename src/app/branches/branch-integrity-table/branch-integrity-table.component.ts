@@ -41,7 +41,11 @@ export class BranchIntegrityTableComponent implements OnInit {
   }
 
   getDomainTypeUrl(item: IntegrityCheckItem) {
-    return this.urlGenerator.getDomainTypeUrl(item.domainType, item.id, item.parentId);
+    return this.urlGenerator.getMauroUrl(
+      item.domainType, 
+      item.modelId,
+      item.parentId,
+      item.id);
   }
 
 }

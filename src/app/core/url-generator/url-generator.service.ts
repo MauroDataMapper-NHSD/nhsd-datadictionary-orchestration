@@ -18,7 +18,7 @@ import { Injectable } from '@angular/core';
 import { DomainType } from '@mdm/mdm-resources/mdm-resources/mdm-resources.model';
 import { SharedService } from '../shared/shared.service';
 
-type DomainTypeUrlPatternCallback = (id: string, parentId: string) => string;
+type DomainTypeUrlPatternCallback = (modelId: string, parentId: string, catalogueId: string) => string;
 
 @Injectable({
   providedIn: 'root'
@@ -26,26 +26,26 @@ type DomainTypeUrlPatternCallback = (id: string, parentId: string) => string;
 export class UrlGeneratorService {
 
   private readonly domainTypeUrlPatterns = new Map<DomainType, DomainTypeUrlPatternCallback>([
-    [DomainType.Folder, (id, _) => `/folder/${id}`],
-    [DomainType.DataModel, (id, _) => `/dataModel/${id}`],
-    [DomainType.ReferenceDataModel, (id, _) => `/referenceDataModel/${id}`],
-    [DomainType.Terminology, (id, _) => `/terminology/${id}`],
-    [DomainType.DataClass, (id, parentId) => `/dataClass/${parentId}//${id}`],
-    [DomainType.DataElement, (id, parentId) => `/dataElement/${parentId}//${id}`],
-    [DomainType.Classification, (id, _) => `/classification/${id}`],
-    [DomainType.EnumerationType, (id, parentId) => `/enumerationType/${parentId}//${id}`],
-    [DomainType.Term, (id, parentId) => `/term/${parentId}/${id}`],
-    [DomainType.CodeSet, (id, _) => `/codeSet/${id}`],
+    [DomainType.Folder, (modelId, parentId, catalogueId) => `/folder/${catalogueId}`],
+    [DomainType.DataModel, (modelId, parentId, catalogueId) => `/dataModel/${catalogueId}`],
+    [DomainType.ReferenceDataModel, (modelId, parentId, catalogueId) => `/referenceDataModel/${catalogueId}`],
+    [DomainType.Terminology, (modelId, parentId, catalogueId) => `/terminology/${catalogueId}`],
+    [DomainType.DataClass, (modelId, parentId, catalogueId) => `/dataClass/${modelId}/${parentId}/${catalogueId}`],
+    [DomainType.DataElement, (modelId, parentId, catalogueId) => `/dataElement/${modelId}/${parentId}/${catalogueId}`],
+    [DomainType.Classification, (modelId, parentId, catalogueId) => `/classification/${catalogueId}`],
+    [DomainType.EnumerationType, (modelId, parentId, catalogueId) => `/enumerationType/${modelId}/${parentId}/${catalogueId}`],
+    [DomainType.Term, (modelId, parentId, catalogueId) => `/term/${parentId}/${catalogueId}`],
+    [DomainType.CodeSet, (modelId, parentId, catalogueId) => `/codeSet/${catalogueId}`],
   ]);
 
   constructor(private shared: SharedService) { }
 
-  getDomainTypeUrl(domainType: DomainType, id: string, parentId: string) : string {
+  getMauroUrl(domainType: DomainType, modelId: string, parentId: string, catalogueId: string) : string {
     const converter = this.domainTypeUrlPatterns.get(domainType);
     if (!converter) {
       return '';
     }
 
-    return `${this.shared.mauroBaseUrl}/#/catalogue${converter(id, parentId)}`;
+    return `${this.shared.mauroBaseUrl}/#/catalogue${converter(modelId, parentId, catalogueId)}`;
   }  
 }

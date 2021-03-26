@@ -59,6 +59,7 @@ export interface IntegrityCheckItem {
   label: string;
   domainType: DomainType;
   parentId: string;
+  modelId: string;
 }
 
 /**
