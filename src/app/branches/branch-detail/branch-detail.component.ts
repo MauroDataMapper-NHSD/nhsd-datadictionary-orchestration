@@ -38,7 +38,8 @@ export class BranchDetailComponent implements OnInit {
 
   readonly tabs: TabViewDetail[] = [
     { index: 0, name: 'statistics' },
-    { index: 1, name: 'integrity'}
+    { index: 1, name: 'integrity'},
+    { index: 2, name: 'publish' }
   ];
 
   readonly defaultTab = this.tabs[0];

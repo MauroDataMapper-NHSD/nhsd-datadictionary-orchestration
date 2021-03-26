@@ -25,6 +25,7 @@
  @import "preview/preview-tile/preview-tile.component.scss";
  @import "shared/alert/alert.component.scss";
  @import "preview/preview-breadcrumb/preview-breadcrumb.component.scss";
+ @import "branches/branch-publish/branch-publish.component.scss";
  
  /* Combine all custom component theme mixins into one */
  @mixin mdm-custom-components-theme($theme) {
@@ -36,4 +37,5 @@
    @include mdm-preview-tile-theme($theme);
    @include mdm-alert-theme($theme);
    @include mdm-preview-breadcrumb-theme($theme);
+   @include mdm-branch-publish-theme($theme);
  }
