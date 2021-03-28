@@ -14,32 +14,18 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/testing/testing.module';
+import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
 
 import { AppContainerComponent } from './app-container.component';
 
 describe('AppContainerComponent', () => {
-  let component: AppContainerComponent;
-  let fixture: ComponentFixture<AppContainerComponent>;
+  let harness: ComponentHarness<AppContainerComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        TestingModule
-      ],
-      declarations: [ AppContainerComponent ]
-    })
-    .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(AppContainerComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    harness = await setupTestModuleForComponent(AppContainerComponent);
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(harness?.isComponentCreated).toBeTruthy();
   });
 });

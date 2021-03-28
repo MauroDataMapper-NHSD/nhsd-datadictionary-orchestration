@@ -14,43 +14,32 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TestingModule } from '@mdm/testing/testing.module';
+import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
 
 import { ConfirmationModalComponent } from './confirmation-dialog.component';
 
 describe('ConfirmationModalComponent', () => {
-  let component: ConfirmationModalComponent;
-  let fixture: ComponentFixture<ConfirmationModalComponent>;
+  let harness: ComponentHarness<ConfirmationModalComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        TestingModule
-      ],
-      providers: [
-        {
-          provide: MatDialogRef,
-          useValue: jest.fn()
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: jest.fn()
-        }
-      ],
-      declarations: [ ConfirmationModalComponent ]
-    })
-    .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ConfirmationModalComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    harness = await setupTestModuleForComponent(
+      ConfirmationModalComponent,
+      {
+        providers: [
+          {
+            provide: MatDialogRef,
+            useValue: jest.fn()
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: jest.fn()
+          }
+        ]
+      });
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(harness?.isComponentCreated).toBeTruthy();
   });
 });

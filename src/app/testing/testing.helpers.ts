@@ -20,30 +20,29 @@ import { MockComponent } from "ng-mocks";
 import { NgxSkeletonLoaderComponent } from "ngx-skeleton-loader";
 import { TestingModule } from "./testing.module";
 
-export function setupTestModuleForService<T>(
-  service: Type<T>,
-  imports: any[] = [],
-  providers: any[] = []): T {
+export interface TestModuleConfiguration {
+  declarations?: any[];
+  imports?: any[];
+  providers?: any[];
+}
+
+export function setupTestModuleForService<T>(service: Type<T>, configuration?: TestModuleConfiguration): T {
   TestBed.configureTestingModule({
-    imports: [TestingModule, ...imports],
-    providers: providers
+    imports: [TestingModule, ...configuration?.imports ?? []],
+    providers: configuration?.providers ?? []
   });
   return TestBed.inject(service);
 }
 
-export async function setupTestModuleForComponent<T>(
-  componentType: Type<T>,
-  declarations: any[] = [],
-  imports: any[] = [],
-  providers: any[] = []) {
+export async function setupTestModuleForComponent<T>(componentType: Type<T>, configuration?: TestModuleConfiguration) {
   await TestBed
     .configureTestingModule({
-      imports: [TestingModule, ...imports],
+      imports: [TestingModule, ...configuration?.imports ?? []],
       declarations: [
         componentType, 
         MockComponent(NgxSkeletonLoaderComponent),
-        ...declarations],
-      providers: providers
+        ...configuration?.declarations ?? []],
+      providers: configuration?.providers ?? []
     })
     .compileComponents();
 

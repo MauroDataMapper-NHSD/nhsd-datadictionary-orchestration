@@ -14,45 +14,35 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TestingModule } from '@mdm/testing/testing.module';
+import { AlertComponent } from '@mdm/shared/alert/alert.component';
+import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
+import { MockComponent } from 'ng-mocks';
 
 import { SignInModalComponent } from './sign-in-dialog.component';
 
-describe('SignInModalComponent', () => {
-  let component: SignInModalComponent;
-  let fixture: ComponentFixture<SignInModalComponent>;
+describe('SignInModalComponent', () => {  
+  let harness: ComponentHarness<SignInModalComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        TestingModule,
-        ReactiveFormsModule
-      ],
-      providers: [
-        {
-          provide: MatDialogRef,
-          useValue: jest.fn()
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: jest.fn()
-        }
-      ],
-      declarations: [ SignInModalComponent ]
-    })
-    .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(SignInModalComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    harness = await setupTestModuleForComponent(
+      SignInModalComponent,
+      {
+        declarations: [MockComponent(AlertComponent)],
+        providers: [
+          {
+            provide: MatDialogRef,
+            useValue: jest.fn()
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: jest.fn()
+          }
+        ]
+      });
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(harness?.isComponentCreated).toBeTruthy();
   });
 });

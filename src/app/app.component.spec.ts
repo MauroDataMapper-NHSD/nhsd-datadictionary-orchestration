@@ -14,47 +14,33 @@
  * limitations under the License.
  */
 
-import { Component, Input } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
 import { AppComponent } from './app.component';
-import { NavbarLinkGroup } from './layout/navbar/navbar.model';
-import { TestingModule } from './testing/testing.module';
-
-@Component({selector: 'mdm-navbar', template: ''})
-class NavbarStubComponent { 
-  @Input() linkGroups: NavbarLinkGroup[] = [];
-}
-
-@Component({selector: 'mdm-footer', template: ''})
-class FooterStubComponent { }
-
-@Component({selector: 'mdm-loading-indicator', template: ''})
-class LoadingIndicatorStubComponent { }
+import { FooterComponent } from './layout/footer/footer.component';
+import { NavbarComponent } from './layout/navbar/navbar.component';
+import { LoadingIndicatorComponent } from './shared/loading-indicator/loading-indicator.component';
+import { ComponentHarness, setupTestModuleForComponent } from './testing/testing.helpers';
 
 describe('AppComponent', () => {
+  let harness: ComponentHarness<AppComponent>;
+
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        TestingModule
-      ],
-      declarations: [
-        AppComponent,
-        NavbarStubComponent,
-        FooterStubComponent,
-        LoadingIndicatorStubComponent
-      ],
-    }).compileComponents();
+    harness = await setupTestModuleForComponent(
+      AppComponent,
+      {
+        declarations: [
+          MockComponent(NavbarComponent),
+          MockComponent(FooterComponent),
+          MockComponent(LoadingIndicatorComponent)
+        ]
+      });
   });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(harness?.isComponentCreated).toBeTruthy();
   });
 
   it(`should have as title 'nhsd-datadictionary-orchestration'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('nhsd-datadictionary-orchestration');
+    expect(harness.component.title).toEqual('nhsd-datadictionary-orchestration');
   });
 });

@@ -17,7 +17,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '@mdm/material/material.module';
 import { MdmResourcesModule } from '@mdm/mdm-resources/mdm-resources.module';
@@ -32,6 +32,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     NoopAnimationsModule,
     MaterialModule,
     FormsModule,
+    ReactiveFormsModule,
     UIRouterModule.forRoot({ useHash: true }),
     ToastrModule.forRoot(),
     MdmResourcesModule.forRoot({ }),
@@ -40,7 +41,8 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
   ],
   exports: [
     MaterialModule,
-    UIRouterModule
+    UIRouterModule,
+    ReactiveFormsModule
   ]
 })
 export class TestingModule { }
