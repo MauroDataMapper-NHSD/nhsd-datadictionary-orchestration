@@ -14,63 +14,49 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/testing/testing.module';
 import { SharedService } from '@mdm/core/shared/shared.service';
 
 import { UserComponent } from './user.component';
+import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
+import { MockProvider } from 'ng-mocks';
 
 interface SharedServiceStub {
   backendUrl: string;
 }
 
-describe('UserComponent', () => {
-  let component: UserComponent;
-  let fixture: ComponentFixture<UserComponent>;
+describe('UserComponent', () => {  
+  let harness: ComponentHarness<UserComponent>;
 
-  const sharedStub: SharedServiceStub = {
-    backendUrl: 'http://test.com'
-  };
+  const testBackendUrl = 'http://test.com';
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        TestingModule
-      ],
-      providers: [
-        {
-          provide: SharedService,
-          useValue: sharedStub
-        }
-      ],
-      declarations: [ UserComponent ]
-    })
-    .compileComponents();
+    harness = await setupTestModuleForComponent(
+      UserComponent,
+      {
+        providers: [
+          MockProvider(SharedService, {
+            backendUrl: testBackendUrl
+          })
+        ]
+      });
   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(UserComponent);
-    component = fixture.componentInstance;
-    component.user = { id: '123', firstName: 'test', lastName: 'test', userName: 'test' };
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {    
-    expect(component).toBeTruthy();
+  it('should create', () => {
+    expect(harness?.isComponentCreated).toBeTruthy();
   });
 
   it.each(['1', '2', '3'])('should set the correct image URL for user %s', (id) => {
-    component.user = {
+    harness.component.user = {
       id: id,
       firstName: 'test',
       lastName: 'test',
       userName: 'test'
     };
 
-    fixture.detectChanges();
-    component.ngOnInit();
+    harness.detectChanges();
+    harness.component.ngOnInit();
 
-    const expected = `${sharedStub.backendUrl}/catalogueUsers/${id}/image`;
-    expect(component.imageUrl).toBe(expected);
+    const expected = `${testBackendUrl}/catalogueUsers/${id}/image`;
+    expect(harness.component.imageUrl).toBe(expected);
   })
 });

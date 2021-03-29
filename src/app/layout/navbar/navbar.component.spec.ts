@@ -20,36 +20,28 @@ import { TestingModule } from '@mdm/testing/testing.module';
 import { UserDetails } from '@mdm/core/security/security.model';
 
 import { NavbarComponent } from './navbar.component';
+import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
+import { MockComponent } from 'ng-mocks';
 
 @Component({selector: 'mdm-user', template: ''})
 class UserStubComponent { 
   @Input() user!: UserDetails;
 }
 
-describe('NavbarComponent', () => {
-  let component: NavbarComponent;
-  let fixture: ComponentFixture<NavbarComponent>;
+describe('NavbarComponent', () => {  
+  let harness: ComponentHarness<NavbarComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        TestingModule
-      ],
-      declarations: [ 
-        NavbarComponent,
-        UserStubComponent
-      ]
-    })
-    .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(NavbarComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    harness = await setupTestModuleForComponent(
+      NavbarComponent,
+      {
+        declarations: [
+          MockComponent(UserStubComponent)
+        ]
+      });
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(harness?.isComponentCreated).toBeTruthy();
   });
 });
