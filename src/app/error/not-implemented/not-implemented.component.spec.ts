@@ -14,34 +14,25 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/testing/testing.module';
+import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 
 import { NotImplementedComponent } from './not-implemented.component';
 
 describe('NotImplementedComponent', () => {
-  let component: NotImplementedComponent;
-  let fixture: ComponentFixture<NotImplementedComponent>;
+  let harness: ComponentHarness<NotImplementedComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        TestingModule,
-        NgxJsonViewerModule
-      ],
-      declarations: [ NotImplementedComponent ]
-    })
-    .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(NotImplementedComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    harness = await setupTestModuleForComponent(
+      NotImplementedComponent,
+      {
+        imports: [
+          NgxJsonViewerModule
+        ]
+      });
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(harness?.isComponentCreated).toBeTruthy();
   });
 });

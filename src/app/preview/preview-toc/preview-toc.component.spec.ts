@@ -14,28 +14,27 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ScrollToTopComponent } from '@mdm/shared/scroll-to-top/scroll-to-top.component';
+import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
+import { MockComponent } from 'ng-mocks';
 
 import { PreviewTocComponent } from './preview-toc.component';
 
-describe('PreviewPageNavigationComponent', () => {
-  let component: PreviewTocComponent;
-  let fixture: ComponentFixture<PreviewTocComponent>;
+describe('PreviewTocComponent', () => {
+  let harness: ComponentHarness<PreviewTocComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ PreviewTocComponent ]
-    })
-    .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(PreviewTocComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    harness = await setupTestModuleForComponent(
+      PreviewTocComponent,
+      {
+        declarations: [
+          MockComponent(ScrollToTopComponent)
+        ]
+      }
+    );
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(harness?.isComponentCreated).toBeTruthy();
   });
 });

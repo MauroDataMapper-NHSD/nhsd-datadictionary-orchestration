@@ -14,28 +14,26 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
+import { MockComponent } from 'ng-mocks';
+import { PreviewTileComponent } from '../preview-tile/preview-tile.component';
 
 import { PreviewHomeComponent } from './preview-home.component';
 
 describe('PreviewHomeComponent', () => {
-  let component: PreviewHomeComponent;
-  let fixture: ComponentFixture<PreviewHomeComponent>;
+  let harness: ComponentHarness<PreviewHomeComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ PreviewHomeComponent ]
-    })
-    .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(PreviewHomeComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    harness = await setupTestModuleForComponent(
+      PreviewHomeComponent,
+      {
+        declarations: [
+          MockComponent(PreviewTileComponent)
+        ]
+      });
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(harness?.isComponentCreated).toBeTruthy();
   });
 });

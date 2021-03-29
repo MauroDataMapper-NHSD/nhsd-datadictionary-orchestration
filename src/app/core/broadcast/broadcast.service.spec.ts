@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import { TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/testing/testing.module';
+import { setupTestModuleForService } from '@mdm/testing/testing.helpers';
 import { cold } from 'jest-marbles';
 import { BroadcastEvent } from './broadcast.model';
 
@@ -25,12 +24,7 @@ describe('BroadcastService', () => {
   let service: BroadcastService;  
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        TestingModule
-      ]
-    });
-    service = TestBed.inject(BroadcastService);
+    service = setupTestModuleForService(BroadcastService);
   });
 
   it('should be created', () => {

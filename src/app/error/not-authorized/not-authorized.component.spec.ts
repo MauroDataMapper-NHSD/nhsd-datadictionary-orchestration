@@ -14,34 +14,25 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/testing/testing.module';
+import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 
 import { NotAuthorizedComponent } from './not-authorized.component';
 
 describe('NotAuthorizedComponent', () => {
-  let component: NotAuthorizedComponent;
-  let fixture: ComponentFixture<NotAuthorizedComponent>;
+  let harness: ComponentHarness<NotAuthorizedComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        TestingModule,
-        NgxJsonViewerModule
-      ],
-      declarations: [ NotAuthorizedComponent ]
-    })
-    .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(NotAuthorizedComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    harness = await setupTestModuleForComponent(
+      NotAuthorizedComponent,
+      {
+        imports: [
+          NgxJsonViewerModule
+        ]
+      });
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(harness?.isComponentCreated).toBeTruthy();
   });
 });

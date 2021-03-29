@@ -17,12 +17,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '@mdm/material/material.module';
 import { MdmResourcesModule } from '@mdm/mdm-resources/mdm-resources.module';
 import { UIRouterModule } from '@uirouter/angular';
 import { ToastrModule } from 'ngx-toastr';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
   declarations: [],
@@ -31,14 +32,17 @@ import { ToastrModule } from 'ngx-toastr';
     NoopAnimationsModule,
     MaterialModule,
     FormsModule,
+    ReactiveFormsModule,
     UIRouterModule.forRoot({ useHash: true }),
     ToastrModule.forRoot(),
     MdmResourcesModule.forRoot({ }),
-    HttpClientTestingModule
+    HttpClientTestingModule,
+    NgxSkeletonLoaderModule
   ],
   exports: [
     MaterialModule,
-    UIRouterModule
+    UIRouterModule,
+    ReactiveFormsModule
   ]
 })
 export class TestingModule { }

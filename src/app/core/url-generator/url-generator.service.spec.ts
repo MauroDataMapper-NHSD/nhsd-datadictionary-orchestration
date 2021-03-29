@@ -14,19 +14,41 @@
  * limitations under the License.
  */
 
-import { TestBed } from '@angular/core/testing';
-
+import { DomainType } from '@mdm/mdm-resources/mdm-resources/mdm-resources.model';
+import { setupTestModuleForService } from '@mdm/testing/testing.helpers';
+import { MockProvider } from 'ng-mocks';
+import { SharedService } from '../shared/shared.service';
 import { UrlGeneratorService } from './url-generator.service';
 
 describe('UrlGeneratorService', () => {
   let service: UrlGeneratorService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(UrlGeneratorService);
-  });
+  const mauroBaseUrl = 'http://test.com';
+
+  beforeEach(() => service = setupTestModuleForService(
+      UrlGeneratorService,
+      {
+        providers: [
+          MockProvider(SharedService, {
+            mauroBaseUrl: mauroBaseUrl
+          })
+        ]
+      }
+    )
+  );
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it.each([
+    [`${mauroBaseUrl}/#/catalogue/dataClass/1/2/3`, DomainType.DataClass, '1', '2', '3'],
+    [`${mauroBaseUrl}/#/catalogue/dataElement/1/2/3`, DomainType.DataElement, '1', '2', '3'],
+    [`${mauroBaseUrl}/#/catalogue/term/2/3`, DomainType.Term, '1', '2', '3'],
+    [`${mauroBaseUrl}/#/catalogue/codeSet/3`, DomainType.CodeSet, '1', '2', '3'],
+  ])('should return %s for domain %o', (expected, domainType, modelId, parentId, catalogueId) => {
+    const actual = service.getMauroUrl(domainType, modelId, parentId, catalogueId);
+    expect(actual).toBe(expected);
+  });
 });
+

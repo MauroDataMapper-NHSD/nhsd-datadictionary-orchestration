@@ -14,28 +14,18 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
 
 import { PreviewBreadcrumbComponent } from './preview-breadcrumb.component';
 
 describe('PreviewBreadcrumbComponent', () => {
-  let component: PreviewBreadcrumbComponent;
-  let fixture: ComponentFixture<PreviewBreadcrumbComponent>;
+  let harness: ComponentHarness<PreviewBreadcrumbComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ PreviewBreadcrumbComponent ]
-    })
-    .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(PreviewBreadcrumbComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    harness = await setupTestModuleForComponent(PreviewBreadcrumbComponent);
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(harness?.isComponentCreated).toBeTruthy();
   });
 });

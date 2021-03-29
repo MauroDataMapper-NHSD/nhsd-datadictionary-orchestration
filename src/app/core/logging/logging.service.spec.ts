@@ -14,21 +14,15 @@
  * limitations under the License.
  */
 
-import { TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/testing/testing.module';
+import { setupTestModuleForService } from '@mdm/testing/testing.helpers';
 
 import { LoggingService } from './logging.service';
 
 describe('LoggingService', () => {
   let service: LoggingService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        TestingModule
-      ]
-    });
-    service = TestBed.inject(LoggingService);
+  beforeEach(() => {    
+    service = setupTestModuleForService(LoggingService);
   });
 
   it('should be created', () => {
