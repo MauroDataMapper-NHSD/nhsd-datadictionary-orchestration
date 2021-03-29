@@ -129,7 +129,7 @@ export class PreviewDetailComponent implements OnInit {
       });
     }
 
-    if (detail.alsoKnownAs) {
+    if (this.aliases.length > 0) {
       links.push({
         label: 'Also Known As',
         anchor: 'also-known-as'

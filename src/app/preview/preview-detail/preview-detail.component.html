@@ -51,7 +51,7 @@
                         </div>
                     </mdm-preview-expandable-panel>                   
 
-                    <mdm-preview-expandable-panel *ngIf="detail!.alsoKnownAs" title="Also Known As" [anchor]="getTableOfContentsLink('Also Known As')?.anchor">
+                    <mdm-preview-expandable-panel *ngIf="aliases.length > 0" title="Also Known As" [anchor]="getTableOfContentsLink('Also Known As')?.anchor">
                         <div class="- topic/body body">
                             <p class="- topic/p p">This {{noun}} is also known by these names:</p>
 
