@@ -22,6 +22,7 @@ import { BranchDetailComponent } from './branch-detail/branch-detail.component';
 import { BranchStatisticsComponent } from './branch-statistics/branch-statistics.component';
 import { BranchIntegrityComponent } from './branch-integrity/branch-integrity.component';
 import { BranchIntegrityTableComponent } from './branch-integrity-table/branch-integrity-table.component';
+import { BranchPublishComponent } from './branch-publish/branch-publish.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { BranchIntegrityTableComponent } from './branch-integrity-table/branch-i
     BranchDetailComponent, 
     BranchStatisticsComponent, 
     BranchIntegrityComponent, 
-    BranchIntegrityTableComponent
+    BranchIntegrityTableComponent, 
+    BranchPublishComponent
   ],
   imports: [
     SharedModule
