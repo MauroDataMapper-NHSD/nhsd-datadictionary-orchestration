@@ -14,32 +14,18 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/testing/testing.module';
+import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
 
 import { LoadingIndicatorComponent } from './loading-indicator.component';
 
 describe('LoadingIndicatorComponent', () => {
-  let component: LoadingIndicatorComponent;
-  let fixture: ComponentFixture<LoadingIndicatorComponent>;
+  let harness: ComponentHarness<LoadingIndicatorComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        TestingModule
-      ],
-      declarations: [ LoadingIndicatorComponent ]
-    })
-    .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(LoadingIndicatorComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    harness = await setupTestModuleForComponent(LoadingIndicatorComponent);
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(harness?.isComponentCreated).toBeTruthy();
   });
 });

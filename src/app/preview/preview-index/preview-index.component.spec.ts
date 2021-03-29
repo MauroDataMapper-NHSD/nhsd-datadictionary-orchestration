@@ -14,28 +14,32 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AlertComponent } from '@mdm/shared/alert/alert.component';
+import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
+import { MockComponent } from 'ng-mocks';
+import { PreviewBreadcrumbComponent } from '../preview-breadcrumb/preview-breadcrumb.component';
+import { PreviewExpandablePanelComponent } from '../preview-expandable-panel/preview-expandable-panel.component';
+import { PreviewTocComponent } from '../preview-toc/preview-toc.component';
 
 import { PreviewIndexComponent } from './preview-index.component';
 
 describe('PreviewIndexComponent', () => {
-  let component: PreviewIndexComponent;
-  let fixture: ComponentFixture<PreviewIndexComponent>;
+  let harness: ComponentHarness<PreviewIndexComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ PreviewIndexComponent ]
-    })
-    .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(PreviewIndexComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    harness = await setupTestModuleForComponent(
+      PreviewIndexComponent,
+      {
+        declarations: [
+          MockComponent(PreviewTocComponent),
+          MockComponent(PreviewExpandablePanelComponent),
+          MockComponent(PreviewBreadcrumbComponent),
+          MockComponent(AlertComponent)
+        ]
+      });
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(harness?.isComponentCreated).toBeTruthy();
   });
 });

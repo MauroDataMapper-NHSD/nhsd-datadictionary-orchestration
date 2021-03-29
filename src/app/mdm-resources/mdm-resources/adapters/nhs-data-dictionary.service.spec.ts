@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import { TestBed } from '@angular/core/testing';
+import { setupTestModuleForService } from '@mdm/testing/testing.helpers';
+import { MockProvider, MockService } from 'ng-mocks';
+import { MdmResourcesService } from '../mdm-resources.service';
 
 import { NhsDataDictionaryService } from './nhs-data-dictionary.service';
 
@@ -22,8 +24,13 @@ describe('NhsDataDictionaryService', () => {
   let service: NhsDataDictionaryService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(NhsDataDictionaryService);
+    service = setupTestModuleForService(
+      NhsDataDictionaryService,
+      {
+        providers: [
+          MockProvider(MdmResourcesService, MockService(MdmResourcesService))
+        ]
+      });
   });
 
   it('should be created', () => {

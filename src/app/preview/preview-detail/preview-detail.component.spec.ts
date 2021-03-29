@@ -14,28 +14,30 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
+import { MockComponent } from 'ng-mocks';
+import { PreviewBreadcrumbComponent } from '../preview-breadcrumb/preview-breadcrumb.component';
+import { PreviewExpandablePanelComponent } from '../preview-expandable-panel/preview-expandable-panel.component';
+import { PreviewTocComponent } from '../preview-toc/preview-toc.component';
 
 import { PreviewDetailComponent } from './preview-detail.component';
 
 describe('PreviewDetailComponent', () => {
-  let component: PreviewDetailComponent;
-  let fixture: ComponentFixture<PreviewDetailComponent>;
+  let harness: ComponentHarness<PreviewDetailComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ PreviewDetailComponent ]
-    })
-    .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(PreviewDetailComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    harness = await setupTestModuleForComponent(
+      PreviewDetailComponent,
+      {
+        declarations: [
+          MockComponent(PreviewTocComponent),
+          MockComponent(PreviewExpandablePanelComponent),
+          MockComponent(PreviewBreadcrumbComponent)
+        ]
+      });
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(harness?.isComponentCreated).toBeTruthy();
   });
 });

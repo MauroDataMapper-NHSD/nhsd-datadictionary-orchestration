@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { TestBed } from '@angular/core/testing';
+import { setupTestModuleForService } from '@mdm/testing/testing.helpers';
 
 import { MdmAdminService } from './mdm-admin.service';
 
@@ -22,8 +22,7 @@ describe('MdmAdminService', () => {
   let service: MdmAdminService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(MdmAdminService);
+    service = setupTestModuleForService(MdmAdminService);
   });
 
   it('should be created', () => {

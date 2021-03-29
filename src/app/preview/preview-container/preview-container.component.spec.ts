@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AlertComponent } from '@mdm/shared/alert/alert.component';
+import { BranchSelectorComponent } from '@mdm/shared/branch-selector/branch-selector.component';
+import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
+import { MockComponent } from 'ng-mocks';
 
 import { PreviewContainerComponent } from './preview-container.component';
 
 describe('PreviewContainerComponent', () => {
-  let component: PreviewContainerComponent;
-  let fixture: ComponentFixture<PreviewContainerComponent>;
+  let harness: ComponentHarness<PreviewContainerComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ PreviewContainerComponent ]
-    })
-    .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(PreviewContainerComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    harness = await setupTestModuleForComponent(
+      PreviewContainerComponent,
+      {
+        declarations: [
+          MockComponent(AlertComponent),
+          MockComponent(BranchSelectorComponent)
+        ]
+      });
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(harness?.isComponentCreated).toBeTruthy();
   });
 });

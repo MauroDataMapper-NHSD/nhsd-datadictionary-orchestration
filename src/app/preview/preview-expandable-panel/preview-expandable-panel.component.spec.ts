@@ -14,28 +14,18 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
 
 import { PreviewExpandablePanelComponent } from './preview-expandable-panel.component';
 
 describe('PreviewExpandablePanelComponent', () => {
-  let component: PreviewExpandablePanelComponent;
-  let fixture: ComponentFixture<PreviewExpandablePanelComponent>;
+  let harness: ComponentHarness<PreviewExpandablePanelComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ PreviewExpandablePanelComponent ]
-    })
-    .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(PreviewExpandablePanelComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    harness = await setupTestModuleForComponent(PreviewExpandablePanelComponent);
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(harness?.isComponentCreated).toBeTruthy();
   });
 });
