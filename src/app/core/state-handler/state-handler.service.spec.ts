@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import { TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/testing/testing.module';
+import { setupTestModuleForService } from '@mdm/testing/testing.helpers';
 
 import { StateHandlerService } from './state-handler.service';
 
@@ -23,12 +22,7 @@ describe('StateHandlerService', () => {
   let service: StateHandlerService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        TestingModule
-      ]
-    });
-    service = TestBed.inject(StateHandlerService);
+    service = setupTestModuleForService(StateHandlerService);
   });
 
   it('should be created', () => {

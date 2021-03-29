@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import { TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/testing/testing.module';
+import { setupTestModuleForService } from '@mdm/testing/testing.helpers';
 
 import { ThemingService } from './theming.service';
 
@@ -23,12 +22,7 @@ describe('ThemingService', () => {
   let service: ThemingService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        TestingModule
-      ]
-    });
-    service = TestBed.inject(ThemingService);
+    service = setupTestModuleForService(ThemingService);
   });
 
   it('should be created', () => {

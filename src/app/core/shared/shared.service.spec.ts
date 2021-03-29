@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import { TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/testing/testing.module';
+import { setupTestModuleForService } from '@mdm/testing/testing.helpers';
 
 import { SharedService } from './shared.service';
 
@@ -23,12 +22,7 @@ describe('SharedService', () => {
   let service: SharedService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        TestingModule
-      ]
-    });
-    service = TestBed.inject(SharedService);
+    service = setupTestModuleForService(SharedService);
   });
 
   it('should be created', () => {

@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import { TestBed } from '@angular/core/testing';
-import { TestingModule } from '@mdm/testing/testing.module';
 import { SignInCredentials, UserDetails } from './security.model';
 import { cold } from 'jest-marbles';
 
@@ -23,6 +21,7 @@ import { SecurityService } from './security.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EMPTY } from 'rxjs';
 import { MdmResourcesService } from '@mdm/mdm-resources/mdm-resources/mdm-resources.service';
+import { setupTestModuleForService } from '@mdm/testing/testing.helpers';
 
 interface MdmSecurityResourceStub {
   login: jest.Mock;
@@ -39,7 +38,7 @@ interface MdmResourcesServiceStub {
   session: MdmSessionResourceStub
 }
 
-describe('SecurityHandlerService', () => {
+describe('SecurityService', () => {
   let service: SecurityService;
   const resourcesStub: MdmResourcesServiceStub = {
     security: {
@@ -52,19 +51,17 @@ describe('SecurityHandlerService', () => {
     }
   };
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        TestingModule
-      ],
-      providers: [
-        {
-          provide: MdmResourcesService,
-          useValue: resourcesStub
-        }
-      ]
-    });
-    service = TestBed.inject(SecurityService);
+  beforeEach(() => {    
+    service = setupTestModuleForService(
+      SecurityService,
+      {        
+        providers: [
+          {
+            provide: MdmResourcesService,
+            useValue: resourcesStub
+          }
+        ]
+      });
   });
 
   it('should be created', () => {

@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-import { TestBed } from '@angular/core/testing';
+import { setupTestModuleForService } from '@mdm/testing/testing.helpers';
 
 import { DataDictionaryService } from './data-dictionary.service';
 
 describe('DataDictionaryService', () => {
   let service: DataDictionaryService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(DataDictionaryService);
+  beforeEach(() => {    
+    service = setupTestModuleForService(DataDictionaryService);
   });
 
   it('should be created', () => {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { TestBed } from '@angular/core/testing';
+import { setupTestModuleForService } from '@mdm/testing/testing.helpers';
 
 import { ValidatorService } from './validator.service';
 
@@ -22,8 +22,7 @@ describe('ValidatorService', () => {
   let service: ValidatorService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(ValidatorService);
+    service = setupTestModuleForService(ValidatorService);
   });
 
   it('should be created', () => {
