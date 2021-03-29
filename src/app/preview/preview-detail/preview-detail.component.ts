@@ -60,10 +60,7 @@ export class PreviewDetailComponent implements OnInit {
   }
 
   get hasReferencesSection() {
-    return this.domainType === PreviewDomainType.DataElements || 
-      this.domainType === PreviewDomainType.Attributes || 
-      this.domainType === PreviewDomainType.DataClasses || 
-      this.domainType === PreviewDomainType.BusinessDefinitions;
+    return true;
   }
 
   constructor(
