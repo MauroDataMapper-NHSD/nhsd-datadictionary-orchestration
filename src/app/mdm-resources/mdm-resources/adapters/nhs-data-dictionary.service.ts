@@ -17,7 +17,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
-import { Branch, IntegrityCheck, IntegrityCheckResponse, PreviewDetail, PreviewDetailResponse, PreviewDomainType, PreviewIndexItem, PreviewIndexResponse, Statistics, StatisticsResponse } from './nhs-data-dictionary.model';
+import { Branch, IntegrityCheck, IntegrityCheckResponse, PreviewDetail, PreviewDetailResponse, PreviewDomainType, PreviewIndexItem, PreviewIndexResponse, PreviewReference, PreviewReferenceResponse, Statistics, StatisticsResponse } from './nhs-data-dictionary.model';
 import { MdmResourcesService } from '../mdm-resources.service';
 
 @Injectable({
@@ -72,6 +72,14 @@ export class NhsDataDictionaryService {
       .preview(branch, domainType, id)
       .pipe(
         map((response: PreviewDetailResponse) => response.body)
+      );
+  }
+
+  previewReferences(branch: string, domainType: PreviewDomainType, id: string): Observable<PreviewReference[]> {
+    return this.resources.dataDictionary
+      .previewReferences(branch, domainType, id)
+      .pipe(
+        map((response: PreviewReferenceResponse) => response.body)
       );
   }
 }

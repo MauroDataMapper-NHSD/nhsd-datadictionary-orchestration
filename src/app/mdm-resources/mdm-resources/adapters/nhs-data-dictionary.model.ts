@@ -178,3 +178,16 @@ export interface PreviewDetail {
 }
 
 export type PreviewDetailResponse = MdmResourcesResponse<PreviewDetail>
+
+/**
+ * Represents a reference to another Mauro entity which is related or used in.
+ */
+export interface PreviewReference {
+  type: string;
+  name: string;
+  stereotype: Stereotype;
+  componentId: string;
+  text: string;
+}
+
+export type PreviewReferenceResponse = MdmResourcesResponse<PreviewReference[]>

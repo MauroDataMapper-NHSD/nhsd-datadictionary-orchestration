@@ -15,7 +15,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Branch, PreviewDetail, PreviewDomainType, PreviewIndexItem, Statistics } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { Branch, PreviewDetail, PreviewDomainType, PreviewIndexItem, PreviewReference, Statistics } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { NhsDataDictionaryService } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -91,6 +91,17 @@ export class DataDictionaryService {
       .pipe(
         catchError(error => {
           this.logging.error(`There was a problem getting the preview detail ${domainType} for the "${branch}" branch.`, error);
+          return throwError(error);
+        })
+      );
+  }
+
+  getPreviewReferences(branch: string, domainType: PreviewDomainType, id: string): Observable<PreviewReference[]> {
+    return this.nhsDataDictionary
+      .previewReferences(branch, domainType, id)
+      .pipe(
+        catchError(error => {
+          this.logging.error(`There was a problem getting the preview references for ${domainType} for the "${branch}" branch.`, error);
           return throwError(error);
         })
       );

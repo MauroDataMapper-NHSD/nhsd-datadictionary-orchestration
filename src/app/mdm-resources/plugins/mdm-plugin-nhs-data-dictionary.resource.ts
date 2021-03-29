@@ -32,4 +32,9 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/preview/${domainType}` + (id ? `/${id}` : '');
     return this.simpleGet(url, queryStringParams, restHandlerOptions);
   }  
+
+  previewReferences(branch: string, domainType: string, id: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
+    const url = `${this.apiEndpoint}/nhsdd/${branch}/preview/${domainType}/${id}/whereUsed`;
+    return this.simpleGet(url, queryStringParams, restHandlerOptions);
+  }
 }
