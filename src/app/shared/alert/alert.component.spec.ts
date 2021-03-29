@@ -17,6 +17,7 @@
 import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
 
 import { AlertComponent } from './alert.component';
+import { AlertStyle } from './alert.model';
 
 describe('AlertComponent', () => {
   let harness: ComponentHarness<AlertComponent>;
@@ -27,5 +28,43 @@ describe('AlertComponent', () => {
 
   it('should create', () => {
     expect(harness?.isComponentCreated).toBeTruthy();
+  });
+
+  it('should have no icon when icon is disabled', () => {
+    harness.component.showIcon = false;
+    harness.detectChanges();
+    expect(harness.component.iconName).toBeFalsy();
+  });
+
+  it.each<[string, AlertStyle]>([
+    ['', 'none'],
+    ['fa-check-circle', 'success'],
+    ['fa-info-circle', 'info'],
+    ['fa-exclamation-triangle', 'warning'],
+    ['fa-times-circle', 'error']
+  ])('should use "%s" icon for %s style', (expected, style) => {
+    harness.component.showIcon = true;
+    harness.component.alertStyle = style;
+    harness.detectChanges();
+    expect(harness.component.iconName).toBe(expected);
+  });
+
+  it('should have no CSS modified when icon is disabled', () => {
+    harness.component.showIcon = false;
+    harness.detectChanges();
+    expect(harness.component.cssModifier).toBeFalsy();
+  });
+
+  it.each<[string, AlertStyle]>([
+    ['', 'none'],
+    ['mdm-alert--success', 'success'],
+    ['mdm-alert--info', 'info'],
+    ['mdm-alert--warning', 'warning'],
+    ['mdm-alert--error', 'error']
+  ])('should use "%s" CSS modifier for %s style', (expected, style) => {
+    harness.component.showIcon = true;
+    harness.component.alertStyle = style;
+    harness.detectChanges();
+    expect(harness.component.cssModifier).toBe(expected);
   });
 });
