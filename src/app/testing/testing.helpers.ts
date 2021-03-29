@@ -20,12 +20,50 @@ import { MockComponent } from "ng-mocks";
 import { NgxSkeletonLoaderComponent } from "ngx-skeleton-loader";
 import { TestingModule } from "./testing.module";
 
+/**
+ * Represents additional configuration to use when setting up the test module.
+ */
 export interface TestModuleConfiguration {
+  /**
+   * Provide an optional list of additional component declarations.
+   */
   declarations?: any[];
+
+  /**
+   * Provide an optional list of additional component/module imports.
+   */
   imports?: any[];
+
+  /**
+   * Provide an optional list of additional providers to use for dependency injection.
+   */
   providers?: any[];
 }
 
+/**
+ * Represents a created component for testing plus a fixture.
+ * 
+ * @typedef T The type of component under test.
+ */
+export class ComponentHarness<T> {
+  constructor(public component: T, public fixture: ComponentFixture<T>) { }
+
+  get isComponentCreated() {
+    return !!this.component;
+  }
+
+  detectChanges() {
+    this.fixture.detectChanges();
+  }
+}
+
+/**
+ * Setup the test module for working with a service.
+ * @typedef T The type of the service under test.
+ * @param service The type of service under test.
+ * @param configuration Optionally provide additional configuration for the test module.
+ * @returns A new instance of the service under test.
+ */
 export function setupTestModuleForService<T>(service: Type<T>, configuration?: TestModuleConfiguration): T {
   TestBed.configureTestingModule({
     imports: [TestingModule, ...configuration?.imports ?? []],
@@ -34,6 +72,13 @@ export function setupTestModuleForService<T>(service: Type<T>, configuration?: T
   return TestBed.inject(service);
 }
 
+/**
+ * Setup the test module for working with a component.
+ * @typedef T The type of the component under test.
+ * @param componentType The type of the component under test.
+ * @param configuration Optionally provide additional configuration for the test module.
+ * @returns A new `ComponentHarness<T>` containing an instance of the component under test with a fixture.
+ */
 export async function setupTestModuleForComponent<T>(componentType: Type<T>, configuration?: TestModuleConfiguration) {
   await TestBed
     .configureTestingModule({
@@ -50,16 +95,4 @@ export async function setupTestModuleForComponent<T>(componentType: Type<T>, con
   const component = fixture.componentInstance;
   fixture.detectChanges();
   return new ComponentHarness(component, fixture);
-}
-
-export class ComponentHarness<T> {
-  constructor(public component: T, public fixture: ComponentFixture<T>) { }
-
-  get isComponentCreated() {
-    return !!this.component;
-  }
-
-  detectChanges() {
-    this.fixture.detectChanges();
-  }
 }
