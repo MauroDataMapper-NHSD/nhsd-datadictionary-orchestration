@@ -14,28 +14,17 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
 import { BranchPublishComponent } from './branch-publish.component';
 
 describe('BranchPublishComponent', () => {
-  let component: BranchPublishComponent;
-  let fixture: ComponentFixture<BranchPublishComponent>;
+  let harness: ComponentHarness<BranchPublishComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ BranchPublishComponent ]
-    })
-    .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(BranchPublishComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    harness = await setupTestModuleForComponent(BranchPublishComponent);
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(harness?.isComponentCreated).toBeTruthy();
   });
 });

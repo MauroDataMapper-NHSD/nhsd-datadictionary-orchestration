@@ -18,6 +18,7 @@ import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/test
 import { MockComponent } from 'ng-mocks';
 import { BranchIntegrityComponent } from '../branch-integrity/branch-integrity.component';
 import { BranchStatisticsComponent } from '../branch-statistics/branch-statistics.component';
+import { BranchPublishComponent } from '../branch-publish/branch-publish.component';
 
 import { BranchDetailComponent } from './branch-detail.component';
 
@@ -30,7 +31,8 @@ describe('BranchesDetailComponent', () => {
       {
         declarations: [
           MockComponent(BranchStatisticsComponent),
-          MockComponent(BranchIntegrityComponent)
+          MockComponent(BranchIntegrityComponent),
+          MockComponent(BranchPublishComponent)
         ]
       });
   });
