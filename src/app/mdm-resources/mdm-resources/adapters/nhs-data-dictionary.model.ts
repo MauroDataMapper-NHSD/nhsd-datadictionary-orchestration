@@ -83,9 +83,42 @@ export enum PreviewDomainType {
   DataSets = 'dataSets',
   BusinessDefinitions = 'businessDefinitions',
   SupportingInformation = 'supportingInformation',
+  XmlSchemaConstraint = 'xmlSchemaConstraints',
+  All = 'allItemsIndex'
+}
+
+/**
+ * Represents the different preview index routes to access.
+ * 
+ * @see previewIndexDomainMap
+ */
+export enum PreviewIndexType {
+  DataElement = 'element',
+  Attribute = 'attribute',
+  DataClass = 'class',
+  DataSet = 'dataSet',
+  BusinessDefinition = 'businessDefinition',
+  SupportingInformation = 'supportingInformation',
   XmlSchemaConstraint = 'xmlSchemaConstraint',
   All = 'allItemsIndex'
 }
+
+/**
+ * Maps a `PreviewIndexType` to a `PreviewDomainType`
+ * 
+ * This map is required because the page routes do not necessarily match to the backend endpoints. For example, the
+ * page `#/preview/element` would trigger the backend endpoint `api/preview/{branch}/elements`
+ */
+export const previewIndexDomainMap = new Map<PreviewIndexType, PreviewDomainType>([
+  [PreviewIndexType.DataElement, PreviewDomainType.DataElements],
+  [PreviewIndexType.Attribute, PreviewDomainType.Attributes],
+  [PreviewIndexType.DataClass, PreviewDomainType.DataClasses],
+  [PreviewIndexType.DataSet, PreviewDomainType.DataSets],
+  [PreviewIndexType.BusinessDefinition, PreviewDomainType.BusinessDefinitions],
+  [PreviewIndexType.SupportingInformation, PreviewDomainType.SupportingInformation],
+  [PreviewIndexType.XmlSchemaConstraint, PreviewDomainType.XmlSchemaConstraint],
+  [PreviewIndexType.All, PreviewDomainType.All]
+]);
 
 export const previewIndexPageTitles = new Map<PreviewDomainType, string>([
   [PreviewDomainType.DataElements, 'Data Elements'],

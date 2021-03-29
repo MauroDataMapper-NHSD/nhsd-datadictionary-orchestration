@@ -18,7 +18,7 @@ import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
-import { PreviewDetail, PreviewDomainType, previewDomainTypeNouns, previewIndexPageTitles } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { PreviewDetail, PreviewDomainType, previewDomainTypeNouns, previewIndexDomainMap, previewIndexPageTitles, PreviewIndexType } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/angular';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
@@ -34,14 +34,15 @@ export class PreviewDetailComponent implements OnInit {
 
   isLoading = false;
   branch: string = '';
-  index: PreviewDomainType = PreviewDomainType.All;
+  index: PreviewIndexType = PreviewIndexType.All;
+  domainType: PreviewDomainType = PreviewDomainType.All;
   id: string = '';
   detail?: PreviewDetail;
   breadcrumbs: Breadcrumb[] = [];
   tableOfContentLinks: TableOfContentsLink[] = [];
 
   get noun() {
-    return previewDomainTypeNouns.get(this.index) ?? 'element';
+    return previewDomainTypeNouns.get(this.domainType) ?? 'element';
   }
 
   get aliases() {
@@ -74,12 +75,14 @@ export class PreviewDetailComponent implements OnInit {
       return;
     }
 
+    this.domainType = previewIndexDomainMap.get(this.index) ?? PreviewDomainType.All;
+
     // Simulate a new static page loaded
     this.viewportScroller.scrollToPosition([0, 0]);
 
     this.isLoading = true;
     this.dataDictionary
-      .getPreviewDetail(this.branch, this.index, this.id)
+      .getPreviewDetail(this.branch, this.domainType, this.id)
       .pipe(
         finalize(() => this.isLoading = false)
       )
@@ -93,7 +96,7 @@ export class PreviewDetailComponent implements OnInit {
   private createBreadcrumbs(detail: PreviewDetail): Breadcrumb[] {
     return [
       {
-        label: previewIndexPageTitles.get(this.index) ?? '',
+        label: previewIndexPageTitles.get(this.domainType) ?? '',
         uiSref: 'app.container.preview.index',
         uiParams: {
           branch: this.branch,

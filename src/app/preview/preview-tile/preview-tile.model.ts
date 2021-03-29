@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { PreviewDomainType } from "@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model";
+import { PreviewIndexType } from "@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model";
 
 export interface PreviewTileUiParams {
   branch?: string;
-  index?: PreviewDomainType;
+  index?: PreviewIndexType;
 }
 
 export interface PreviewTile {
