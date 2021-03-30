@@ -139,7 +139,14 @@ export class PreviewDetailComponent implements OnInit {
       links.push({
         label: 'National Codes',
         anchor: 'national-codes'
-      })
+      });
+    }
+
+    if (detail.specifications) {
+      links.push({
+        label: 'Specification',
+        anchor: 'specification'
+      });
     }
 
     if (this.aliases.length > 0) {

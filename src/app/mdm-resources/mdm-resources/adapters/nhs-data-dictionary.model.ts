@@ -200,6 +200,7 @@ export interface PreviewDetail {
   alsoKnownAs?: PreviewAliases;
   nationalCodes?: PreviewCodeReference[];
   dataElements?: PreviewDataElementReference[];
+  specifications?: string;
 }
 
 export type PreviewDetailResponse = MdmResourcesResponse<PreviewDetail>

@@ -71,6 +71,12 @@
                         </div>
                     </mdm-preview-expandable-panel>
 
+                    <!-- Specification -->
+                    <mdm-preview-expandable-panel *ngIf="detail.specifications" title="Specification"
+                        [anchor]="getTableOfContentsLink('Specification')?.anchor">
+                        <div class="- topic/body body" [innerHTML]="detail.specifications"></div>
+                    </mdm-preview-expandable-panel>
+
                     <!-- Also Known As -->
                     <mdm-preview-expandable-panel *ngIf="aliases.length > 0" title="Also Known As"
                         [anchor]="getTableOfContentsLink('Also Known As')?.anchor">
