@@ -21,10 +21,22 @@ import { DomainType, MdmResourcesResponse } from "../mdm-resources.model";
  */
 export interface Branch {
   /**
-   * The name/label of the branch.
+   * The unique name of the branch
    */
-  label: string
+  branchName: string;
+
+  /**
+   * The display label for the branch
+   */
+  label: string;
+
+  /**
+   * The UUID of the exact model this branch refers to.
+   */
+  modelId: string;
 }
+
+export type BranchResponse = MdmResourcesResponse<Branch[]>;
 
 /**
  * Represents a statistics item to attach to a list of statistics.
@@ -83,9 +95,42 @@ export enum PreviewDomainType {
   DataSets = 'dataSets',
   BusinessDefinitions = 'businessDefinitions',
   SupportingInformation = 'supportingInformation',
+  XmlSchemaConstraint = 'xmlSchemaConstraints',
+  All = 'allItemsIndex'
+}
+
+/**
+ * Represents the different preview index routes to access.
+ * 
+ * @see previewIndexDomainMap
+ */
+export enum PreviewIndexType {
+  DataElement = 'element',
+  Attribute = 'attribute',
+  DataClass = 'class',
+  DataSet = 'dataSet',
+  BusinessDefinition = 'businessDefinition',
+  SupportingInformation = 'supportingInformation',
   XmlSchemaConstraint = 'xmlSchemaConstraint',
   All = 'allItemsIndex'
 }
+
+/**
+ * Maps a `PreviewIndexType` to a `PreviewDomainType`
+ * 
+ * This map is required because the page routes do not necessarily match to the backend endpoints. For example, the
+ * page `#/preview/element` would trigger the backend endpoint `api/preview/{branch}/elements`
+ */
+export const previewIndexDomainMap = new Map<PreviewIndexType, PreviewDomainType>([
+  [PreviewIndexType.DataElement, PreviewDomainType.DataElements],
+  [PreviewIndexType.Attribute, PreviewDomainType.Attributes],
+  [PreviewIndexType.DataClass, PreviewDomainType.DataClasses],
+  [PreviewIndexType.DataSet, PreviewDomainType.DataSets],
+  [PreviewIndexType.BusinessDefinition, PreviewDomainType.BusinessDefinitions],
+  [PreviewIndexType.SupportingInformation, PreviewDomainType.SupportingInformation],
+  [PreviewIndexType.XmlSchemaConstraint, PreviewDomainType.XmlSchemaConstraint],
+  [PreviewIndexType.All, PreviewDomainType.All]
+]);
 
 export const previewIndexPageTitles = new Map<PreviewDomainType, string>([
   [PreviewDomainType.DataElements, 'Data Elements'],
@@ -132,6 +177,25 @@ export interface PreviewAliases {
   [context: string]: string;
 }
 
+export interface PreviewCodeReference {
+  code: string;
+  description: string;
+}
+
+export interface PreviewElementReference {
+  catalogueId: string;
+  name: string;
+  stereotype: Stereotype;
+}
+
+export interface PreviewRelationship {
+  key: string;
+  relationship: string;
+  catalogueId: string;
+  name: string;
+  stereotype: Stereotype;
+}
+
 /**
  * Represents the detail of a particular Data Dictionary preview page.
  */
@@ -140,8 +204,27 @@ export interface PreviewDetail {
   name: string;
   stereotype: Stereotype;
   shortDescription?: string;
+  formatLength?: string;
   description?: string;
+  relationships?: PreviewRelationship[];
   alsoKnownAs?: PreviewAliases;
+  nationalCodes?: PreviewCodeReference[];
+  dataElements?: PreviewElementReference[];
+  attributes?: PreviewElementReference[];
+  specifications?: string;
 }
 
 export type PreviewDetailResponse = MdmResourcesResponse<PreviewDetail>
+
+/**
+ * Represents a reference to another Mauro entity which is related or used in.
+ */
+export interface PreviewReference {
+  type: string;
+  name: string;
+  stereotype: Stereotype;
+  componentId: string;
+  text: string;
+}
+
+export type PreviewReferenceResponse = MdmResourcesResponse<PreviewReference[]>

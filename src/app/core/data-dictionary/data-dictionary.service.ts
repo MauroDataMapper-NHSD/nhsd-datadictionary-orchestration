@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
+import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Branch, PreviewDetail, PreviewDomainType, PreviewIndexItem, Statistics } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { Branch, PreviewDetail, PreviewDomainType, PreviewIndexItem, PreviewReference, Statistics } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { NhsDataDictionaryService } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -91,6 +92,50 @@ export class DataDictionaryService {
       .pipe(
         catchError(error => {
           this.logging.error(`There was a problem getting the preview detail ${domainType} for the "${branch}" branch.`, error);
+          return throwError(error);
+        })
+      );
+  }
+
+  getPreviewReferences(branch: string, domainType: PreviewDomainType, id: string): Observable<PreviewReference[]> {
+    return this.nhsDataDictionary
+      .previewReferences(branch, domainType, id)
+      .pipe(
+        catchError(error => {
+          this.logging.error(`There was a problem getting the preview references for ${domainType} for the "${branch}" branch.`, error);
+          return throwError(error);
+        })
+      );
+  }
+
+  generateDita(branch: string): Observable<HttpResponse<Blob>> {
+    return this.nhsDataDictionary
+      .generateDita(branch)
+      .pipe(
+        catchError(error => {
+          this.logging.error(`There was a problem generating the DITA for the "${branch}" branch.`, error);
+          return throwError(error);
+        })
+      );
+  }
+
+  updateTerminologies(branch: string): Observable<any> {
+    return this.nhsDataDictionary
+      .updateTerminologies(branch)
+      .pipe(
+        catchError(error => {
+          this.logging.error(`There was a problem updating the terminologies from OntoServer for the "${branch}" branch.`, error);
+          return throwError(error);
+        })
+      );
+  }
+
+  uploadCodeSets(branch: string): Observable<any> {
+    return this.nhsDataDictionary
+      .uploadCodeSets(branch)
+      .pipe(
+        catchError(error => {
+          this.logging.error(`There was a problem uploadng the code sets to OntoServer for the "${branch}" branch.`, error);
           return throwError(error);
         })
       );

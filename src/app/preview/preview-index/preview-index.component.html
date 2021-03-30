@@ -18,9 +18,10 @@
 
 <div class="row">
     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-        <div *ngIf="isLoading">
-            <ngx-skeleton-loader count="10"></ngx-skeleton-loader>
-        </div>
+        <mdm-alert *ngIf="isLoading" alertStyle="info" [showIcon]="true">
+            <p>Loading content for preview, please wait...</p>
+            <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+        </mdm-alert>
         <article *ngIf="!isLoading" role="article" aria-labelledby="ariaid-title1">
             <article>
                 <h1 class="title topictitle1">{{getIndexTitle()}}</h1>

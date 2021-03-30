@@ -15,7 +15,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { PreviewDomainType } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { PreviewIndexType } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/core';
 import { PreviewTile } from '../preview-tile/preview-tile.model';
 
@@ -27,18 +27,6 @@ import { PreviewTile } from '../preview-tile/preview-tile.model';
 export class PreviewHomeComponent implements OnInit {
 
   readonly tiles: PreviewTile[] = [
-    // {
-    //   id: 'about',
-    //   title: 'About the NHS Data Model and Dictionary',
-    //   description: 'The purpose of the NHS Data Model and Dictionary and other complementary resources and services.',
-    //   uiSref: 'app.container.preview.about'
-    // },
-    // {
-    //   id: 'contact_us_and_faq_overview_overview',
-    //   title: 'Help and guidance',
-    //   description: 'Contact our helpdesk to submit a query and guidance relating to the content of the NHS Data Model and Dictionary.',
-    //   uiSref: 'app.container.preview.about'
-    // },
     {
       id: 'dataSet_overview',
       title: 'Data Sets',
@@ -46,7 +34,7 @@ export class PreviewHomeComponent implements OnInit {
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        index: PreviewDomainType.DataSets
+        index: PreviewIndexType.DataSet
       }
     },
     {
@@ -56,7 +44,7 @@ export class PreviewHomeComponent implements OnInit {
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        index: PreviewDomainType.DataElements
+        index: PreviewIndexType.DataElement
       }
     },
     {
@@ -66,7 +54,7 @@ export class PreviewHomeComponent implements OnInit {
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        index: PreviewDomainType.Attributes
+        index: PreviewIndexType.Attribute
       }
     },
     {
@@ -76,7 +64,7 @@ export class PreviewHomeComponent implements OnInit {
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        index: PreviewDomainType.DataClasses
+        index: PreviewIndexType.DataClass
       }
     },
     {
@@ -86,7 +74,7 @@ export class PreviewHomeComponent implements OnInit {
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        index: PreviewDomainType.BusinessDefinitions
+        index: PreviewIndexType.BusinessDefinition
       }
     },
     {
@@ -96,7 +84,7 @@ export class PreviewHomeComponent implements OnInit {
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        index: PreviewDomainType.SupportingInformation
+        index: PreviewIndexType.SupportingInformation
       }
     },
     {
@@ -106,7 +94,7 @@ export class PreviewHomeComponent implements OnInit {
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        index: PreviewDomainType.XmlSchemaConstraint
+        index: PreviewIndexType.XmlSchemaConstraint
       }
     },
     {
@@ -116,7 +104,7 @@ export class PreviewHomeComponent implements OnInit {
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        index: PreviewDomainType.All
+        index: PreviewIndexType.All
       }
     },
   ];

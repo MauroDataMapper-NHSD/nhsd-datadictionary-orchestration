@@ -53,10 +53,10 @@ export class BranchIntegrityComponent implements OnInit {
     this.running = true;
 
     this.dataDictionary
-      .runIntegrityChecks(this.branch.label)
+      .runIntegrityChecks(this.branch.branchName)
       .pipe(
         catchError(error => {
-          this.logging.error(`There was a problem running integrity checks on branch ${this.branch?.label}.`, error);
+          this.logging.error(`There was a problem running integrity checks on branch ${this.branch?.branchName}.`, error);
           return [];
         }),
         finalize(() => this.running = false)

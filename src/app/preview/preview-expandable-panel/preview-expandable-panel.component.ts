@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'mdm-preview-expandable-panel',
@@ -32,6 +32,12 @@ export class PreviewExpandablePanelComponent implements OnInit {
   @Input()
   expanded: boolean = true;
 
+  @Output()
+  afterExpand = new EventEmitter<void>();
+
+  @Output()
+  afterCollapse = new EventEmitter<void>();
+
   get expandButtonIcon() {
     return this.expanded ? 'fa-chevron-down' : 'fa-chevron-right';
   }
@@ -43,6 +49,12 @@ export class PreviewExpandablePanelComponent implements OnInit {
 
   onExpandCollapse() {
     this.expanded = !this.expanded;
+    if (this.expanded) {
+      this.afterExpand.emit();
+    }
+    else {
+      this.afterCollapse.emit();
+    }
   }
 
 }

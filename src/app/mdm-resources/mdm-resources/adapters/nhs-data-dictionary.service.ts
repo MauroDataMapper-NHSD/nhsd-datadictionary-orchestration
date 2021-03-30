@@ -15,10 +15,11 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
-import { Branch, IntegrityCheck, IntegrityCheckResponse, PreviewDetail, PreviewDetailResponse, PreviewDomainType, PreviewIndexItem, PreviewIndexResponse, Statistics, StatisticsResponse } from './nhs-data-dictionary.model';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Branch, BranchResponse, IntegrityCheck, IntegrityCheckResponse, PreviewDetail, PreviewDetailResponse, PreviewDomainType, PreviewIndexItem, PreviewIndexResponse, PreviewReference, PreviewReferenceResponse, Statistics, StatisticsResponse } from './nhs-data-dictionary.model';
 import { MdmResourcesService } from '../mdm-resources.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -28,19 +29,11 @@ export class NhsDataDictionaryService {
   constructor(private resources: MdmResourcesService) { }
 
   availableBranches(): Observable<Branch[]> {
-    // TODO: replace with real endpoint
-    return of([
-      {
-        label: 'main'
-      },
-      // {
-      //   label: 'test-branch'
-      // },
-      // {
-      //   label: 'edits'
-      // }
-    ])
-    .pipe(delay(1000));
+    return this.resources.dataDictionary
+      .availableBranches()
+      .pipe(
+        map((response: BranchResponse) => response.body)
+      );
   }  
 
   statistics(branch: string): Observable<Statistics> {
@@ -73,6 +66,26 @@ export class NhsDataDictionaryService {
       .pipe(
         map((response: PreviewDetailResponse) => response.body)
       );
+  }
+
+  previewReferences(branch: string, domainType: PreviewDomainType, id: string): Observable<PreviewReference[]> {
+    return this.resources.dataDictionary
+      .previewReferences(branch, domainType, id)
+      .pipe(
+        map((response: PreviewReferenceResponse) => response.body)
+      );
+  }
+
+  generateDita(branch: string): Observable<HttpResponse<Blob>> {
+    return this.resources.dataDictionary.generateDita(branch);
+  }
+
+  updateTerminologies(branch: string): Observable<any> {
+    return this.resources.dataDictionary.updateTerminologies(branch);
+  }
+
+  uploadCodeSets(branch: string): Observable<any> {
+    return this.resources.dataDictionary.uploadCodeSets(branch);
   }
 }
 

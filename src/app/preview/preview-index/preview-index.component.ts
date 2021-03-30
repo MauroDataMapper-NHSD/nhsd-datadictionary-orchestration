@@ -19,7 +19,7 @@ import { Component, OnInit } from '@angular/core';
 import { PreviewIndexGroup } from '@mdm/core/data-dictionary/data-dictionary.model';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
-import { PreviewDomainType, previewIndexPageTitles } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { PreviewDomainType, previewIndexDomainMap, previewIndexPageTitles, PreviewIndexType } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/core';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
@@ -35,7 +35,8 @@ export class PreviewIndexComponent implements OnInit {
 
   isLoading = false;
   branch: string = '';
-  index: PreviewDomainType = PreviewDomainType.All;
+  index: PreviewIndexType = PreviewIndexType.All;
+  domainType: PreviewDomainType = PreviewDomainType.All;
   topics: PreviewIndexGroup[] = [];
   breadcrumbs: Breadcrumb[] = [];
   tableOfContentLinks: TableOfContentsLink[] = [];  
@@ -55,7 +56,9 @@ export class PreviewIndexComponent implements OnInit {
       this.toastr.error('No branch and/or index type provided for Preview Index page.');
       this.stateHandler.goTo(CommonUiStates.PreviewHome);
       return;
-    }    
+    }
+
+    this.domainType = previewIndexDomainMap.get(this.index) ?? PreviewDomainType.All;
 
     // Simulate a new static page loaded
     this.viewportScroller.scrollToPosition([0, 0]);
@@ -73,7 +76,7 @@ export class PreviewIndexComponent implements OnInit {
 
     this.isLoading = true;
     this.dataDictionary
-      .getPreviewIndex(this.branch, this.index)
+      .getPreviewIndex(this.branch, this.domainType)
       .pipe(
         finalize(() => this.isLoading = false)
       )
@@ -89,7 +92,7 @@ export class PreviewIndexComponent implements OnInit {
   }
 
   getIndexTitle() {
-    return previewIndexPageTitles.get(this.index) ?? '';
+    return previewIndexPageTitles.get(this.domainType) ?? '';
   }
 
   getTableOfContentsLink(topic: PreviewIndexGroup): TableOfContentsLink | undefined {

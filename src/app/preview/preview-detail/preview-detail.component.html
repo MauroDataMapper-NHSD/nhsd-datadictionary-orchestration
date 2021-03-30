@@ -19,39 +19,113 @@
 <div class="row">
     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
         <div class="mdm-preview-detail">
-            <div *ngIf="isLoading">
-                <ngx-skeleton-loader count="10"></ngx-skeleton-loader>
-            </div>
+            <mdm-alert *ngIf="isLoading" alertStyle="info" [showIcon]="true">
+                <p>Loading content for preview, please wait...</p>
+                <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+            </mdm-alert>
             <article *ngIf="!isLoading && detail" role="article" aria-labelledby="ariaid-title1">
                 <article class="nested0">
+                    <!-- Title -->
                     <h1 class="title topictitle1 {{detail!.stereotype}}">{{detail!.name}}</h1>
 
+                    <!-- Short Description -->
                     <div *ngIf="detail!.shortDescription" class="- topic/body body">
                         <p class="- topic/shortdesc shortdesc">{{detail!.shortDescription}}</p>
                     </div>
 
-                    <!-- <article class="- topic/topic topic nested1" aria-labelledby="ariaid-title2"
-                        id="element_abbreviated_mental_test_score.format___length">
-                        <h2 class="- topic/title title topictitle2" id="ariaid-title2"><span
-                                class="wh_expand_btn expanded" role="button" aria-expanded="true" tabindex="0"
-                                aria-label="Collapse"></span>Format /
-                            Length<span class="permalink"></span></h2>
-
+                    <!-- Format / Length -->
+                    <mdm-preview-expandable-panel *ngIf="detail.description" title="Format / Length"
+                        [anchor]="getTableOfContentsLink('Format / Length')?.anchor">
                         <div class="- topic/body body">
-                            <p class="- topic/p p">max n2</p>
+                            <div class="- topic/div div">
+                                <p class="- topic/p p" [innerHTML]="detail!.formatLength">
+                                </p>
+                            </div>
                         </div>
-                    </article> -->
+                    </mdm-preview-expandable-panel>
 
-                    <mdm-preview-expandable-panel *ngIf="detail!.description" title="Description" [anchor]="getTableOfContentsLink('Description')?.anchor">
+                    <!-- Description -->
+                    <mdm-preview-expandable-panel *ngIf="detail.description" title="Description"
+                        [anchor]="getTableOfContentsLink('Description')?.anchor">
                         <div class="- topic/body body">
                             <div class="- topic/div div">
                                 <p class="- topic/p p" [innerHTML]="detail!.description">
                                 </p>
                             </div>
                         </div>
-                    </mdm-preview-expandable-panel>                   
+                    </mdm-preview-expandable-panel>
 
-                    <mdm-preview-expandable-panel *ngIf="detail!.alsoKnownAs" title="Also Known As" [anchor]="getTableOfContentsLink('Also Known As')?.anchor">
+                    <!-- National Codes -->
+                    <mdm-preview-expandable-panel *ngIf="detail.nationalCodes && detail.nationalCodes.length > 0"
+                        title="National Codes" [anchor]="getTableOfContentsLink('National Codes')?.anchor">
+                        <div class="- topic/body body">
+                            <div class="simpletable-container">
+                                <table class="simpletable table table-striped table-sm">
+                                    <colgroup>
+                                        <col style="width:20%">
+                                        <col style="width:80%">
+                                    </colgroup>
+                                    <thead>
+                                        <tr class="thead-light">
+                                            <th>Code</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let nationalCode of detail.nationalCodes">
+                                            <td>{{nationalCode.code}}</td>
+                                            <td>{{nationalCode.description}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </mdm-preview-expandable-panel>
+
+                    <!-- Specification -->
+                    <mdm-preview-expandable-panel *ngIf="detail.specifications" title="Specification"
+                        [anchor]="getTableOfContentsLink('Specification')?.anchor">
+                        <div class="- topic/body body" [innerHTML]="detail.specifications"></div>
+                    </mdm-preview-expandable-panel>
+
+                    <!-- Relationships -->
+                    <mdm-preview-expandable-panel *ngIf="detail.relationships && detail.relationships.length > 0"
+                        title="Relationships" [anchor]="getTableOfContentsLink('Relationships')?.anchor">
+                        <div class="- topic/body body">
+                            <p class="- topic/p p">Each {{detail.name}}</p>
+                            <div class="simpletable-container">
+                                <table class="- topic/simpletable simpletable table table-striped table-sm">
+                                    <colgroup>
+                                        <col style="width:9.090909090909092%">
+                                        <col style="width:45.45454545454545%">
+                                        <col style="width:45.45454545454545%">
+                                    </colgroup>
+                                    <thead>
+                                        <tr class="thead-light">
+                                            <th>Key</th>
+                                            <th>Relationship</th>
+                                            <th>Class</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let relationship of detail.relationships">
+                                            <td>{{relationship.key}}</td>
+                                            <td>{{relationship.relationship}}</td>
+                                            <td>
+                                                <a class="{{relationship.stereotype}}"
+                                                    uiSref="app.container.preview.detail"
+                                                    [uiParams]="{ branch: branch, index: relationship.stereotype, id: relationship.catalogueId }">{{relationship.name}}</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </mdm-preview-expandable-panel>
+
+                    <!-- Also Known As -->
+                    <mdm-preview-expandable-panel *ngIf="aliases.length > 0" title="Also Known As"
+                        [anchor]="getTableOfContentsLink('Also Known As')?.anchor">
                         <div class="- topic/body body">
                             <p class="- topic/p p">This {{noun}} is also known by these names:</p>
 
@@ -78,116 +152,77 @@
                         </div>
                     </mdm-preview-expandable-panel>
 
-                    <!-- <article class="- topic/topic topic nested1" aria-labelledby="ariaid-title5"
-                        id="element_abbreviated_mental_test_score.where_used">
-                        <h2 class="- topic/title title topictitle2" id="ariaid-title5"><span
-                                class="wh_expand_btn expanded" role="button" aria-expanded="true" tabindex="0"
-                                aria-label="Collapse"></span>Where Used<span class="permalink"></span></h2>
-
-                        <div class="- topic/body body">
+                    <!-- Where Used -->
+                    <mdm-preview-expandable-panel *ngIf="hasReferencesSection" title="Where Used" [expanded]="false"
+                        [anchor]="getTableOfContentsLink('Where Used')?.anchor"
+                        (afterExpand)="onReferencesSectionExpanded()">
+                        <mdm-alert *ngIf="isLoadingReferences" alertStyle="info" [showIcon]="true">
+                            <p>Loading references, please wait...</p>
+                            <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+                        </mdm-alert>
+                        <div *ngIf="!isLoadingReferences" class="- topic/body body">
                             <div class="simpletable-container">
-                                <table class="- topic/simpletable simpletable table table-striped table-sm">
+                                <table class="simpletable table table-striped table-sm">
                                     <colgroup>
                                         <col style="width:16.666666666666664%">
                                         <col style="width:50%">
                                         <col style="width:33.33333333333333%">
                                     </colgroup>
                                     <thead>
-                                        <tr class="- topic/sthead sthead thead-light">
-                                            <th class="- topic/stentry stentry" scope="col"
-                                                id="element_abbreviated_mental_test_score.where_used__stentry__1">Type
-                                            </th>
-                                            <th class="- topic/stentry stentry" scope="col"
-                                                id="element_abbreviated_mental_test_score.where_used__stentry__2">Link
-                                            </th>
-                                            <th class="- topic/stentry stentry" scope="col"
-                                                id="element_abbreviated_mental_test_score.where_used__stentry__3">How
-                                                used</th>
+                                        <tr class="thead-light">
+                                            <th>Type</th>
+                                            <th>Link</th>
+                                            <th>How used</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="- topic/strow strow">
-                                            <td class="- topic/stentry stentry"
-                                                headers="element_abbreviated_mental_test_score.where_used__stentry__1">
-                                                Data Set
+                                        <tr *ngFor="let reference of references">
+                                            <td>{{reference.type}}</td>
+                                            <td>
+                                                <a class="{{reference.stereotype}}"
+                                                    uiSref="app.container.preview.detail"
+                                                    [uiParams]="{ branch: branch, index: reference.stereotype, id: reference.componentId }"
+                                                    title="{{reference.name}}">{{reference.name}}</a>
                                             </td>
-                                            <td class="- topic/stentry stentry"
-                                                headers="element_abbreviated_mental_test_score.where_used__stentry__2">
-                                                <a class="- topic/xref xref dataSet"
-                                                    href="../data_sets/clinical_data_sets/cosds/cancer_outcomes_and_services_data_set_-_breast.html"
-                                                    title="Cancer Outcomes and Services Data Set - Breast">Cancer
-                                                    Outcomes and
-                                                    Services Data Set - Breast</a>
-                                            </td>
-                                            <td class="- topic/stentry stentry"
-                                                headers="element_abbreviated_mental_test_score.where_used__stentry__3">
-                                                references in
-                                                description ABBREVIATED MENTAL TEST SCORE</td>
-                                        </tr>
-                                        <tr class="- topic/strow strow">
-                                            <td class="- topic/stentry stentry"
-                                                headers="element_abbreviated_mental_test_score.where_used__stentry__1">
-                                                Data
-                                                Element
-                                            </td>
-                                            <td class="- topic/stentry stentry"
-                                                headers="element_abbreviated_mental_test_score.where_used__stentry__2">
-                                                <a class="- topic/xref xref element"
-                                                    href="abbreviated_mental_test_score.html"
-                                                    title="The score is&nbsp;in the range 0 to&nbsp;10.">ABBREVIATED
-                                                    MENTAL TEST
-                                                    SCORE</a>
-                                            </td>
-                                            <td class="- topic/stentry stentry"
-                                                headers="element_abbreviated_mental_test_score.where_used__stentry__3">
-                                                references in
-                                                description ABBREVIATED MENTAL TEST SCORE</td>
-                                        </tr>
-                                        <tr class="- topic/strow strow">
-                                            <td class="- topic/stentry stentry"
-                                                headers="element_abbreviated_mental_test_score.where_used__stentry__1">
-                                                XML
-                                                Schema
-                                                Constraint</td>
-                                            <td class="- topic/stentry stentry"
-                                                headers="element_abbreviated_mental_test_score.where_used__stentry__2">
-                                                <a class="- topic/xref xref xmlSchemaConstraint"
-                                                    href="../xml_schema_constraints/cancer_outcomes_and_services_data_set_xml_schema_constraints.html"
-                                                    title="Cancer Outcomes and Services Data Set XML Schema Constraints">Cancer
-                                                    Outcomes and Services Data Set XML Schema Constraints</a>
-                                            </td>
-                                            <td class="- topic/stentry stentry"
-                                                headers="element_abbreviated_mental_test_score.where_used__stentry__3">
-                                                references in
-                                                description ABBREVIATED MENTAL TEST SCORE</td>
+                                            <td>{{reference.text}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                    </article> -->
+                    </mdm-preview-expandable-panel>
 
-                    <!-- <article class="- topic/topic topic nested1" aria-labelledby="ariaid-title6"
-                        id="element_abbreviated_mental_test_score.attribute">
-                        <h2 class="- topic/title title topictitle2" id="ariaid-title6"><span
-                                class="wh_expand_btn expanded" role="button" aria-expanded="true" tabindex="0"
-                                aria-label="Collapse"></span>Attribute<span class="permalink"></span></h2>
-
+                    <!-- Data Elements -->
+                    <mdm-preview-expandable-panel *ngIf="detail.dataElements && detail.dataElements.length > 0"
+                        title="Data Elements" [anchor]="getTableOfContentsLink('Data Elements')?.anchor">
                         <div class="- topic/body body">
-                            <ul class="- topic/ul ul">
-                                <li class="- topic/li li">
-                                    <a class="- topic/xref xref attribute" href="../attributes/person_score.html"
-                                        title="The score taken from an ASSESSMENT TOOL.">PERSON SCORE</a>
+                            <ul>
+                                <li *ngFor="let element of detail.dataElements">
+                                    <a class="{{element.stereotype}}" uiSref="app.container.preview.detail"
+                                        [uiParams]="{ branch: branch, index: element.stereotype, id: element.catalogueId }">{{element.name}}</a>
                                 </li>
                             </ul>
                         </div>
-                    </article> -->
+                    </mdm-preview-expandable-panel>
+
+                    <!-- Attributes (Bullet List)-->
+                    <mdm-preview-expandable-panel *ngIf="detail.attributes && detail.attributes.length > 0"
+                        title="Attributes" [anchor]="getTableOfContentsLink('Attributes')?.anchor">
+                        <div class="- topic/body body">
+                            <ul>
+                                <li *ngFor="let element of detail.attributes">
+                                    <a class="{{element.stereotype}}" uiSref="app.container.preview.detail"
+                                        [uiParams]="{ branch: branch, index: element.stereotype, id: element.catalogueId }">{{element.name}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </mdm-preview-expandable-panel>
                 </article>
             </article>
         </div>
     </div>
     <nav role="navigation" id="toc" class="col-lg-2 d-none d-lg-block navbar d-print-none">
-        <mdm-preview-toc [links]="tableOfContentLinks" (navigating)="onTableOfContentsClick($event)">        
+        <mdm-preview-toc [links]="tableOfContentLinks" (navigating)="onTableOfContentsClick($event)">
         </mdm-preview-toc>
     </nav>
 </div>

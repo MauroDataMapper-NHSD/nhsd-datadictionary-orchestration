@@ -14,17 +14,7 @@
  * limitations under the License.
  */
 
-import { PreviewIndexType } from "@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model";
-
-export interface PreviewTileUiParams {
-  branch?: string;
-  index?: PreviewIndexType;
-}
-
-export interface PreviewTile {
-  id: string;
-  title: string;
-  description: string;
-  uiSref: string;
-  uiParams?: PreviewTileUiParams;
-}
+ export interface ProgressDialogOptions {
+    title?: string;
+    message: string;
+  }

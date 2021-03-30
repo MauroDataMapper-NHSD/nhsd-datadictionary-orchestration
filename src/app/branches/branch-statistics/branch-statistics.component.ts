@@ -57,7 +57,7 @@ export class BranchStatisticsComponent implements OnInit, OnChanges {
     this.loading = true;
 
     this.dataDictionary
-      .getBranchStatistics(this.branch.label)
+      .getBranchStatistics(this.branch.branchName)
       .pipe(
         finalize(() => this.loading = false)
       )

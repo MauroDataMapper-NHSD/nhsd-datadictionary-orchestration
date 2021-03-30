@@ -15,8 +15,14 @@
  */
 
 import { IMdmQueryStringParams, IMdmRestHandlerOptions, MdmResource } from "@maurodatamapper/mdm-resources";
+import { throwError } from "rxjs";
 
 export class MdmPluginNhsDataDictionaryResource extends MdmResource {
+
+  availableBranches(queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
+    const url = `${this.apiEndpoint}/nhsdd/branches`;
+    return this.simpleGet(url, queryStringParams, restHandlerOptions);
+  }
 
   statistics(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/statistics`;
@@ -32,4 +38,26 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/preview/${domainType}` + (id ? `/${id}` : '');
     return this.simpleGet(url, queryStringParams, restHandlerOptions);
   }  
+
+  previewReferences(branch: string, domainType: string, id: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
+    const url = `${this.apiEndpoint}/nhsdd/${branch}/preview/${domainType}/${id}/whereUsed`;
+    return this.simpleGet(url, queryStringParams, restHandlerOptions);
+  }
+
+  generateDita(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
+    const url = `${this.apiEndpoint}/nhsdd/${branch}/publish/dita`;
+    const restOptions = {
+      ...restHandlerOptions,
+      responseType: 'blob'
+    };
+    return this.simpleGet(url, queryStringParams, restOptions);
+  }
+
+  updateTerminologies(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
+    return throwError('updateTerminologies endpoint not implemented!');
+  }
+
+  uploadCodeSets(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
+    return throwError('uploadCodeSets endpoint not implemented!');
+  }
 }
