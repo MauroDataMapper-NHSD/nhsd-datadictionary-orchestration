@@ -42,4 +42,13 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/preview/${domainType}/${id}/whereUsed`;
     return this.simpleGet(url, queryStringParams, restHandlerOptions);
   }
+
+  generateDita(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
+    const url = `${this.apiEndpoint}/nhsdd/${branch}/publish/dita`;
+    const restOptions = {
+      ...restHandlerOptions,
+      responseType: 'blob'
+    };
+    return this.simpleGet(url, queryStringParams, restOptions);
+  }
 }

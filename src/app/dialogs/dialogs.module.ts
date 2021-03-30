@@ -18,18 +18,21 @@ import { NgModule } from '@angular/core';
 import { ConfirmationModalComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { SignInModalComponent } from './sign-in-dialog/sign-in-dialog.component';
 import { SharedModule } from '@mdm/shared/shared.module';
+import { ProgressDialogComponent } from './progress-dialog/progress-dialog.component';
 
 @NgModule({
   declarations: [
     ConfirmationModalComponent,
-    SignInModalComponent
+    SignInModalComponent,
+    ProgressDialogComponent
   ],
   imports: [
     SharedModule
   ],
   exports: [
     ConfirmationModalComponent,
-    SignInModalComponent
+    SignInModalComponent,
+    ProgressDialogComponent
   ]
 })
 export class DialogsModule { }

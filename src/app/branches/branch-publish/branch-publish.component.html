@@ -18,33 +18,33 @@
     <div class="mdm-branch-publish">
         <div class="mdm-branch-publish__header">
             <p>Carry out the steps required to publish the <span class="branch"><i class="fas fa-code-branch"></i>{{branch?.branchName}}</span> branch of the Data Dictionary.</p>
-        </div>
+        </div>        
         <div class="mdm-branch-publish__actions">
             <ol>
                 <li>
-                    <div class="mdm-branch-publish__action-item">                        
-                        <span>Generate DITA</span>
-                        <button mat-flat-button color="primary">
-                            <i class="fas fa-tools"></i>
-                            Generate
+                    <div class="mdm-branch-publish__action-item">
+                        <span>Update Terminologies <em>from</em> OntoServer</span>
+                        <button mat-flat-button color="primary" [disabled]="isBusy">
+                            <i class="fas fa-sync-alt"></i>
+                            Update
                         </button>
                     </div>
                 </li>
                 <li>
                     <div class="mdm-branch-publish__action-item">
                         <span>Upload Code Sets <em>to</em> OntoServer</span>
-                        <button mat-flat-button color="primary">
+                        <button mat-flat-button color="primary" [disabled]="isBusy">
                             <i class="fas fa-upload"></i>
                             Upload
                         </button>
                     </div>
-                </li>
+                </li>                
                 <li>
-                    <div class="mdm-branch-publish__action-item">
-                        <span>Update Terminologies <em>from</em> OntoServer</span>
-                        <button mat-flat-button color="primary">
-                            <i class="fas fa-sync-alt"></i>
-                            Update
+                    <div class="mdm-branch-publish__action-item">                        
+                        <span>Generate DITA files</span>
+                        <button mat-flat-button color="primary" (click)="generateDita()" [disabled]="isBusy">
+                            <i class="fas fa-tools"></i>
+                            Generate
                         </button>
                     </div>
                 </li>

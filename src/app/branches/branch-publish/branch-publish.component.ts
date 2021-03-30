@@ -15,7 +15,14 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
+import { ProgressDialogComponent } from '@mdm/dialogs/progress-dialog/progress-dialog.component';
+import { ProgressDialogOptions } from '@mdm/dialogs/progress-dialog/progress-dialog.model';
 import { Branch } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { ToastrService } from 'ngx-toastr';
+import { finalize } from 'rxjs/operators';
+import * as fileSaver from 'file-saver';
 
 @Component({
   selector: 'mdm-branch-publish',
@@ -26,9 +33,59 @@ export class BranchPublishComponent implements OnInit {
 
   @Input() branch?: Branch;
 
-  constructor() { }
+  isBusy = false;
+
+  constructor(
+    private dataDictionary: DataDictionaryService,
+    private dialog: MatDialog,
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
+  }
+
+  generateDita() {
+    if (!this.branch || this.isBusy) {
+      return;
+    }
+
+    const dialogRef = this.dialog.open<ProgressDialogComponent, ProgressDialogOptions, void>(
+      ProgressDialogComponent,
+      {
+        data: {
+          title: 'DITA files',
+          message: `Generating the DITA files now for the branch "${this.branch?.branchName}". This will take some time, please wait...`
+        }
+      });
+
+    this.isBusy = true;
+
+    this.dataDictionary
+      .generateDita(this.branch.branchName)
+      .pipe(
+        finalize(() => {
+          this.isBusy = false;
+          dialogRef.close();
+        })
+      )
+      .subscribe(response => {
+        if (!response.body) {
+          this.toastr.warning('DITA file generation finished but no files returned.');
+          return;
+        }
+
+        this.toastr.success(`DITA files generated successfully for branch "${this.branch?.branchName}"`);
+
+        const blob = new Blob(
+          [response.body],
+          {
+            type: response.headers.get('content-type') ?? 'application/zip'
+          });
+
+        const contentDisposition = response.headers.get('content-disposition');
+        const filename = contentDisposition?.match(/filename="(.+)"/)?.[1] ?? 'dita.zip';
+
+        fileSaver.saveAs(blob, filename);
+      });    
   }
 
 }

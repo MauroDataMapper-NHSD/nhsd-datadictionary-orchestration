@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Branch, PreviewDetail, PreviewDomainType, PreviewIndexItem, PreviewReference, Statistics } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { NhsDataDictionaryService } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.service';
@@ -105,5 +106,16 @@ export class DataDictionaryService {
           return throwError(error);
         })
       );
+  }
+
+  generateDita(branch: string): Observable<HttpResponse<Blob>> {
+    return this.nhsDataDictionary
+      .generateDita(branch)
+      .pipe(
+        catchError(error => {
+          this.logging.error(`There was a problem generating the DITA for the "${branch}" branch.`, error);
+          return throwError(error);
+        })
+      )
   }
 }

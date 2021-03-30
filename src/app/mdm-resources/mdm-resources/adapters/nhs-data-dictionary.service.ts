@@ -15,10 +15,11 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Branch, BranchResponse, IntegrityCheck, IntegrityCheckResponse, PreviewDetail, PreviewDetailResponse, PreviewDomainType, PreviewIndexItem, PreviewIndexResponse, PreviewReference, PreviewReferenceResponse, Statistics, StatisticsResponse } from './nhs-data-dictionary.model';
 import { MdmResourcesService } from '../mdm-resources.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -73,6 +74,10 @@ export class NhsDataDictionaryService {
       .pipe(
         map((response: PreviewReferenceResponse) => response.body)
       );
+  }
+
+  generateDita(branch: string): Observable<HttpResponse<Blob>> {
+    return this.resources.dataDictionary.generateDita(branch);
   }
 }
 
