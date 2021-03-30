@@ -165,6 +165,17 @@ export interface PreviewAliases {
   [context: string]: string;
 }
 
+export interface PreviewCodeReference {
+  code: string;
+  description: string;
+}
+
+export interface PreviewDataElementReference {
+  catalogueId: string;
+  name: string;
+  stereotype: Stereotype
+}
+
 /**
  * Represents the detail of a particular Data Dictionary preview page.
  */
@@ -175,6 +186,8 @@ export interface PreviewDetail {
   shortDescription?: string;
   description?: string;
   alsoKnownAs?: PreviewAliases;
+  nationalCodes?: PreviewCodeReference[];
+  dataElements?: PreviewDataElementReference[];
 }
 
 export type PreviewDetailResponse = MdmResourcesResponse<PreviewDetail>

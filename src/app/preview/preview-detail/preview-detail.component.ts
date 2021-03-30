@@ -135,6 +135,13 @@ export class PreviewDetailComponent implements OnInit {
       });
     }
 
+    if (detail.nationalCodes && detail.nationalCodes.length > 0) {
+      links.push({
+        label: 'National Codes',
+        anchor: 'national-codes'
+      })
+    }
+
     if (this.aliases.length > 0) {
       links.push({
         label: 'Also Known As',
@@ -146,6 +153,13 @@ export class PreviewDetailComponent implements OnInit {
       links.push({
         label: 'Where Used',
         anchor: 'where-used'
+      });
+    }
+
+    if (detail.dataElements && detail.dataElements.length > 0) {
+      links.push({
+        label: 'Data Elements',
+        anchor: 'data-elements'
       });
     }
 
