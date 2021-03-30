@@ -128,6 +128,13 @@ export class PreviewDetailComponent implements OnInit {
       return links;
     }
 
+    if (detail.formatLength) {
+      links.push({
+        label: 'Format / Length',
+        anchor: 'format-length'
+      });
+    }
+
     if (detail.description) {
       links.push({
         label: 'Description',
@@ -149,6 +156,13 @@ export class PreviewDetailComponent implements OnInit {
       });
     }
 
+    if (detail.relationships && detail.relationships.length > 0) {
+      links.push({
+        label: 'Relationships',
+        anchor: 'relationships'
+      });
+    }
+
     if (this.aliases.length > 0) {
       links.push({
         label: 'Also Known As',
@@ -167,6 +181,13 @@ export class PreviewDetailComponent implements OnInit {
       links.push({
         label: 'Data Elements',
         anchor: 'data-elements'
+      });
+    }
+
+    if (detail.attributes && detail.attributes.length > 0) {
+      links.push({
+        label: 'Attributes',
+        anchor: 'attributes'
       });
     }
 

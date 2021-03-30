@@ -182,10 +182,18 @@ export interface PreviewCodeReference {
   description: string;
 }
 
-export interface PreviewDataElementReference {
+export interface PreviewElementReference {
   catalogueId: string;
   name: string;
-  stereotype: Stereotype
+  stereotype: Stereotype;
+}
+
+export interface PreviewRelationship {
+  key: string;
+  relationship: string;
+  catalogueId: string;
+  name: string;
+  stereotype: Stereotype;
 }
 
 /**
@@ -196,10 +204,13 @@ export interface PreviewDetail {
   name: string;
   stereotype: Stereotype;
   shortDescription?: string;
+  formatLength?: string;
   description?: string;
+  relationships?: PreviewRelationship[];
   alsoKnownAs?: PreviewAliases;
   nationalCodes?: PreviewCodeReference[];
-  dataElements?: PreviewDataElementReference[];
+  dataElements?: PreviewElementReference[];
+  attributes?: PreviewElementReference[];
   specifications?: string;
 }
 
