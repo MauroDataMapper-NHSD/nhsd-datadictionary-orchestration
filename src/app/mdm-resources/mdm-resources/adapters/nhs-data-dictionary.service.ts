@@ -17,7 +17,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
-import { Branch, IntegrityCheck, IntegrityCheckResponse, PreviewDetail, PreviewDetailResponse, PreviewDomainType, PreviewIndexItem, PreviewIndexResponse, PreviewReference, PreviewReferenceResponse, Statistics, StatisticsResponse } from './nhs-data-dictionary.model';
+import { Branch, BranchResponse, IntegrityCheck, IntegrityCheckResponse, PreviewDetail, PreviewDetailResponse, PreviewDomainType, PreviewIndexItem, PreviewIndexResponse, PreviewReference, PreviewReferenceResponse, Statistics, StatisticsResponse } from './nhs-data-dictionary.model';
 import { MdmResourcesService } from '../mdm-resources.service';
 
 @Injectable({
@@ -28,19 +28,11 @@ export class NhsDataDictionaryService {
   constructor(private resources: MdmResourcesService) { }
 
   availableBranches(): Observable<Branch[]> {
-    // TODO: replace with real endpoint
-    return of([
-      {
-        label: 'main'
-      },
-      // {
-      //   label: 'test-branch'
-      // },
-      // {
-      //   label: 'edits'
-      // }
-    ])
-    .pipe(delay(1000));
+    return this.resources.dataDictionary
+      .availableBranches()
+      .pipe(
+        map((response: BranchResponse) => response.body)
+      );
   }  
 
   statistics(branch: string): Observable<Statistics> {

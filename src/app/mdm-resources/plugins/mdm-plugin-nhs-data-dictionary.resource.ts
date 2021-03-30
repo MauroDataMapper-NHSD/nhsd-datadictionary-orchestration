@@ -18,6 +18,11 @@ import { IMdmQueryStringParams, IMdmRestHandlerOptions, MdmResource } from "@mau
 
 export class MdmPluginNhsDataDictionaryResource extends MdmResource {
 
+  availableBranches(queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
+    const url = `${this.apiEndpoint}/nhsdd/branches`;
+    return this.simpleGet(url, queryStringParams, restHandlerOptions);
+  }
+
   statistics(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/statistics`;
     return this.simpleGet(url, queryStringParams, restHandlerOptions);

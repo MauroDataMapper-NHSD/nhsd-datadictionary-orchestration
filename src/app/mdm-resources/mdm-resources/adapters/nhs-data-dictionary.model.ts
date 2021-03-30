@@ -21,10 +21,22 @@ import { DomainType, MdmResourcesResponse } from "../mdm-resources.model";
  */
 export interface Branch {
   /**
-   * The name/label of the branch.
+   * The unique name of the branch
    */
-  label: string
+  branchName: string;
+
+  /**
+   * The display label for the branch
+   */
+  label: string;
+
+  /**
+   * The UUID of the exact model this branch refers to.
+   */
+  modelId: string;
 }
+
+export type BranchResponse = MdmResourcesResponse<Branch[]>;
 
 /**
  * Represents a statistics item to attach to a list of statistics.

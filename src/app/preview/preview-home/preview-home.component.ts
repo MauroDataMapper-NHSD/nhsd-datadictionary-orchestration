@@ -15,7 +15,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { PreviewDomainType, PreviewIndexType } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { PreviewIndexType } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/core';
 import { PreviewTile } from '../preview-tile/preview-tile.model';
 
