@@ -116,6 +116,28 @@ export class DataDictionaryService {
           this.logging.error(`There was a problem generating the DITA for the "${branch}" branch.`, error);
           return throwError(error);
         })
-      )
+      );
+  }
+
+  updateTerminologies(branch: string): Observable<any> {
+    return this.nhsDataDictionary
+      .updateTerminologies(branch)
+      .pipe(
+        catchError(error => {
+          this.logging.error(`There was a problem updating the terminologies from OntoServer for the "${branch}" branch.`, error);
+          return throwError(error);
+        })
+      );
+  }
+
+  uploadCodeSets(branch: string): Observable<any> {
+    return this.nhsDataDictionary
+      .uploadCodeSets(branch)
+      .pipe(
+        catchError(error => {
+          this.logging.error(`There was a problem uploadng the code sets to OntoServer for the "${branch}" branch.`, error);
+          return throwError(error);
+        })
+      );
   }
 }

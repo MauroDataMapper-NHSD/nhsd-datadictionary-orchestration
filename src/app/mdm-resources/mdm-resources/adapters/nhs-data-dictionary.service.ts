@@ -79,5 +79,13 @@ export class NhsDataDictionaryService {
   generateDita(branch: string): Observable<HttpResponse<Blob>> {
     return this.resources.dataDictionary.generateDita(branch);
   }
+
+  updateTerminologies(branch: string): Observable<any> {
+    return this.resources.dataDictionary.updateTerminologies(branch);
+  }
+
+  uploadCodeSets(branch: string): Observable<any> {
+    return this.resources.dataDictionary.uploadCodeSets(branch);
+  }
 }
 

@@ -24,7 +24,7 @@
                 <li>
                     <div class="mdm-branch-publish__action-item">
                         <span>Update Terminologies <em>from</em> OntoServer</span>
-                        <button mat-flat-button color="primary" [disabled]="isBusy">
+                        <button mat-flat-button color="primary" (click)="updateTerminologies()" [disabled]="isBusy">
                             <i class="fas fa-sync-alt"></i>
                             Update
                         </button>
@@ -33,7 +33,7 @@
                 <li>
                     <div class="mdm-branch-publish__action-item">
                         <span>Upload Code Sets <em>to</em> OntoServer</span>
-                        <button mat-flat-button color="primary" [disabled]="isBusy">
+                        <button mat-flat-button color="primary" (click)="uploadCodeSets()" [disabled]="isBusy">
                             <i class="fas fa-upload"></i>
                             Upload
                         </button>

@@ -88,4 +88,66 @@ export class BranchPublishComponent implements OnInit {
       });    
   }
 
+  updateTerminologies() {
+    if (!this.branch || this.isBusy) {
+      return;
+    }
+
+    const dialogRef = this.dialog.open<ProgressDialogComponent, ProgressDialogOptions, void>(
+      ProgressDialogComponent,
+      {
+        data: {
+          title: 'Update Terminologies',
+          message: 'Updating the terminologies from OntoServer. This will take some time, please wait...'
+        }
+      });
+
+    this.isBusy = true;
+
+    this.dataDictionary
+      .updateTerminologies(this.branch.branchName)
+      .pipe(
+        finalize(() => {
+          this.isBusy = false;
+          dialogRef.close();
+        })
+      )
+      .subscribe(response => {
+        this.toastr.success('Updated the terminologies from OntoServer successfully.');
+
+        // TODO: handle response
+      });
+  }
+
+  uploadCodeSets() {
+    if (!this.branch || this.isBusy) {
+      return;
+    }
+
+    const dialogRef = this.dialog.open<ProgressDialogComponent, ProgressDialogOptions, void>(
+      ProgressDialogComponent,
+      {
+        data: {
+          title: 'Upload Code Sets',
+          message: 'Uploading the code sets to OntoServer. This will take some time, please wait...'
+        }
+      });
+
+    this.isBusy = true;
+
+    this.dataDictionary
+      .uploadCodeSets(this.branch.branchName)
+      .pipe(
+        finalize(() => {
+          this.isBusy = false;
+          dialogRef.close();
+        })
+      )
+      .subscribe(response => {
+        this.toastr.success('Uploaded the code sets to OntoServer successfully.');
+
+        // TODO: handle response
+      });
+  }
+
 }

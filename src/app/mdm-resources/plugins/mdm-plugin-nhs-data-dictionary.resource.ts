@@ -15,6 +15,7 @@
  */
 
 import { IMdmQueryStringParams, IMdmRestHandlerOptions, MdmResource } from "@maurodatamapper/mdm-resources";
+import { throwError } from "rxjs";
 
 export class MdmPluginNhsDataDictionaryResource extends MdmResource {
 
@@ -50,5 +51,13 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
       responseType: 'blob'
     };
     return this.simpleGet(url, queryStringParams, restOptions);
+  }
+
+  updateTerminologies(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
+    return throwError('updateTerminologies endpoint not implemented!');
+  }
+
+  uploadCodeSets(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
+    return throwError('uploadCodeSets endpoint not implemented!');
   }
 }
