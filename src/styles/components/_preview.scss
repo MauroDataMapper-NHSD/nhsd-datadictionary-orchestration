@@ -120,6 +120,10 @@
         border: 1px solid $tableBorderColor;
         margin-left: 0;
 
+        strong, b {
+            font-weight: bolder;
+        }
+
         td, th {
             border-top: 1px solid $tableBorderColor;
         }
@@ -135,5 +139,22 @@
                 border: 1px solid $tableBorderColor;
             }
         }
+
+        th.thead-light,
+        tr.thead-light {
+            background-color: $tableHeadBackgroundColor;
+            color: white;
+            border: 1px solid $tableBorderColor;
+        }
+    }
+
+    .table-bordered {
+        td, th {
+            border: 1px solid $tableBorderColor !important;
+        }
+    }
+
+    .align-center {
+        text-align: center;
     }
 }
