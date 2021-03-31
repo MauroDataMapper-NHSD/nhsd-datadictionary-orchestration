@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { AlertComponent } from '@mdm/shared/alert/alert.component';
 import { BranchSelectorComponent } from '@mdm/shared/branch-selector/branch-selector.component';
 import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockService } from 'ng-mocks';
+import { of } from 'rxjs';
 
 import { PreviewContainerComponent } from './preview-container.component';
 
@@ -31,6 +33,14 @@ describe('PreviewContainerComponent', () => {
         declarations: [
           MockComponent(AlertComponent),
           MockComponent(BranchSelectorComponent)
+        ],
+        providers: [
+          {
+            provide: DataDictionaryService,
+            useValue: MockService(DataDictionaryService, {
+              getAvailableBranches: jest.fn(() => of([]))
+            })
+          }
         ]
       });
   });
