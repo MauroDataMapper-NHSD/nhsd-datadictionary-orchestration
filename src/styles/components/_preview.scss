@@ -116,7 +116,8 @@
         padding: 1em 1em 1em 1em;
     }
 
-    .table {
+    .table,
+    div.specification table {
         border: 1px solid $tableBorderColor;
         margin-left: 0;
 
@@ -156,5 +157,26 @@
 
     .align-center {
         text-align: center;
+    }
+
+    div.specification {
+        table {
+            @extend .table-bordered;
+
+            width: 100%;
+            margin-bottom: 20px;
+
+            tbody {
+                tr:nth-of-type(odd) {
+                    background-color: rgba(0,0,0,.05);
+                }
+
+                .thead-light {
+                    background-color: $tableHeadBackgroundColor !important;
+                    color: white !important;
+                    border: 1px solid $tableBorderColor !important;
+                }
+            }
+        }
     }
 }
