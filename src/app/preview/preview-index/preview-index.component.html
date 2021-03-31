@@ -48,7 +48,7 @@
                                     <tr *ngFor="let item of topic.items">
                                         <td class="- topic/stentry stentry" headers="data_elements.a__stentry__1">
                                             <a class="{{item.stereotype}}" uiSref="app.container.preview.detail"
-                                                [uiParams]="{ branch: branch, index: index, id: item.catalogueId }">{{item.name}}</a>
+                                                [uiParams]="{ branch: branch, index: item.stereotype, id: item.catalogueId }">{{item.name}}</a>
                                         </td>
                                     </tr>
                                 </tbody>
