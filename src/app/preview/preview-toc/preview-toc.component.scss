@@ -18,6 +18,8 @@
   border-left: 1px solid #cfe2f5;
   margin-left: 0;
   padding-left: 0.5em;
+  position: sticky;
+  top: 0;
 
   &__label {
     font-weight: 600;
