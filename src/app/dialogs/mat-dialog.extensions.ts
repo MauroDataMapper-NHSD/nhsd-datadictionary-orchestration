@@ -1,12 +1,12 @@
 /**
  * Copyright 2021 NHS Digital
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dialog";
-import { Observable } from "rxjs";
-import { filter, map, mergeMap } from "rxjs/operators";
-import { ConfirmationModalComponent } from "./confirmation-dialog/confirmation-dialog.component";
-import { ConfirmationDialogOptions } from "./confirmation-dialog/confirmation-dialog.model";
-import { DialogResult, DialogStatus } from "./dialogs.model";
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { filter, map, mergeMap } from 'rxjs/operators';
+import { ConfirmationModalComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogOptions } from './confirmation-dialog/confirmation-dialog.model';
+import { DialogResult, DialogStatus } from './dialogs.model';
 
 declare module '@angular/material/dialog/dialog' {
   interface MatDialog {

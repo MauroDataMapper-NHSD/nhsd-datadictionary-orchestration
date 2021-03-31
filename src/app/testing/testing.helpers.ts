@@ -1,12 +1,12 @@
 /**
  * Copyright 2021 NHS Digital
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { Type } from "@angular/core";
-import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { MockComponent } from "ng-mocks";
-import { NgxSkeletonLoaderComponent } from "ngx-skeleton-loader";
-import { TestingModule } from "./testing.module";
+import { Type } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
+import { TestingModule } from './testing.module';
 
 /**
  * Represents additional configuration to use when setting up the test module.
@@ -42,7 +42,7 @@ export interface TestModuleConfiguration {
 
 /**
  * Represents a created component for testing plus a fixture.
- * 
+ *
  * @typedef T The type of component under test.
  */
 export class ComponentHarness<T> {
@@ -59,6 +59,7 @@ export class ComponentHarness<T> {
 
 /**
  * Setup the test module for working with a service.
+ *
  * @typedef T The type of the service under test.
  * @param service The type of service under test.
  * @param configuration Optionally provide additional configuration for the test module.
@@ -74,6 +75,7 @@ export function setupTestModuleForService<T>(service: Type<T>, configuration?: T
 
 /**
  * Setup the test module for working with a component.
+ *
  * @typedef T The type of the component under test.
  * @param componentType The type of the component under test.
  * @param configuration Optionally provide additional configuration for the test module.
@@ -84,7 +86,7 @@ export async function setupTestModuleForComponent<T>(componentType: Type<T>, con
     .configureTestingModule({
       imports: [TestingModule, ...configuration?.imports ?? []],
       declarations: [
-        componentType, 
+        componentType,
         MockComponent(NgxSkeletonLoaderComponent),
         ...configuration?.declarations ?? []],
       providers: configuration?.providers ?? []

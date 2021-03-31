@@ -1,12 +1,12 @@
 /**
  * Copyright 2021 NHS Digital
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { HttpErrorResponse } from "@angular/common/http";
-import { MdmResourcesError, MdmResourcesResponse } from "@mdm/mdm-resources/mdm-resources/mdm-resources.model";
+import { HttpErrorResponse } from '@angular/common/http';
+import { MdmResourcesError, MdmResourcesResponse } from '@mdm/mdm-resources/mdm-resources/mdm-resources.model';
 
 /**
  * Credentials to send to `mdm-resources` for the sign-in operation.
@@ -44,7 +44,7 @@ export interface SignInResult {
 export enum SignInErrorType {
   UnknownError,
   InvalidCredentials,
-  AlreadySignedIn  
+  AlreadySignedIn
 }
 
 /**
@@ -60,8 +60,8 @@ export class SignInError extends MdmResourcesError {
   constructor(response: HttpErrorResponse) {
     super(response);
     switch (response.status) {
-      case 401: 
-        this.type = SignInErrorType.InvalidCredentials; 
+      case 401:
+        this.type = SignInErrorType.InvalidCredentials;
         break;
       case 409:
         this.type = SignInErrorType.AlreadySignedIn;
@@ -88,7 +88,7 @@ export class AuthenticatedSessionError extends MdmResourcesError {
 }
 
 export interface AuthenticatedSessionResult {
-  authenticatedSession: boolean
+  authenticatedSession: boolean;
 }
 
 export interface AdministrationSessionResult {
@@ -97,7 +97,7 @@ export interface AdministrationSessionResult {
 
 export type SignInResponse = MdmResourcesResponse<SignInResult>;
 export type AdministrationSessionResponse = MdmResourcesResponse<AdministrationSessionResult>;
-export type AuthenticatedSessionResponse = MdmResourcesResponse<AuthenticatedSessionResult>
+export type AuthenticatedSessionResponse = MdmResourcesResponse<AuthenticatedSessionResult>;
 
 /**
  * Represents the common details of a signed in user.
@@ -110,5 +110,5 @@ export interface UserDetails {
   userName: string;
   role?: string;
   isAdmin?: boolean;
-  needsToResetPassword?: boolean
+  needsToResetPassword?: boolean;
 }

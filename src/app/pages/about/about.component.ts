@@ -1,12 +1,12 @@
 /**
  * Copyright 2021 NHS Digital
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,16 +30,16 @@ import { finalize } from 'rxjs/operators';
 export class AboutComponent implements OnInit {
 
   isLoading = false;
-  isSignedIn: boolean = false;
+  isSignedIn = false;
   appVersion: string;
-  mauroVersion: string = '';
-  nhsDdPluginVersion: string = '';
+  mauroVersion = '';
+  nhsDdPluginVersion = '';
 
   constructor(
     private shared: SharedService,
     private security: SecurityService,
-    private admin: MdmAdminService) { 
-    this.appVersion = this.shared.appVersion
+    private admin: MdmAdminService) {
+    this.appVersion = this.shared.appVersion;
   }
 
   ngOnInit(): void {
@@ -49,7 +49,7 @@ export class AboutComponent implements OnInit {
       this.isLoading = true;
 
       forkJoin([
-        this.admin.status(), 
+        this.admin.status(),
         this.admin.modules()
       ])
       .pipe(
@@ -58,7 +58,7 @@ export class AboutComponent implements OnInit {
       .subscribe(([status, modules]) => {
         this.mauroVersion = status[MauroDataMapperVersionStatusKey];
         this.nhsDdPluginVersion = modules.find(module => module.name === NhsDataDictionaryPluginModuleKey)?.version ?? '';
-      })      
+      });
     }
   }
 

@@ -1,12 +1,12 @@
 /**
  * Copyright 2021 NHS Digital
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,7 +35,7 @@ interface MdmSessionResourceStub {
 
 interface MdmResourcesServiceStub {
   security: MdmSecurityResourceStub;
-  session: MdmSessionResourceStub
+  session: MdmSessionResourceStub;
 }
 
 describe('SecurityService', () => {
@@ -51,10 +51,10 @@ describe('SecurityService', () => {
     }
   };
 
-  beforeEach(() => {    
+  beforeEach(() => {
     service = setupTestModuleForService(
       SecurityService,
-      {        
+      {
         providers: [
           {
             provide: MdmResourcesService,
@@ -75,11 +75,11 @@ describe('SecurityService', () => {
     ('should sign in user %s %s when admin = %o', (id, userName, isAdmin) => {
       const credentials: SignInCredentials = { username: userName, password: 'test' };
       const expectedUser: UserDetails = {
-        id: id,
-        userName: userName,
+        id,
+        userName,
         firstName: 'first',
         lastName: 'last',
-        isAdmin: isAdmin,
+        isAdmin,
         needsToResetPassword: false,
         role: '',
         token: undefined
@@ -108,7 +108,7 @@ describe('SecurityService', () => {
       const actual$ = service.signIn(credentials);
 
       expect(actual$).toBeObservable(expected$);
-    })
+    });
 
   it('should throw error if sign in fails', () => {
     resourcesStub.security.login.mockImplementationOnce(() => cold('--#', null, new HttpErrorResponse({})));
@@ -116,7 +116,7 @@ describe('SecurityService', () => {
     const expected$ = cold('--#');
     const actual$ = service.signIn({ username: 'fail', password: 'fail' });
     expect(actual$).toBeObservable(expected$);
-  })
+  });
 
   it('should sign out user', () => {
     resourcesStub.security.logout.mockImplementationOnce(() => cold('--a|', { a: EMPTY }));
@@ -124,7 +124,7 @@ describe('SecurityService', () => {
     const expected$ = cold('--a|', { a: undefined });
     const actual$ = service.signOut();
     expect(actual$).toBeObservable(expected$);
-  })
+  });
 
   it('should throw error if sign out fails', () => {
     resourcesStub.security.logout.mockImplementationOnce(() => cold('--#', null, new HttpErrorResponse({})));
@@ -132,7 +132,7 @@ describe('SecurityService', () => {
     const expected$ = cold('--#');
     const actual$ = service.signOut();
     expect(actual$).toBeObservable(expected$);
-  })
+  });
 
   it.each([true, false])('should return %o for an authenticated session', (authenticated) => {
     resourcesStub.session.isAuthenticated.mockImplementationOnce(() => cold('--a|', {
@@ -146,7 +146,7 @@ describe('SecurityService', () => {
     const expected$ = cold('--a|', { a: authenticated });
     const actual$ = service.isAuthenticated();
     expect(actual$).toBeObservable(expected$);
-  })
+  });
 
   it('should throw error if authentication fails', () => {
     resourcesStub.session.isAuthenticated.mockImplementationOnce(() => cold('--#', null, new HttpErrorResponse({})));
@@ -154,5 +154,5 @@ describe('SecurityService', () => {
     const expected$ = cold('--#');
     const actual$ = service.isAuthenticated();
     expect(actual$).toBeObservable(expected$);
-  })
+  });
 });
