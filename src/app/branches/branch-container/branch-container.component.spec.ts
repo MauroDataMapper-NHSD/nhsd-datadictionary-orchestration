@@ -17,7 +17,9 @@
 import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
 import { BranchSelectorComponent } from '@mdm/shared/branch-selector/branch-selector.component';
 import { BranchContainerComponent } from './branch-container.component';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockService } from 'ng-mocks';
+import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
+import { of } from 'rxjs';
 
 describe('BranchesContainerComponent', () => {
   let harness: ComponentHarness<BranchContainerComponent>;
@@ -28,6 +30,14 @@ describe('BranchesContainerComponent', () => {
       {
         declarations: [
           MockComponent(BranchSelectorComponent)
+        ],
+        providers: [
+          {
+            provide: DataDictionaryService,
+            useValue: MockService(DataDictionaryService, {
+              getAvailableBranches: jest.fn(() => of([]))
+            })
+          }
         ]
       });
   });

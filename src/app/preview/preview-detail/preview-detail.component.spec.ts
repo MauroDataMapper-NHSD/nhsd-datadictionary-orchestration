@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { AlertComponent } from '@mdm/shared/alert/alert.component';
 import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
 import { MockComponent } from 'ng-mocks';
 import { PreviewBreadcrumbComponent } from '../preview-breadcrumb/preview-breadcrumb.component';
@@ -32,7 +33,8 @@ describe('PreviewDetailComponent', () => {
         declarations: [
           MockComponent(PreviewTocComponent),
           MockComponent(PreviewExpandablePanelComponent),
-          MockComponent(PreviewBreadcrumbComponent)
+          MockComponent(PreviewBreadcrumbComponent),
+          MockComponent(AlertComponent)
         ]
       });
   });

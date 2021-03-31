@@ -14,28 +14,32 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
 
 import { ProgressDialogComponent } from './progress-dialog.component';
 
 describe('ProgressDialogComponent', () => {
-  let component: ProgressDialogComponent;
-  let fixture: ComponentFixture<ProgressDialogComponent>;
+  let harness: ComponentHarness<ProgressDialogComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ ProgressDialogComponent ]
-    })
-    .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ProgressDialogComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    harness = await setupTestModuleForComponent(
+      ProgressDialogComponent,
+      {
+        providers: [
+          {
+            provide: MatDialogRef,
+            useValue: jest.fn()
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: jest.fn()
+          }
+        ]
+      });
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(harness?.isComponentCreated).toBeTruthy();
   });
 });
