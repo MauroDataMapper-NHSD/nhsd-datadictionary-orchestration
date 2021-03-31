@@ -18,7 +18,7 @@ import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
-import { PreviewDetail, PreviewDomainType, previewDomainTypeNouns, previewIndexDomainMap, previewIndexPageTitles, PreviewIndexType, PreviewReference, PreviewReferenceResponse } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { PreviewDetail, PreviewDomainType, previewDomainTypeNouns, previewIndexDomainMap, previewIndexPageTitles, PreviewIndexType, PreviewReference, PreviewReferenceResponse, Stereotype } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/angular';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
@@ -60,7 +60,7 @@ export class PreviewDetailComponent implements OnInit {
   }
 
   get hasReferencesSection() {
-    return true;
+    return this.detail?.stereotype !== Stereotype.XmlSchemaConstraint;
   }
 
   constructor(
@@ -156,6 +156,14 @@ export class PreviewDetailComponent implements OnInit {
       });
     }
 
+    // Data Class "Attributes" section refers to a table of data
+    if (detail.stereotype === Stereotype.DataClass && detail.attributes && detail.attributes.length > 0) {
+      links.push({
+        label: 'Attributes',
+        anchor: 'attributes'
+      });
+    }
+
     if (detail.relationships && detail.relationships.length > 0) {
       links.push({
         label: 'Relationships',
@@ -184,7 +192,8 @@ export class PreviewDetailComponent implements OnInit {
       });
     }
 
-    if (detail.attributes && detail.attributes.length > 0) {
+    // Non-Data Class "Attributes" section refers to a bullet list of links
+    if (detail.stereotype !== Stereotype.DataClass && detail.attributes && detail.attributes.length > 0) {
       links.push({
         label: 'Attributes',
         anchor: 'attributes'

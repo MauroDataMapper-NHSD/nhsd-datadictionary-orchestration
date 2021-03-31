@@ -182,10 +182,32 @@ export interface PreviewCodeReference {
   description: string;
 }
 
+/**
+ * Represents a cross-reference to another data element in the dictionary.
+ */
 export interface PreviewElementReference {
+  /**
+   * The UUID of the catalogue element to reference.
+   */
   catalogueId: string;
+
+  /**
+   * The name of the element.
+   */
   name: string;
+
+  /**
+   * The stereotype of the element to correctly identify its type.
+   */
   stereotype: Stereotype;
+
+  /**
+   * Optional key for the reference.
+   * 
+   * This is only used in the case when a Data Class is returned, this key is then used within a table of attributes. If not
+   * provided, assume that this is a simple list of references.
+   */
+  key?: string
 }
 
 export interface PreviewRelationship {

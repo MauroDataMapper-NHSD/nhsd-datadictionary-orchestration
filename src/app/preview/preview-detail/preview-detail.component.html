@@ -34,7 +34,7 @@
                     </div>
 
                     <!-- Format / Length -->
-                    <mdm-preview-expandable-panel *ngIf="detail.description" title="Format / Length"
+                    <mdm-preview-expandable-panel *ngIf="detail.formatLength" title="Format / Length"
                         [anchor]="getTableOfContentsLink('Format / Length')?.anchor">
                         <div class="- topic/body body">
                             <div class="- topic/div div">
@@ -86,6 +86,37 @@
                     <mdm-preview-expandable-panel *ngIf="detail.specifications" title="Specification"
                         [anchor]="getTableOfContentsLink('Specification')?.anchor">
                         <div class="- topic/body body" [innerHTML]="detail.specifications"></div>
+                    </mdm-preview-expandable-panel>
+
+                    <!-- Attributes (Table, for Classes only)-->
+                    <mdm-preview-expandable-panel
+                        *ngIf="detail.stereotype == 'class' && detail.attributes && detail.attributes.length > 0"
+                        title="Attributes" [anchor]="getTableOfContentsLink('Attributes')?.anchor">
+                        <div class="- topic/body body">
+                            <div class="simpletable-container">
+                                <table class="simpletable table table-striped table-sm">
+                                    <colgroup>
+                                        <col style="width:10%">
+                                        <col style="width:90%">
+                                    </colgroup>
+                                    <thead>
+                                        <tr class="thead-light">
+                                            <th>Key</th>
+                                            <th>Attribute Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let element of detail.attributes">
+                                            <td>{{element.key}}</td>
+                                            <td>
+                                                <a class="{{element.stereotype}}" uiSref="app.container.preview.detail"
+                                                    [uiParams]="{ branch: branch, index: element.stereotype, id: element.catalogueId }">{{element.name}}</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </mdm-preview-expandable-panel>
 
                     <!-- Relationships -->
@@ -205,8 +236,9 @@
                         </div>
                     </mdm-preview-expandable-panel>
 
-                    <!-- Attributes (Bullet List)-->
-                    <mdm-preview-expandable-panel *ngIf="detail.attributes && detail.attributes.length > 0"
+                    <!-- Attributes (Bullet List, not for Classes)-->
+                    <mdm-preview-expandable-panel
+                        *ngIf="detail.stereotype !== 'class' && detail.attributes && detail.attributes.length > 0"
                         title="Attributes" [anchor]="getTableOfContentsLink('Attributes')?.anchor">
                         <div class="- topic/body body">
                             <ul>
