@@ -15,19 +15,21 @@
  */
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoadingService {
 
+  isLoading: Observable<boolean>;
+
   private loadingSubject = new BehaviorSubject<boolean>(false);
   private loadingMap = new Map<string, boolean>();
 
-  isLoading = this.loadingSubject.asObservable();
-
-  constructor() { }
+  constructor() {
+    this.isLoading = this.loadingSubject.asObservable();
+  }
 
   setHttpLoading(loading: boolean, url: string) {
     if (!url) {

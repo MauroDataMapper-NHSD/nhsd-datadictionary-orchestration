@@ -17,7 +17,7 @@
 export { };
 
 declare global {
-  interface Array<T> {
+  interface Array<T> {  // eslint-disable-line @typescript-eslint/no-unused-vars
     groupBy<T, K extends keyof any>(keySelector: (item: T) => K): Record<K, T[]>;
   }
 }

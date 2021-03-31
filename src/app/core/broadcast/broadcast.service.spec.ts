@@ -35,7 +35,7 @@ describe('BroadcastService', () => {
     return Object
       .keys(BroadcastEvent)
       .filter(value => !isNaN(Number(value)))
-      .map((key: any) => (<unknown>BroadcastEvent[key]) as BroadcastEvent);
+      .map((key: any) => (BroadcastEvent[key] as unknown) as BroadcastEvent);
   };
 
   it.each(getBroadcastEvents())('should dispatch events when %o is broadcast', (event) => {

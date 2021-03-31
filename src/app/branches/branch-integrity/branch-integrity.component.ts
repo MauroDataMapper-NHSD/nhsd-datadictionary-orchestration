@@ -15,7 +15,6 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { MatSelectionListChange } from '@angular/material/list';
 import { IntegrityCheckCategory } from '@mdm/core/data-dictionary/data-dictionary.model';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { LoggingService } from '@mdm/core/logging/logging.service';

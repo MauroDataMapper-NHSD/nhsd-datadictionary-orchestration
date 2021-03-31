@@ -20,10 +20,6 @@ import { UserComponent } from './user.component';
 import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
 import { MockProvider } from 'ng-mocks';
 
-interface SharedServiceStub {
-  backendUrl: string;
-}
-
 describe('UserComponent', () => {
   let harness: ComponentHarness<UserComponent>;
 

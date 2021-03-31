@@ -112,7 +112,7 @@ export class BranchPublishComponent implements OnInit {
           dialogRef.close();
         })
       )
-      .subscribe(response => {
+      .subscribe(() => {
         this.toastr.success('Updated the terminologies from OntoServer successfully.');
 
         // TODO: handle response
@@ -143,7 +143,7 @@ export class BranchPublishComponent implements OnInit {
           dialogRef.close();
         })
       )
-      .subscribe(response => {
+      .subscribe(() => {
         this.toastr.success('Uploaded the code sets to OntoServer successfully.');
 
         // TODO: handle response

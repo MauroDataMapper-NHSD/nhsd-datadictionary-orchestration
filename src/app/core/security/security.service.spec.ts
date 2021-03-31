@@ -71,8 +71,7 @@ describe('SecurityService', () => {
   it.each([
     ['123', 'user@test.com', false],
     ['456', 'admin@test.com', true]
-  ])
-    ('should sign in user %s %s when admin = %o', (id, userName, isAdmin) => {
+  ])('should sign in user %s %s when admin = %o', (id, userName, isAdmin) => {
       const credentials: SignInCredentials = { username: userName, password: 'test' };
       const expectedUser: UserDetails = {
         id,

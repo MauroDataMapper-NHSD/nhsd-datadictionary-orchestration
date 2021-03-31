@@ -51,11 +51,11 @@ export class SignInModalComponent implements OnInit {
   ngOnInit(): void {
     this.signInForm = new FormGroup({
       userName: new FormControl('', [
-        Validators.required,
+        Validators.required,  // eslint-disable-line @typescript-eslint/unbound-method
         Validators.pattern(this.validator.emailPattern)
       ]),
       password: new FormControl('', [
-        Validators.required
+        Validators.required // eslint-disable-line @typescript-eslint/unbound-method
       ])
     });
   }

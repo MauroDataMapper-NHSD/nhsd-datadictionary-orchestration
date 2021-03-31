@@ -18,7 +18,7 @@ import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
-import { PreviewDetail, PreviewDomainType, previewDomainTypeNouns, previewIndexDomainMap, previewIndexPageTitles, PreviewIndexType, PreviewReference, PreviewReferenceResponse, Stereotype } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { PreviewDetail, PreviewDomainType, previewDomainTypeNouns, previewIndexDomainMap, previewIndexPageTitles, PreviewIndexType, PreviewReference, Stereotype } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/angular';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
@@ -97,6 +97,29 @@ export class PreviewDetailComponent implements OnInit {
         this.breadcrumbs = this.createBreadcrumbs(detail);
         this.tableOfContentLinks = this.createTableOfContentLinks(detail);
       });
+  }
+
+  getTableOfContentsLink(section: string): TableOfContentsLink | undefined {
+    return this.tableOfContentLinks.find(toc => toc.label === section);
+  }
+
+  onTableOfContentsClick(link: TableOfContentsLink) {
+    // Simulate an <a href="page#section"> link click
+    this.viewportScroller.scrollToAnchor(link.anchor);
+  }
+
+  onReferencesSectionExpanded() {
+    if (this.references.length > 0) {
+      return;
+    }
+
+    this.isLoadingReferences = true;
+    this.dataDictionary
+      .getPreviewReferences(this.branch, this.domainType, this.id)
+      .pipe(
+        finalize(() => this.isLoadingReferences = false)
+      )
+      .subscribe(references => this.references = references);
   }
 
   private createBreadcrumbs(detail: PreviewDetail): Breadcrumb[] {
@@ -201,28 +224,5 @@ export class PreviewDetailComponent implements OnInit {
     }
 
     return links;
-  }
-
-  getTableOfContentsLink(section: string): TableOfContentsLink | undefined {
-    return this.tableOfContentLinks.find(toc => toc.label === section);
-  }
-
-  onTableOfContentsClick(link: TableOfContentsLink) {
-    // Simulate an <a href="page#section"> link click
-    this.viewportScroller.scrollToAnchor(link.anchor);
-  }
-
-  onReferencesSectionExpanded() {
-    if (this.references.length > 0) {
-      return;
-    }
-
-    this.isLoadingReferences = true;
-    this.dataDictionary
-      .getPreviewReferences(this.branch, this.domainType, this.id)
-      .pipe(
-        finalize(() => this.isLoadingReferences = false)
-      )
-      .subscribe(references => this.references = references);
   }
 }

@@ -43,11 +43,6 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'nhsd-datadictionary-orchestration';
   themeCssSelector = '';
 
-  /**
-   * Signal to attach to subscriptions to trigger when they should be unsubscribed.
-   */
-  private unsubscribe$ = new Subject();
-
   navbarLinks: NavbarLinkGroup[] = [
     {
       label: 'Main navigation',
@@ -79,6 +74,11 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   ];
 
+  /**
+   * Signal to attach to subscriptions to trigger when they should be unsubscribed.
+   */
+   private unsubscribe$ = new Subject();
+
   constructor(
     private shared: SharedService,
     private broadcast: BroadcastService,
@@ -89,6 +89,11 @@ export class AppComponent implements OnInit, OnDestroy {
     private theming: ThemingService,
     private overlayContainer: OverlayContainer,
     private userIdle: UserIdleService) { }
+
+  @HostListener('window:mousemove', ['$event'])
+  onMouseMove() {
+    this.userIdle.resetTimer();
+  }
 
   ngOnInit(): void {
     this.setTheme();
@@ -117,11 +122,6 @@ export class AppComponent implements OnInit, OnDestroy {
     // check for this
     this.shared.checkSessionExpiry();
     this.setupIdleTimer();
-  }
-
-  @HostListener('window:mousemove', ['$event'])
-  onMouseMove() {
-    this.userIdle.resetTimer();
   }
 
   ngOnDestroy(): void {

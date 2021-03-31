@@ -16,7 +16,7 @@
 
 import { MdmResourcesResponse } from '../mdm-resources.model';
 
-export const MauroDataMapperVersionStatusKey = 'Mauro Data Mapper Version';
+export const mauroDataMapperVersionStatusKey = 'Mauro Data Mapper Version';
 
 export interface Status {
   [key: string]: string;
@@ -24,7 +24,7 @@ export interface Status {
 
 export type StatusResponse = MdmResourcesResponse<Status>;
 
-export const NhsDataDictionaryPluginModuleKey = 'mdm.pluginNhsDataDictionary';
+export const nhsDataDictionaryPluginModuleKey = 'mdm.pluginNhsDataDictionary';
 
 export interface MauroModule {
   name: string;

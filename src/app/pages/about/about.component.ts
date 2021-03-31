@@ -17,7 +17,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SecurityService } from '@mdm/core/security/security.service';
 import { SharedService } from '@mdm/core/shared/shared.service';
-import { MauroDataMapperVersionStatusKey, NhsDataDictionaryPluginModuleKey } from '@mdm/mdm-resources/mdm-resources/adapters/mdm-admin.model';
+import { mauroDataMapperVersionStatusKey, nhsDataDictionaryPluginModuleKey } from '@mdm/mdm-resources/mdm-resources/adapters/mdm-admin.model';
 import { MdmAdminService } from '@mdm/mdm-resources/mdm-resources/adapters/mdm-admin.service';
 import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -56,8 +56,8 @@ export class AboutComponent implements OnInit {
         finalize(() => this.isLoading = false)
       )
       .subscribe(([status, modules]) => {
-        this.mauroVersion = status[MauroDataMapperVersionStatusKey];
-        this.nhsDdPluginVersion = modules.find(module => module.name === NhsDataDictionaryPluginModuleKey)?.version ?? '';
+        this.mauroVersion = status[mauroDataMapperVersionStatusKey];
+        this.nhsDdPluginVersion = modules.find(module => module.name === nhsDataDictionaryPluginModuleKey)?.version ?? '';
       });
     }
   }

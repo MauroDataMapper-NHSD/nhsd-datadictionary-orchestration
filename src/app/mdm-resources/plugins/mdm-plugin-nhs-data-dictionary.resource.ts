@@ -53,6 +53,7 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
     return this.simpleGet(url, queryStringParams, restOptions);
   }
 
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   updateTerminologies(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
     return throwError('updateTerminologies endpoint not implemented!');
   }
@@ -60,4 +61,5 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
   uploadCodeSets(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
     return throwError('uploadCodeSets endpoint not implemented!');
   }
+  /* eslint-enable @typescript-eslint/no-unused-vars */
 }
