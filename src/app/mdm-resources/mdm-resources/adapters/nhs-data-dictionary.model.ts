@@ -1,12 +1,12 @@
 /**
  * Copyright 2021 NHS Digital
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { DomainType, MdmResourcesResponse } from "../mdm-resources.model";
+import { DomainType, MdmResourcesResponse } from '../mdm-resources.model';
 
 /**
  * Represents a branch of the NHS Data Dictionary.
@@ -40,12 +40,12 @@ export type BranchResponse = MdmResourcesResponse<Branch[]>;
 
 /**
  * Represents a statistics item to attach to a list of statistics.
- * 
+ *
  * **Note:** properties are uppercase due to JSON deserialization of response from the server.
- * 
+ *
  * @see Statistics
  */
-export interface StatisticsItem {  
+export interface StatisticsItem {
   Preparatory?: number;
   Retired?: number;
   Total?: number;
@@ -53,7 +53,7 @@ export interface StatisticsItem {
 
 /**
  * Represents a collection of statistics.
- * 
+ *
  * The property names of the object represent the sections of each `StatisticsItem`.
  */
 export interface Statistics {
@@ -101,7 +101,7 @@ export enum PreviewDomainType {
 
 /**
  * Represents the different preview index routes to access.
- * 
+ *
  * @see previewIndexDomainMap
  */
 export enum PreviewIndexType {
@@ -117,7 +117,7 @@ export enum PreviewIndexType {
 
 /**
  * Maps a `PreviewIndexType` to a `PreviewDomainType`
- * 
+ *
  * This map is required because the page routes do not necessarily match to the backend endpoints. For example, the
  * page `#/preview/element` would trigger the backend endpoint `api/preview/{branch}/elements`
  */
@@ -171,7 +171,7 @@ export interface PreviewIndexItem {
   stereotype: Stereotype;
 }
 
-export type PreviewIndexResponse = MdmResourcesResponse<PreviewIndexItem[]>
+export type PreviewIndexResponse = MdmResourcesResponse<PreviewIndexItem[]>;
 
 export interface PreviewAliases {
   [context: string]: string;
@@ -236,7 +236,7 @@ export interface PreviewDetail {
   specifications?: string;
 }
 
-export type PreviewDetailResponse = MdmResourcesResponse<PreviewDetail>
+export type PreviewDetailResponse = MdmResourcesResponse<PreviewDetail>;
 
 /**
  * Represents a reference to another Mauro entity which is related or used in.
@@ -249,4 +249,4 @@ export interface PreviewReference {
   text: string;
 }
 
-export type PreviewReferenceResponse = MdmResourcesResponse<PreviewReference[]>
+export type PreviewReferenceResponse = MdmResourcesResponse<PreviewReference[]>;

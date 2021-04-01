@@ -1,12 +1,12 @@
 /**
  * Copyright 2021 NHS Digital
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +18,7 @@ import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
-import { PreviewDetail, PreviewDomainType, previewDomainTypeNouns, previewIndexDomainMap, previewIndexPageTitles, PreviewIndexType, PreviewReference, PreviewReferenceResponse, Stereotype } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { PreviewDetail, PreviewDomainType, previewDomainTypeNouns, previewIndexDomainMap, previewIndexPageTitles, PreviewIndexType, PreviewReference, Stereotype } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/angular';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
@@ -33,10 +33,10 @@ import { TableOfContentsLink } from '../preview-toc/preview-toc.model';
 export class PreviewDetailComponent implements OnInit {
 
   isLoading = false;
-  branch: string = '';
+  branch = '';
   index: PreviewIndexType = PreviewIndexType.All;
   domainType: PreviewDomainType = PreviewDomainType.All;
-  id: string = '';
+  id = '';
   detail?: PreviewDetail;
   breadcrumbs: Breadcrumb[] = [];
   tableOfContentLinks: TableOfContentsLink[] = [];
@@ -54,8 +54,8 @@ export class PreviewDetailComponent implements OnInit {
 
     return Object
       .entries(this.detail.alsoKnownAs)
-      .map(([context, value]) => { 
-        return { context, value } 
+      .map(([context, value]) => {
+        return { context, value };
       });
   }
 
@@ -97,6 +97,29 @@ export class PreviewDetailComponent implements OnInit {
         this.breadcrumbs = this.createBreadcrumbs(detail);
         this.tableOfContentLinks = this.createTableOfContentLinks(detail);
       });
+  }
+
+  getTableOfContentsLink(section: string): TableOfContentsLink | undefined {
+    return this.tableOfContentLinks.find(toc => toc.label === section);
+  }
+
+  onTableOfContentsClick(link: TableOfContentsLink) {
+    // Simulate an <a href="page#section"> link click
+    this.viewportScroller.scrollToAnchor(link.anchor);
+  }
+
+  onReferencesSectionExpanded() {
+    if (this.references.length > 0) {
+      return;
+    }
+
+    this.isLoadingReferences = true;
+    this.dataDictionary
+      .getPreviewReferences(this.branch, this.domainType, this.id)
+      .pipe(
+        finalize(() => this.isLoadingReferences = false)
+      )
+      .subscribe(references => this.references = references);
   }
 
   private createBreadcrumbs(detail: PreviewDetail): Breadcrumb[] {
@@ -201,28 +224,5 @@ export class PreviewDetailComponent implements OnInit {
     }
 
     return links;
-  }
-
-  getTableOfContentsLink(section: string): TableOfContentsLink | undefined {
-    return this.tableOfContentLinks.find(toc => toc.label === section);
-  }
-
-  onTableOfContentsClick(link: TableOfContentsLink) {
-    // Simulate an <a href="page#section"> link click
-    this.viewportScroller.scrollToAnchor(link.anchor);
-  }
-
-  onReferencesSectionExpanded() {
-    if (this.references.length > 0) {
-      return;
-    }
-
-    this.isLoadingReferences = true;
-    this.dataDictionary
-      .getPreviewReferences(this.branch, this.domainType, this.id)
-      .pipe(
-        finalize(() => this.isLoadingReferences = false)
-      )
-      .subscribe(references => this.references = references);
   }
 }

@@ -50,3 +50,4 @@ Thumbs.db
 /test-report
 /test-report.html
 junit.xml
+/eslint_report.*

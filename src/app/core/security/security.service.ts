@@ -1,12 +1,12 @@
 /**
  * Copyright 2021 NHS Digital
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,6 +32,7 @@ export class SecurityService {
 
   /**
    * Sign in a user to the Mauro system.
+   *
    * @param credentials The sign-in credentials to use.
    * @returns An observable to return a `UserDetails` object representing the signed in user.
    * @throws `SignInError` in the observable chain if sign-in failed.
@@ -69,6 +70,7 @@ export class SecurityService {
 
   /**
    * Sign the current user out of the Mauro system.
+   *
    * @returns An `Observable<never>` to subscribe to when sign out is successful.
    * @throws `MdmResourcesError` in the observable stream if sign-out failed.
    */
@@ -77,8 +79,8 @@ export class SecurityService {
       .logout({ responseType: 'text'})
       .pipe(
         catchError((error: HttpErrorResponse) => {
-          return throwError(new MdmResourcesError(error))
-        }),        
+          return throwError(new MdmResourcesError(error));
+        }),
         map(() => { }),
         finalize(() => {
           this.removeUserFromLocalStorage();
@@ -87,9 +89,9 @@ export class SecurityService {
   }
 
   /**
-   * Check if the current user session is authenticated. Will return `true` if signed in and the session 
+   * Check if the current user session is authenticated. Will return `true` if signed in and the session
    * is still active.
-   * 
+   *
    * @returns An observable returning a boolean stating if the current session is authenticated.
    * @throws `MdmResourcesError` in the observable stream if the request failed.
    */
@@ -102,8 +104,9 @@ export class SecurityService {
       );
   }
 
-  /** 
+  /**
    * Gets the current user signed in.
+   *
    * @returns A `UserDetails` containing the current signed in user details, or `null` if not signed in.
    */
   getCurrentUser(): UserDetails | null {
@@ -112,6 +115,7 @@ export class SecurityService {
 
   /**
    * Determines if the current user is signed in.
+   *
    * @returns True if the current user is signed in.
    */
   isSignedIn(): boolean {
@@ -120,6 +124,7 @@ export class SecurityService {
 
   /**
    * Check if the current session is expired. If not signed in this returns `false`.
+   *
    * @returns An observable that returns `true` if the current session has expired.
    */
   isCurrentSessionExpired(): Observable<boolean> {
@@ -134,7 +139,7 @@ export class SecurityService {
             this.removeUserFromLocalStorage();
             return of(true);
           }
-          
+
           return of(false);
         }),
         tap(authenticated => {
@@ -142,7 +147,7 @@ export class SecurityService {
             this.removeUserFromLocalStorage();
           }
         })
-      );   
+      );
   }
 
   private addUserToLocalStorage(user: UserDetails) {
@@ -172,7 +177,7 @@ export class SecurityService {
       token: localStorage.getItem('token') ?? undefined,
       firstName: localStorage.getItem('firstName') ?? '',
       lastName: localStorage.getItem('lastName') ?? '',
-      userName: userName,
+      userName,
       role: localStorage.getItem('role') ?? undefined,
       isAdmin: Boolean(localStorage.getItem('isAdmin')),
       needsToResetPassword: Boolean(localStorage.getItem('needsToResetPassword'))
