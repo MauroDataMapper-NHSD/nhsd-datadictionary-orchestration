@@ -60,7 +60,7 @@ export class BranchPublishComponent implements OnInit {
     this.isBusy = true;
 
     this.dataDictionary
-      .generateDita(this.branch.branchName)
+      .generateDita(this.branch.id)
       .pipe(
         finalize(() => {
           this.isBusy = false;
@@ -105,7 +105,7 @@ export class BranchPublishComponent implements OnInit {
     this.isBusy = true;
 
     this.dataDictionary
-      .updateTerminologies(this.branch.branchName)
+      .updateTerminologies(this.branch.id)
       .pipe(
         finalize(() => {
           this.isBusy = false;
@@ -136,7 +136,7 @@ export class BranchPublishComponent implements OnInit {
     this.isBusy = true;
 
     this.dataDictionary
-      .uploadCodeSets(this.branch.branchName)
+      .uploadCodeSets(this.branch.id)
       .pipe(
         finalize(() => {
           this.isBusy = false;

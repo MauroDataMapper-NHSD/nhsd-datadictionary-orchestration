@@ -52,7 +52,7 @@ export class BranchIntegrityComponent implements OnInit {
     this.running = true;
 
     this.dataDictionary
-      .runIntegrityChecks(this.branch.branchName)
+      .runIntegrityChecks(this.branch.id)
       .pipe(
         catchError(error => {
           this.logging.error(`There was a problem running integrity checks on branch ${this.branch?.branchName}.`, error);
