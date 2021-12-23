@@ -34,6 +34,12 @@ export interface Branch {
    * The UUID of the exact model this branch refers to.
    */
   modelId: string;
+
+  /**
+   * The UUID of the exact versionedFolder this branch refers to.
+   */
+  id: string;
+
 }
 
 export type BranchResponse = MdmResourcesResponse<Branch[]>;
@@ -203,7 +209,7 @@ export interface PreviewElementReference {
 
   /**
    * Optional key for the reference.
-   * 
+   *
    * This is only used in the case when a Data Class is returned, this key is then used within a table of attributes. If not
    * provided, assume that this is a simple list of references.
    */
