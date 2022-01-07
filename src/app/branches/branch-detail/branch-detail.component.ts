@@ -61,7 +61,7 @@ export class BranchDetailComponent implements OnInit {
     this.dataDictionary
       .getAvailableBranches()
       .subscribe(branches => {
-        this.details = branches.find(b => b.branchName === this.branchName);
+        this.details = branches.find(b => b.id === this.branchName);
       });
   }
 
