@@ -1,12 +1,12 @@
 <!--
  Copyright 2021 NHS Digital
- 
+
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
      http://www.apache.org/licenses/LICENSE-2.0
- 
+
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -81,6 +81,33 @@
                             </div>
                         </div>
                     </mdm-preview-expandable-panel>
+
+                  <!-- Default Codes -->
+                  <mdm-preview-expandable-panel *ngIf="detail.defaultCodes && detail.defaultCodes.length > 0"
+                                                title="Default Codes" [anchor]="getTableOfContentsLink('Default Codes')?.anchor">
+                    <div class="- topic/body body">
+                      <div class="simpletable-container">
+                        <table class="simpletable table table-striped table-sm">
+                          <colgroup>
+                            <col style="width:20%">
+                            <col style="width:80%">
+                          </colgroup>
+                          <thead>
+                          <tr class="thead-light">
+                            <th>Code</th>
+                            <th>Description</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr *ngFor="let defaultCode of detail.defaultCodes">
+                            <td>{{defaultCode.code}}</td>
+                            <td>{{defaultCode.description}}</td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </mdm-preview-expandable-panel>
 
                     <!-- Specification -->
                     <mdm-preview-expandable-panel *ngIf="detail.specifications" title="Specification"
@@ -203,19 +230,17 @@
                                         <tr class="thead-light">
                                             <th>Type</th>
                                             <th>Link</th>
-                                            <th>How used</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let reference of references">
-                                            <td>{{reference.type}}</td>
+                                            <td>{{reference.stereotype}}</td>
                                             <td>
                                                 <a class="{{reference.stereotype}}"
                                                     uiSref="app.container.preview.detail"
-                                                    [uiParams]="{ branch: branch, index: reference.stereotype, id: reference.componentId }"
+                                                    [uiParams]="{ branch: branch, index: reference.stereotype, id: reference.catalogueId }"
                                                     title="{{reference.name}}">{{reference.name}}</a>
                                             </td>
-                                            <td>{{reference.text}}</td>
                                         </tr>
                                     </tbody>
                                 </table>

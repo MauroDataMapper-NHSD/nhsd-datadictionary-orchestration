@@ -237,6 +237,7 @@ export interface PreviewDetail {
   relationships?: PreviewRelationship[];
   alsoKnownAs?: PreviewAliases;
   nationalCodes?: PreviewCodeReference[];
+  defaultCodes?: PreviewCodeReference[];
   dataElements?: PreviewElementReference[];
   attributes?: PreviewElementReference[];
   specifications?: string;
@@ -248,11 +249,9 @@ export type PreviewDetailResponse = MdmResourcesResponse<PreviewDetail>;
  * Represents a reference to another Mauro entity which is related or used in.
  */
 export interface PreviewReference {
-  type: string;
   name: string;
   stereotype: Stereotype;
-  componentId: string;
-  text: string;
+  catalogueId: string;
 }
 
 export type PreviewReferenceResponse = MdmResourcesResponse<PreviewReference[]>;

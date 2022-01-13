@@ -20,7 +20,7 @@ export const environment = {
   version: packageFile?.version ?? '',
   production: true,
   apiEndpoint: '/nhsd-datadictionary/api',
-  mauroBaseUrl: 'https://modelcatalogue.cs.ox.ac.uk',
+  mauroBaseUrl: 'https://modelcatalogue.cs.ox.ac.uk/nhsd-datadictionary/',
   themeName: $ENV.themeName ?? 'nhs-digital',
   name: 'production',
   appTitle: 'NHS Digital Data Dictionary Orchestrator',
