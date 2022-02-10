@@ -119,25 +119,37 @@ export class DataDictionaryService {
       );
   }
 
-  updateTerminologies(branch: string): Observable<any> {
+  generateCodeSystems(branch: string): Observable<HttpResponse<Blob>> {
     return this.nhsDataDictionary
-      .updateTerminologies(branch)
+      .generateCodeSystems(branch)
       .pipe(
         catchError(error => {
-          this.logging.error(`There was a problem updating the terminologies from OntoServer for the "${branch}" branch.`, error);
+          this.logging.error(`There was a problem generating the FHIR CodeSystems for the "${branch}" branch.`, error);
           return throwError(error);
         })
       );
   }
 
-  uploadCodeSets(branch: string): Observable<any> {
+  generateValueSets(branch: string): Observable<HttpResponse<Blob>> {
     return this.nhsDataDictionary
-      .uploadCodeSets(branch)
+      .generateValueSets(branch)
       .pipe(
         catchError(error => {
-          this.logging.error(`There was a problem uploadng the code sets to OntoServer for the "${branch}" branch.`, error);
+          this.logging.error(`There was a problem generating the FHIR ValueSets for the "${branch}" branch.`, error);
           return throwError(error);
         })
       );
   }
+
+  generateChangePaper(branch: string): Observable<HttpResponse<Blob>> {
+    return this.nhsDataDictionary
+      .generateChangePaper(branch)
+      .pipe(
+        catchError(error => {
+          this.logging.error(`There was a problem generating the Change Paper for the "${branch}" branch.`, error);
+          return throwError(error);
+        })
+      );
+  }
+
 }

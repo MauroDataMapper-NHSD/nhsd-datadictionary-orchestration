@@ -19,32 +19,32 @@ import { throwError } from 'rxjs';
 
 export class MdmPluginNhsDataDictionaryResource extends MdmResource {
 
-  availableBranches(queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
+  availableBranches(queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions): any {
     const url = `${this.apiEndpoint}/nhsdd/branches`;
     return this.simpleGet(url, queryStringParams, restHandlerOptions);
   }
 
-  statistics(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
+  statistics(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions): any {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/statistics`;
     return this.simpleGet(url, queryStringParams, restHandlerOptions);
   }
 
-  integrityChecks(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
+  integrityChecks(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions): any {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/integrityChecks`;
     return this.simpleGet(url, queryStringParams, restHandlerOptions);
   }
 
-  preview(branch: string, domainType: string, id?: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
+  preview(branch: string, domainType: string, id?: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions): any {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/preview/${domainType}` + (id ? `/${id}` : '');
     return this.simpleGet(url, queryStringParams, restHandlerOptions);
   }
 
-  previewReferences(branch: string, domainType: string, id: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
+  previewReferences(branch: string, domainType: string, id: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions): any {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/preview/${domainType}/${id}/whereUsed`;
     return this.simpleGet(url, queryStringParams, restHandlerOptions);
   }
 
-  generateDita(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
+  generateDita(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions): any {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/publish/dita`;
     const restOptions = {
       ...restHandlerOptions,
@@ -53,13 +53,33 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
     return this.simpleGet(url, queryStringParams, restOptions);
   }
 
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  updateTerminologies(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
-    return throwError('updateTerminologies endpoint not implemented!');
+  generateCodeSystems(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions): any {
+    const url = `${this.apiEndpoint}/nhsdd/${branch}/publish/codeSystem/validateBundle`;
+    const restOptions = {
+      ...restHandlerOptions,
+      responseType: 'blob'
+    };
+    return this.simpleGet(url, queryStringParams, restOptions);
   }
 
-  uploadCodeSets(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions) {
-    return throwError('uploadCodeSets endpoint not implemented!');
+  generateValueSets(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions): any {
+    const url = `${this.apiEndpoint}/nhsdd/${branch}/publish/valueSet/validateBundle`;
+    const restOptions = {
+      ...restHandlerOptions,
+      responseType: 'blob'
+    };
+    return this.simpleGet(url, queryStringParams, restOptions);
   }
-  /* eslint-enable @typescript-eslint/no-unused-vars */
+
+  generateChangePaper(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions): any {
+    const url = `${this.apiEndpoint}/nhsdd/${branch}/publish/changePaper`;
+    const restOptions = {
+      ...restHandlerOptions,
+      responseType: 'blob'
+    };
+    return this.simpleGet(url, queryStringParams, restOptions);
+  }
+
+
+
 }

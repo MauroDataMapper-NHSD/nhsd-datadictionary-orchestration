@@ -80,12 +80,19 @@ export class NhsDataDictionaryService {
     return this.resources.dataDictionary.generateDita(branch);
   }
 
-  updateTerminologies(branch: string): Observable<any> {
-    return this.resources.dataDictionary.updateTerminologies(branch);
+  generateCodeSystems(branch: string): Observable<HttpResponse<Blob>> {
+    return this.resources.dataDictionary.generateCodeSystems(branch);
   }
 
-  uploadCodeSets(branch: string): Observable<any> {
-    return this.resources.dataDictionary.uploadCodeSets(branch);
+  generateValueSets(branch: string): Observable<HttpResponse<Blob>> {
+    return this.resources.dataDictionary.generateValueSets(branch);
   }
+
+  generateChangePaper(branch: string): Observable<HttpResponse<Blob>> {
+    return this.resources.dataDictionary.generateChangePaper(branch);
+  }
+
+
+
 }
 

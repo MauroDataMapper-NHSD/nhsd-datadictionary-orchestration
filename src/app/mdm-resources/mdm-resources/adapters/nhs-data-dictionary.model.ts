@@ -40,6 +40,12 @@ export interface Branch {
    */
   id: string;
 
+
+  /**
+   * The branch / model version name that should be displayed.
+   */
+  versionDisplay: string;
+
 }
 
 export type BranchResponse = MdmResourcesResponse<Branch[]>;
@@ -241,6 +247,7 @@ export interface PreviewDetail {
   dataElements?: PreviewElementReference[];
   attributes?: PreviewElementReference[];
   specifications?: string;
+  definition?: string;
 }
 
 export type PreviewDetailResponse = MdmResourcesResponse<PreviewDetail>;
