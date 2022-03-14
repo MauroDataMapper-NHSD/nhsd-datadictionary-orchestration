@@ -19,7 +19,7 @@ import { Component, OnInit } from '@angular/core';
 import { PreviewIndexGroup } from '@mdm/core/data-dictionary/data-dictionary.model';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
-import { PreviewDomainType, previewIndexDomainMap, previewIndexPageTitles, PreviewIndexType } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { PreviewDomainType, previewIndexDomainMap, previewIndexPageTitles, PreviewIndexType, PreviewIndexItem } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/core';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
@@ -97,6 +97,14 @@ export class PreviewIndexComponent implements OnInit {
 
   getTableOfContentsLink(topic: PreviewIndexGroup): TableOfContentsLink | undefined {
     return this.tableOfContentLinks.find(toc => toc.label === topic.key);
+  }
+
+  getCssClass(indexItem: PreviewIndexItem): string {
+    if ( indexItem.isRetired) {
+      return indexItem.stereotype + ' retired';
+    } else {
+      return indexItem.stereotype;
+    }
   }
 
   onTableOfContentsClick(link: TableOfContentsLink) {

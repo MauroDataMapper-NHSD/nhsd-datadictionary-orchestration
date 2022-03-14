@@ -33,33 +33,40 @@ export class BranchStatisticsComponent implements OnInit, OnChanges {
 
   @Input() branch?: Branch;
 
-  loading = false;
+  running = false;
   statistics: Statistics = {};
   rows: StatisticsTableRow[] = [];
 
   constructor(private dataDictionary: DataDictionaryService) { }
 
   ngOnInit(): void {
+  }
+
+  run(): void {
     this.load();
   }
 
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.branch) {
-      this.load();
+      this.rows = [];
+      this.statistics = {};
+      this.running = false;
     }
   }
 
-  private load() {
+
+  private load(): void {
     if (!this.branch) {
       return;
     }
 
-    this.loading = true;
+    this.running = true;
 
     this.dataDictionary
       .getBranchStatistics(this.branch.id)
       .pipe(
-        finalize(() => this.loading = false)
+        finalize(() => this.running = false)
       )
       .subscribe(statistics => {
         this.statistics = statistics;

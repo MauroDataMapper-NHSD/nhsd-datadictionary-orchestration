@@ -155,7 +155,7 @@ export const previewIndexPageTitles = new Map<PreviewDomainType, string>([
 ]);
 
 export const previewDomainTypeNouns = new Map<PreviewDomainType, string>([
-  [PreviewDomainType.DataElements, 'data alement'],
+  [PreviewDomainType.DataElements, 'data element'],
   [PreviewDomainType.Attributes, 'attribute'],
   [PreviewDomainType.DataClasses, 'class'],
   [PreviewDomainType.DataSets, 'data set'],
@@ -177,10 +177,22 @@ export enum Stereotype {
   XmlSchemaConstraint = 'xmlSchemaConstraint'
 }
 
+export const stereotypeMapping = new Map<Stereotype, string>([
+  [Stereotype.DataElement, 'Data Element'],
+  [Stereotype.Attribute, 'Attribute'],
+  [Stereotype.DataClass, 'Class'],
+  [Stereotype.DataSet, 'Data Set'],
+  [Stereotype.BusinessDefinition, 'Business Definition'],
+  [Stereotype.SupportingInformation, 'Supporting Information'],
+  [Stereotype.XmlSchemaConstraint, 'XML Schema Constraint']
+]);
+
+
 export interface PreviewIndexItem {
   catalogueId: string;
   name: string;
   stereotype: Stereotype;
+  isRetired: boolean;
 }
 
 export type PreviewIndexResponse = MdmResourcesResponse<PreviewIndexItem[]>;

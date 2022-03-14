@@ -1,12 +1,12 @@
 <!--
  Copyright 2021 NHS Digital
- 
+
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
      http://www.apache.org/licenses/LICENSE-2.0
- 
+
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,31 +14,51 @@
  limitations under the License.
 -->
 
-<div class="mdm-shadow-block">   
-    <table class="table">
-        <thead>
+<div class="mdm-shadow-block">
+  <div class="mdm-branch-integrity">
+    <div class="mdm-branch-integrity__toolbar">
+      <p>Generate statistics on the <span class="branch"><i class="fas fa-code-branch"></i>{{branch?.branchName}}</span> branch of the Data Dictionary.</p>
+    </div>
+    <div class="mdm-branch-integrity__toolbar">
+      <button mat-flat-button color="primary" type="button" [disabled]="running" (click)="run()" aria-label="Run statistics" matTooltip="Run statistics">
+        <i class="fas fa-play"></i>
+        Run
+      </button>
+    </div>
+    <div class="mdm-branch-integrity__results">
+      <div *ngIf="running" class="mdm-branch-integrity--running">
+        <p>Generating statistics now, please wait...</p>
+        <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+      </div>
+      <div *ngIf="!running && rows.length > 0 ">
+        <table class="table">
+          <thead>
             <tr>
-                <th></th>                
-                <th>Preparatory</th>
-                <th>Retired</th>
-                <th>Total</th>
+              <th></th>
+              <th>Preparatory</th>
+              <th>Retired</th>
+              <th>Total</th>
             </tr>
-        </thead>
-        <tbody *ngIf="loading || !branch">
+          </thead>
+          <tbody>
             <tr>
-                <td><ngx-skeleton-loader count="1"></ngx-skeleton-loader></td>
-                <td><ngx-skeleton-loader count="1"></ngx-skeleton-loader></td>
-                <td><ngx-skeleton-loader count="1"></ngx-skeleton-loader></td>
-                <td><ngx-skeleton-loader count="1"></ngx-skeleton-loader></td>
+              <td><ngx-skeleton-loader count="1"></ngx-skeleton-loader></td>
+              <td><ngx-skeleton-loader count="1"></ngx-skeleton-loader></td>
+              <td><ngx-skeleton-loader count="1"></ngx-skeleton-loader></td>
+              <td><ngx-skeleton-loader count="1"></ngx-skeleton-loader></td>
             </tr>
-        </tbody>
-        <tbody *ngIf="!loading && branch">
+          </tbody>
+          <tbody *ngIf="!running && statistics">
             <tr *ngFor="let row of rows">
-                <td>{{row.name}}</td>                
-                <td>{{row.values.Preparatory}}</td>
-                <td>{{row.values.Retired}}</td>
-                <td>{{row.values.Total}}</td>
+              <td>{{row.name}}</td>
+              <td>{{row.values.Preparatory}}</td>
+              <td>{{row.values.Retired}}</td>
+              <td>{{row.values.Total}}</td>
             </tr>
-        </tbody>
-    </table>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
 </div>

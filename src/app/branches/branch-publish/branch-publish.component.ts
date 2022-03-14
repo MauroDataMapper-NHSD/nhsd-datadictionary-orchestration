@@ -84,6 +84,8 @@ export class BranchPublishComponent implements OnInit {
       observedResponse = this.dataDictionary.generateValueSets(this.branch.id);
     } else if (generationType === 'changePaper') {
       observedResponse = this.dataDictionary.generateChangePaper(this.branch.id);
+    } else if (generationType === 'changePaperWithDataSet') {
+      observedResponse = this.dataDictionary.generateChangePaperWithDataSet(this.branch.id);
     } else {
       observedResponse = this.dataDictionary.generateChangePaper(this.branch.id);
     }
@@ -111,8 +113,8 @@ export class BranchPublishComponent implements OnInit {
               type: response.headers.get('content-type') ?? 'application/zip'
             });
 
-          const contentDisposition = response.headers.get('content-disposition');
-          const filename = contentDisposition?.match(/filename="(.+)"/)?.[1] ?? 'dita.zip';
+          const contentDisposition = response.headers.get('Content-Disposition');
+          const filename = contentDisposition?.match(/attachment;filename="(.+)"/)?.[1] ?? 'dita.zip';
 
           fileSaver.saveAs(blob, filename);
         });

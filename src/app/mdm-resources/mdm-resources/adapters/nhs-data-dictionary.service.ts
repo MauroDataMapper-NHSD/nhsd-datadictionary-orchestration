@@ -92,6 +92,11 @@ export class NhsDataDictionaryService {
     return this.resources.dataDictionary.generateChangePaper(branch);
   }
 
+  generateChangePaperWithDataSet(branch: string): Observable<HttpResponse<Blob>> {
+    return this.resources.dataDictionary.generateChangePaperWithDataSet(branch);
+  }
+
+
 
 
 }

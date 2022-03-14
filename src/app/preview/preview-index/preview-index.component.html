@@ -1,12 +1,12 @@
 <!--
  Copyright 2021 NHS Digital
- 
+
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
      http://www.apache.org/licenses/LICENSE-2.0
- 
+
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,11 +27,11 @@
                 <h1 class="title topictitle1">{{getIndexTitle()}}</h1>
                 <div class="body">
                     <mdm-alert alertStyle="info" [showIcon]="true">
-                        For preview only, this index page will not contain a description block. The final published output will include a description.                        
+                        For preview only, this index page will not contain a description block. The final published output will include a description.
                     </mdm-alert>
-                </div>                
-    
-                <mdm-preview-expandable-panel *ngFor="let topic of topics" [title]="topic.key" [anchor]="getTableOfContentsLink(topic)?.anchor">                    
+                </div>
+
+                <mdm-preview-expandable-panel *ngFor="let topic of topics" [title]="topic.key" [anchor]="getTableOfContentsLink(topic)?.anchor">
                     <div class="body">
                         <div class="simpletable-container">
                             <table class="- topic/simpletable simpletable table table-striped table-sm">
@@ -47,7 +47,7 @@
                                 <tbody>
                                     <tr *ngFor="let item of topic.items">
                                         <td class="- topic/stentry stentry" headers="data_elements.a__stentry__1">
-                                            <a class="{{item.stereotype}}" uiSref="app.container.preview.detail"
+                                            <a class="{{getCssClass(item)}}" uiSref="app.container.preview.detail"
                                                 [uiParams]="{ branch: branch, index: item.stereotype, id: item.catalogueId }">{{item.name}}</a>
                                         </td>
                                     </tr>
@@ -61,7 +61,7 @@
     </div>
 
     <nav role="navigation" id="toc" class="col-lg-2 d-none d-lg-block navbar d-print-none">
-        <mdm-preview-toc [links]="tableOfContentLinks" (navigating)="onTableOfContentsClick($event)">        
+        <mdm-preview-toc [links]="tableOfContentLinks" (navigating)="onTableOfContentsClick($event)">
         </mdm-preview-toc>
-    </nav>    
+    </nav>
 </div>

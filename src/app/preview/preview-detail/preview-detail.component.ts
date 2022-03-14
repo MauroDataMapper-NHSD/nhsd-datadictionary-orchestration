@@ -18,7 +18,7 @@ import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
-import { PreviewDetail, PreviewDomainType, previewDomainTypeNouns, previewIndexDomainMap, previewIndexPageTitles, PreviewIndexType, PreviewReference, Stereotype } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { PreviewDetail, PreviewDomainType, previewDomainTypeNouns, previewIndexDomainMap, previewIndexPageTitles, PreviewIndexType, PreviewReference, Stereotype, stereotypeMapping } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/angular';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
@@ -225,4 +225,10 @@ export class PreviewDetailComponent implements OnInit {
 
     return links;
   }
+
+  prettifyStereotype(stereotype: string) {
+    return stereotypeMapping.get(stereotype as Stereotype)
+
+  }
+
 }

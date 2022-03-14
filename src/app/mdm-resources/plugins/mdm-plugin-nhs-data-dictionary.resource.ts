@@ -80,6 +80,16 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
     return this.simpleGet(url, queryStringParams, restOptions);
   }
 
+  generateChangePaperWithDataSet(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions): any {
+    const url = `${this.apiEndpoint}/nhsdd/${branch}/publish/changePaperDataSet`;
+    const restOptions = {
+      ...restHandlerOptions,
+      responseType: 'blob'
+    };
+    return this.simpleGet(url, queryStringParams, restOptions);
+  }
+
+
 
 
 }

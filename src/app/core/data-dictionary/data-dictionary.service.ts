@@ -152,4 +152,17 @@ export class DataDictionaryService {
       );
   }
 
+  generateChangePaperWithDataSet(branch: string): Observable<HttpResponse<Blob>> {
+    return this.nhsDataDictionary
+      .generateChangePaperWithDataSet(branch)
+      .pipe(
+        catchError(error => {
+          this.logging.error(`There was a problem generating the Change Paper for the "${branch}" branch.`, error);
+          return throwError(error);
+        })
+      );
+  }
+
+
+
 }

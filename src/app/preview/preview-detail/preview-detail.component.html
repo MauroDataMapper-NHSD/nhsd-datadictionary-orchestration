@@ -222,9 +222,8 @@
                             <div class="simpletable-container">
                                 <table class="simpletable table table-striped table-sm">
                                     <colgroup>
-                                        <col style="width:16.666666666666664%">
-                                        <col style="width:50%">
-                                        <col style="width:33.33333333333333%">
+                                        <col style="width:30%">
+                                        <col style="width:70%">
                                     </colgroup>
                                     <thead>
                                         <tr class="thead-light">
@@ -234,7 +233,7 @@
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let reference of references">
-                                            <td>{{reference.stereotype}}</td>
+                                            <td>{{prettifyStereotype(reference.stereotype)}}</td>
                                             <td>
                                                 <a class="{{reference.stereotype}}"
                                                     uiSref="app.container.preview.detail"
