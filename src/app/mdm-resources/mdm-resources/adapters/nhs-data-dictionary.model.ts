@@ -107,7 +107,7 @@ export enum PreviewDomainType {
   DataSets = 'dataSets',
   BusinessDefinitions = 'businessDefinitions',
   SupportingInformation = 'supportingInformation',
-  XmlSchemaConstraint = 'xmlSchemaConstraints',
+  DataSetConstraint = 'dataSetConstraints',
   All = 'allItemsIndex'
 }
 
@@ -123,7 +123,7 @@ export enum PreviewIndexType {
   DataSet = 'dataSet',
   BusinessDefinition = 'businessDefinition',
   SupportingInformation = 'supportingInformation',
-  XmlSchemaConstraint = 'xmlSchemaConstraint',
+  DataSetConstraint = 'dataSetConstraint',
   All = 'allItemsIndex'
 }
 
@@ -140,7 +140,7 @@ export const previewIndexDomainMap = new Map<PreviewIndexType, PreviewDomainType
   [PreviewIndexType.DataSet, PreviewDomainType.DataSets],
   [PreviewIndexType.BusinessDefinition, PreviewDomainType.BusinessDefinitions],
   [PreviewIndexType.SupportingInformation, PreviewDomainType.SupportingInformation],
-  [PreviewIndexType.XmlSchemaConstraint, PreviewDomainType.XmlSchemaConstraint],
+  [PreviewIndexType.DataSetConstraint, PreviewDomainType.DataSetConstraint],
   [PreviewIndexType.All, PreviewDomainType.All]
 ]);
 
@@ -149,9 +149,9 @@ export const previewIndexPageTitles = new Map<PreviewDomainType, string>([
   [PreviewDomainType.Attributes, 'Attributes'],
   [PreviewDomainType.DataClasses, 'Classes'],
   [PreviewDomainType.DataSets, 'Data Sets'],
-  [PreviewDomainType.BusinessDefinitions, 'Business Definitions'],
+  [PreviewDomainType.BusinessDefinitions, 'NHS Business Definitions'],
   [PreviewDomainType.SupportingInformation, 'Supporting Information'],
-  [PreviewDomainType.XmlSchemaConstraint, 'XML Schema Constraints']
+  [PreviewDomainType.DataSetConstraint, 'Data Set Constraints']
 ]);
 
 export const previewDomainTypeNouns = new Map<PreviewDomainType, string>([
@@ -161,7 +161,7 @@ export const previewDomainTypeNouns = new Map<PreviewDomainType, string>([
   [PreviewDomainType.DataSets, 'data set'],
   [PreviewDomainType.BusinessDefinitions, 'business definition'],
   [PreviewDomainType.SupportingInformation, 'supporting information'],
-  [PreviewDomainType.XmlSchemaConstraint, 'XML schema constraint']
+  [PreviewDomainType.DataSetConstraint, 'data set constraint']
 ]);
 
 /**
@@ -174,7 +174,7 @@ export enum Stereotype {
   DataSet = 'dataSet',
   BusinessDefinition = 'businessDefinition',
   SupportingInformation = 'supportingInformation',
-  XmlSchemaConstraint = 'xmlSchemaConstraint'
+  DataSetConstraint = 'dataSetConstraint'
 }
 
 export const stereotypeMapping = new Map<Stereotype, string>([
@@ -184,7 +184,7 @@ export const stereotypeMapping = new Map<Stereotype, string>([
   [Stereotype.DataSet, 'Data Set'],
   [Stereotype.BusinessDefinition, 'Business Definition'],
   [Stereotype.SupportingInformation, 'Supporting Information'],
-  [Stereotype.XmlSchemaConstraint, 'XML Schema Constraint']
+  [Stereotype.DataSetConstraint, 'Data Set Constraint']
 ]);
 
 

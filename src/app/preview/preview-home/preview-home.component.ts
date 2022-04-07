@@ -88,13 +88,13 @@ export class PreviewHomeComponent implements OnInit {
       }
     },
     {
-      id: 'xml_schema_constraints_overview',
-      title: 'XML Schema Constraints',
+      id: 'data_set_constraints_overview',
+      title: 'Data Set Constraints',
       description: '',
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        index: PreviewIndexType.XmlSchemaConstraint
+        index: PreviewIndexType.DataSetConstraint
       }
     },
     {

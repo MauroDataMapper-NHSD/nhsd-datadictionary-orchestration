@@ -66,6 +66,12 @@ export class AppComponent implements OnInit, OnDestroy {
           onlySignedIn: true
         },
         {
+          label: 'Changes',
+          uiSref: 'app.container.changes.default',
+          icon: 'fa-book-reader',
+          onlySignedIn: true
+        },
+        {
           label: 'About',
           uiSref: 'app.container.about',
           icon: 'fa-info-circle'

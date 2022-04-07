@@ -60,7 +60,7 @@ export class PreviewDetailComponent implements OnInit {
   }
 
   get hasReferencesSection() {
-    return this.detail?.stereotype !== Stereotype.XmlSchemaConstraint;
+    return this.detail?.stereotype !== Stereotype.DataSetConstraint;
   }
 
   constructor(
