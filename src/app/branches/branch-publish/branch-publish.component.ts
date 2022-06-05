@@ -87,7 +87,7 @@ export class BranchPublishComponent implements OnInit {
     } else if (generationType === 'changePaperWithDataSet') {
       observedResponse = this.dataDictionary.generateChangePaperWithDataSet(this.branch.id);
     } else {
-      observedResponse = this.dataDictionary.generateChangePaper(this.branch.id);
+      observedResponse = this.dataDictionary.generateDita(this.branch.id);
     }
     // this.generateFunctions.get(generationType)
     //  .call(this.dataDictionary, this.branch.id)

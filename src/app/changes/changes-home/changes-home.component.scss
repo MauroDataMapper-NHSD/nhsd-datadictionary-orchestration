@@ -14,18 +14,38 @@
  * limitations under the License.
  */
 
-import { NgModule } from '@angular/core';
-import { SharedModule } from '@mdm/shared/shared.module';
-import { ChangesContainerComponent } from './changes-container/changes-container.component';
-import { ChangesHomeComponent } from './changes-home/changes-home.component';
+.mdm-changes-home {
 
-@NgModule({
-  declarations: [
-    ChangesContainerComponent,
-    ChangesHomeComponent
-  ],
-  imports: [
-    SharedModule
-  ]
-})
-export class ChangesModule { }
+    padding-left: 1em;
+
+    dl {
+    }
+
+    dd {
+      margin-left: 2em;
+    }
+
+
+
+
+    h1 {
+      font-size: 2rem;
+      color: #003087;
+
+
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        color: #003087;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        line-height: 1.2;
+    }
+
+    &__tile-container {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-around;
+    }
+}

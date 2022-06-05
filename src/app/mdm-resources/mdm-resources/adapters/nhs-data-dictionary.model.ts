@@ -74,6 +74,43 @@ export interface Statistics {
 
 export type StatisticsResponse = MdmResourcesResponse<Statistics>;
 
+export interface StereotypedChange {
+  stereotype: string;
+  changedItems: ChangedItem[];
+}
+
+export interface ChangedItem {
+  name: string;
+  changes: Change[];
+}
+
+export interface Change {
+  changeType: string;
+  stereotype: string;
+  detail: string;
+}
+
+/**
+ * Represents the details of a change paper preview
+ *
+ */
+
+
+export interface ChangePaperPreview {
+  reference: string;
+  type: string;
+  versionNo: string;
+  subject: string;
+  effectiveDate: string;
+  reasonForChange: string;
+  publicationDate: string;
+  background: string;
+  sponsor: string;
+  changes: StereotypedChange[];
+}
+
+export type ChangePaperPreviewResponse = MdmResourcesResponse<ChangePaperPreview>;
+
 /**
  * Represents the details of a model from Mauro with respect to an integrity check on the Data Dictionary.
  */

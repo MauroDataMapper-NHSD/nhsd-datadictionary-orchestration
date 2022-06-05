@@ -17,7 +17,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Branch, BranchResponse, IntegrityCheck, IntegrityCheckResponse, PreviewDetail, PreviewDetailResponse, PreviewDomainType, PreviewIndexItem, PreviewIndexResponse, PreviewReference, PreviewReferenceResponse, Statistics, StatisticsResponse } from './nhs-data-dictionary.model';
+import { Branch, BranchResponse, ChangePaperPreview, ChangePaperPreviewResponse, IntegrityCheck, IntegrityCheckResponse, PreviewDetail, PreviewDetailResponse, PreviewDomainType, PreviewIndexItem, PreviewIndexResponse, PreviewReference, PreviewReferenceResponse, Statistics, StatisticsResponse } from './nhs-data-dictionary.model';
 import { MdmResourcesService } from '../mdm-resources.service';
 import { HttpResponse } from '@angular/common/http';
 
@@ -41,6 +41,14 @@ export class NhsDataDictionaryService {
       .statistics(branch)
       .pipe(
         map((response: StatisticsResponse) => response.body)
+      );
+  }
+
+  previewChangePaper(branch: string): Observable<ChangePaperPreview> {
+    return this.resources.dataDictionary
+      .previewChangePaper(branch)
+      .pipe(
+        map((response: ChangePaperPreviewResponse) => response.body)
       );
   }
 

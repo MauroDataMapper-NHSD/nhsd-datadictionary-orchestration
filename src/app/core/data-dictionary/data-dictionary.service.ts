@@ -16,7 +16,7 @@
 
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Branch, PreviewDetail, PreviewDomainType, PreviewIndexItem, PreviewReference, Statistics } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { Branch, ChangePaperPreview, PreviewDetail, PreviewDomainType, PreviewIndexItem, PreviewReference, Statistics } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { NhsDataDictionaryService } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -49,6 +49,17 @@ export class DataDictionaryService {
       .pipe(
         catchError(error => {
           this.logging.error(`There was a problem getting statistics for the "${branch}" branch.`, error);
+          return throwError(error);
+        })
+      );
+  }
+
+  getChangePaperPreview(branch: string): Observable<ChangePaperPreview> {
+    return this.nhsDataDictionary
+      .previewChangePaper(branch)
+      .pipe(
+        catchError(error => {
+          this.logging.error(`There was a problem getting change paper preview for the "${branch}" branch.`, error);
           return throwError(error);
         })
       );

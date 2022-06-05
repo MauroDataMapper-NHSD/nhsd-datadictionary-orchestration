@@ -29,6 +29,7 @@ import { PagesModule } from './pages/pages.module';
 import { DialogsModule } from './dialogs/dialogs.module';
 import { BranchesModule } from './branches/branches.module';
 import { PreviewModule } from './preview/preview.module';
+import { ChangesModule } from './changes/changes.module';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { PreviewModule } from './preview/preview.module';
     PagesModule,
     DialogsModule,
     BranchesModule,
-    PreviewModule
+    PreviewModule,
+    ChangesModule
   ],
   bootstrap: [UiViewComponent]
 })

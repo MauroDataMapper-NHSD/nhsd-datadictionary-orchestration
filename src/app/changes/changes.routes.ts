@@ -15,6 +15,8 @@
  */
 
 import { Ng2StateDeclaration } from '@uirouter/angular';
+import { ChangesContainerComponent } from '@mdm/changes/changes-container/changes-container.component';
+import { ChangesHomeComponent } from '@mdm/changes/changes-home/changes-home.component';
 
 export const states: Ng2StateDeclaration[] = [
   {
@@ -24,7 +26,7 @@ export const states: Ng2StateDeclaration[] = [
   {
     name: 'app.container.changes.default',
     url: '/changes',
-    component: ChangesDefaultComponent
+    component: ChangesHomeComponent
   },
   {
     name: 'app.container.changes.home',

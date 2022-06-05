@@ -22,6 +22,7 @@ import { states as errorStates } from '@mdm/error/error.routes';
 import { states as pageStates } from '@mdm/pages/pages.routes';
 import { states as branchStates } from '@mdm/branches/branches.routes';
 import { states as previewStates } from '@mdm/preview/preview.routes';
+import { states as changesStates } from '@mdm/changes/changes.routes';
 
 const appStates: Ng2StateDeclaration[] = [
   {
@@ -44,5 +45,6 @@ export const states: Ng2StateDeclaration[] = [
   ...pageStates,
   ...errorStates,
   ...branchStates,
-  ...previewStates
+  ...previewStates,
+  ...changesStates
 ];

@@ -29,6 +29,11 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
     return this.simpleGet(url, queryStringParams, restHandlerOptions);
   }
 
+  previewChangePaper(branch: string, queryStringParams?: QueryParameters, restHandlerOptions?: RequestSettings): any {
+    const url = `${this.apiEndpoint}/nhsdd/${branch}/preview/changePaper`;
+    return this.simpleGet(url, queryStringParams, restHandlerOptions);
+  }
+
   integrityChecks(branch: string, queryStringParams?: QueryParameters, restHandlerOptions?: RequestSettings): any {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/integrityChecks`;
     return this.simpleGet(url, queryStringParams, restHandlerOptions);
