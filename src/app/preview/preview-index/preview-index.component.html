@@ -47,7 +47,7 @@
                                 <tbody>
                                     <tr *ngFor="let item of topic.items">
                                         <td class="- topic/stentry stentry" headers="data_elements.a__stentry__1">
-                                            <a class="{{getCssClass(item)}}" uiSref="app.container.preview.detail"
+                                            <a class="{{getCssClass(item)}} {{item.isRetired?'retired'}}" uiSref="app.container.preview.detail"
                                                 [uiParams]="{ branch: branch, index: item.stereotype, id: item.catalogueId }">{{item.name}}</a>
                                         </td>
                                     </tr>

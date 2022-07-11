@@ -226,6 +226,12 @@ export interface PreviewElementReference {
   stereotype: Stereotype;
 
   /**
+   * Whether the item is retired or not
+   */
+
+  retired: boolean;
+
+  /**
    * Optional key for the reference.
    *
    * This is only used in the case when a Data Class is returned, this key is then used within a table of attributes. If not
@@ -271,6 +277,7 @@ export interface PreviewReference {
   name: string;
   stereotype: Stereotype;
   catalogueId: string;
+  retired: boolean;
 }
 
 export type PreviewReferenceResponse = MdmResourcesResponse<PreviewReference[]>;
