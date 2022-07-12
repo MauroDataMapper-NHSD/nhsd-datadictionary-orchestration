@@ -14,37 +14,37 @@
  * limitations under the License.
  */
 
-import { IMdmQueryStringParams, IMdmRestHandlerOptions, MdmResource } from '@maurodatamapper/mdm-resources';
+import { QueryParameters, RequestSettings, MdmResource } from '@maurodatamapper/mdm-resources';
 import { throwError } from 'rxjs';
 
 export class MdmPluginNhsDataDictionaryResource extends MdmResource {
 
-  availableBranches(queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions): any {
+  availableBranches(queryStringParams?: QueryParameters, restHandlerOptions?: RequestSettings): any {
     const url = `${this.apiEndpoint}/nhsdd/branches`;
     return this.simpleGet(url, queryStringParams, restHandlerOptions);
   }
 
-  statistics(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions): any {
+  statistics(branch: string, queryStringParams?: QueryParameters, restHandlerOptions?: RequestSettings): any {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/statistics`;
     return this.simpleGet(url, queryStringParams, restHandlerOptions);
   }
 
-  integrityChecks(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions): any {
+  integrityChecks(branch: string, queryStringParams?: QueryParameters, restHandlerOptions?: RequestSettings): any {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/integrityChecks`;
     return this.simpleGet(url, queryStringParams, restHandlerOptions);
   }
 
-  preview(branch: string, domainType: string, id?: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions): any {
+  preview(branch: string, domainType: string, id?: string, queryStringParams?: QueryParameters, restHandlerOptions?: RequestSettings): any {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/preview/${domainType}` + (id ? `/${id}` : '');
     return this.simpleGet(url, queryStringParams, restHandlerOptions);
   }
 
-  previewReferences(branch: string, domainType: string, id: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions): any {
+  previewReferences(branch: string, domainType: string, id: string, queryStringParams?: QueryParameters, restHandlerOptions?: RequestSettings): any {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/preview/${domainType}/${id}/whereUsed`;
     return this.simpleGet(url, queryStringParams, restHandlerOptions);
   }
 
-  generateDita(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions): any {
+  generateDita(branch: string, queryStringParams?: QueryParameters, restHandlerOptions?: RequestSettings): any {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/publish/dita`;
     const restOptions = {
       ...restHandlerOptions,
@@ -53,7 +53,7 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
     return this.simpleGet(url, queryStringParams, restOptions);
   }
 
-  generateCodeSystems(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions): any {
+  generateCodeSystems(branch: string, queryStringParams?: QueryParameters, restHandlerOptions?: RequestSettings): any {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/publish/codeSystem/validateBundle`;
     const restOptions = {
       ...restHandlerOptions,
@@ -62,7 +62,7 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
     return this.simpleGet(url, queryStringParams, restOptions);
   }
 
-  generateValueSets(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions): any {
+  generateValueSets(branch: string, queryStringParams?: QueryParameters, restHandlerOptions?: RequestSettings): any {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/publish/valueSet/validateBundle`;
     const restOptions = {
       ...restHandlerOptions,
@@ -71,7 +71,7 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
     return this.simpleGet(url, queryStringParams, restOptions);
   }
 
-  generateChangePaper(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions): any {
+  generateChangePaper(branch: string, queryStringParams?: QueryParameters, restHandlerOptions?: RequestSettings): any {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/publish/changePaper`;
     const restOptions = {
       ...restHandlerOptions,
@@ -80,7 +80,7 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
     return this.simpleGet(url, queryStringParams, restOptions);
   }
 
-  generateChangePaperWithDataSet(branch: string, queryStringParams?: IMdmQueryStringParams, restHandlerOptions?: IMdmRestHandlerOptions): any {
+  generateChangePaperWithDataSet(branch: string, queryStringParams?: QueryParameters, restHandlerOptions?: RequestSettings): any {
     const url = `${this.apiEndpoint}/nhsdd/${branch}/publish/changePaperDataSet`;
     const restOptions = {
       ...restHandlerOptions,
