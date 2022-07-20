@@ -22,7 +22,7 @@
             </span>
             <mat-select placeholder="Select a branch" [(value)]="selectedBranch" (selectionChange)="onBranchChanged($event)">
                 <mat-option *ngFor="let branch of branches" [value]="branch.id">
-                    {{branch.label}} ({{ branch.branchName }})
+                    {{branch.label}} <span *ngIf="branch.branchName">({{ branch.branchName }})</span>
                 </mat-option>
             </mat-select>
         </div>
