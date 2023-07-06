@@ -73,7 +73,9 @@ export class MdmRestHandlerService implements MdmRestHandler {
           else if (response.status === 501) {
             this.broadcast.dispatch(BroadcastEvent.NotImplemented, response);
           }
-          else if (response.status >= 400 && response.status < 500 && options.method === 'GET') {
+          else if (response.status >= 400 && response.status < 500
+            && response.status !== 403
+            && options.method === 'GET') {
             this.broadcast.dispatch(BroadcastEvent.NotFound, response);
           }
           else if (response.status >= 500) {

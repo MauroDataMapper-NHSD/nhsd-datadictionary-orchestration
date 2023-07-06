@@ -18,7 +18,15 @@ import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
-import { PreviewDetail, PreviewDomainType, previewDomainTypeNouns, previewIndexDomainMap, previewIndexPageTitles, PreviewIndexType, PreviewReference, Stereotype, stereotypeMapping } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { PreviewDetail,
+          PreviewDomainType,
+          previewDomainTypeNouns,
+          previewIndexDomainMap,
+          previewIndexPageTitles,
+          PreviewIndexType,
+          PreviewReference,
+          Stereotype,
+          stereotypeMapping } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/angular';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
@@ -43,11 +51,13 @@ export class PreviewDetailComponent implements OnInit {
   isLoadingReferences = false;
   references: PreviewReference[] = [];
 
-  get noun() {
+  hasReferencesSection = false;
+
+  get noun(): string {
     return previewDomainTypeNouns.get(this.domainType) ?? 'element';
   }
 
-  get aliases() {
+  get aliases(): any[] {
     if (!this.detail?.alsoKnownAs) {
       return [];
     }
@@ -59,9 +69,6 @@ export class PreviewDetailComponent implements OnInit {
       });
   }
 
-  get hasReferencesSection() {
-    return this.detail?.stereotype !== Stereotype.DataSetConstraint;
-  }
 
   constructor(
     private uiRouterGlobals: UIRouterGlobals,
@@ -96,6 +103,9 @@ export class PreviewDetailComponent implements OnInit {
         this.detail = detail;
         this.breadcrumbs = this.createBreadcrumbs(detail);
         this.tableOfContentLinks = this.createTableOfContentLinks(detail);
+        this.hasReferencesSection =
+          (this.detail?.stereotype !== Stereotype.DataSetConstraint &&
+          this.detail?.stereotype !== Stereotype.DataSetFolder);
       });
   }
 
@@ -103,12 +113,12 @@ export class PreviewDetailComponent implements OnInit {
     return this.tableOfContentLinks.find(toc => toc.label === section);
   }
 
-  onTableOfContentsClick(link: TableOfContentsLink) {
+  onTableOfContentsClick(link: TableOfContentsLink): void {
     // Simulate an <a href="page#section"> link click
     this.viewportScroller.scrollToAnchor(link.anchor);
   }
 
-  onReferencesSectionExpanded() {
+  onReferencesSectionExpanded(): void {
     if (this.references.length > 0) {
       return;
     }
@@ -226,9 +236,8 @@ export class PreviewDetailComponent implements OnInit {
     return links;
   }
 
-  prettifyStereotype(stereotype: string) {
-    return stereotypeMapping.get(stereotype as Stereotype)
-
+  prettifyStereotype(stereotype: string): string | undefined {
+    return stereotypeMapping.get(stereotype as Stereotype);
   }
 
 }

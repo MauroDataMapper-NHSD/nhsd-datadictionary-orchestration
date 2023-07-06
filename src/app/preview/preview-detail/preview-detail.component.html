@@ -74,7 +74,7 @@
                                     <tbody>
                                         <tr *ngFor="let nationalCode of detail.nationalCodes">
                                             <td>{{nationalCode.code}}</td>
-                                            <td>{{nationalCode.description}}</td>
+                                            <td [innerHTML]='nationalCode.description'></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -101,7 +101,7 @@
                           <tbody>
                           <tr *ngFor="let defaultCode of detail.defaultCodes">
                             <td>{{defaultCode.code}}</td>
-                            <td>{{defaultCode.description}}</td>
+                            <td [innerHTML]="defaultCode.description"></td>
                           </tr>
                           </tbody>
                         </table>
@@ -180,6 +180,32 @@
                             </div>
                         </div>
                     </mdm-preview-expandable-panel>
+                  <!-- Child Folders (of Data Set Folder-->
+                  <mdm-preview-expandable-panel
+                    *ngIf="detail.childFolders && detail.childFolders.length > 0"
+                    title="Folders" [anchor]="getTableOfContentsLink('Folders')?.anchor">
+                    <div class="- topic/body body">
+                      <ul>
+                        <li *ngFor="let element of detail.childFolders">
+                          <a class="{{element.stereotype}}" uiSref="app.container.preview.detail"
+                             [uiParams]="{ branch: branch, index: element.stereotype, id: element.catalogueId }">{{element.name}}</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </mdm-preview-expandable-panel>
+                  <!-- Child Folders (of Data Set Folder-->
+                  <mdm-preview-expandable-panel
+                    *ngIf="detail.dataSets && detail.dataSets.length > 0"
+                    title="Data Sets" [anchor]="getTableOfContentsLink('Data Sets')?.anchor">
+                    <div class="- topic/body body">
+                      <ul>
+                        <li *ngFor="let element of detail.dataSets">
+                          <a class="{{element.stereotype}}" uiSref="app.container.preview.detail"
+                             [uiParams]="{ branch: branch, index: element.stereotype, id: element.catalogueId }">{{element.name}}</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </mdm-preview-expandable-panel>
 
                     <!-- Also Known As -->
                     <mdm-preview-expandable-panel *ngIf="aliases.length > 0" title="Also Known As"

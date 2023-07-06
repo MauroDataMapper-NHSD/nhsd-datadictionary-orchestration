@@ -1,12 +1,12 @@
 <!--
  Copyright 2021 NHS Digital
- 
+
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
      http://www.apache.org/licenses/LICENSE-2.0
- 
+
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,8 +18,10 @@
     <div class="container">
         <div class="footer__container" flex fxLayout="row" fxLayoutAlign="space-between">
             <div class="footer__logo">
-                <p class="text-muted">Powered by:</p>
-                <img class="footer__logo--mdm" src="assets/images/mdm-logo.png" alt="Mauro Data Mapper logo" />
+                <p class="text-muted">Powered by &nbsp;
+                  <img class="footer__logo--mdm" src="assets/images/mdm-logo.png" alt="Mauro Data Mapper logo" />
+                </p>
+
             </div>
             <div>
                 <div class="footer__box" flex fxLayout="column" fxLayoutAlign="space-between">
@@ -28,12 +30,10 @@
                     </div>
                 </div>
                 <div class="footer__box mt-2">
-                    <small class="text-muted">Version {{version}}</small>
-                </div>
-                <div class="footer__box mt-2">
+                    <small class="text-muted">Version {{version}}</small>&nbsp;&nbsp;
                     <small class="text-muted">Copyright &copy; {{year}} NHS Digital</small>
                 </div>
             </div>
-        </div>        
+        </div>
     </div>
 </footer>

@@ -18,7 +18,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Branch, ChangePaperPreview, PreviewDetail, PreviewDomainType, PreviewIndexItem, PreviewReference, Statistics } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { NhsDataDictionaryService } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.service';
-import { Observable, throwError } from 'rxjs';
+import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { LoggingService } from '../logging/logging.service';
 import { IntegrityCheckCategory, PreviewIndexGroup } from './data-dictionary.model';
@@ -124,7 +124,11 @@ export class DataDictionaryService {
       .generateDita(branch)
       .pipe(
         catchError(error => {
-          this.logging.error(`There was a problem generating the DITA for the "${branch}" branch.`, error);
+          if (error.status === 403) {
+            this.logging.warning(`You do not have permission to generate the DITA`);
+          } else {
+            this.logging.error(`There was a problem generating the DITA for the "${branch}" branch.`, error);
+          }
           return throwError(error);
         })
       );
@@ -135,7 +139,11 @@ export class DataDictionaryService {
       .generateCodeSystems(branch)
       .pipe(
         catchError(error => {
-          this.logging.error(`There was a problem generating the FHIR CodeSystems for the "${branch}" branch.`, error);
+          if (error.status === 403) {
+            this.logging.warning(`You do not have permission to generate the FHIR CodeSystem Resource Bundle`);
+          } else {
+            this.logging.error(`There was a problem generating the FHIR CodeSystems for the "${branch}" branch.`, error);
+          }
           return throwError(error);
         })
       );
@@ -146,7 +154,11 @@ export class DataDictionaryService {
       .generateValueSets(branch)
       .pipe(
         catchError(error => {
-          this.logging.error(`There was a problem generating the FHIR ValueSets for the "${branch}" branch.`, error);
+          if (error.status === 403) {
+            this.logging.warning(`You do not have permission to generate the FHIR ValueSet Resource Bundle`);
+          } else {
+            this.logging.error(`There was a problem generating the FHIR ValueSets for the "${branch}" branch.`, error);
+          }
           return throwError(error);
         })
       );

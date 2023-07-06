@@ -62,7 +62,7 @@
     /**
     * Define styles for element links
     */
-    @mixin mdm-dd-preview-element-link($name, $color, $content, $fontWeight: bold) {
+    @mixin mdm-dd-preview-element-link($name, $color, $content, $fontWeight: normal) {
         .#{$name} {
             color: $color;
             font-weight: $fontWeight;
@@ -80,6 +80,7 @@
 
     @include mdm-dd-preview-element-link(element, $dataElementColor, 'e');
     @include mdm-dd-preview-element-link(dataSet, $dataSetColor, 'ds');
+    @include mdm-dd-preview-element-link(dataSetFolder, $dataSetColor, 'ds');
     @include mdm-dd-preview-element-link(attribute, $attributeColor, 'a');
     @include mdm-dd-preview-element-link(class, $dataClassColor, 'c');
     @include mdm-dd-preview-element-link(businessDefinition, $businessDefinitionColor, 'bd');

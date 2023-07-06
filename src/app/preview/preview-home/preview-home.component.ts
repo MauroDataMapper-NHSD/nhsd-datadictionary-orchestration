@@ -31,11 +31,12 @@ export class PreviewHomeComponent implements OnInit {
       id: 'dataSet_overview',
       title: 'Data Sets',
       description: 'Data Sets provide the specification for data collections and for data analyses.',
-      uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
-        index: PreviewIndexType.DataSet
-      }
+        index: PreviewIndexType.DataSetFolder,
+        id: 'root'
+      },
+      uiSref: 'app.container.preview.detail'
     },
     {
       id: 'dataElement_overview',

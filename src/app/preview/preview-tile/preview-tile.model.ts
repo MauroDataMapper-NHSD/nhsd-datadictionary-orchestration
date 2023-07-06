@@ -19,6 +19,7 @@ import { PreviewIndexType } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-
 export interface PreviewTileUiParams {
   branch?: string;
   index?: PreviewIndexType;
+  id?: string;
 }
 
 export interface PreviewTile {

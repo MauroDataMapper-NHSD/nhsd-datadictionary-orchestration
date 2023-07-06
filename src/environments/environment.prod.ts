@@ -16,7 +16,7 @@
 
  import * as packageFile from '../../package.json';
 
-export const environment = {
+ export const environment = {
   version: packageFile?.version ?? '',
   production: true,
   apiEndpoint: '/nhsd-datadictionary/api',

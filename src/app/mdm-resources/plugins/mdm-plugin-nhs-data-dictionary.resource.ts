@@ -50,7 +50,7 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
   }
 
   generateDita(branch: string, queryStringParams?: QueryParameters, restHandlerOptions?: RequestSettings): any {
-    const url = `${this.apiEndpoint}/nhsdd/${branch}/publish/dita`;
+    const url = `${this.apiEndpoint}/nhsdd/${branch}/publish/website`;
     const restOptions = {
       ...restHandlerOptions,
       responseType: 'blob'
@@ -86,11 +86,16 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
   }
 
   generateChangePaperWithDataSet(branch: string, queryStringParams?: QueryParameters, restHandlerOptions?: RequestSettings): any {
-    const url = `${this.apiEndpoint}/nhsdd/${branch}/publish/changePaperDataSet`;
+    const url = `${this.apiEndpoint}/nhsdd/${branch}/publish/changePaper`;
     const restOptions = {
       ...restHandlerOptions,
       responseType: 'blob'
     };
+    if (!queryStringParams) {
+      queryStringParams = [];
+    }
+    queryStringParams.dataSets = true;
+
     return this.simpleGet(url, queryStringParams, restOptions);
   }
 

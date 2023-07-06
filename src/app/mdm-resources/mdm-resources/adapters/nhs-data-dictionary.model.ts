@@ -145,6 +145,7 @@ export enum PreviewDomainType {
   BusinessDefinitions = 'businessDefinitions',
   SupportingInformation = 'supportingInformation',
   DataSetConstraint = 'dataSetConstraints',
+  DataSetFolder = 'dataSetFolders',
   All = 'allItemsIndex'
 }
 
@@ -161,6 +162,7 @@ export enum PreviewIndexType {
   BusinessDefinition = 'businessDefinition',
   SupportingInformation = 'supportingInformation',
   DataSetConstraint = 'dataSetConstraint',
+  DataSetFolder = 'dataSetFolder',
   All = 'allItemsIndex'
 }
 
@@ -178,6 +180,7 @@ export const previewIndexDomainMap = new Map<PreviewIndexType, PreviewDomainType
   [PreviewIndexType.BusinessDefinition, PreviewDomainType.BusinessDefinitions],
   [PreviewIndexType.SupportingInformation, PreviewDomainType.SupportingInformation],
   [PreviewIndexType.DataSetConstraint, PreviewDomainType.DataSetConstraint],
+  [PreviewIndexType.DataSetFolder, PreviewDomainType.DataSetFolder],
   [PreviewIndexType.All, PreviewDomainType.All]
 ]);
 
@@ -188,7 +191,8 @@ export const previewIndexPageTitles = new Map<PreviewDomainType, string>([
   [PreviewDomainType.DataSets, 'Data Sets'],
   [PreviewDomainType.BusinessDefinitions, 'NHS Business Definitions'],
   [PreviewDomainType.SupportingInformation, 'Supporting Information'],
-  [PreviewDomainType.DataSetConstraint, 'Data Set Constraints']
+  [PreviewDomainType.DataSetConstraint, 'Data Set Constraints'],
+  [PreviewDomainType.DataSetFolder, 'Data Set Folders']
 ]);
 
 export const previewDomainTypeNouns = new Map<PreviewDomainType, string>([
@@ -198,7 +202,8 @@ export const previewDomainTypeNouns = new Map<PreviewDomainType, string>([
   [PreviewDomainType.DataSets, 'data set'],
   [PreviewDomainType.BusinessDefinitions, 'business definition'],
   [PreviewDomainType.SupportingInformation, 'supporting information'],
-  [PreviewDomainType.DataSetConstraint, 'data set constraint']
+  [PreviewDomainType.DataSetConstraint, 'data set constraint'],
+  [PreviewDomainType.DataSetFolder, 'data set folder']
 ]);
 
 /**
@@ -211,7 +216,8 @@ export enum Stereotype {
   DataSet = 'dataSet',
   BusinessDefinition = 'businessDefinition',
   SupportingInformation = 'supportingInformation',
-  DataSetConstraint = 'dataSetConstraint'
+  DataSetConstraint = 'dataSetConstraint',
+  DataSetFolder = 'dataSetFolder'
 }
 
 export const stereotypeMapping = new Map<Stereotype, string>([
@@ -221,7 +227,8 @@ export const stereotypeMapping = new Map<Stereotype, string>([
   [Stereotype.DataSet, 'Data Set'],
   [Stereotype.BusinessDefinition, 'Business Definition'],
   [Stereotype.SupportingInformation, 'Supporting Information'],
-  [Stereotype.DataSetConstraint, 'Data Set Constraint']
+  [Stereotype.DataSetConstraint, 'Data Set Constraint'],
+  [Stereotype.DataSetFolder, 'Data Set Folder']
 ]);
 
 
@@ -274,8 +281,10 @@ export interface PreviewElementReference {
    * This is only used in the case when a Data Class is returned, this key is then used within a table of attributes. If not
    * provided, assume that this is a simple list of references.
    */
-  key?: string
+  key?: string;
 }
+
+
 
 export interface PreviewRelationship {
   key: string;
@@ -303,6 +312,8 @@ export interface PreviewDetail {
   attributes?: PreviewElementReference[];
   specifications?: string;
   definition?: string;
+  childFolders?: PreviewElementReference[];
+  dataSets?: PreviewElementReference[];
 }
 
 export type PreviewDetailResponse = MdmResourcesResponse<PreviewDetail>;

@@ -101,8 +101,8 @@ export class BranchPublishComponent implements OnInit {
         )
         .subscribe(response => {
           if (!response.body) {
-            this.toastr.warning(`${this.dialogTitles.get(generationType)} generation finished but no files returned.`);
-            return;
+              this.toastr.warning(`${this.dialogTitles.get(generationType)} generation finished but no files returned.`);
+              return;
           }
 
           this.toastr.success(`${this.dialogTitles.get(generationType)} generated successfully for branch "${this.branch?.branchName}"`);
