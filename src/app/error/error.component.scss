@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@use '~@angular/material' as mat;
 
  @mixin mdm-error-theme($theme) {
     $warn: map-get($theme, warn);
 
-    $warnColor: mat-color($warn);
+    $warnColor: mat.get-color-from-palette($warn);
 
     .mdm-error__message {
         color: $warnColor;

@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@use '~@angular/material' as mat;
 
-@import "~@angular/material/theming";
 
 @mixin mdm-branch-integrity-table-theme($theme) {
     $accent: map-get($theme, accent);
 
-    $successColor: mat-color($accent);
+    $successColor: mat.get-color-from-palette($accent);
     $errorColor: #f19e3f;
 
     .mdm-branch-integrity-table {
