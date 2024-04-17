@@ -30,7 +30,7 @@ import { SecurityService } from './core/security/security.service';
 import { SharedService } from './core/shared/shared.service';
 import { CommonUiStates, StateHandlerService } from './core/state-handler/state-handler.service';
 import { ThemingService } from './core/theming/theming.service';
-import { UserIdleService } from 'angular-user-idle';
+import { UserIdleService } from './external/user-idle/user-idle.service';
 import { UserDetails } from './core/security/security.model';
 
 @Component({
