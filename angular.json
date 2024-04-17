@@ -71,6 +71,14 @@
                   "maximumError": "4kb"
                 }
               ]
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
           }
         },
@@ -83,8 +91,12 @@
           "configurations": {
             "production": {
               "browserTarget": "nhsd-datadictionary-orchestration:build:production"
+            },
+            "development": {
+              "browserTarget": "nhsd-datadictionary-orchestration:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -110,6 +122,5 @@
         }
       }
     }
-  },
-  "defaultProject": "nhsd-datadictionary-orchestration"
+  }
 }
