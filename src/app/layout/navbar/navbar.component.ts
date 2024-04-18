@@ -46,7 +46,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   /**
    * Signal to attach to subscriptions to trigger when they should be unsubscribed.
    */
-  private unsubscribe$ = new Subject();
+  private unsubscribe$ = new Subject<void>();
 
   get mainNavbarLinks(): NavbarLink[] {
     return this.linkGroups.find(group => group.isMain)?.links ?? [];
