@@ -140,12 +140,10 @@ $nhs-digital-typography: mat.define-typography-config(
     $font-family: "Frutiger, Arial, sans-serif",
     $body-1: mat.define-typography-level(17px, 26px, 500),
     $body-2: mat.define-typography-level(18px, 26px, 500),
-    $headline: mat.define-typography-level(36px, 42px, 600),
-    $title: mat.define-typography-level(32px, 38px, 600),
-    $subheading-2: mat.define-typography-level(26px, 32px, 600),
-    $subheading-1: mat.define-typography-level(22px, 28px, 600),
+    $headline-5: mat.define-typography-level(36px, 42px, 600),
+    $subtitle-2: mat.define-typography-level(26px, 32px, 600),
+    $subtitle-1: mat.define-typography-level(22px, 28px, 600),
     $button: mat.define-typography-level(20px, 26px, 600),
-    $input: mat.define-typography-level(18px, 1.125, 500),
 );
 
 .nhs-digital-theme {

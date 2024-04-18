@@ -4,11 +4,15 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
-      "@mdm/*": ["./app/*"],
-      "@env/*": ["./environments/*"]
+      "@mdm/*": [
+        "./app/*"
+      ],
+      "@env/*": [
+        "./environments/*"
+      ]
     },
     "outDir": "./dist/",
-    "emitDecoratorMetadata" : true,
+    "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitReturns": true,
@@ -21,7 +25,7 @@
     "importHelpers": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2020",
+    "target": "ES2022",
     "module": "es2020",
     "types": [
       "jest"
@@ -32,7 +36,8 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,
