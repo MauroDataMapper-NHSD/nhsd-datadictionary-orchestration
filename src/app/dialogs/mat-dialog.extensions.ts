@@ -21,7 +21,7 @@ import { ConfirmationModalComponent } from './confirmation-dialog/confirmation-d
 import { ConfirmationDialogOptions } from './confirmation-dialog/confirmation-dialog.model';
 import { DialogResult, DialogStatus } from './dialogs.model';
 
-declare module '@angular/material/dialog/dialog' {
+declare module '@angular/material/dialog' {
   interface MatDialog {
     /**
      * Extension method to open a modal dialog containing the `ConfirmationModalComponent`.

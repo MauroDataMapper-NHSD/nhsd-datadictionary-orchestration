@@ -18,7 +18,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Branch, ChangePaperPreview, PreviewDetail, PreviewDomainType, PreviewIndexItem, PreviewReference, Statistics } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { NhsDataDictionaryService } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.service';
-import { EMPTY, Observable, of, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { LoggingService } from '../logging/logging.service';
 import { IntegrityCheckCategory, PreviewIndexGroup } from './data-dictionary.model';
@@ -125,7 +125,7 @@ export class DataDictionaryService {
       .pipe(
         catchError(error => {
           if (error.status === 403) {
-            this.logging.warning(`You do not have permission to generate the DITA`);
+            this.logging.warning('You do not have permission to generate the DITA');
           } else {
             this.logging.error(`There was a problem generating the DITA for the "${branch}" branch.`, error);
           }
@@ -140,7 +140,7 @@ export class DataDictionaryService {
       .pipe(
         catchError(error => {
           if (error.status === 403) {
-            this.logging.warning(`You do not have permission to generate the FHIR CodeSystem Resource Bundle`);
+            this.logging.warning('You do not have permission to generate the FHIR CodeSystem Resource Bundle');
           } else {
             this.logging.error(`There was a problem generating the FHIR CodeSystems for the "${branch}" branch.`, error);
           }
@@ -155,7 +155,7 @@ export class DataDictionaryService {
       .pipe(
         catchError(error => {
           if (error.status === 403) {
-            this.logging.warning(`You do not have permission to generate the FHIR ValueSet Resource Bundle`);
+            this.logging.warning('You do not have permission to generate the FHIR ValueSet Resource Bundle');
           } else {
             this.logging.error(`There was a problem generating the FHIR ValueSets for the "${branch}" branch.`, error);
           }

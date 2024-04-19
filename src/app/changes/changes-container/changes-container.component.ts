@@ -43,7 +43,7 @@ export class ChangesContainerComponent implements OnInit {
       .subscribe(branches => { this.branches = branches; });
   }
 
-  onSelectedBranchChange(name: string) {
+  onSelectedBranchChange(_: string) {
     this.stateHandler.goTo(CommonUiStates.ChangesHome, { branch: this.selectedBranch });
   }
 

@@ -53,6 +53,7 @@ export class ScrollToTopComponent implements OnInit, OnDestroy {
   }
 
   scrollToTop() {
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     (function smoothScroll() {
       const currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
       if (currentScroll > 0) {
