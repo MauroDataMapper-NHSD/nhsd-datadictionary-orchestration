@@ -1,0 +1,11 @@
+{
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=827846
+  "recommendations": [
+    "angular.ng-template",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "ghaschel.vscode-angular-html",
+    "cyrilletuzi.angular-schematics",
+    "Syler.sass-indented"
+  ]
+}

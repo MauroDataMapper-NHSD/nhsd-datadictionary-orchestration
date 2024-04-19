@@ -10,7 +10,8 @@
     "lint": "ng lint",
     "eslint": "tsc --noEmit && eslint . --ext ts --quiet --fix",
     "eslint-report": "eslint . --ext ts --fix -f html -o eslint_report.html",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "pr-checks": "npm run eslint && npm run test"
   },
   "private": true,
   "dependencies": {

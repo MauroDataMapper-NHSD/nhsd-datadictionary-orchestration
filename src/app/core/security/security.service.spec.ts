@@ -18,7 +18,6 @@ import { SignInCredentials, UserDetails } from './security.model';
 import { cold } from 'jest-marbles';
 
 import { SecurityService } from './security.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { EMPTY } from 'rxjs';
 import { MdmResourcesService } from '@mdm/mdm-resources/mdm-resources/mdm-resources.service';
 import { setupTestModuleForService } from '@mdm/testing/testing.helpers';
@@ -52,16 +51,14 @@ describe('SecurityService', () => {
   };
 
   beforeEach(() => {
-    service = setupTestModuleForService(
-      SecurityService,
-      {
-        providers: [
-          {
-            provide: MdmResourcesService,
-            useValue: resourcesStub
-          }
-        ]
-      });
+    service = setupTestModuleForService(SecurityService, {
+      providers: [
+        {
+          provide: MdmResourcesService,
+          useValue: resourcesStub
+        }
+      ]
+    });
   });
 
   it('should be created', () => {
@@ -72,19 +69,20 @@ describe('SecurityService', () => {
     ['123', 'user@test.com', false],
     ['456', 'admin@test.com', true]
   ])('should sign in user %s %s when admin = %o', (id, userName, isAdmin) => {
-      const credentials: SignInCredentials = { username: userName, password: 'test' };
-      const expectedUser: UserDetails = {
-        id,
-        userName,
-        firstName: 'first',
-        lastName: 'last',
-        isAdmin,
-        needsToResetPassword: false,
-        role: '',
-        token: undefined
-      };
+    const credentials: SignInCredentials = { username: userName, password: 'test' };
+    const expectedUser: UserDetails = {
+      id,
+      userName,
+      firstName: 'first',
+      lastName: 'last',
+      isAdmin,
+      needsToResetPassword: false,
+      role: '',
+      token: undefined
+    };
 
-      resourcesStub.security.login.mockImplementationOnce(() => cold('--a|', {
+    resourcesStub.security.login.mockImplementationOnce(() =>
+      cold('--a|', {
         a: {
           body: {
             id: expectedUser.id,
@@ -93,21 +91,24 @@ describe('SecurityService', () => {
             lastName: expectedUser.lastName
           }
         }
-      }));
+      })
+    );
 
-      resourcesStub.session.isApplicationAdministration.mockImplementationOnce(() => cold('--a|', {
+    resourcesStub.session.isApplicationAdministration.mockImplementationOnce(() =>
+      cold('--a|', {
         a: {
           body: {
             applicationAdministrationSession: expectedUser.isAdmin
           }
         }
-      }));
+      })
+    );
 
-      const expected$ = cold('----a|', { a: expectedUser });
-      const actual$ = service.signIn(credentials);
+    const expected$ = cold('----a|', { a: expectedUser });
+    const actual$ = service.signIn(credentials);
 
-      expect(actual$).toBeObservable(expected$);
-    });
+    expect(actual$).toBeObservable(expected$);
+  });
 
   // TODO: figure out why this fails
   // it('should throw error if sign in fails', () => {
@@ -119,7 +120,9 @@ describe('SecurityService', () => {
   // });
 
   it('should sign out user', () => {
-    resourcesStub.security.logout.mockImplementationOnce(() => cold('--a|', { a: EMPTY }));
+    resourcesStub.security.logout.mockImplementationOnce(() =>
+      cold('--a|', { a: EMPTY })
+    );
 
     const expected$ = cold('--a|', { a: undefined });
     const actual$ = service.signOut();
@@ -135,19 +138,24 @@ describe('SecurityService', () => {
   //   expect(actual$).toBeObservable(expected$);
   // });
 
-  it.each([true, false])('should return %o for an authenticated session', (authenticated) => {
-    resourcesStub.session.isAuthenticated.mockImplementationOnce(() => cold('--a|', {
-      a: {
-        body: {
-          authenticatedSession: authenticated
-        }
-      }
-    }));
+  it.each([true, false])(
+    'should return %o for an authenticated session',
+    (authenticated) => {
+      resourcesStub.session.isAuthenticated.mockImplementationOnce(() =>
+        cold('--a|', {
+          a: {
+            body: {
+              authenticatedSession: authenticated
+            }
+          }
+        })
+      );
 
-    const expected$ = cold('--a|', { a: authenticated });
-    const actual$ = service.isAuthenticated();
-    expect(actual$).toBeObservable(expected$);
-  });
+      const expected$ = cold('--a|', { a: authenticated });
+      const actual$ = service.isAuthenticated();
+      expect(actual$).toBeObservable(expected$);
+    }
+  );
 
   // TODO: figure out why this fails
   // it('should throw error if authentication fails', () => {
