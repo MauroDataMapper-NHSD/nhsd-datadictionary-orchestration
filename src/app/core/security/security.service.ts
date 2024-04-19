@@ -43,7 +43,9 @@ export class SecurityService {
     return this.resources.security
       .login(credentials, { login: true })
       .pipe(
-        catchError((error: HttpErrorResponse) => throwError(new SignInError(error))),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(new SignInError(error));
+        }),
         switchMap((signInResponse: SignInResponse) =>
           this.resources.session
             .isApplicationAdministration()
