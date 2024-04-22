@@ -1,20 +1,20 @@
 /**
  * Copyright 2021 NHS Digital
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@use '@angular/material' as mat;
 
-@import "~@angular/material/theming";
 @import "components/custom";
 
 /* Primary values */
@@ -119,30 +119,28 @@ $default-palette-warn: (
   )
 );
 
-$default-theme-primary: mat-palette($default-palette-primary);
-$default-theme-accent: mat-palette($default-palette-accent);
-$default-theme-warn: mat-palette($default-palette-warn);
+$default-theme-primary: mat.define-palette($default-palette-primary);
+$default-theme-accent: mat.define-palette($default-palette-accent);
+$default-theme-warn: mat.define-palette($default-palette-warn);
 
-$default-theme: mat-light-theme(
+$default-theme: mat.define-light-theme(
   $default-theme-primary,
   $default-theme-accent,
   $default-theme-warn
 );
 
-$default-typography: mat-typography-config(
+$default-typography: mat.define-typography-config(
   $font-family: "Nunito Sans, sans-serif",
-  $body-1: mat-typography-level(17px, 26px, 500),
-  $body-2: mat-typography-level(18px, 26px, 500),
-  $headline: mat-typography-level(36px, 42px, 600),
-  $title: mat-typography-level(32px, 38px, 600),
-  $subheading-2: mat-typography-level(26px, 32px, 600),
-  $subheading-1: mat-typography-level(22px, 28px, 600),
-  $button: mat-typography-level(20px, 26px, 600),
-  $input: mat-typography-level(18px, 1.125, 500)
+  $body-1: mat.define-typography-level(17px, 26px, 500),
+  $body-2: mat.define-typography-level(18px, 26px, 500),
+  $headline-5: mat.define-typography-level(36px, 42px, 600),
+  $subtitle-2: mat.define-typography-level(26px, 32px, 600),
+  $subtitle-1: mat.define-typography-level(22px, 28px, 600),
+  $button: mat.define-typography-level(20px, 26px, 600),
 );
 
 .default-theme {
-  @include angular-material-theme($default-theme);    
-  @include angular-material-typography($default-typography);
+  @include mat.all-component-themes($default-theme);
+  @include mat.all-component-typographies($default-typography);
   @include mdm-custom-components-theme($default-theme);
 }

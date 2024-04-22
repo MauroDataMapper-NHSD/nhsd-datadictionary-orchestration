@@ -17,7 +17,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
-import { UserIdleModule } from 'angular-user-idle';
 import { MdmResourcesModule } from '@mdm/mdm-resources/mdm-resources.module';
 import { environment } from '@env/environment';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -34,10 +33,6 @@ import './array.extensions';
       timeOut: 30000,
       positionClass: 'toast-bottom-right',
       preventDuplicates: false
-    }),
-    UserIdleModule.forRoot({
-      idle: 600,
-      timeout: 300
     }),
     MdmResourcesModule.forRoot({
       defaultHttpRequestOptions: { withCredentials: true },

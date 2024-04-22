@@ -15,7 +15,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SignInError, SignInErrorType, UserDetails } from '@mdm/core/security/security.model';
 import { SecurityService } from '@mdm/core/security/security.service';
@@ -33,7 +33,7 @@ export class SignInModalComponent implements OnInit {
   message = '';
   authenticating = false;
 
-  signInForm!: FormGroup;
+  signInForm!: UntypedFormGroup;
 
   get userName() {
     return this.signInForm.get('userName');
@@ -49,12 +49,12 @@ export class SignInModalComponent implements OnInit {
     private securityHandler: SecurityService) { }
 
   ngOnInit(): void {
-    this.signInForm = new FormGroup({
-      userName: new FormControl('', [
+    this.signInForm = new UntypedFormGroup({
+      userName: new UntypedFormControl('', [
         Validators.required,  // eslint-disable-line @typescript-eslint/unbound-method
         Validators.pattern(this.validator.emailPattern)
       ]),
-      password: new FormControl('', [
+      password: new UntypedFormControl('', [
         Validators.required // eslint-disable-line @typescript-eslint/unbound-method
       ])
     });

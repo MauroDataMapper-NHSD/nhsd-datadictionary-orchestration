@@ -1,27 +1,36 @@
 /**
  * Copyright 2021 NHS Digital
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@use '@angular/material' as mat;
 
-@import "~ngx-toastr/toastr.css";
-@import "~@angular/material/theming";
+@import "ngx-toastr/toastr";
 
 // Include the common styles for Angular Material. Only required to include this once!
-@include mat-core();
+// TODO(v15): As of v15 mat.legacy-core no longer includes default typography styles.
+//  The following line adds:
+//    1. Default typography styles for all components
+//    2. Styles for typography hierarchy classes (e.g. .mat-headline-1)
+//  If you specify typography styles for the components you use elsewhere, you should delete this line.
+//  If you don't need the default component typographies but still want the hierarchy styles,
+//  you can delete this line and instead use:
+//    `@include mat.legacy-typography-hierarchy(mat.define-legacy-typography-config());`
+@include mat.all-component-typographies();
+@include mat.core();
 
-/* 
-Themes 
+/*
+Themes
 Import more theme SASS files here to make them available to the app
 */
 @import "styles/themes/default";

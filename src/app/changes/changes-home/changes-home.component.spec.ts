@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
+import { PreviewHomeComponent } from '@mdm/preview/preview-home/preview-home.component';
+import { PreviewTileComponent } from '@mdm/preview/preview-tile/preview-tile.component';
 import { ComponentHarness, setupTestModuleForComponent } from '@mdm/testing/testing.helpers';
 import { MockComponent } from 'ng-mocks';
-import { PreviewTileComponent } from '../preview-tile/preview-tile.component';
-
-import { PreviewHomeComponent } from './preview-home.component';
 
 describe('PreviewHomeComponent', () => {
   let harness: ComponentHarness<PreviewHomeComponent>;

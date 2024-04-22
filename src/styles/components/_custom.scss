@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
- @import "~@angular/material/theming";
-
+ 
  /* Import all custom components SASS files to access their mixins */
  @import "layout/navbar/navbar.component.scss";
  @import "layout/user/user.component.scss";

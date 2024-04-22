@@ -18,7 +18,7 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import * as packageFile from '../../package.json';
+import packageFile from '../../package.json';
 
 export const environment = {
   version: packageFile?.version ?? '',
@@ -39,4 +39,4 @@ export const environment = {
  * This import should be commented out in production mode because it will have a negative impact
  * on performance if an error is thrown.
  */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.

@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@use '@angular/material' as mat;
 
-@import "~@angular/material/theming";
 
 @mixin mdm-loading-indicator-theme($theme) {
     $accent: map-get($theme, accent);
 
-    $color: mat-color($accent);
-    $backgroundColor: mat-color($accent, 200);
-    $borderColor: mat-color($accent, 600);
+    $color: mat.get-color-from-palette($accent);
+    $backgroundColor: mat.get-color-from-palette($accent, 200);
+    $borderColor: mat.get-color-from-palette($accent, 600);
 
     .loading-container {
         color: $color;

@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@use '@angular/material' as mat;
 
-@import "~@angular/material/theming";
 @import "styles/abstracts/variables";
 
 @mixin mdm-alert-theme($theme) {
@@ -22,10 +22,10 @@
     $accent: map-get($theme, accent);
     $warn: map-get($theme, warn);    
 
-    $infoColor: mat-color($primary);
-    $successColor: mat-color($accent);
+    $infoColor: mat.get-color-from-palette($primary);
+    $successColor: mat.get-color-from-palette($accent);
     $warningColor: $defaultWarningColor;
-    $errorColor: mat-color($warn);
+    $errorColor: mat.get-color-from-palette($warn);
 
     .mdm-alert {
         &--success {

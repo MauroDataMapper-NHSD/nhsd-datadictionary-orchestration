@@ -30,7 +30,7 @@ export class ScrollToTopComponent implements OnInit, OnDestroy {
   /**
    * Signal to attach to subscriptions to trigger when they should be unsubscribed.
    */
-  private unsubscribe$ = new Subject();
+  private unsubscribe$ = new Subject<void>();
 
   ngOnInit(): void {
     fromEvent(window, 'scroll')
@@ -53,6 +53,7 @@ export class ScrollToTopComponent implements OnInit, OnDestroy {
   }
 
   scrollToTop() {
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     (function smoothScroll() {
       const currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
       if (currentScroll > 0) {

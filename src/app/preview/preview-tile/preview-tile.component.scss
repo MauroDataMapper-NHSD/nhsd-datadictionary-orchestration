@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@use '@angular/material' as mat;
 
- @import "~@angular/material/theming";
-
+ 
 @mixin mdm-preview-tile-theme($theme) {
     $primary: map-get($theme, primary);
 
-    $color: mat-color($primary);
+    $color: mat.get-color-from-palette($primary);
     
     .mdm-preview-tile {
         border-color: $color;

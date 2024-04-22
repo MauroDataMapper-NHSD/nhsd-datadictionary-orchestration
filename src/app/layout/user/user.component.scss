@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@use '@angular/material' as mat;
 
 @import "abstracts/mixins";
-@import "~@angular/material/theming";
 
 @mixin mdm-user-theme($theme) {
     $primary: map-get($theme, primary);
 
-    $backgroundColor: mat-color($primary);
-    $textColor: mat-color($primary, default-contrast);
+    $backgroundColor: mat.get-color-from-palette($primary);
+    $textColor: mat.get-color-from-palette($primary, default-contrast);
 
     .mdm-user {
         background-color: $backgroundColor;

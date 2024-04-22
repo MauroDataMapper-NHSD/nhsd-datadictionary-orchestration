@@ -15,7 +15,6 @@
  */
 
 import { QueryParameters, RequestSettings, MdmResource } from '@maurodatamapper/mdm-resources';
-import { throwError } from 'rxjs';
 
 export class MdmPluginNhsDataDictionaryResource extends MdmResource {
 

@@ -25,6 +25,8 @@ import { UIRouterModule } from '@uirouter/angular';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
+import '@mdm/core/array.extensions';
+
 @NgModule({
   declarations: [],
   imports: [
