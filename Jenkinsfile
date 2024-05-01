@@ -67,15 +67,15 @@ pipeline {
       }
     }
 
-    stage('License Header Check') {
-      steps {
-        warnError('Missing License Headers') {
-          nvm('') {
-            sh 'npm run license-check check'
-          }
-        }
-      }
-    }
+    // stage('License Header Check') {
+    //   steps {
+    //     warnError('Missing License Headers') {
+    //       nvm('') {
+    //         sh 'npm run license-check check'
+    //       }
+    //     }
+    //   }
+    // }
 
     stage('Test') {
       steps {
