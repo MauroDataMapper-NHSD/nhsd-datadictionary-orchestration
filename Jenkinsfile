@@ -41,10 +41,27 @@ pipeline {
     }
 
     stage('Install Dependencies') {
+      when {
+        not {
+          branch 'main'
+        }
+      }
       steps {
         nvm('') {
           sh 'npm ci'
-          sh 'npm link @maurodatamapper/sde-resources'
+          sh 'npm link @maurodatamapper/mdm-resources'
+          sh 'symlinked names'
+        }
+      }
+    }
+
+    stage('Clean Install Dependencies') {
+      when {
+        branch 'main'
+      }
+      steps {
+        nvm('') {
+          sh 'npm ci'
           sh 'symlinked names'
         }
       }
