@@ -15,16 +15,29 @@
 -->
 
 <div class="mdm-shadow-block">
-    <div class="mdm-branch-selector">
-        <div fxFlex fxLayout="row" fxLayoutAlign="space-around">
-            <span class="mdm-branch-selector__label" fxFlex fxLayoutAlign="flex-start" fxFlex="15" fxFlex.md="10" fxFlex.sm="10">
-                <i class="fas fa-code-branch"></i> Current branch:
-            </span>
-            <mat-select placeholder="Select a branch" [(value)]="selectedBranch" (selectionChange)="onBranchChanged($event)">
-                <mat-option *ngFor="let branch of branches" [value]="branch.id">
-                    {{branch.label}} <span *ngIf="branch.branchName">({{ branch.branchName }})</span>
-                </mat-option>
-            </mat-select>
-        </div>
+  <div class="mdm-branch-selector">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-around">
+      <span
+        class="mdm-branch-selector__label"
+        fxFlex
+        fxLayoutAlign="flex-start"
+        fxFlex="15"
+        fxFlex.md="10"
+        fxFlex.sm="10"
+      >
+        <i class="fas fa-code-branch"></i> Current branch:
+      </span>
+      <mat-select
+        placeholder="Select a branch"
+        [(value)]="selectedBranch"
+        (selectionChange)="onBranchChanged($event)"
+      >
+        <mat-option *ngFor="let branch of branches" [value]="branch.id">
+          {{ branch.label }}
+          <span *ngIf="branch.versionDisplay">({{ branch.versionDisplay }})</span>
+          <span *ngIf="branch.modelVersionFinalised"> (finalised)</span>
+        </mat-option>
+      </mat-select>
     </div>
+  </div>
 </div>

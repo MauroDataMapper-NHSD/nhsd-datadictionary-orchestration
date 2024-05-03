@@ -40,12 +40,15 @@ export interface Branch {
    */
   id: string;
 
-
   /**
    * The branch / model version name that should be displayed.
    */
   versionDisplay: string;
 
+  /**
+   * A value to indicate if the branch has been finalised.
+   */
+  modelVersionFinalised: Boolean;
 }
 
 export type BranchResponse = MdmResourcesResponse<Branch[]>;
@@ -94,7 +97,6 @@ export interface Change {
  * Represents the details of a change paper preview
  *
  */
-
 
 export interface ChangePaperPreview {
   reference: string;
@@ -231,7 +233,6 @@ export const stereotypeMapping = new Map<Stereotype, string>([
   [Stereotype.DataSetFolder, 'Data Set Folder']
 ]);
 
-
 export interface PreviewIndexItem {
   catalogueId: string;
   name: string;
@@ -283,8 +284,6 @@ export interface PreviewElementReference {
    */
   key?: string;
 }
-
-
 
 export interface PreviewRelationship {
   key: string;
