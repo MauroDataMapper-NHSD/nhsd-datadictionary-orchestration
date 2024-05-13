@@ -14,7 +14,8 @@
     "eslint-report": "eslint . --ext ts --fix -f html -o eslint_report.html",
     "dist": "ng build --configuration production --output-path=dist/nhsd-datadictionary-orchestration-$npm_package_version && npm run dist-archive",
     "dist-archive": "tar zcvf dist/nhsd-datadictionary-orchestration-${npm_package_version}.tgz -C dist nhsd-datadictionary-orchestration-$npm_package_version",
-    "pr-checks": "npm run eslint && npm run test"
+    "license-check": "license-check-and-add -f license-config.json",
+    "pr-checks": "npm run license-check check && npm run eslint && npm run test"
   },
   "private": true,
   "dependencies": {
@@ -74,6 +75,7 @@
     "jest-html-reporter": "3.10.2",
     "jest-junit": "12.0.0",
     "jest-marbles": "3.0.6",
+    "license-check-and-add": "4.0.5",
     "ng-mocks": "14.12.1",
     "ts-jest": "29.1.2",
     "ts-node": "8.3.0",

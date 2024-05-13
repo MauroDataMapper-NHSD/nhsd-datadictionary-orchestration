@@ -1,44 +1,44 @@
 <!--
- Copyright 2021 NHS Digital
- 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
-     http://www.apache.org/licenses/LICENSE-2.0
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
+Copyright 2021-2024 NHS England
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+SPDX-License-Identifier: Apache-2.0
 -->
 
 <h3>About</h3>
 <table *ngIf="isLoading" class="table">
-    <tbody>
-        <tr>
-            <th><ngx-skeleton-loader></ngx-skeleton-loader></th>
-            <td><ngx-skeleton-loader></ngx-skeleton-loader></td>
-        </tr>
-    </tbody>
+  <tbody>
+    <tr>
+      <th><ngx-skeleton-loader></ngx-skeleton-loader></th>
+      <td><ngx-skeleton-loader></ngx-skeleton-loader></td>
+    </tr>
+  </tbody>
 </table>
 <table *ngIf="!isLoading" class="table">
-    <tbody>
-        <tr>
-            <th>UI Version</th>
-            <td>{{this.appVersion}}</td>
-        </tr>
-        <tr *ngIf="isSignedIn">
-            <th>Mauro Data Mapper Version</th>
-            <td>{{this.mauroVersion}}</td>
-        </tr>
-        <tr *ngIf="isSignedIn">
-            <th>NHS Data Dictionary Plugin Version</th>
-            <td>{{this.nhsDdPluginVersion}}</td>
-        </tr>
-    </tbody>
+  <tbody>
+    <tr>
+      <th>UI Version</th>
+      <td>{{ this.appVersion }}</td>
+    </tr>
+    <tr *ngIf="isSignedIn">
+      <th>Mauro Data Mapper Version</th>
+      <td>{{ this.mauroVersion }}</td>
+    </tr>
+    <tr *ngIf="isSignedIn">
+      <th>NHS Data Dictionary Plugin Version</th>
+      <td>{{ this.nhsDdPluginVersion }}</td>
+    </tr>
+  </tbody>
 </table>
-<p *ngIf="!isSignedIn">
-    Further information can be viewed by signing in.
-</p>
+<p *ngIf="!isSignedIn">Further information can be viewed by signing in.</p>

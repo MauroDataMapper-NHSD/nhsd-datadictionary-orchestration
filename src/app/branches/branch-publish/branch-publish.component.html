@@ -1,88 +1,126 @@
 <!--
- Copyright 2021 NHS Digital
+Copyright 2021-2024 NHS England
 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-     http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+SPDX-License-Identifier: Apache-2.0
 -->
 
 <div class="mdm-shadow-block">
-    <div class="mdm-branch-publish">
-        <div class="mdm-branch-publish__header">
-            <p>Generate artefacts from the <span class="branch"><i class="fas fa-code-branch"></i>{{branch?.branchName}}</span> branch of the Data Dictionary.</p>
-        </div>
-        <div class="mdm-branch-publish__actions">
-          <h3>Terminology Server integration</h3>
-          <ol>
-            <li>
-              <div class="mdm-branch-publish__action-item">
-                <span>Generate CodeSystem resource bundle (whole dictionary)</span>
-                <button mat-flat-button color="primary" (click)="generate('codeSystems')" [disabled]="isBusy">
-                  <i class="fas fa-tools"></i>
-                  Generate
-                </button>
-              </div>
-            </li>
-            <li>
-              <div class="mdm-branch-publish__action-item">
-                <span>Generate ValueSet resource bundle (whole dictionary)</span>
-                <button mat-flat-button color="primary" (click)="generate('valueSets')" [disabled]="isBusy">
-                  <i class="fas fa-tools"></i>
-                  Generate
-                </button>
-              </div>
-            </li>
-          </ol>
-          <h3>DITA Outputs</h3>
-          <ol>
-            <li>
-              <div class="mdm-branch-publish__action-item">
-                <span>Generate change paper</span>
-                <button mat-flat-button color="primary" (click)="generate('changePaper')" [disabled]="isBusy">
-                  <i class="fas fa-tools"></i>
-                  Generate
-                </button>
-              </div>
-            </li>
-            <li>
-              <div class="mdm-branch-publish__action-item">
-                <span>Generate change paper (with Data Set definitions)</span>
-                <button mat-flat-button color="primary" (click)="generate('changePaperWithDataSet')" [disabled]="isBusy">
-                  <i class="fas fa-tools"></i>
-                  Generate
-                </button>
-              </div>
-            </li>
-            <li>
-              <div class="mdm-branch-publish__action-item">
-                <span>Generate Data Dictionary website</span>
-                <button mat-flat-button color="primary" (click)="generate('')" [disabled]="isBusy">
-                  <i class="fas fa-tools"></i>
-                  Generate
-                </button>
-              </div>
-            </li>
-          </ol>
-          <h3>Other reports</h3>
-          <ol>
-            <li>
-              <div class="mdm-branch-publish__action-item">
-                <span>Generate Data Element usage spreadsheet</span>
-                <button mat-flat-button color="primary" (click)="generate('')" [disabled]="true">
-                  <i class="fas fa-tools"></i>
-                  Generate
-                </button>
-              </div>
-            </li>
-          </ol>
-        </div>
+  <div class="mdm-branch-publish">
+    <div class="mdm-branch-publish__header">
+      <p>
+        Generate artefacts from the
+        <span class="branch"
+          ><i class="fas fa-code-branch"></i>{{ branch?.branchName }}</span
+        >
+        branch of the Data Dictionary.
+      </p>
     </div>
+    <div class="mdm-branch-publish__actions">
+      <h3>Terminology Server integration</h3>
+      <ol>
+        <li>
+          <div class="mdm-branch-publish__action-item">
+            <span>Generate CodeSystem resource bundle (whole dictionary)</span>
+            <button
+              mat-flat-button
+              color="primary"
+              (click)="generate('codeSystems')"
+              [disabled]="isBusy"
+            >
+              <i class="fas fa-tools"></i>
+              Generate
+            </button>
+          </div>
+        </li>
+        <li>
+          <div class="mdm-branch-publish__action-item">
+            <span>Generate ValueSet resource bundle (whole dictionary)</span>
+            <button
+              mat-flat-button
+              color="primary"
+              (click)="generate('valueSets')"
+              [disabled]="isBusy"
+            >
+              <i class="fas fa-tools"></i>
+              Generate
+            </button>
+          </div>
+        </li>
+      </ol>
+      <h3>DITA Outputs</h3>
+      <ol>
+        <li>
+          <div class="mdm-branch-publish__action-item">
+            <span>Generate change paper</span>
+            <button
+              mat-flat-button
+              color="primary"
+              (click)="generate('changePaper')"
+              [disabled]="isBusy"
+            >
+              <i class="fas fa-tools"></i>
+              Generate
+            </button>
+          </div>
+        </li>
+        <li>
+          <div class="mdm-branch-publish__action-item">
+            <span>Generate change paper (with Data Set definitions)</span>
+            <button
+              mat-flat-button
+              color="primary"
+              (click)="generate('changePaperWithDataSet')"
+              [disabled]="isBusy"
+            >
+              <i class="fas fa-tools"></i>
+              Generate
+            </button>
+          </div>
+        </li>
+        <li>
+          <div class="mdm-branch-publish__action-item">
+            <span>Generate Data Dictionary website</span>
+            <button
+              mat-flat-button
+              color="primary"
+              (click)="generate('')"
+              [disabled]="isBusy"
+            >
+              <i class="fas fa-tools"></i>
+              Generate
+            </button>
+          </div>
+        </li>
+      </ol>
+      <h3>Other reports</h3>
+      <ol>
+        <li>
+          <div class="mdm-branch-publish__action-item">
+            <span>Generate Data Element usage spreadsheet</span>
+            <button
+              mat-flat-button
+              color="primary"
+              (click)="generate('')"
+              [disabled]="true"
+            >
+              <i class="fas fa-tools"></i>
+              Generate
+            </button>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
 </div>

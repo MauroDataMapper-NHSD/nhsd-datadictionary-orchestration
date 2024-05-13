@@ -1,68 +1,81 @@
 <!--
- Copyright 2021 NHS Digital
- 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
-     http://www.apache.org/licenses/LICENSE-2.0
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
+Copyright 2021-2024 NHS England
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+SPDX-License-Identifier: Apache-2.0
 -->
 
 <div class="mdm-branch-integrity-table">
-    <div class="row">
-        <div class="col-md-5">
-            <mat-selection-list multiple="false" (selectionChange)="categorySelected($event)">
-                <mat-list-option *ngFor="let category of categories" [value]="category">
-                    <div class="mdm-branch-integrity-table__list-item">
-                        <span *ngIf="!category.hasErrors" class="mdm-branch-integrity-table--success">
-                            <i class="fas fa-check-circle fa-lg" matTooltip="OK" aria-label="OK"></i>
-                        </span>
-                        <span *ngIf="category.hasErrors" class="mdm-branch-integrity-table--errors">
-                            <i class="fas fa-exclamation-triangle fa-lg" matTooltip="Issues found" aria-label="Issues found"></i>
-                        </span>
-                        <span [matTooltip]="category.description">{{category.checkName}}</span>
-                        <span *ngIf="category.hasErrors"
-                            class="mdm-branch-integrity-table--errors">{{category.errors.length}}</span>
-                    </div>
-                </mat-list-option>
-            </mat-selection-list>
-        </div>
-        <div class="col-md-7">
-            <div *ngIf="!selectedCategory">
-                <p><em>Select a category to view further details.</em></p>
-            </div>
-            <div *ngIf="selectedCategory">
-                <h3>{{selectedCategory.checkName}}</h3>
-                <p>{{selectedCategory.description}}</p>
-                <div *ngIf="!selectedCategory.hasErrors" class="mdm-branch-integrity-table--success">
-                    <i class="fas fa-check-circle fa-lg"></i>
-                    No issues found
-                </div>
-                <div *ngIf="selectedCategory.hasErrors" class="mdm-branch-integrity-table--errors">
-                    <i class="fas fa-exclamation-triangle fa-lg"></i>
-                    {{selectedCategory.errors.length}} issue(s) found
-                </div>
-                <mat-list>
-                    <mat-list-item *ngFor="let error of selectedCategory.errors">
-                        <div class="mdm-branch-integrity-table__list-item">
-                            <div>
-                                <mdm-domain-icon [type]="error.domainType"></mdm-domain-icon>                            
-                                <em>{{error.type}}</em>
-                            </div>
-                            <div>
-                                <a [href]="getDomainTypeUrl(error)" target="_blank">{{error.label}}</a>
-                            </div>
-                            <mat-divider inset="true"></mat-divider>
-                        </div>
-                    </mat-list-item>
-                </mat-list>
-            </div>
-        </div>
+  <div class="row">
+    <div class="col-md-5">
+      <mat-selection-list multiple="false" (selectionChange)="categorySelected($event)">
+        <mat-list-option *ngFor="let category of categories" [value]="category">
+          <div class="mdm-branch-integrity-table__list-item">
+            <span *ngIf="!category.hasErrors" class="mdm-branch-integrity-table--success">
+              <i class="fas fa-check-circle fa-lg" matTooltip="OK" aria-label="OK"></i>
+            </span>
+            <span *ngIf="category.hasErrors" class="mdm-branch-integrity-table--errors">
+              <i
+                class="fas fa-exclamation-triangle fa-lg"
+                matTooltip="Issues found"
+                aria-label="Issues found"
+              ></i>
+            </span>
+            <span [matTooltip]="category.description">{{ category.checkName }}</span>
+            <span *ngIf="category.hasErrors" class="mdm-branch-integrity-table--errors">{{
+              category.errors.length
+            }}</span>
+          </div>
+        </mat-list-option>
+      </mat-selection-list>
     </div>
+    <div class="col-md-7">
+      <div *ngIf="!selectedCategory">
+        <p><em>Select a category to view further details.</em></p>
+      </div>
+      <div *ngIf="selectedCategory">
+        <h3>{{ selectedCategory.checkName }}</h3>
+        <p>{{ selectedCategory.description }}</p>
+        <div
+          *ngIf="!selectedCategory.hasErrors"
+          class="mdm-branch-integrity-table--success"
+        >
+          <i class="fas fa-check-circle fa-lg"></i>
+          No issues found
+        </div>
+        <div
+          *ngIf="selectedCategory.hasErrors"
+          class="mdm-branch-integrity-table--errors"
+        >
+          <i class="fas fa-exclamation-triangle fa-lg"></i>
+          {{ selectedCategory.errors.length }} issue(s) found
+        </div>
+        <mat-list>
+          <mat-list-item *ngFor="let error of selectedCategory.errors">
+            <div class="mdm-branch-integrity-table__list-item">
+              <div>
+                <mdm-domain-icon [type]="error.domainType"></mdm-domain-icon>
+                <em>{{ error.type }}</em>
+              </div>
+              <div>
+                <a [href]="getDomainTypeUrl(error)" target="_blank">{{ error.label }}</a>
+              </div>
+              <mat-divider inset="true"></mat-divider>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,18 +1,20 @@
-/**
- * Copyright 2021 NHS Digital
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2021-2024 NHS England
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+SPDX-License-Identifier: Apache-2.0
+*/
 
 import { Component, Input, OnInit } from '@angular/core';
 import { AlertStyle, AlertStyleMetadata } from './alert.model';
@@ -23,7 +25,6 @@ import { AlertStyle, AlertStyleMetadata } from './alert.model';
   styleUrls: ['./alert.component.scss']
 })
 export class AlertComponent implements OnInit {
-
   @Input()
   alertStyle: AlertStyle = 'none';
 
@@ -31,7 +32,7 @@ export class AlertComponent implements OnInit {
   showIcon = false;
 
   private readonly styleMetadata = new Map<AlertStyle, AlertStyleMetadata>([
-    ['none', { icon: '', cssModifier: ''}],
+    ['none', { icon: '', cssModifier: '' }],
     ['success', { icon: 'fa-check-circle', cssModifier: 'mdm-alert--success' }],
     ['info', { icon: 'fa-info-circle', cssModifier: 'mdm-alert--info' }],
     ['warning', { icon: 'fa-exclamation-triangle', cssModifier: 'mdm-alert--warning' }],
@@ -54,9 +55,7 @@ export class AlertComponent implements OnInit {
     return this.styleMetadata.get(this.alertStyle)?.cssModifier ?? '';
   }
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

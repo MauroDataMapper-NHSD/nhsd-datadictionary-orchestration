@@ -1,310 +1,420 @@
 <!--
- Copyright 2021 NHS Digital
+Copyright 2021-2024 NHS England
 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-     http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+SPDX-License-Identifier: Apache-2.0
 -->
 
 <mdm-preview-breadcrumb [items]="breadcrumbs"></mdm-preview-breadcrumb>
 
 <div class="row">
-    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-        <div class="mdm-preview-detail">
-            <mdm-alert *ngIf="isLoading" alertStyle="info" [showIcon]="true">
-                <p>Loading content for preview, please wait...</p>
-                <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+  <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+    <div class="mdm-preview-detail">
+      <mdm-alert *ngIf="isLoading" alertStyle="info" [showIcon]="true">
+        <p>Loading content for preview, please wait...</p>
+        <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+      </mdm-alert>
+      <article
+        *ngIf="!isLoading && detail"
+        role="article"
+        aria-labelledby="ariaid-title1"
+      >
+        <article class="nested0">
+          <!-- Title -->
+          <h1 class="title topictitle1 {{ detail!.stereotype }}">{{ detail!.name }}</h1>
+
+          <!-- Short Description -->
+          <div *ngIf="detail!.shortDescription" class="- topic/body body">
+            <p class="- topic/shortdesc shortdesc">{{ detail!.shortDescription }}</p>
+          </div>
+
+          <!-- Format / Length -->
+          <mdm-preview-expandable-panel
+            *ngIf="detail.formatLength"
+            title="Format / Length"
+            [anchor]="getTableOfContentsLink('Format / Length')?.anchor"
+          >
+            <div class="- topic/body body">
+              <div class="- topic/div div">
+                <p class="- topic/p p" [innerHTML]="detail!.formatLength"></p>
+              </div>
+            </div>
+          </mdm-preview-expandable-panel>
+
+          <!-- Description -->
+          <mdm-preview-expandable-panel
+            *ngIf="detail.description"
+            title="Description"
+            [anchor]="getTableOfContentsLink('Description')?.anchor"
+          >
+            <div class="- topic/body body">
+              <div class="- topic/div div">
+                <p class="- topic/p p" [innerHTML]="detail!.description"></p>
+              </div>
+            </div>
+          </mdm-preview-expandable-panel>
+
+          <!-- National Codes -->
+          <mdm-preview-expandable-panel
+            *ngIf="detail.nationalCodes && detail.nationalCodes.length > 0"
+            title="National Codes"
+            [anchor]="getTableOfContentsLink('National Codes')?.anchor"
+          >
+            <div class="- topic/body body">
+              <div class="simpletable-container">
+                <table class="simpletable table table-striped table-sm">
+                  <colgroup>
+                    <col style="width: 20%" />
+                    <col style="width: 80%" />
+                  </colgroup>
+                  <thead>
+                    <tr class="thead-light">
+                      <th>Code</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let nationalCode of detail.nationalCodes">
+                      <td>{{ nationalCode.code }}</td>
+                      <td [innerHTML]="nationalCode.description"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </mdm-preview-expandable-panel>
+
+          <!-- Default Codes -->
+          <mdm-preview-expandable-panel
+            *ngIf="detail.defaultCodes && detail.defaultCodes.length > 0"
+            title="Default Codes"
+            [anchor]="getTableOfContentsLink('Default Codes')?.anchor"
+          >
+            <div class="- topic/body body">
+              <div class="simpletable-container">
+                <table class="simpletable table table-striped table-sm">
+                  <colgroup>
+                    <col style="width: 20%" />
+                    <col style="width: 80%" />
+                  </colgroup>
+                  <thead>
+                    <tr class="thead-light">
+                      <th>Code</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let defaultCode of detail.defaultCodes">
+                      <td>{{ defaultCode.code }}</td>
+                      <td [innerHTML]="defaultCode.description"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </mdm-preview-expandable-panel>
+
+          <!-- Specification -->
+          <mdm-preview-expandable-panel
+            *ngIf="detail.definition"
+            title="Specification"
+            [anchor]="getTableOfContentsLink('Specification')?.anchor"
+          >
+            <div
+              class="- topic/body body specification"
+              [innerHTML]="detail.definition"
+            ></div>
+          </mdm-preview-expandable-panel>
+
+          <!-- Attributes (Table, for Classes only)-->
+          <mdm-preview-expandable-panel
+            *ngIf="
+              detail.stereotype == 'class' &&
+              detail.attributes &&
+              detail.attributes.length > 0
+            "
+            title="Attributes"
+            [anchor]="getTableOfContentsLink('Attributes')?.anchor"
+          >
+            <div class="- topic/body body">
+              <div class="simpletable-container">
+                <table class="simpletable table table-striped table-sm">
+                  <colgroup>
+                    <col style="width: 10%" />
+                    <col style="width: 90%" />
+                  </colgroup>
+                  <thead>
+                    <tr class="thead-light">
+                      <th>Key</th>
+                      <th>Attribute Name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let element of detail.attributes">
+                      <td>{{ element.key }}</td>
+                      <td>
+                        <a
+                          class="{{ element.stereotype }}"
+                          uiSref="app.container.preview.detail"
+                          [uiParams]="{
+                            branch: branch,
+                            index: element.stereotype,
+                            id: element.catalogueId
+                          }"
+                          >{{ element.name }}</a
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </mdm-preview-expandable-panel>
+
+          <!-- Relationships -->
+          <mdm-preview-expandable-panel
+            *ngIf="detail.relationships && detail.relationships.length > 0"
+            title="Relationships"
+            [anchor]="getTableOfContentsLink('Relationships')?.anchor"
+          >
+            <div class="- topic/body body">
+              <p class="- topic/p p">Each {{ detail.name }}</p>
+              <div class="simpletable-container">
+                <table
+                  class="- topic/simpletable simpletable table table-striped table-sm"
+                >
+                  <colgroup>
+                    <col style="width: 9.090909090909092%" />
+                    <col style="width: 45.45454545454545%" />
+                    <col style="width: 45.45454545454545%" />
+                  </colgroup>
+                  <thead>
+                    <tr class="thead-light">
+                      <th>Key</th>
+                      <th>Relationship</th>
+                      <th>Class</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let relationship of detail.relationships">
+                      <td>{{ relationship.key }}</td>
+                      <td>{{ relationship.relationship }}</td>
+                      <td>
+                        <a
+                          class="{{ relationship.stereotype }}"
+                          uiSref="app.container.preview.detail"
+                          [uiParams]="{
+                            branch: branch,
+                            index: relationship.stereotype,
+                            id: relationship.catalogueId
+                          }"
+                          >{{ relationship.name }}</a
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </mdm-preview-expandable-panel>
+          <!-- Child Folders (of Data Set Folder-->
+          <mdm-preview-expandable-panel
+            *ngIf="detail.childFolders && detail.childFolders.length > 0"
+            title="Folders"
+            [anchor]="getTableOfContentsLink('Folders')?.anchor"
+          >
+            <div class="- topic/body body">
+              <ul>
+                <li *ngFor="let element of detail.childFolders">
+                  <a
+                    class="{{ element.stereotype }}"
+                    uiSref="app.container.preview.detail"
+                    [uiParams]="{
+                      branch: branch,
+                      index: element.stereotype,
+                      id: element.catalogueId
+                    }"
+                    >{{ element.name }}</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </mdm-preview-expandable-panel>
+          <!-- Child Folders (of Data Set Folder-->
+          <mdm-preview-expandable-panel
+            *ngIf="detail.dataSets && detail.dataSets.length > 0"
+            title="Data Sets"
+            [anchor]="getTableOfContentsLink('Data Sets')?.anchor"
+          >
+            <div class="- topic/body body">
+              <ul>
+                <li *ngFor="let element of detail.dataSets">
+                  <a
+                    class="{{ element.stereotype }}"
+                    uiSref="app.container.preview.detail"
+                    [uiParams]="{
+                      branch: branch,
+                      index: element.stereotype,
+                      id: element.catalogueId
+                    }"
+                    >{{ element.name }}</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </mdm-preview-expandable-panel>
+
+          <!-- Also Known As -->
+          <mdm-preview-expandable-panel
+            *ngIf="aliases.length > 0"
+            title="Also Known As"
+            [anchor]="getTableOfContentsLink('Also Known As')?.anchor"
+          >
+            <div class="- topic/body body">
+              <p class="- topic/p p">This {{ noun }} is also known by these names:</p>
+
+              <div class="simpletable-container">
+                <table class="simpletable table table-striped table-sm">
+                  <colgroup>
+                    <col style="width: 33.33333333333333%" />
+                    <col style="width: 66.66666666666666%" />
+                  </colgroup>
+                  <thead>
+                    <tr class="thead-light">
+                      <th>Context</th>
+                      <th>Alias</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let alias of aliases">
+                      <td>{{ alias.context }}</td>
+                      <td>{{ alias.value }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </mdm-preview-expandable-panel>
+
+          <!-- Where Used -->
+          <mdm-preview-expandable-panel
+            *ngIf="hasReferencesSection"
+            title="Where Used"
+            [expanded]="false"
+            [anchor]="getTableOfContentsLink('Where Used')?.anchor"
+            (afterExpand)="onReferencesSectionExpanded()"
+          >
+            <mdm-alert *ngIf="isLoadingReferences" alertStyle="info" [showIcon]="true">
+              <p>Loading references, please wait...</p>
+              <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
             </mdm-alert>
-            <article *ngIf="!isLoading && detail" role="article" aria-labelledby="ariaid-title1">
-                <article class="nested0">
-                    <!-- Title -->
-                    <h1 class="title topictitle1 {{detail!.stereotype}}">{{detail!.name}}</h1>
+            <div *ngIf="!isLoadingReferences" class="- topic/body body">
+              <div class="simpletable-container">
+                <table class="simpletable table table-striped table-sm">
+                  <colgroup>
+                    <col style="width: 30%" />
+                    <col style="width: 70%" />
+                  </colgroup>
+                  <thead>
+                    <tr class="thead-light">
+                      <th>Type</th>
+                      <th>Link</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let reference of references">
+                      <td>{{ prettifyStereotype(reference.stereotype) }}</td>
+                      <td>
+                        <a
+                          class="{{ reference.stereotype }}"
+                          uiSref="app.container.preview.detail"
+                          [uiParams]="{
+                            branch: branch,
+                            index: reference.stereotype,
+                            id: reference.catalogueId
+                          }"
+                          title="{{ reference.name }}"
+                          >{{ reference.name }}</a
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </mdm-preview-expandable-panel>
 
-                    <!-- Short Description -->
-                    <div *ngIf="detail!.shortDescription" class="- topic/body body">
-                        <p class="- topic/shortdesc shortdesc">{{detail!.shortDescription}}</p>
-                    </div>
+          <!-- Data Elements -->
+          <mdm-preview-expandable-panel
+            *ngIf="detail.dataElements && detail.dataElements.length > 0"
+            title="Data Elements"
+            [anchor]="getTableOfContentsLink('Data Elements')?.anchor"
+          >
+            <div class="- topic/body body">
+              <ul>
+                <li *ngFor="let element of detail.dataElements">
+                  <a
+                    class="{{ element.stereotype }}"
+                    uiSref="app.container.preview.detail"
+                    [uiParams]="{
+                      branch: branch,
+                      index: element.stereotype,
+                      id: element.catalogueId
+                    }"
+                    >{{ element.name }}</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </mdm-preview-expandable-panel>
 
-                    <!-- Format / Length -->
-                    <mdm-preview-expandable-panel *ngIf="detail.formatLength" title="Format / Length"
-                        [anchor]="getTableOfContentsLink('Format / Length')?.anchor">
-                        <div class="- topic/body body">
-                            <div class="- topic/div div">
-                                <p class="- topic/p p" [innerHTML]="detail!.formatLength">
-                                </p>
-                            </div>
-                        </div>
-                    </mdm-preview-expandable-panel>
-
-                    <!-- Description -->
-                    <mdm-preview-expandable-panel *ngIf="detail.description" title="Description"
-                        [anchor]="getTableOfContentsLink('Description')?.anchor">
-                        <div class="- topic/body body">
-                            <div class="- topic/div div">
-                                <p class="- topic/p p" [innerHTML]="detail!.description">
-                                </p>
-                            </div>
-                        </div>
-                    </mdm-preview-expandable-panel>
-
-                    <!-- National Codes -->
-                    <mdm-preview-expandable-panel *ngIf="detail.nationalCodes && detail.nationalCodes.length > 0"
-                        title="National Codes" [anchor]="getTableOfContentsLink('National Codes')?.anchor">
-                        <div class="- topic/body body">
-                            <div class="simpletable-container">
-                                <table class="simpletable table table-striped table-sm">
-                                    <colgroup>
-                                        <col style="width:20%">
-                                        <col style="width:80%">
-                                    </colgroup>
-                                    <thead>
-                                        <tr class="thead-light">
-                                            <th>Code</th>
-                                            <th>Description</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let nationalCode of detail.nationalCodes">
-                                            <td>{{nationalCode.code}}</td>
-                                            <td [innerHTML]='nationalCode.description'></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </mdm-preview-expandable-panel>
-
-                  <!-- Default Codes -->
-                  <mdm-preview-expandable-panel *ngIf="detail.defaultCodes && detail.defaultCodes.length > 0"
-                                                title="Default Codes" [anchor]="getTableOfContentsLink('Default Codes')?.anchor">
-                    <div class="- topic/body body">
-                      <div class="simpletable-container">
-                        <table class="simpletable table table-striped table-sm">
-                          <colgroup>
-                            <col style="width:20%">
-                            <col style="width:80%">
-                          </colgroup>
-                          <thead>
-                          <tr class="thead-light">
-                            <th>Code</th>
-                            <th>Description</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-                          <tr *ngFor="let defaultCode of detail.defaultCodes">
-                            <td>{{defaultCode.code}}</td>
-                            <td [innerHTML]="defaultCode.description"></td>
-                          </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </mdm-preview-expandable-panel>
-
-                    <!-- Specification -->
-                    <mdm-preview-expandable-panel *ngIf="detail.definition" title="Specification"
-                        [anchor]="getTableOfContentsLink('Specification')?.anchor">
-                        <div class="- topic/body body specification" [innerHTML]="detail.definition"></div>
-                    </mdm-preview-expandable-panel>
-
-                    <!-- Attributes (Table, for Classes only)-->
-                    <mdm-preview-expandable-panel
-                        *ngIf="detail.stereotype == 'class' && detail.attributes && detail.attributes.length > 0"
-                        title="Attributes" [anchor]="getTableOfContentsLink('Attributes')?.anchor">
-                        <div class="- topic/body body">
-                            <div class="simpletable-container">
-                                <table class="simpletable table table-striped table-sm">
-                                    <colgroup>
-                                        <col style="width:10%">
-                                        <col style="width:90%">
-                                    </colgroup>
-                                    <thead>
-                                        <tr class="thead-light">
-                                            <th>Key</th>
-                                            <th>Attribute Name</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let element of detail.attributes">
-                                            <td>{{element.key}}</td>
-                                            <td>
-                                                <a class="{{element.stereotype}}" uiSref="app.container.preview.detail"
-                                                    [uiParams]="{ branch: branch, index: element.stereotype, id: element.catalogueId }">{{element.name}}</a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </mdm-preview-expandable-panel>
-
-                    <!-- Relationships -->
-                    <mdm-preview-expandable-panel *ngIf="detail.relationships && detail.relationships.length > 0"
-                        title="Relationships" [anchor]="getTableOfContentsLink('Relationships')?.anchor">
-                        <div class="- topic/body body">
-                            <p class="- topic/p p">Each {{detail.name}}</p>
-                            <div class="simpletable-container">
-                                <table class="- topic/simpletable simpletable table table-striped table-sm">
-                                    <colgroup>
-                                        <col style="width:9.090909090909092%">
-                                        <col style="width:45.45454545454545%">
-                                        <col style="width:45.45454545454545%">
-                                    </colgroup>
-                                    <thead>
-                                        <tr class="thead-light">
-                                            <th>Key</th>
-                                            <th>Relationship</th>
-                                            <th>Class</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let relationship of detail.relationships">
-                                            <td>{{relationship.key}}</td>
-                                            <td>{{relationship.relationship}}</td>
-                                            <td>
-                                                <a class="{{relationship.stereotype}}"
-                                                    uiSref="app.container.preview.detail"
-                                                    [uiParams]="{ branch: branch, index: relationship.stereotype, id: relationship.catalogueId }">{{relationship.name}}</a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </mdm-preview-expandable-panel>
-                  <!-- Child Folders (of Data Set Folder-->
-                  <mdm-preview-expandable-panel
-                    *ngIf="detail.childFolders && detail.childFolders.length > 0"
-                    title="Folders" [anchor]="getTableOfContentsLink('Folders')?.anchor">
-                    <div class="- topic/body body">
-                      <ul>
-                        <li *ngFor="let element of detail.childFolders">
-                          <a class="{{element.stereotype}}" uiSref="app.container.preview.detail"
-                             [uiParams]="{ branch: branch, index: element.stereotype, id: element.catalogueId }">{{element.name}}</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </mdm-preview-expandable-panel>
-                  <!-- Child Folders (of Data Set Folder-->
-                  <mdm-preview-expandable-panel
-                    *ngIf="detail.dataSets && detail.dataSets.length > 0"
-                    title="Data Sets" [anchor]="getTableOfContentsLink('Data Sets')?.anchor">
-                    <div class="- topic/body body">
-                      <ul>
-                        <li *ngFor="let element of detail.dataSets">
-                          <a class="{{element.stereotype}}" uiSref="app.container.preview.detail"
-                             [uiParams]="{ branch: branch, index: element.stereotype, id: element.catalogueId }">{{element.name}}</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </mdm-preview-expandable-panel>
-
-                    <!-- Also Known As -->
-                    <mdm-preview-expandable-panel *ngIf="aliases.length > 0" title="Also Known As"
-                        [anchor]="getTableOfContentsLink('Also Known As')?.anchor">
-                        <div class="- topic/body body">
-                            <p class="- topic/p p">This {{noun}} is also known by these names:</p>
-
-                            <div class="simpletable-container">
-                                <table class="simpletable table table-striped table-sm">
-                                    <colgroup>
-                                        <col style="width:33.33333333333333%">
-                                        <col style="width:66.66666666666666%">
-                                    </colgroup>
-                                    <thead>
-                                        <tr class="thead-light">
-                                            <th>Context</th>
-                                            <th>Alias</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let alias of aliases">
-                                            <td>{{alias.context}}</td>
-                                            <td>{{alias.value}}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </mdm-preview-expandable-panel>
-
-                    <!-- Where Used -->
-                    <mdm-preview-expandable-panel *ngIf="hasReferencesSection" title="Where Used" [expanded]="false"
-                        [anchor]="getTableOfContentsLink('Where Used')?.anchor"
-                        (afterExpand)="onReferencesSectionExpanded()">
-                        <mdm-alert *ngIf="isLoadingReferences" alertStyle="info" [showIcon]="true">
-                            <p>Loading references, please wait...</p>
-                            <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
-                        </mdm-alert>
-                        <div *ngIf="!isLoadingReferences" class="- topic/body body">
-                            <div class="simpletable-container">
-                                <table class="simpletable table table-striped table-sm">
-                                    <colgroup>
-                                        <col style="width:30%">
-                                        <col style="width:70%">
-                                    </colgroup>
-                                    <thead>
-                                        <tr class="thead-light">
-                                            <th>Type</th>
-                                            <th>Link</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let reference of references">
-                                            <td>{{prettifyStereotype(reference.stereotype)}}</td>
-                                            <td>
-                                                <a class="{{reference.stereotype}}"
-                                                    uiSref="app.container.preview.detail"
-                                                    [uiParams]="{ branch: branch, index: reference.stereotype, id: reference.catalogueId }"
-                                                    title="{{reference.name}}">{{reference.name}}</a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </mdm-preview-expandable-panel>
-
-                    <!-- Data Elements -->
-                    <mdm-preview-expandable-panel *ngIf="detail.dataElements && detail.dataElements.length > 0"
-                        title="Data Elements" [anchor]="getTableOfContentsLink('Data Elements')?.anchor">
-                        <div class="- topic/body body">
-                            <ul>
-                                <li *ngFor="let element of detail.dataElements">
-                                    <a class="{{element.stereotype}}" uiSref="app.container.preview.detail"
-                                        [uiParams]="{ branch: branch, index: element.stereotype, id: element.catalogueId }">{{element.name}}</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </mdm-preview-expandable-panel>
-
-                    <!-- Attributes (Bullet List, not for Classes)-->
-                    <mdm-preview-expandable-panel
-                        *ngIf="detail.stereotype !== 'class' && detail.attributes && detail.attributes.length > 0"
-                        title="Attributes" [anchor]="getTableOfContentsLink('Attributes')?.anchor">
-                        <div class="- topic/body body">
-                            <ul>
-                                <li *ngFor="let element of detail.attributes">
-                                    <a class="{{element.stereotype}}" uiSref="app.container.preview.detail"
-                                        [uiParams]="{ branch: branch, index: element.stereotype, id: element.catalogueId }">{{element.name}}</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </mdm-preview-expandable-panel>
-                </article>
-            </article>
-        </div>
+          <!-- Attributes (Bullet List, not for Classes)-->
+          <mdm-preview-expandable-panel
+            *ngIf="
+              detail.stereotype !== 'class' &&
+              detail.attributes &&
+              detail.attributes.length > 0
+            "
+            title="Attributes"
+            [anchor]="getTableOfContentsLink('Attributes')?.anchor"
+          >
+            <div class="- topic/body body">
+              <ul>
+                <li *ngFor="let element of detail.attributes">
+                  <a
+                    class="{{ element.stereotype }}"
+                    uiSref="app.container.preview.detail"
+                    [uiParams]="{
+                      branch: branch,
+                      index: element.stereotype,
+                      id: element.catalogueId
+                    }"
+                    >{{ element.name }}</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </mdm-preview-expandable-panel>
+        </article>
+      </article>
     </div>
-    <nav role="navigation" id="toc" class="col-lg-2 d-none d-lg-block navbar d-print-none">
-        <mdm-preview-toc [links]="tableOfContentLinks" (navigating)="onTableOfContentsClick($event)">
-        </mdm-preview-toc>
-    </nav>
+  </div>
+  <nav role="navigation" id="toc" class="col-lg-2 d-none d-lg-block navbar d-print-none">
+    <mdm-preview-toc
+      [links]="tableOfContentLinks"
+      (navigating)="onTableOfContentsClick($event)"
+    >
+    </mdm-preview-toc>
+  </nav>
 </div>

@@ -1,18 +1,20 @@
-/**
- * Copyright 2021 NHS Digital
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2021-2024 NHS England
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+SPDX-License-Identifier: Apache-2.0
+*/
 
 import { Component, Input, OnInit } from '@angular/core';
 import { IntegrityCheckCategory } from '@mdm/core/data-dictionary/data-dictionary.model';
@@ -27,7 +29,6 @@ import { catchError, finalize } from 'rxjs/operators';
   styleUrls: ['./branch-integrity.component.scss']
 })
 export class BranchIntegrityComponent implements OnInit {
-
   @Input() branch?: Branch;
 
   running = false;
@@ -39,10 +40,10 @@ export class BranchIntegrityComponent implements OnInit {
 
   constructor(
     private dataDictionary: DataDictionaryService,
-    private logging: LoggingService) { }
+    private logging: LoggingService
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   run() {
     if (!this.branch) {
@@ -54,12 +55,15 @@ export class BranchIntegrityComponent implements OnInit {
     this.dataDictionary
       .runIntegrityChecks(this.branch.id)
       .pipe(
-        catchError(error => {
-          this.logging.error(`There was a problem running integrity checks on branch ${this.branch?.branchName}.`, error);
+        catchError((error) => {
+          this.logging.error(
+            `There was a problem running integrity checks on branch ${this.branch?.branchName}.`,
+            error
+          );
           return [];
         }),
-        finalize(() => this.running = false)
+        finalize(() => (this.running = false))
       )
-      .subscribe(categories => this.categories = categories);
+      .subscribe((categories) => (this.categories = categories));
   }
 }

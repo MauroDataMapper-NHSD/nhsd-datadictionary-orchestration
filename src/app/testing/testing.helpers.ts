@@ -1,18 +1,20 @@
-/**
- * Copyright 2021 NHS Digital
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2021-2024 NHS England
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+SPDX-License-Identifier: Apache-2.0
+*/
 
 import { Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -46,7 +48,10 @@ export interface TestModuleConfiguration {
  * @typedef T The type of component under test.
  */
 export class ComponentHarness<T> {
-  constructor(public component: T, public fixture: ComponentFixture<T>) { }
+  constructor(
+    public component: T,
+    public fixture: ComponentFixture<T>
+  ) {}
 
   get isComponentCreated() {
     return !!this.component;
@@ -65,9 +70,12 @@ export class ComponentHarness<T> {
  * @param configuration Optionally provide additional configuration for the test module.
  * @returns A new instance of the service under test.
  */
-export const setupTestModuleForService = <T>(service: Type<T>, configuration?: TestModuleConfiguration): T  =>{
+export const setupTestModuleForService = <T>(
+  service: Type<T>,
+  configuration?: TestModuleConfiguration
+): T => {
   TestBed.configureTestingModule({
-    imports: [TestingModule, ...configuration?.imports ?? []],
+    imports: [TestingModule, ...(configuration?.imports ?? [])],
     providers: configuration?.providers ?? []
   });
   return TestBed.inject(service);
@@ -81,17 +89,19 @@ export const setupTestModuleForService = <T>(service: Type<T>, configuration?: T
  * @param configuration Optionally provide additional configuration for the test module.
  * @returns A new `ComponentHarness<T>` containing an instance of the component under test with a fixture.
  */
-export const setupTestModuleForComponent = async<T>(componentType: Type<T>, configuration?: TestModuleConfiguration) => {
-  await TestBed
-    .configureTestingModule({
-      imports: [TestingModule, ...configuration?.imports ?? []],
-      declarations: [
-        componentType,
-        MockComponent(NgxSkeletonLoaderComponent),
-        ...configuration?.declarations ?? []],
-      providers: configuration?.providers ?? []
-    })
-    .compileComponents();
+export const setupTestModuleForComponent = async <T>(
+  componentType: Type<T>,
+  configuration?: TestModuleConfiguration
+) => {
+  await TestBed.configureTestingModule({
+    imports: [TestingModule, ...(configuration?.imports ?? [])],
+    declarations: [
+      componentType,
+      MockComponent(NgxSkeletonLoaderComponent),
+      ...(configuration?.declarations ?? [])
+    ],
+    providers: configuration?.providers ?? []
+  }).compileComponents();
 
   const fixture = TestBed.createComponent(componentType);
   const component = fixture.componentInstance;
