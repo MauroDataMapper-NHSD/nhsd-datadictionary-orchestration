@@ -32,11 +32,79 @@
         [(value)]="selectedBranch"
         (selectionChange)="onBranchChanged($event)"
       >
+        <mat-select-trigger>
+          <span
+            *ngIf="
+              selectedBranchDetails?.versionDisplay &&
+              selectedBranchDetails?.modelVersionFinalised
+            "
+            class="fas fa-file-alt"
+          ></span>
+
+          {{ selectedBranchDetails?.label }}
+
+          <span
+            *ngIf="
+              selectedBranchDetails?.versionDisplay &&
+              selectedBranchDetails?.modelVersionFinalised
+            "
+            class="fas fa-tag"
+          >
+          </span>
+
+          <span
+            *ngIf="
+              selectedBranchDetails?.branchName &&
+              !selectedBranchDetails?.modelVersionFinalised
+            "
+            class="fas fa-code-branch"
+          >
+          </span>
+          {{ selectedBranchDetails?.versionDisplay }}
+        </mat-select-trigger>
         <mat-option *ngFor="let branch of branches" [value]="branch.id">
+          <span
+            *ngIf="branch.versionDisplay && branch.modelVersionFinalised"
+            class="fas fa-file-alt"
+          ></span>
+
           {{ branch.label }}
-          <span *ngIf="branch.versionDisplay">({{ branch.versionDisplay }})</span>
-          <span *ngIf="branch.modelVersionFinalised"> (finalised)</span>
+
+          <span
+            *ngIf="branch.versionDisplay && branch.modelVersionFinalised"
+            class="fas fa-tag"
+          >
+          </span>
+
+          <span
+            *ngIf="branch.branchName && !branch.modelVersionFinalised"
+            class="fas fa-code-branch"
+          >
+          </span>
+          {{ branch.versionDisplay }}
         </mat-option>
+
+        <!-- finalised icon/ name/ tag / branchicon / version -->
+
+        <!-- <mat-select-trigger>
+          <span class="fas fa-tag"> </span>
+          check string input for selectdBranch and maybe adjust to be an object?
+          {{ selectedBranch }}
+        </mat-select-trigger>
+        <mat-option *ngFor="let branch of branches" [value]="branch.id">
+          <span
+            *ngIf="!branch.modelVersionFinalised && branch.label"
+            class="fas fa-code-branch"
+          ></span>
+          <span *ngIf="branch.modelVersionFinalised" class="fas fa-file-alt"> </span>
+          {{ branch.label }}
+          <span
+            *ngIf="branch.modelVersionFinalised && branch.versionDisplay"
+            class="fas fa-tag"
+          >
+          </span>
+          <span *ngIf="branch.versionDisplay">({{ branch.versionDisplay }}) </span>
+        </mat-option> -->
       </mat-select>
     </div>
   </div>

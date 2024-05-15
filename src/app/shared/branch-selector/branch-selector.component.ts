@@ -24,7 +24,6 @@ import { Branch } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dicti
   styleUrls: ['./branch-selector.component.scss']
 })
 export class BranchSelectorComponent implements OnInit {
-
   @Input()
   branches: Branch[] = [];
 
@@ -34,13 +33,15 @@ export class BranchSelectorComponent implements OnInit {
   @Output()
   selectedBranchChange = new EventEmitter<string>();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
+  get selectedBranchDetails(): Branch | undefined {
+    return this.branches.find((b) => b.id === this.selectedBranch);
   }
+
+  ngOnInit(): void {}
 
   onBranchChanged(change: MatSelectChange) {
     this.selectedBranchChange.emit(change.value);
   }
-
 }
