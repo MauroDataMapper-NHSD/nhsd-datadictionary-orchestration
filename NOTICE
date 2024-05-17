@@ -1,4 +1,3 @@
-<!--
 Copyright 2021-2024 NHS England
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +13,3 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 SPDX-License-Identifier: Apache-2.0
--->
-
-<form role="form">
-  <div class="modal-header">
-    <h2 class="modal-title marginless">{{ title }}</h2>
-  </div>
-  <div class="modal-body">
-    <span [innerHtml]="message"></span>
-  </div>
-  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
-</form>

@@ -1,18 +1,20 @@
-/**
- * Copyright 2021 NHS Digital
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2021-2024 NHS England
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+SPDX-License-Identifier: Apache-2.0
+*/
 
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -28,7 +30,10 @@ import { BroadcastService } from './core/broadcast/broadcast.service';
 import { MdmResourcesError } from './mdm-resources/mdm-resources/mdm-resources.model';
 import { SecurityService } from './core/security/security.service';
 import { SharedService } from './core/shared/shared.service';
-import { CommonUiStates, StateHandlerService } from './core/state-handler/state-handler.service';
+import {
+  CommonUiStates,
+  StateHandlerService
+} from './core/state-handler/state-handler.service';
 import { ThemingService } from './core/theming/theming.service';
 import { UserIdleService } from './external/user-idle/user-idle.service';
 import { UserDetails } from './core/security/security.model';
@@ -39,7 +44,6 @@ import { UserDetails } from './core/security/security.model';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-
   title = 'nhsd-datadictionary-orchestration';
   themeCssSelector = '';
 
@@ -83,7 +87,7 @@ export class AppComponent implements OnInit, OnDestroy {
   /**
    * Signal to attach to subscriptions to trigger when they should be unsubscribed.
    */
-   private unsubscribe$ = new Subject<void>();
+  private unsubscribe$ = new Subject<void>();
 
   constructor(
     private shared: SharedService,
@@ -94,7 +98,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private theming: ThemingService,
     private overlayContainer: OverlayContainer,
-    private userIdle: UserIdleService) { }
+    private userIdle: UserIdleService
+  ) {}
 
   @HostListener('window:mousemove', ['$event'])
   onMouseMove() {
@@ -119,9 +124,15 @@ export class AppComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => this.signOut());
 
-    this.subscribeHttpErrorEvent(BroadcastEvent.NotAuthorized, 'app.container.notAuthorized');
+    this.subscribeHttpErrorEvent(
+      BroadcastEvent.NotAuthorized,
+      'app.container.notAuthorized'
+    );
     this.subscribeHttpErrorEvent(BroadcastEvent.NotFound, 'app.container.notFound');
-    this.subscribeHttpErrorEvent(BroadcastEvent.NotImplemented, 'app.container.notImplemented');
+    this.subscribeHttpErrorEvent(
+      BroadcastEvent.NotImplemented,
+      'app.container.notImplemented'
+    );
     this.subscribeHttpErrorEvent(BroadcastEvent.ServerError, 'app.container.serverError');
 
     // Check immediately if the last authenticated session is expired and setup a recurring
@@ -148,7 +159,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.broadcast
       .on<HttpErrorResponse>(event)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(response => this.handleHttpError(response, state));
+      .subscribe((response) => this.handleHttpError(response, state));
   }
 
   private handleHttpError(response: HttpErrorResponse, state: string) {
@@ -160,11 +171,15 @@ export class AppComponent implements OnInit, OnDestroy {
     this.dialog
       .open<SignInModalComponent, any, UserDetails>(SignInModalComponent)
       .afterClosed()
-      .subscribe(user => {
+      .subscribe((user) => {
         if (user) {
           this.broadcast.dispatch(BroadcastEvent.SignedIn, user);
           this.toastr.clear();
-          this.stateHandler.goTo(CommonUiStates.Branches, { }, { reload: true, inherit: false });
+          this.stateHandler.goTo(
+            CommonUiStates.Branches,
+            {},
+            { reload: true, inherit: false }
+          );
         }
       });
   }
@@ -179,8 +194,12 @@ export class AppComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(
-        () => { },
-        (error: MdmResourcesError) => console.error(`There was a problem signing out: ${error.response.status} ${error.response.message}`));
+        () => {},
+        (error: MdmResourcesError) =>
+          console.error(
+            `There was a problem signing out: ${error.response.status} ${error.response.message}`
+          )
+      );
   }
 
   private setupIdleTimer() {
@@ -188,7 +207,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.userIdle
       .onTimerStart()
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(() => { });
+      .subscribe(() => {});
 
     let lastCheck = new Date();
     this.userIdle

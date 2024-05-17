@@ -1,75 +1,73 @@
-/**
- * Copyright 2021 NHS Digital
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *     http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2021-2024 NHS England
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+SPDX-License-Identifier: Apache-2.0
+*/
 @use '@angular/material' as mat;
 
- 
 @mixin mdm-preview-tile-theme($theme) {
-    $primary: map-get($theme, primary);
+  $primary: map-get($theme, primary);
 
-    $color: mat.get-color-from-palette($primary);
-    
-    .mdm-preview-tile {
-        border-color: $color;
-        background-color: #ffffff;
-    }
+  $color: mat.get-color-from-palette($primary);
+
+  .mdm-preview-tile {
+    border-color: $color;
+    background-color: #ffffff;
+  }
 }
 
 .mdm-preview-tile {
+  $titleColor: #425563;
 
-    $titleColor: #425563;
+  margin: 1em;
+  padding: 1em;
+  width: 300px;
+  height: 180px;
+  border-radius: 0em;
+  border-style: solid;
+  border-width: 8px;
 
-    margin: 1em;
-    padding: 1em;
-    width: 300px;
-    height: 180px;
-    border-radius: 0em;
-    border-style: solid;
-    border-width: 8px;
+  &__text {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
 
-    &__text {
+    &__title {
+      color: $titleColor;
+      text-align: left;
+      font-size: 1.1em;
+      text-decoration: none;
+      font-weight: bold;
 
-        position: relative;
-        height: 100%;
-        overflow: hidden;
+      span {
+        display: block;
+        width: 100%;
+        line-height: 1.2em;
+      }
 
-        &__title {
-            color: $titleColor;
-            text-align: left;
-            font-size: 1.1em;
-            text-decoration: none;
-            font-weight: bold;
-
-            span {
-                display: block;
-                width: 100%;
-                line-height: 1.2em;
-            }
-
-            a {
-                color: $titleColor;
-                display: block;
-                width: 100%;
-            }
-        }
-
-        &__description {
-            margin-top: 0.5em;
-            text-align: left;
-            color: $titleColor;
-        }
-
+      a {
+        color: $titleColor;
+        display: block;
+        width: 100%;
+      }
     }
+
+    &__description {
+      margin-top: 0.5em;
+      text-align: left;
+      color: $titleColor;
+    }
+  }
 }

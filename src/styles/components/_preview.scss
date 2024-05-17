@@ -1,183 +1,199 @@
-/**
- * Copyright 2021 NHS Digital
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2021-2024 NHS England
 
- /* Wrap all Data Dictionary preview content inside a top-level class to separate from main UI */
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+SPDX-License-Identifier: Apache-2.0
+*/
+
+/* Wrap all Data Dictionary preview content inside a top-level class to separate from main UI */
 .mdm-dd-preview {
+  $nhsDarkBlueColor: #003087;
 
-    $nhsDarkBlueColor: #003087;
+  /* Element link colors*/
+  $dataElementColor: #006747;
+  $dataSetColor: #ed8b00;
+  $attributeColor: #330072;
+  $dataClassColor: #8a1538;
+  $businessDefinitionColor: $nhsDarkBlueColor;
+  $supportingInfoColor: $nhsDarkBlueColor;
+  $dataSetConstraintColor: $nhsDarkBlueColor;
+  $retiredColor: #dfe2e5;
 
-    /* Element link colors*/
-    $dataElementColor: #006747;
-    $dataSetColor: #ed8b00;
-    $attributeColor: #330072;
-    $dataClassColor: #8a1538;
-    $businessDefinitionColor: $nhsDarkBlueColor;
-    $supportingInfoColor: $nhsDarkBlueColor;
-    $dataSetConstraintColor: $nhsDarkBlueColor;
-    $retiredColor: #dfe2e5;
+  $shortDescColor: $nhsDarkBlueColor;
+  $tableBorderColor: #425563;
+  $tableHeadBackgroundColor: $nhsDarkBlueColor;
 
-    $shortDescColor: $nhsDarkBlueColor;
-    $tableBorderColor: #425563;
-    $tableHeadBackgroundColor: $nhsDarkBlueColor;
+  $previewFontSize: 14px;
 
-    $previewFontSize: 14px;
+  font-family: 'Frutiger W01', Helvetica, Arial, Sans-serif;
+  font-size: $previewFontSize;
 
-    font-family: 'Frutiger W01', Helvetica, Arial, Sans-serif;
+  ol li,
+  ul li {
     font-size: $previewFontSize;
+  }
 
-    ol li,
-    ul li {
-        font-size: $previewFontSize;
-    }
+  a {
+    text-decoration: underline;
+  }
 
-    a {
-        text-decoration: underline;
-    }
+  %element-link-border-style {
+    border-width: thin;
+    border-style: solid;
+    background-color: white;
+    border-radius: 5px;
+    border-width: 1px;
+    padding-left: 3px;
+    padding-right: 3px;
+    margin-left: 2px;
+    font-weight: bold;
+  }
 
-    %element-link-border-style {
-        border-width: thin;
-        border-style: solid;
-        background-color: white;
-        border-radius: 5px;
-        border-width: 1px;
-        padding-left: 3px;
-        padding-right: 3px;
-        margin-left: 2px;
-        font-weight: bold;
-    }
-
-    /**
+  /**
     * Define styles for element links
     */
-    @mixin mdm-dd-preview-element-link($name, $color, $content, $fontWeight: normal) {
-        .#{$name} {
-            color: $color;
-            font-weight: $fontWeight;
+  @mixin mdm-dd-preview-element-link($name, $color, $content, $fontWeight: normal) {
+    .#{$name} {
+      color: $color;
+      font-weight: $fontWeight;
 
-            &:after {
-                @extend %element-link-border-style;
-                color: $color;
-                border-color: $color;
-                content: $content;
-            }
-        }
+      &:after {
+        @extend %element-link-border-style;
+        color: $color;
+        border-color: $color;
+        content: $content;
+      }
+    }
+  }
+
+  @include mdm-dd-preview-element-link(element, $dataElementColor, 'e');
+  @include mdm-dd-preview-element-link(dataSet, $dataSetColor, 'ds');
+  @include mdm-dd-preview-element-link(dataSetFolder, $dataSetColor, 'ds');
+  @include mdm-dd-preview-element-link(attribute, $attributeColor, 'a');
+  @include mdm-dd-preview-element-link(class, $dataClassColor, 'c');
+  @include mdm-dd-preview-element-link(
+    businessDefinition,
+    $businessDefinitionColor,
+    'bd'
+  );
+  @include mdm-dd-preview-element-link(
+    supportingInformation,
+    $supportingInfoColor,
+    'i',
+    normal
+  );
+  @include mdm-dd-preview-element-link(
+    dataSetConstraint,
+    $dataSetConstraintColor,
+    '\{...\}',
+    normal
+  );
+
+  .retired {
+    background-color: $retiredColor;
+    color: black;
+    font-weight: normal;
+  }
+
+  .title {
+    padding-left: 0.7em;
+
+    &.topictitle1 {
+      font-size: 2em;
+      margin-bottom: 1em;
+      font-weight: 400;
     }
 
+    &.topictitle2 {
+      margin: 1.5em 0 0.5em 0;
+      font-size: 1.7em;
+      font-weight: 400;
+    }
+  }
 
+  .shortdesc {
+    background-color: #ffffff;
+    color: $shortDescColor;
+    font-size: large;
+    border-radius: 3px;
+    padding: 1em 1em 1em 1em;
+  }
 
-    @include mdm-dd-preview-element-link(element, $dataElementColor, 'e');
-    @include mdm-dd-preview-element-link(dataSet, $dataSetColor, 'ds');
-    @include mdm-dd-preview-element-link(dataSetFolder, $dataSetColor, 'ds');
-    @include mdm-dd-preview-element-link(attribute, $attributeColor, 'a');
-    @include mdm-dd-preview-element-link(class, $dataClassColor, 'c');
-    @include mdm-dd-preview-element-link(businessDefinition, $businessDefinitionColor, 'bd');
-    @include mdm-dd-preview-element-link(supportingInformation, $supportingInfoColor, 'i', normal);
-    @include mdm-dd-preview-element-link(dataSetConstraint, $dataSetConstraintColor, '\{...\}', normal);
+  .table,
+  div.specification table {
+    border: 1px solid $tableBorderColor;
+    margin-left: 0;
 
-    .retired {
-        background-color: $retiredColor;
-        color: black;
-        font-weight: normal;
+    strong,
+    b {
+      font-weight: bolder;
     }
 
-    .title {
-        padding-left: .7em;
-
-        &.topictitle1 {
-            font-size: 2em;
-            margin-bottom: 1em;
-            font-weight: 400;
-        }
-
-        &.topictitle2 {
-            margin: 1.5em 0 .5em 0;
-            font-size: 1.7em;
-            font-weight: 400;
-        }
+    td,
+    th {
+      border-top: 1px solid $tableBorderColor;
     }
 
-    .shortdesc {
-        background-color: #ffffff;
-        color: $shortDescColor;
-        font-size: large;
-        border-radius: 3px;
-        padding: 1em 1em 1em 1em;
+    td {
+      border-right: 1px solid $tableBorderColor;
     }
 
-    .table,
-    div.specification table {
+    .thead-light {
+      th {
+        background-color: $tableHeadBackgroundColor;
+        color: white;
         border: 1px solid $tableBorderColor;
-        margin-left: 0;
+      }
+    }
 
-        strong, b {
-            font-weight: bolder;
-        }
+    th.thead-light,
+    tr.thead-light {
+      background-color: $tableHeadBackgroundColor;
+      color: white;
+      border: 1px solid $tableBorderColor;
+    }
+  }
 
-        td, th {
-            border-top: 1px solid $tableBorderColor;
-        }
+  .table-bordered {
+    td,
+    th {
+      border: 1px solid $tableBorderColor !important;
+    }
+  }
 
-        td {
-            border-right: 1px solid $tableBorderColor;
+  .align-center {
+    text-align: center;
+  }
+
+  div.specification {
+    table {
+      @extend .table-bordered;
+
+      width: 100%;
+      margin-bottom: 20px;
+
+      tbody {
+        tr:nth-of-type(odd) {
+          background-color: rgba(0, 0, 0, 0.05);
         }
 
         .thead-light {
-            th {
-                background-color: $tableHeadBackgroundColor;
-                color: white;
-                border: 1px solid $tableBorderColor;
-            }
+          background-color: $tableHeadBackgroundColor !important;
+          color: white !important;
+          border: 1px solid $tableBorderColor !important;
         }
-
-        th.thead-light,
-        tr.thead-light {
-            background-color: $tableHeadBackgroundColor;
-            color: white;
-            border: 1px solid $tableBorderColor;
-        }
+      }
     }
-
-    .table-bordered {
-        td, th {
-            border: 1px solid $tableBorderColor !important;
-        }
-    }
-
-    .align-center {
-        text-align: center;
-    }
-
-    div.specification {
-        table {
-            @extend .table-bordered;
-
-            width: 100%;
-            margin-bottom: 20px;
-
-            tbody {
-                tr:nth-of-type(odd) {
-                    background-color: rgba(0,0,0,.05);
-                }
-
-                .thead-light {
-                    background-color: $tableHeadBackgroundColor !important;
-                    color: white !important;
-                    border: 1px solid $tableBorderColor !important;
-                }
-            }
-        }
-    }
+  }
 }

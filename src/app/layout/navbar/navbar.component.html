@@ -1,88 +1,115 @@
 <!--
- Copyright 2021 NHS Digital
- 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
-     http://www.apache.org/licenses/LICENSE-2.0
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
+Copyright 2021-2024 NHS England
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+SPDX-License-Identifier: Apache-2.0
 -->
 
 <header class="mdm-header">
-    <div class="container">
-        <mat-toolbar color="primary" class="mdm-navbar">
-            <nav flex fxLayout="row" fxLayoutAlign="space-between" class="mdm-navbar--nav">
-                <div class="mdm-navbar__brand">
-                    <a class="mdm-navbar__brand--logo" uiSref="app.container.home">
-                        <img [src]="logoUrl" alt="logo">
-                    </a>
-                </div>
-                <span class="spacer"></span>
-                <div class="mdm-navbar__items" fxShow="true" fxHide.lt-md="true" *ngFor="let link of mainNavbarLinks">
-                    <a *ngIf="!link.onlySignedIn || (link.onlySignedIn && isSignedIn)" [uiSref]="link.uiSref" uiSrefActive="active" [uiOptions]="{ reload: true, notify: true }">{{link.label}}</a>
-                </div>
-                <span class="spacer"></span>
-                <div class="mdm-navbar__menu" fxShow="true" fxHide.lt-md="true">
-                    <div *ngIf="!isSignedIn">
-                        <button (click)="signIn()" mat-stroked-button class="custom inverted-button">Sign in</button>
-                    </div>
-                    <div *ngIf="isSignedIn">
-                        <mdm-user [user]="profile" layout="row" [matMenuTriggerFor]="menu"></mdm-user>                        
-                        <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
-                            <button *ngIf="isSignedIn" (click)="signOut()" class="mdm-navbar__logout">
-                                <i class="fas fa-sign-out-alt"></i>
-                                <span>Sign out</span>
-                            </button>
-                        </mat-menu>
-                    </div>
-                </div>
-                <div fxHide="true" fxShow.lt-md="true">
-                    <button mat-button (click)="sidenav.toggle()" aria-label="Toggle mobile menu">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                </div>
-            </nav>
-        </mat-toolbar>        
-    </div>    
-
-    <mat-sidenav-container class="mdm-navbar-sidenav-container">
-        <mat-sidenav #sidenav class="mdm-navbar__sidenav" mode="over" fixedInViewport="true" fixedTopGap="0"
-            fixedBottomGap="0" opened="false" position="end" [autoFocus]="false" fxLayout="column" fxLayoutAlign="center center">
-            <nav>
-                <mdm-user *ngIf="isSignedIn" [user]="profile" layout="column"></mdm-user>
-                <div class="mdm-navbar__link-group">                    
-                    <div *ngFor="let group of linkGroups">
-                        <h5>{{group.label}}</h5>
-                        <div *ngFor="let link of group.links">
-                            <a [uiSref]="link.uiSref" (click)="sidenav.toggle()" uiSrefActive="active">
-                                <i class="fas" [class]="link.icon"></i>
-                                <span>{{link.label}}</span>
-                            </a>
-                        </div>
-                    </div>                    
-                </div>
-            </nav>
-            <div *ngIf="!isSignedIn" class="mdm-navbar__login">
-                <button (click)="signIn()" mat-flat-button class="custom" color="primary">Sign in</button>
-            </div>
-            <button *ngIf="isSignedIn" (click)="signOut()" class="mdm-navbar__logout">
+  <div class="container">
+    <mat-toolbar color="primary" class="mdm-navbar">
+      <nav flex fxLayout="row" fxLayoutAlign="space-between" class="mdm-navbar--nav">
+        <div class="mdm-navbar__brand">
+          <a class="mdm-navbar__brand--logo" uiSref="app.container.home">
+            <img [src]="logoUrl" alt="logo" />
+          </a>
+        </div>
+        <span class="spacer"></span>
+        <div
+          class="mdm-navbar__items"
+          fxShow="true"
+          fxHide.lt-md="true"
+          *ngFor="let link of mainNavbarLinks"
+        >
+          <a
+            *ngIf="!link.onlySignedIn || (link.onlySignedIn && isSignedIn)"
+            [uiSref]="link.uiSref"
+            uiSrefActive="active"
+            [uiOptions]="{ reload: true, notify: true }"
+            >{{ link.label }}</a
+          >
+        </div>
+        <span class="spacer"></span>
+        <div class="mdm-navbar__menu" fxShow="true" fxHide.lt-md="true">
+          <div *ngIf="!isSignedIn">
+            <button (click)="signIn()" mat-stroked-button class="custom inverted-button">
+              Sign in
+            </button>
+          </div>
+          <div *ngIf="isSignedIn">
+            <mdm-user [user]="profile" layout="row" [matMenuTriggerFor]="menu"></mdm-user>
+            <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
+              <button *ngIf="isSignedIn" (click)="signOut()" class="mdm-navbar__logout">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Sign out</span>
-            </button>
-        </mat-sidenav>
-        <mat-sidenav-content>
-        </mat-sidenav-content>
-    </mat-sidenav-container>
+              </button>
+            </mat-menu>
+          </div>
+        </div>
+        <div fxHide="true" fxShow.lt-md="true">
+          <button mat-button (click)="sidenav.toggle()" aria-label="Toggle mobile menu">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </nav>
+    </mat-toolbar>
+  </div>
+
+  <mat-sidenav-container class="mdm-navbar-sidenav-container">
+    <mat-sidenav
+      #sidenav
+      class="mdm-navbar__sidenav"
+      mode="over"
+      fixedInViewport="true"
+      fixedTopGap="0"
+      fixedBottomGap="0"
+      opened="false"
+      position="end"
+      [autoFocus]="false"
+      fxLayout="column"
+      fxLayoutAlign="center center"
+    >
+      <nav>
+        <mdm-user *ngIf="isSignedIn" [user]="profile" layout="column"></mdm-user>
+        <div class="mdm-navbar__link-group">
+          <div *ngFor="let group of linkGroups">
+            <h5>{{ group.label }}</h5>
+            <div *ngFor="let link of group.links">
+              <a [uiSref]="link.uiSref" (click)="sidenav.toggle()" uiSrefActive="active">
+                <i class="fas" [class]="link.icon"></i>
+                <span>{{ link.label }}</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div *ngIf="!isSignedIn" class="mdm-navbar__login">
+        <button (click)="signIn()" mat-flat-button class="custom" color="primary">
+          Sign in
+        </button>
+      </div>
+      <button *ngIf="isSignedIn" (click)="signOut()" class="mdm-navbar__logout">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Sign out</span>
+      </button>
+    </mat-sidenav>
+    <mat-sidenav-content> </mat-sidenav-content>
+  </mat-sidenav-container>
 </header>
 
 <section class="mdm-navbar__subheading">
-    <div class="container">
-        <h1>{{appTitle}}</h1>
-    </div>    
+  <div class="container">
+    <h1>{{ appTitle }}</h1>
+  </div>
 </section>
