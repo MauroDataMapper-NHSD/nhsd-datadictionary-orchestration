@@ -1,21 +1,26 @@
-/**
- * Copyright 2021 NHS Digital
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2021-2024 NHS England
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+SPDX-License-Identifier: Apache-2.0
+*/
 
 import { HttpErrorResponse } from '@angular/common/http';
-import { MdmResourcesError, MdmResourcesResponse } from '@mdm/mdm-resources/mdm-resources/mdm-resources.model';
+import {
+  MdmResourcesError,
+  MdmResourcesResponse
+} from '@mdm/mdm-resources/mdm-resources/mdm-resources.model';
 
 /**
  * Credentials to send to `mdm-resources` for the sign-in operation.
@@ -51,7 +56,6 @@ export enum SignInErrorType {
  * Represents an error that occurred during sign-in.
  */
 export class SignInError extends MdmResourcesError {
-
   /**
    * The type of sign-in error that occurered, represented by the `SignInErrorType` enum constants.
    */
@@ -77,13 +81,13 @@ export class SignInError extends MdmResourcesError {
  * Represents an error that occurred during a check for an authenticated session.
  */
 export class AuthenticatedSessionError extends MdmResourcesError {
-
   readonly invalidated: boolean;
 
   constructor(response: HttpErrorResponse) {
     super(response);
 
-    this.invalidated = response.status === 500 && response.message === 'Session has been invalidated';
+    this.invalidated =
+      response.status === 500 && response.message === 'Session has been invalidated';
   }
 }
 
@@ -96,8 +100,10 @@ export interface AdministrationSessionResult {
 }
 
 export type SignInResponse = MdmResourcesResponse<SignInResult>;
-export type AdministrationSessionResponse = MdmResourcesResponse<AdministrationSessionResult>;
-export type AuthenticatedSessionResponse = MdmResourcesResponse<AuthenticatedSessionResult>;
+export type AdministrationSessionResponse =
+  MdmResourcesResponse<AdministrationSessionResult>;
+export type AuthenticatedSessionResponse =
+  MdmResourcesResponse<AuthenticatedSessionResult>;
 
 /**
  * Represents the common details of a signed in user.

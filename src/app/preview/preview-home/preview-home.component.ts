@@ -1,18 +1,20 @@
-/**
- * Copyright 2021 NHS Digital
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2021-2024 NHS England
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+SPDX-License-Identifier: Apache-2.0
+*/
 
 import { Component, OnInit } from '@angular/core';
 import { PreviewIndexType } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
@@ -25,12 +27,12 @@ import { PreviewTile } from '../preview-tile/preview-tile.model';
   styleUrls: ['./preview-home.component.scss']
 })
 export class PreviewHomeComponent implements OnInit {
-
   readonly tiles: PreviewTile[] = [
     {
       id: 'dataSet_overview',
       title: 'Data Sets',
-      description: 'Data Sets provide the specification for data collections and for data analyses.',
+      description:
+        'Data Sets provide the specification for data collections and for data analyses.',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
         index: PreviewIndexType.DataSetFolder,
@@ -51,7 +53,8 @@ export class PreviewHomeComponent implements OnInit {
     {
       id: 'attribute_overview',
       title: 'Attributes',
-      description: 'The part of the data model describing the characteristics of Classes. Attributes define the data within the data model.',
+      description:
+        'The part of the data model describing the characteristics of Classes. Attributes define the data within the data model.',
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
@@ -61,7 +64,8 @@ export class PreviewHomeComponent implements OnInit {
     {
       id: 'class_overview',
       title: 'Classes',
-      description: 'The part of the data model describing the aspects of the health and care business with significant characteristics.',
+      description:
+        'The part of the data model describing the aspects of the health and care business with significant characteristics.',
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
@@ -71,7 +75,8 @@ export class PreviewHomeComponent implements OnInit {
     {
       id: 'business_definitions_overview',
       title: 'NHS Business Definitions',
-      description: 'The part of the data model that links the logical classes to the context of the health and care business.',
+      description:
+        'The part of the data model that links the logical classes to the context of the health and care business.',
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
@@ -81,7 +86,8 @@ export class PreviewHomeComponent implements OnInit {
     {
       id: 'supporting_information_overview',
       title: 'Supporting Information',
-      description: 'Provide information to help users understand content in the NHS Data Model and Dictionary.',
+      description:
+        'Provide information to help users understand content in the NHS Data Model and Dictionary.',
       uiSref: 'app.container.preview.index',
       uiParams: {
         branch: this.uiRouterGlobals.params.branch,
@@ -107,12 +113,10 @@ export class PreviewHomeComponent implements OnInit {
         branch: this.uiRouterGlobals.params.branch,
         index: PreviewIndexType.All
       }
-    },
+    }
   ];
 
-  constructor(private uiRouterGlobals: UIRouterGlobals) { }
+  constructor(private uiRouterGlobals: UIRouterGlobals) {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

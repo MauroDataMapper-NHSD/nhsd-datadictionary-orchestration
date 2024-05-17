@@ -1,177 +1,179 @@
-/**
- * Copyright 2021 NHS Digital
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *     http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2021-2024 NHS England
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+SPDX-License-Identifier: Apache-2.0
+*/
 @use '@angular/material' as mat;
 
-@import "abstracts/mixins";
+@import 'abstracts/mixins';
 
 @mixin mdm-navbar-theme($theme) {
-    $primary: map-get($theme, primary);
-    $warn: map-get($theme, warn);
+  $primary: map-get($theme, primary);
+  $warn: map-get($theme, warn);
 
-    $backgroundColor: mat.get-color-from-palette($primary);
-    $subheadingBackgroundColor: mat.get-color-from-palette($primary, 300);
-    $textColor: mat.get-color-from-palette($primary, default-contrast);
-    $warnColor: mat.get-color-from-palette($warn);
+  $backgroundColor: mat.get-color-from-palette($primary);
+  $subheadingBackgroundColor: mat.get-color-from-palette($primary, 300);
+  $textColor: mat.get-color-from-palette($primary, default-contrast);
+  $warnColor: mat.get-color-from-palette($warn);
 
-    header.mdm-header {
-        background-color: $backgroundColor;
-    }
+  header.mdm-header {
+    background-color: $backgroundColor;
+  }
 
-    .mdm-navbar__subheading {
-        background-color: $subheadingBackgroundColor;
+  .mdm-navbar__subheading {
+    background-color: $subheadingBackgroundColor;
+    color: $textColor;
+  }
+
+  header.mdm-header {
+    .mdm-navbar__items {
+      a {
         color: $textColor;
-    }
+      }
 
-    header.mdm-header {
-        .mdm-navbar__items
-        {
-            a {
-                color: $textColor;
-            }
-
-            a.active {
-                border-bottom: 2px solid $textColor;
-            }            
-        }   
+      a.active {
+        border-bottom: 2px solid $textColor;
+      }
     }
+  }
 
-    .mdm-navbar__logout {
-        color: $warnColor;
-    }
+  .mdm-navbar__logout {
+    color: $warnColor;
+  }
 }
 
 header.mdm-header {
-    z-index: 1000;
+  z-index: 1000;
 
-    .mdm-navbar {
-        height: 100px;
+  .mdm-navbar {
+    height: 100px;
 
-        .mdm-navbar--nav {
-            width: 100%;
-        }
+    .mdm-navbar--nav {
+      width: 100%;
     }
+  }
 
-    .spacer {
-        flex: 1 1 auto;
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .mdm-navbar__brand {
+    .mdm-navbar__brand--logo {
+      img {
+        max-width: 120px;
+      }
     }
+  }
 
-    .mdm-navbar__brand {
-        .mdm-navbar__brand--logo {
-            img {
-                max-width: 120px;
-            }
-        }
+  .mdm-navbar__items {
+    display: flex;
+    align-items: center;
+
+    a {
+      display: inline-block;
+      line-height: 1;
+      @include font(20px, 600);
+      padding: 8px;
+      margin-left: 8px;
+      margin-right: 8px;
+      text-decoration: none;
     }
-
-    .mdm-navbar__items {
-        display: flex;
-        align-items: center;
-
-        a {
-            display: inline-block;
-            line-height: 1;
-            @include font(20px, 600);
-            padding: 8px;
-            margin-left: 8px;
-            margin-right: 8px;
-            text-decoration: none;
-        }
-    }    
+  }
 }
 
 section.mdm-navbar__subheading {
-    h1 {
-        padding: 4px 0px;
-    }
+  h1 {
+    padding: 4px 0px;
+  }
 }
 
 mat-sidenav-container.mdm-navbar-sidenav-container {
-    .mdm-navbar__sidenav {
-        width: 320px;
-        z-index: 1000;        
+  .mdm-navbar__sidenav {
+    width: 320px;
+    z-index: 1000;
 
-        .mdm-navbar__link-group {
-            margin-top: 10px;
+    .mdm-navbar__link-group {
+      margin-top: 10px;
 
-            h5 {
-                padding: 10px 24px 0px 24px;
-            }
+      h5 {
+        padding: 10px 24px 0px 24px;
+      }
 
-            a {
-                height: auto;
-                height: unset;
-                line-height: 1;
-                padding: 10px 24px;
-                outline: none;
-                color: #575757;
-                text-decoration: none;
-                outline: 0;
-                border: none;
-                white-space: nowrap;
-                overflow: hidden;
-                display: block;
-                text-align: left;
-                text-decoration: none;
-                max-width: 100%;
-                position: relative;
-            
-                i {
-                    width: 30px;
-                    text-align: center;
-                }            
-            }
-    
-            a.active {
-                background-color: rgba(77, 114, 156, 0.1);
-                color: #1157a9;
-                font-weight: 600;
-            }
+      a {
+        height: auto;
+        height: unset;
+        line-height: 1;
+        padding: 10px 24px;
+        outline: none;
+        color: #575757;
+        text-decoration: none;
+        outline: 0;
+        border: none;
+        white-space: nowrap;
+        overflow: hidden;
+        display: block;
+        text-align: left;
+        text-decoration: none;
+        max-width: 100%;
+        position: relative;
+
+        i {
+          width: 30px;
+          text-align: center;
         }
+      }
 
-        .mdm-navbar__login {
-            padding-top: 40px;
-            text-align: center;
-    
-            button {
-                width: 80%;
-            }
-        }
-    }    
+      a.active {
+        background-color: rgba(77, 114, 156, 0.1);
+        color: #1157a9;
+        font-weight: 600;
+      }
+    }
+
+    .mdm-navbar__login {
+      padding-top: 40px;
+      text-align: center;
+
+      button {
+        width: 80%;
+      }
+    }
+  }
 }
 
 .mdm-navbar__logout {
-    width: 100%;
-    text-align: center;
-    font-size: 18px;
-    padding: 8px;
-    border: none;
-    outline: none;
-    background: #fcfafa;
-    margin-top: 12px;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  padding: 8px;
+  border: none;
+  outline: none;
+  background: #fcfafa;
+  margin-top: 12px;
 
-    span {
-        margin-left: 8px;
-    }
+  span {
+    margin-left: 8px;
+  }
 }
 
 mat-sidenav-container.mat-drawer-container.mat-sidenav-container {
-    z-index: 1000;
+  z-index: 1000;
 }
 
-mat-sidenav-container.mat-drawer-container.mat-sidenav-container .mat-drawer-backdrop.mat-drawer-shown {
-    height: 100%;
-    position: fixed;
+mat-sidenav-container.mat-drawer-container.mat-sidenav-container
+  .mat-drawer-backdrop.mat-drawer-shown {
+  height: 100%;
+  position: fixed;
 }

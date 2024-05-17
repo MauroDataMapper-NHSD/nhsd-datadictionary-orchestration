@@ -1,32 +1,39 @@
-/**
- * Copyright 2021 NHS Digital
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2021-2024 NHS England
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+SPDX-License-Identifier: Apache-2.0
+*/
 
 import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
-import { CommonUiStates, StateHandlerService } from '@mdm/core/state-handler/state-handler.service';
-import { PreviewDetail,
-          PreviewDomainType,
-          previewDomainTypeNouns,
-          previewIndexDomainMap,
-          previewIndexPageTitles,
-          PreviewIndexType,
-          PreviewReference,
-          Stereotype,
-          stereotypeMapping } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import {
+  CommonUiStates,
+  StateHandlerService
+} from '@mdm/core/state-handler/state-handler.service';
+import {
+  PreviewDetail,
+  PreviewDomainType,
+  previewDomainTypeNouns,
+  previewIndexDomainMap,
+  previewIndexPageTitles,
+  PreviewIndexType,
+  PreviewReference,
+  Stereotype,
+  stereotypeMapping
+} from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/angular';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
@@ -39,7 +46,6 @@ import { TableOfContentsLink } from '../preview-toc/preview-toc.model';
   styleUrls: ['./preview-detail.component.scss']
 })
 export class PreviewDetailComponent implements OnInit {
-
   isLoading = false;
   branch = '';
   index: PreviewIndexType = PreviewIndexType.All;
@@ -62,20 +68,18 @@ export class PreviewDetailComponent implements OnInit {
       return [];
     }
 
-    return Object
-      .entries(this.detail.alsoKnownAs)
-      .map(([context, value]) => {
-        return { context, value };
-      });
+    return Object.entries(this.detail.alsoKnownAs).map(([context, value]) => {
+      return { context, value };
+    });
   }
-
 
   constructor(
     private uiRouterGlobals: UIRouterGlobals,
     private stateHandler: StateHandlerService,
     private dataDictionary: DataDictionaryService,
     private viewportScroller: ViewportScroller,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.branch = this.uiRouterGlobals.params.branch;
@@ -96,21 +100,19 @@ export class PreviewDetailComponent implements OnInit {
     this.isLoading = true;
     this.dataDictionary
       .getPreviewDetail(this.branch, this.domainType, this.id)
-      .pipe(
-        finalize(() => this.isLoading = false)
-      )
-      .subscribe(detail => {
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe((detail) => {
         this.detail = detail;
         this.breadcrumbs = this.createBreadcrumbs(detail);
         this.tableOfContentLinks = this.createTableOfContentLinks(detail);
         this.hasReferencesSection =
-          (this.detail?.stereotype !== Stereotype.DataSetConstraint &&
-          this.detail?.stereotype !== Stereotype.DataSetFolder);
+          this.detail?.stereotype !== Stereotype.DataSetConstraint &&
+          this.detail?.stereotype !== Stereotype.DataSetFolder;
       });
   }
 
   getTableOfContentsLink(section: string): TableOfContentsLink | undefined {
-    return this.tableOfContentLinks.find(toc => toc.label === section);
+    return this.tableOfContentLinks.find((toc) => toc.label === section);
   }
 
   onTableOfContentsClick(link: TableOfContentsLink): void {
@@ -126,10 +128,8 @@ export class PreviewDetailComponent implements OnInit {
     this.isLoadingReferences = true;
     this.dataDictionary
       .getPreviewReferences(this.branch, this.domainType, this.id)
-      .pipe(
-        finalize(() => this.isLoadingReferences = false)
-      )
-      .subscribe(references => this.references = references);
+      .pipe(finalize(() => (this.isLoadingReferences = false)))
+      .subscribe((references) => (this.references = references));
   }
 
   private createBreadcrumbs(detail: PreviewDetail): Breadcrumb[] {
@@ -190,7 +190,11 @@ export class PreviewDetailComponent implements OnInit {
     }
 
     // Data Class "Attributes" section refers to a table of data
-    if (detail.stereotype === Stereotype.DataClass && detail.attributes && detail.attributes.length > 0) {
+    if (
+      detail.stereotype === Stereotype.DataClass &&
+      detail.attributes &&
+      detail.attributes.length > 0
+    ) {
       links.push({
         label: 'Attributes',
         anchor: 'attributes'
@@ -226,7 +230,11 @@ export class PreviewDetailComponent implements OnInit {
     }
 
     // Non-Data Class "Attributes" section refers to a bullet list of links
-    if (detail.stereotype !== Stereotype.DataClass && detail.attributes && detail.attributes.length > 0) {
+    if (
+      detail.stereotype !== Stereotype.DataClass &&
+      detail.attributes &&
+      detail.attributes.length > 0
+    ) {
       links.push({
         label: 'Attributes',
         anchor: 'attributes'
@@ -239,5 +247,4 @@ export class PreviewDetailComponent implements OnInit {
   prettifyStereotype(stereotype: string): string | undefined {
     return stereotypeMapping.get(stereotype as Stereotype);
   }
-
 }

@@ -1,18 +1,20 @@
-/**
- * Copyright 2021 NHS Digital
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/*
+Copyright 2021-2024 NHS England
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+SPDX-License-Identifier: Apache-2.0
+*/
 
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -31,10 +33,7 @@ import { HttpResponse } from '@angular/common/http';
   templateUrl: './branch-publish.component.html',
   styleUrls: ['./branch-publish.component.scss']
 })
-
-
 export class BranchPublishComponent implements OnInit {
-
   @Input() branch?: Branch;
 
   dialogTitles = new Map<string, string>([
@@ -43,7 +42,7 @@ export class BranchPublishComponent implements OnInit {
     ['changePaper', 'Change Paper']
   ]);
 
-/*  generateFunctions = new Map<string, Function>( [
+  /*  generateFunctions = new Map<string, Function>( [
     ['codeSystems', (obj: DataDictionaryService, branchname: string) => {
     console.log(obj);
     obj.generateCodeSystems(branchname); }]
@@ -55,26 +54,25 @@ export class BranchPublishComponent implements OnInit {
   constructor(
     private dataDictionary: DataDictionaryService,
     private dialog: MatDialog,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService
+  ) {}
 
-  ngOnInit(): void {
-  }
-
-
-
+  ngOnInit(): void {}
 
   generate(generationType: string): void {
     if (!this.branch || this.isBusy) {
       return;
     }
-    const dialogRef = this.dialog.open<ProgressDialogComponent, ProgressDialogOptions, void>(
+    const dialogRef = this.dialog.open<
       ProgressDialogComponent,
-      {
-        data: {
-          title: this.dialogTitles.get(generationType),
-          message: `Generating the ${this.dialogTitles.get(generationType)} now for the branch "${this.branch?.branchName}". This will take some time, please wait...`
-        }
-      });
+      ProgressDialogOptions,
+      void
+    >(ProgressDialogComponent, {
+      data: {
+        title: this.dialogTitles.get(generationType),
+        message: `Generating the ${this.dialogTitles.get(generationType)} now for the branch "${this.branch?.branchName}". This will take some time, please wait...`
+      }
+    });
     this.isBusy = true;
 
     let observedResponse: Observable<HttpResponse<Blob>>;
@@ -85,7 +83,9 @@ export class BranchPublishComponent implements OnInit {
     } else if (generationType === 'changePaper') {
       observedResponse = this.dataDictionary.generateChangePaper(this.branch.id);
     } else if (generationType === 'changePaperWithDataSet') {
-      observedResponse = this.dataDictionary.generateChangePaperWithDataSet(this.branch.id);
+      observedResponse = this.dataDictionary.generateChangePaperWithDataSet(
+        this.branch.id
+      );
     } else {
       observedResponse = this.dataDictionary.generateDita(this.branch.id);
     }
@@ -99,22 +99,25 @@ export class BranchPublishComponent implements OnInit {
             dialogRef.close();
           })
         )
-        .subscribe(response => {
+        .subscribe((response) => {
           if (!response.body) {
-              this.toastr.warning(`${this.dialogTitles.get(generationType)} generation finished but no files returned.`);
-              return;
+            this.toastr.warning(
+              `${this.dialogTitles.get(generationType)} generation finished but no files returned.`
+            );
+            return;
           }
 
-          this.toastr.success(`${this.dialogTitles.get(generationType)} generated successfully for branch "${this.branch?.branchName}"`);
+          this.toastr.success(
+            `${this.dialogTitles.get(generationType)} generated successfully for branch "${this.branch?.branchName}"`
+          );
 
-          const blob = new Blob(
-            [response.body],
-            {
-              type: response.headers.get('content-type') ?? 'application/zip'
-            });
+          const blob = new Blob([response.body], {
+            type: response.headers.get('content-type') ?? 'application/zip'
+          });
 
           const contentDisposition = response.headers.get('Content-Disposition');
-          const filename = contentDisposition?.match(/attachment;filename="(.+)"/)?.[1] ?? 'dita.zip';
+          const filename =
+            contentDisposition?.match(/attachment;filename="(.+)"/)?.[1] ?? 'dita.zip';
 
           fileSaver.saveAs(blob, filename);
         });
