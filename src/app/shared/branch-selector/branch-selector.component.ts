@@ -37,6 +37,10 @@ export class BranchSelectorComponent implements OnInit {
 
   constructor() {}
 
+  get selectedBranchDetails(): Branch | undefined {
+    return this.branches.find((b) => b.id === this.selectedBranch);
+  }
+
   ngOnInit(): void {}
 
   onBranchChanged(change: MatSelectChange) {

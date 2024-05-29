@@ -46,6 +46,11 @@ export interface Branch {
    * The branch / model version name that should be displayed.
    */
   versionDisplay: string;
+
+  /**
+   * A value to indicate if the branch has been finalised.
+   */
+  modelVersionFinalised: Boolean;
 }
 
 export type BranchResponse = MdmResourcesResponse<Branch[]>;

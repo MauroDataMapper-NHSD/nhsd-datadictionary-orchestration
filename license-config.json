@@ -31,7 +31,8 @@
     "**/*.woff",
     "**/*.woff2",
     "sonar-project.properties",
-    "src/app/external/**/*.*"
+    "src/app/external/**/*.*",
+    "eslint_report.html"
   ],
   "license": "NOTICE",
 
