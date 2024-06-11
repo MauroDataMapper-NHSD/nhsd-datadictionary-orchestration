@@ -17,26 +17,40 @@ SPDX-License-Identifier: Apache-2.0
 */
 
 import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import {
   AdministrationSessionResponse,
   SignInError,
-  SignInCredentials,
   SignInResponse,
   UserDetails,
   AuthenticatedSessionResponse,
-  AuthenticatedSessionError
+  AuthenticatedSessionError,
+  SignInPayload
 } from '@mdm/core/security/security.model';
 import { MdmResourcesService } from '@mdm/mdm-resources/mdm-resources/mdm-resources.service';
-import { Observable, of, throwError } from 'rxjs';
+import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { catchError, finalize, map, switchMap, tap } from 'rxjs/operators';
 import { MdmResourcesError } from '../../mdm-resources/mdm-resources/mdm-resources.model';
+import {
+  PublicOpenIdConnectProvider,
+  PublicOpenIdConnectProvidersIndexResponse
+} from '@maurodatamapper/mdm-resources';
+import {
+  OPENID_CONNECT_CONFIG,
+  OpenIdConnectConfiguration,
+  OpenIdConnectSession
+} from './security.types';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SecurityService {
-  constructor(private resources: MdmResourcesService) {}
+  constructor(
+    private resources: MdmResourcesService,
+    @Optional()
+    @Inject(OPENID_CONNECT_CONFIG)
+    private openIdConnectConfig: OpenIdConnectConfiguration
+  ) {}
 
   /**
    * Sign in a user to the Mauro system.
@@ -45,12 +59,12 @@ export class SecurityService {
    * @returns An observable to return a `UserDetails` object representing the signed in user.
    * @throws `SignInError` in the observable chain if sign-in failed.
    */
-  signIn(credentials: SignInCredentials): Observable<UserDetails> {
+  signIn(credentials: SignInPayload): Observable<UserDetails> {
     // This parameter is very important as we do not want to handle 401 if user credential is rejected on login modal form
     // as if the user credentials are rejected Back end server will return 401, we should not show the login modal form again
     return this.resources.security.login(credentials, { login: true }).pipe(
       catchError((error: HttpErrorResponse) => {
-        return throwError(new SignInError(error));
+        return throwError(() => new SignInError(error));
       }),
       switchMap((signInResponse: SignInResponse) =>
         this.resources.session.isApplicationAdministration().pipe(
@@ -152,6 +166,65 @@ export class SecurityService {
         }
       })
     );
+  }
+
+  /**
+   * Get all available OpenID Connect providers. If not available or not configured, this will return an empty
+   * observable.
+   */
+  getOpenIdConnectProviders(): Observable<PublicOpenIdConnectProvider[]> {
+    // If unable to get OpenID Connect providers, silently fail and ignore
+    const requestOptions = {
+      handleGetErrors: false
+    };
+
+    return this.resources.pluginOpenIdConnect.listPublic({}, requestOptions).pipe(
+      catchError(() => EMPTY),
+      map((response: PublicOpenIdConnectProvidersIndexResponse) => response.body)
+    );
+  }
+
+  /**
+   * Get the authorization URL for an OpenID Connect provider.
+   *
+   * @param provider The OpenID Connect provider to redirect to.
+   * @returns The authorization URL to redirect to.
+   *
+   * @see {@link SecurityService.authorizeOpenIdConnectSession}
+   */
+  getOpenIdConnectAuthorizationUrl(provider: PublicOpenIdConnectProvider): URL {
+    if (!this.openIdConnectConfig) {
+      throw new Error(
+        'OPENID_CONNECT_CONFIG injection token is missing - requires redirectUrl to come back to'
+      );
+    }
+
+    const authorizeUrl = new URL(provider.authorizationEndpoint);
+
+    // Set the page URL to come back to once the provider has authenticated the user
+    const redirectUri = this.openIdConnectConfig.redirectUrl;
+    authorizeUrl.searchParams.append('redirect_uri', redirectUri);
+
+    return authorizeUrl;
+  }
+
+  /**
+   * Log in a user that was authenticated via an OpenID Connect provider.
+   *
+   * @param params The session state parameters provided by the OpenID Connect provider.
+   * @returns An observable to return a `UserDetails` object representing the signed in user.
+   * @throws `SignInError` in the observable chain if sign-in failed.
+   *
+   * @see {@link SecurityHandlerService.authenticateWithOpenIdConnect}
+   */
+  authorizeOpenIdConnectSession(params: OpenIdConnectSession): Observable<UserDetails> {
+    return this.signIn({
+      openidConnectProviderId: params.providerId,
+      state: params.state,
+      sessionState: params.sessionState,
+      code: params.code,
+      redirectUri: this.openIdConnectConfig.redirectUrl.toString()
+    });
   }
 
   private addUserToLocalStorage(user: UserDetails) {

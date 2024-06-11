@@ -23,6 +23,12 @@ import { SecurityService } from './security.service';
 import { EMPTY } from 'rxjs';
 import { MdmResourcesService } from '@mdm/mdm-resources/mdm-resources/mdm-resources.service';
 import { setupTestModuleForService } from '@mdm/testing/testing.helpers';
+import { PublicOpenIdConnectProvider } from '@maurodatamapper/mdm-resources';
+import {
+  OPENID_CONNECT_CONFIG,
+  OpenIdConnectConfiguration,
+  OpenIdConnectSession
+} from './security.types';
 
 interface MdmSecurityResourceStub {
   login: jest.Mock;
@@ -52,12 +58,20 @@ describe('SecurityService', () => {
     }
   };
 
+  const openIdConnectConfig: OpenIdConnectConfiguration = {
+    redirectUrl: 'http://localhost/oid/test'
+  };
+
   beforeEach(() => {
     service = setupTestModuleForService(SecurityService, {
       providers: [
         {
           provide: MdmResourcesService,
           useValue: resourcesStub
+        },
+        {
+          provide: OPENID_CONNECT_CONFIG,
+          useValue: openIdConnectConfig
         }
       ]
     });
@@ -167,4 +181,72 @@ describe('SecurityService', () => {
   //   const actual$ = service.isAuthenticated();
   //   expect(actual$).toBeObservable(expected$);
   // });
+
+  describe('OpenID Connect', () => {
+    it('should return the OpenID Connect authorization URL', () => {
+      const provider: PublicOpenIdConnectProvider = {
+        id: '123',
+        label: 'Test',
+        authorizationEndpoint: 'http://my.oid.provider/login',
+        standardProvider: true
+      };
+
+      const expectedUrl = new URL(provider.authorizationEndpoint);
+      expectedUrl.searchParams.append(
+        'redirect_uri',
+        openIdConnectConfig.redirectUrl.toString()
+      );
+
+      const actualUrl = service.getOpenIdConnectAuthorizationUrl(provider);
+      expect(actualUrl).toEqual(expectedUrl);
+    });
+
+    it('should login user via OpenID Connect session', () => {
+      const session: OpenIdConnectSession = {
+        providerId: '123',
+        sessionState: 'session-state',
+        state: 'state',
+        code: 'code'
+      };
+
+      const expectedUser: UserDetails = {
+        id: '456',
+        firstName: 'first',
+        lastName: 'last',
+        userName: 'test@test.com',
+        isAdmin: false,
+        needsToResetPassword: false,
+        role: '',
+        token: undefined
+      };
+
+      resourcesStub.security.login.mockImplementationOnce(() =>
+        cold('--a|', {
+          a: {
+            body: {
+              id: expectedUser.id,
+              emailAddress: expectedUser.userName,
+              firstName: expectedUser.firstName,
+              lastName: expectedUser.lastName
+            }
+          }
+        })
+      );
+
+      resourcesStub.session.isApplicationAdministration.mockImplementationOnce(() =>
+        cold('--a|', {
+          a: {
+            body: {
+              applicationAdministrationSession: expectedUser.isAdmin
+            }
+          }
+        })
+      );
+
+      const expected$ = cold('----a|', { a: expectedUser });
+      const actual$ = service.authorizeOpenIdConnectSession(session);
+
+      expect(actual$).toBeObservable(expected$);
+    });
+  });
 });

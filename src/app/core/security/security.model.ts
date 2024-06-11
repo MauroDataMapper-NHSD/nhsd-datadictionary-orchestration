@@ -17,6 +17,7 @@ SPDX-License-Identifier: Apache-2.0
 */
 
 import { HttpErrorResponse } from '@angular/common/http';
+import { OpenIdConnectLoginPayload } from '@maurodatamapper/mdm-resources';
 import {
   MdmResourcesError,
   MdmResourcesResponse
@@ -29,6 +30,17 @@ export interface SignInCredentials {
   username: string;
   password: string;
 }
+
+/**
+ * Payload for login endpoint to authenticate a user.
+ *
+ * Login payload could be one of:
+ *
+ * * A {@link SignInCredentials} with username/password
+ * * An {@link OpenIdConnectLoginPayload} for handling login after external authorization. This
+ * will only work when the Open ID Connect plugin is installed in Mauro.
+ */
+export type SignInPayload = SignInCredentials | OpenIdConnectLoginPayload;
 
 /**
  * The result of a successful sign-in operation.

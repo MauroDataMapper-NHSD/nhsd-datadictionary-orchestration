@@ -15,25 +15,25 @@ limitations under the License.
 
 SPDX-License-Identifier: Apache-2.0
 */
-$openid-connect-icon-width: 24px;
+import { InjectionToken } from '@angular/core';
 
-.mdm-sign-in-form {
-  &__openid {
-    &-providers {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-evenly;
-
-      button {
-        padding: 8px 0;
-        margin: 8px 0;
-      }
-    }
-
-    &-icon {
-      width: $openid-connect-icon-width;
-      height: $openid-connect-icon-width;
-      margin: 4px 8px;
-    }
-  }
+export interface OpenIdConnectConfiguration {
+  redirectUrl: string;
 }
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const OPENID_CONNECT_CONFIG = new InjectionToken<OpenIdConnectConfiguration>(
+  'OpenID Connect Configuration'
+);
+
+export interface OpenIdConnectSession {
+  providerId: string;
+  state: string;
+  sessionState: string;
+  code: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const AUTHORIZATION_REDIRECT_URL = new InjectionToken<string>(
+  'Authorization Redirect URL'
+);

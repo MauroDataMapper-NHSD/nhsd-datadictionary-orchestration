@@ -1,4 +1,4 @@
-/*
+<!--
 Copyright 2021-2024 NHS England
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,26 +14,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 SPDX-License-Identifier: Apache-2.0
-*/
-$openid-connect-icon-width: 24px;
-
-.mdm-sign-in-form {
-  &__openid {
-    &-providers {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-evenly;
-
-      button {
-        padding: 8px 0;
-        margin: 8px 0;
-      }
-    }
-
-    &-icon {
-      width: $openid-connect-icon-width;
-      height: $openid-connect-icon-width;
-      margin: 4px 8px;
-    }
-  }
-}
+-->
+<div class="container mdm-open-id-connect-authorize">
+  <div *ngIf="authorizing" class="mdm-open-id-connect-authorize__progress">
+    <h4>Completing authorization, please wait...</h4>
+    <mat-spinner></mat-spinner>
+  </div>
+  <div *ngIf="!authorizing && errorMessage">
+    <mdm-alert alertStyle="error">
+      <p>
+        Unfortunately there was a problem authorizing your login via an external provider.
+      </p>
+      <p>Details: {{ errorMessage }}</p>
+      <p>Please try again, or contact your administrator for further support.</p>
+    </mdm-alert>
+  </div>
+</div>
