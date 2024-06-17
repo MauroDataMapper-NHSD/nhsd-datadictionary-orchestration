@@ -30,7 +30,7 @@ export const environment = {
   mauroBaseUrl: 'http://localhost:4200',
   name: 'development',
   appTitle: 'Data Dictionary Orchestrator',
-  appDescription: 'Orchestrates the data dictionary created by NHS Digital.',
+  appDescription: 'Orchestrates the data dictionary created by NHS England.',
   checkSessionExpiryTimeout: 300000
 };
 
