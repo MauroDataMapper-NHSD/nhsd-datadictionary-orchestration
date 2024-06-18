@@ -25,9 +25,14 @@ import {
 import { MockComponent } from 'ng-mocks';
 
 import { SignInModalComponent } from './sign-in-dialog.component';
+import { FeaturesService } from '@mdm/core/features/features.service';
 
 describe('SignInModalComponent', () => {
   let harness: ComponentHarness<SignInModalComponent>;
+
+  const featuresStub = {
+    useOpenIdConnect: false
+  };
 
   beforeEach(async () => {
     harness = await setupTestModuleForComponent(SignInModalComponent, {
@@ -40,6 +45,10 @@ describe('SignInModalComponent', () => {
         {
           provide: MAT_DIALOG_DATA,
           useValue: jest.fn()
+        },
+        {
+          provide: FeaturesService,
+          useValue: featuresStub
         }
       ]
     });

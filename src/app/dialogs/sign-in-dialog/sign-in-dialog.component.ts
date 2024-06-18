@@ -17,8 +17,10 @@ SPDX-License-Identifier: Apache-2.0
 */
 
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { PublicOpenIdConnectProvider } from '@maurodatamapper/mdm-resources';
+import { FeaturesService } from '@mdm/core/features/features.service';
 import {
   SignInError,
   SignInErrorType,
@@ -26,6 +28,7 @@ import {
 } from '@mdm/core/security/security.model';
 import { SecurityService } from '@mdm/core/security/security.service';
 import { ValidatorService } from '@mdm/core/validator/validator.service';
+import { ToastrService } from 'ngx-toastr';
 import { EMPTY, of } from 'rxjs';
 import { catchError, finalize, switchMap } from 'rxjs/operators';
 
@@ -37,33 +40,36 @@ import { catchError, finalize, switchMap } from 'rxjs/operators';
 export class SignInModalComponent implements OnInit {
   message = '';
   authenticating = false;
+  openIdConnectProviders?: PublicOpenIdConnectProvider[];
 
-  signInForm!: UntypedFormGroup;
-
-  get userName() {
-    return this.signInForm.get('userName');
-  }
-
-  get password() {
-    return this.signInForm.get('password');
-  }
+  signInForm = new FormGroup({
+    userName: new FormControl('', [
+      Validators.required, // eslint-disable-line @typescript-eslint/unbound-method
+      Validators.pattern(this.validator.emailPattern)
+    ]),
+    password: new FormControl('', [
+      Validators.required // eslint-disable-line @typescript-eslint/unbound-method
+    ])
+  });
 
   constructor(
     private dialogRef: MatDialogRef<SignInModalComponent, UserDetails>,
     private validator: ValidatorService,
-    private securityHandler: SecurityService
+    private securityHandler: SecurityService,
+    private features: FeaturesService,
+    private toastr: ToastrService
   ) {}
 
+  get userName() {
+    return this.signInForm.controls.userName;
+  }
+
+  get password() {
+    return this.signInForm.controls.password;
+  }
+
   ngOnInit(): void {
-    this.signInForm = new UntypedFormGroup({
-      userName: new UntypedFormControl('', [
-        Validators.required, // eslint-disable-line @typescript-eslint/unbound-method
-        Validators.pattern(this.validator.emailPattern)
-      ]),
-      password: new UntypedFormControl('', [
-        Validators.required // eslint-disable-line @typescript-eslint/unbound-method
-      ])
-    });
+    this.loadOpenIdConnectProviders();
   }
 
   close() {
@@ -84,8 +90,8 @@ export class SignInModalComponent implements OnInit {
 
     this.securityHandler
       .signIn({
-        username: this.userName?.value,
-        password: this.password?.value
+        username: this.userName.value ?? '',
+        password: this.password.value ?? ''
       })
       .pipe(
         catchError((error: SignInError) => {
@@ -118,5 +124,29 @@ export class SignInModalComponent implements OnInit {
         })
       )
       .subscribe((user) => this.dialogRef.close(user));
+  }
+
+  authenticateWithOpenIdConnect(provider: PublicOpenIdConnectProvider) {
+    if (!provider.authorizationEndpoint) {
+      this.toastr.error(
+        `Unable to authenticate with ${provider.label} because of a missing endpoint. Please contact your administrator for further support.`
+      );
+      return;
+    }
+
+    // Track which provider was used, will be needed once redirected back to Mauro
+    localStorage.setItem('openIdConnectProviderId', provider.id);
+    const redirectUrl = this.securityHandler.getOpenIdConnectAuthorizationUrl(provider);
+    window.open(redirectUrl.toString(), '_self');
+  }
+
+  private loadOpenIdConnectProviders() {
+    if (!this.features.useOpenIdConnect) {
+      return;
+    }
+
+    this.securityHandler
+      .getOpenIdConnectProviders()
+      .subscribe((providers) => (this.openIdConnectProviders = providers));
   }
 }

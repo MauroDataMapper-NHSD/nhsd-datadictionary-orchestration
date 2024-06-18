@@ -21,7 +21,9 @@ import {
   MdmSecurityResource,
   MdmResourcesConfiguration,
   MdmSessionResource,
-  MdmAdminResource
+  MdmAdminResource,
+  MdmApiPropertyResources,
+  MdmPluginOpenIdConnectResource
 } from '@maurodatamapper/mdm-resources';
 import { MdmRestHandlerService } from '../mdm-rest-handler/mdm-rest-handler.service';
 import { MdmPluginNhsDataDictionaryResource } from '../plugins/mdm-plugin-nhs-data-dictionary.resource';
@@ -30,10 +32,15 @@ import { MdmPluginNhsDataDictionaryResource } from '../plugins/mdm-plugin-nhs-da
   providedIn: 'root'
 })
 export class MdmResourcesService {
+  apiProperties = new MdmApiPropertyResources(this.resourcesConfig, this.restHandler);
   security = new MdmSecurityResource(this.resourcesConfig, this.restHandler);
   session = new MdmSessionResource(this.resourcesConfig, this.restHandler);
   admin = new MdmAdminResource(this.resourcesConfig, this.restHandler);
   dataDictionary = new MdmPluginNhsDataDictionaryResource(
+    this.resourcesConfig,
+    this.restHandler
+  );
+  pluginOpenIdConnect = new MdmPluginOpenIdConnectResource(
     this.resourcesConfig,
     this.restHandler
   );

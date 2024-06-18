@@ -83,6 +83,29 @@ SPDX-License-Identifier: Apache-2.0
             Forgot Password
         </button>
     </div> -->
+  <div
+    *ngIf="openIdConnectProviders && openIdConnectProviders.length > 0"
+    class="mdm-sign-in-form__openid"
+  >
+    <p class="text-center">or</p>
+    <div class="mdm-sign-in-form__openid-providers">
+      <button
+        *ngFor="let provider of openIdConnectProviders"
+        type="button"
+        mat-stroked-button
+        color="primary"
+        (click)="authenticateWithOpenIdConnect(provider)"
+      >
+        <img
+          *ngIf="provider.imageUrl"
+          class="mdm-sign-in-form__openid-icon"
+          [src]="provider.imageUrl"
+          [alt]="provider.label"
+        />
+        Sign in with {{ provider.label }}
+      </button>
+    </div>
+  </div>
 
   <mat-progress-bar
     *ngIf="authenticating"

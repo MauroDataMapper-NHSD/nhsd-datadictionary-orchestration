@@ -30,13 +30,15 @@ import { DomainIconComponent } from './domain-icon/domain-icon.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { AlertComponent } from './alert/alert.component';
 import { ScrollToTopComponent } from './scroll-to-top/scroll-to-top.component';
+import { OpenIdConnectAuthorizeComponent } from './open-id-connect-authorize/open-id-connect-authorize.component';
 
 const components = [
   AlertComponent,
   LoadingIndicatorComponent,
   BranchSelectorComponent,
   DomainIconComponent,
-  ScrollToTopComponent
+  ScrollToTopComponent,
+  OpenIdConnectAuthorizeComponent
 ];
 
 @NgModule({

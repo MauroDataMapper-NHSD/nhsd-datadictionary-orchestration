@@ -15,25 +15,16 @@ limitations under the License.
 
 SPDX-License-Identifier: Apache-2.0
 */
-$openid-connect-icon-width: 24px;
+.mdm-open-id-connect-authorize {
+  text-align: center;
+  padding: 32px 0;
 
-.mdm-sign-in-form {
-  &__openid {
-    &-providers {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-evenly;
+  h4 {
+    margin-bottom: 32px;
+  }
 
-      button {
-        padding: 8px 0;
-        margin: 8px 0;
-      }
-    }
-
-    &-icon {
-      width: $openid-connect-icon-width;
-      height: $openid-connect-icon-width;
-      margin: 4px 8px;
-    }
+  mat-spinner {
+    margin-left: auto;
+    margin-right: auto;
   }
 }

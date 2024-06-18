@@ -25,6 +25,7 @@ import { states as pageStates } from '@mdm/pages/pages.routes';
 import { states as branchStates } from '@mdm/branches/branches.routes';
 import { states as previewStates } from '@mdm/preview/preview.routes';
 import { states as changesStates } from '@mdm/changes/changes.routes';
+import { OpenIdConnectAuthorizeComponent } from './shared/open-id-connect-authorize/open-id-connect-authorize.component';
 
 const appStates: Ng2StateDeclaration[] = [
   {
@@ -39,6 +40,14 @@ const appStates: Ng2StateDeclaration[] = [
     name: 'app.container.default',
     url: '',
     component: HomeComponent
+  },
+  {
+    name: 'app.container.openIdConnectAuthorizing',
+    url: '/open-id-connect/authorize',
+    component: OpenIdConnectAuthorizeComponent,
+    data: {
+      allowAnonymous: true
+    }
   }
 ];
 
