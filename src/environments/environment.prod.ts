@@ -25,8 +25,8 @@ export const environment = {
   mauroBaseUrl: 'https://modelcatalogue.cs.ox.ac.uk/nhsd-datadictionary/',
   themeName: $ENV.themeName ?? 'nhs-digital',
   name: 'production',
-  appTitle: 'NHS Digital Data Dictionary Orchestrator',
-  appDescription: 'Orchestrates the data dictionary created by NHS Digital.',
+  appTitle: 'Data Dictionary Orchestrator',
+  appDescription: 'Orchestrates the data dictionary created by NHS England.',
   checkSessionExpiryTimeout: 300000,
   features: {
     useOpenIdConnect: false
