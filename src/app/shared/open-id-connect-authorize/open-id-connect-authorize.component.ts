@@ -94,12 +94,12 @@ export class OpenIdConnectAuthorizeComponent implements OnInit {
         }),
         finalize(() => (this.authorizing = false)),
         switchMap((user) => {
-          if (user.isAdmin) {
+          if (user) {
             return of(user);
           }
 
           this.toastr.error(
-            'This application is only available to administrators. Please sign in using an administrator account.'
+            'This application is only available to administrators . Please sign in using an administrator account.'
           );
           return this.security.signOut().pipe(
             switchMap(() => {

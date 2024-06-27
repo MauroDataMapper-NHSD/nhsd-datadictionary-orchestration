@@ -114,12 +114,12 @@ export class SignInModalComponent implements OnInit {
           this.signInForm.enable();
         }),
         switchMap((user) => {
-          if (user.isAdmin) {
+          if (user) {
             return of(user);
           }
 
           this.message =
-            'This application is only available to administrators. Please sign in using an administrator account.';
+            'This application is only available to administrators or researchers. Please sign in using an administrator account.';
           return this.securityHandler.signOut().pipe(switchMap(() => EMPTY));
         })
       )
