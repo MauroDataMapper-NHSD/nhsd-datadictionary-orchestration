@@ -63,7 +63,7 @@ SPDX-License-Identifier: Apache-2.0
   /**
     * Define styles for element links
     */
-  @mixin mdm-dd-preview-element-link($name, $color, $content, $fontWeight: normal) {
+  @mixin mdm-dd-preview-element-link($name, $color, $content, $fontWeight: bold) {
     .#{$name} {
       color: $color;
       font-weight: $fontWeight;
@@ -135,6 +135,8 @@ SPDX-License-Identifier: Apache-2.0
     border: 1px solid $tableBorderColor;
     margin-left: 0;
 
+
+
     strong,
     b {
       font-weight: bolder;
@@ -143,10 +145,29 @@ SPDX-License-Identifier: Apache-2.0
     td,
     th {
       border-top: 1px solid $tableBorderColor;
+      padding: 0.5em;
+      vertical-align: middle;
     }
 
     td {
       border-right: 1px solid $tableBorderColor;
+      p {
+        margin-top: 0.5rem !important;
+        margin-bottom: 0.5rem !important;
+      }
+    }
+
+    th.notes, td.mandation, td.rules, td.groupRepeats, td.mandation-header, td.or-header, td.elements-header {
+      width: 4em;
+      text-align: center;
+    }
+    td.cds-element-header {
+      text-align: left;
+    }
+
+    td.mandation-header, td.or-header, td.elements-header {
+      vertical-align: middle;
+      font-weight: bold;
     }
 
     .thead-light {
@@ -154,6 +175,7 @@ SPDX-License-Identifier: Apache-2.0
         background-color: $tableHeadBackgroundColor;
         color: white;
         border: 1px solid $tableBorderColor;
+        text-align: center;
       }
     }
 
@@ -162,6 +184,7 @@ SPDX-License-Identifier: Apache-2.0
       background-color: $tableHeadBackgroundColor;
       color: white;
       border: 1px solid $tableBorderColor;
+      text-align: center;
     }
   }
 
