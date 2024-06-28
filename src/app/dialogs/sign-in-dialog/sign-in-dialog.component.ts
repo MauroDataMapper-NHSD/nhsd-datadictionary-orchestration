@@ -119,7 +119,7 @@ export class SignInModalComponent implements OnInit {
           }
 
           this.message =
-            'This application is only available to administrators or researchers. Please sign in using an administrator account.';
+            'Please sign in using an Mauro account.';
           return this.securityHandler.signOut().pipe(switchMap(() => EMPTY));
         })
       )
