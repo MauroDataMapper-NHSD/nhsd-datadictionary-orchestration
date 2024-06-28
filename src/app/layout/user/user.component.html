@@ -31,7 +31,8 @@ SPDX-License-Identifier: Apache-2.0
     <span class="spacer"></span>
     <div fxFlex="60">
       <div class="mdm-user__name">{{ user.firstName }} {{ user.lastName }}</div>
-      <div class="mdm-user__role" *ngIf="user.isAdmin">Administrator</div>
+      <!-- TODO: why does isAdmin check always seem to be set to true? Figure out later, not important... -->
+      <!-- <div class="mdm-user__role" *ngIf="user.isAdmin">Administrator</div> -->
     </div>
     <span class="spacer"></span>
     <div fxFlex="10" fxFlex.sm="100" fxFlex.xs="100">
