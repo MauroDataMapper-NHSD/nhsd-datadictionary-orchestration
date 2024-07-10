@@ -70,7 +70,7 @@ export class BranchPublishComponent implements OnInit {
     >(ProgressDialogComponent, {
       data: {
         title: this.dialogTitles.get(generationType),
-        message: `Generating the ${this.dialogTitles.get(generationType)} now for the branch "${this.branch?.branchName ?? this.branch?.label ?? ''}". This will take some time, please wait...`
+        message: `Generating the ${this.dialogTitles.get(generationType)} now for the branch "${this.branch?.branchName ?? this.branch?.versionDisplay ?? ''}". This will take some time, please wait...`
       }
     });
     this.isBusy = true;
@@ -108,7 +108,7 @@ export class BranchPublishComponent implements OnInit {
           }
 
           this.toastr.success(
-            `${this.dialogTitles.get(generationType)} generated successfully for branch "${this.branch?.branchName ?? this.branch?.label ?? ''}"`
+            `${this.dialogTitles.get(generationType)} generated successfully for branch "${this.branch?.branchName ?? this.branch?.versionDisplay ?? ''}"`
           );
 
           const blob = new Blob([response.body], {
