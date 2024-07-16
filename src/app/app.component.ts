@@ -37,6 +37,7 @@ import {
 import { ThemingService } from './core/theming/theming.service';
 import { UserIdleService } from './external/user-idle/user-idle.service';
 import { UserDetails } from './core/security/security.model';
+import { FeaturesService } from './core/features/features.service';
 
 @Component({
   selector: 'mdm-root',
@@ -98,7 +99,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private theming: ThemingService,
     private overlayContainer: OverlayContainer,
-    private userIdle: UserIdleService
+    private userIdle: UserIdleService,
+    private features: FeaturesService
   ) {}
 
   @HostListener('window:mousemove', ['$event'])
@@ -108,6 +110,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setTheme();
+
+    if (this.features.useOpenIdConnect) {
+      // This is a startup test. Loading features may require a server endpoint request to complete, so start it
+      // here before the sign-in-dialog is opened so the user doesn't notice any delay
+      console.log('OpenID Connect allowed');
+    }
 
     this.broadcast
       .on(BroadcastEvent.ApplicationOffline)
