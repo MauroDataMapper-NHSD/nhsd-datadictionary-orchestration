@@ -29,6 +29,6 @@ export const environment = {
   appDescription: 'Orchestrates the data dictionary created by NHS England.',
   checkSessionExpiryTimeout: 300000,
   features: {
-    useOpenIdConnect: false
+    useOpenIdConnect: true
   }
 };

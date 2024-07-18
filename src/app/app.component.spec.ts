@@ -22,6 +22,7 @@ import { FooterComponent } from './layout/footer/footer.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { LoadingIndicatorComponent } from './shared/loading-indicator/loading-indicator.component';
 import { ComponentHarness, setupTestModuleForComponent } from './testing/testing.helpers';
+import { FeaturesService } from './core/features/features.service';
 
 describe('AppComponent', () => {
   let harness: ComponentHarness<AppComponent>;
@@ -32,6 +33,12 @@ describe('AppComponent', () => {
         MockComponent(NavbarComponent),
         MockComponent(FooterComponent),
         MockComponent(LoadingIndicatorComponent)
+      ],
+      providers: [
+        {
+          provide: FeaturesService,
+          useValue: jest.fn()
+        }
       ]
     });
   });
@@ -40,7 +47,7 @@ describe('AppComponent', () => {
     expect(harness?.isComponentCreated).toBeTruthy();
   });
 
-  it('should have as title \'nhsd-datadictionary-orchestration\'', () => {
+  it('should have as title "nhsd-datadictionary-orchestration"', () => {
     expect(harness.component.title).toEqual('nhsd-datadictionary-orchestration');
   });
 });
