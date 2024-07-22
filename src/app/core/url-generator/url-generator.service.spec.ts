@@ -51,7 +51,7 @@ describe('UrlGeneratorService', () => {
       '2',
       '3'
     ],
-    [`${mauroBaseUrl}/#/catalogue/term/2/3`, DomainType.Term, '1', '2', '3'],
+    [`${mauroBaseUrl}/#/catalogue/term/1/3`, DomainType.Term, '1', '2', '3'],
     [`${mauroBaseUrl}/#/catalogue/codeSet/3`, DomainType.CodeSet, '1', '2', '3']
   ])(
     'should return %s for domain %o',
