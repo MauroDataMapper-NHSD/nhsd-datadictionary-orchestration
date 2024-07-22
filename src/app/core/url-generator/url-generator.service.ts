@@ -68,7 +68,7 @@ export class UrlGeneratorService {
     ],
     [
       DomainType.Term,
-      (modelId, parentId, catalogueId) => `/term/${parentId}/${catalogueId}`
+      (modelId, parentId, catalogueId) => `/term/${modelId}/${catalogueId}`
     ],
     [DomainType.CodeSet, (modelId, parentId, catalogueId) => `/codeSet/${catalogueId}`]
   ]);
