@@ -229,12 +229,22 @@ SPDX-License-Identifier: Apache-2.0
     }
   }
 
-  .diff-html-removed {
+  .diff-html-removed,
+  .deleted {
     background-color: $diffRemovedColor;
     text-decoration: line-through;
   }
 
-  .diff-html-added {
+  .diff-html-added,
+  .new {
     background-color: $diffAddedColor;
+  }
+
+  .attribute-name {
+    margin-right: 100px;
+  }
+
+  .attribute-key {
+    font-weight: bold;
   }
 }
