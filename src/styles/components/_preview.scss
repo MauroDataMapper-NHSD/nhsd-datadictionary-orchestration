@@ -247,4 +247,13 @@ SPDX-License-Identifier: Apache-2.0
   .attribute-key {
     font-weight: bold;
   }
+
+  table.alias-table {
+    border-collapse: separate;
+
+    th,
+    td {
+      padding: 4px;
+    }
+  }
 }
