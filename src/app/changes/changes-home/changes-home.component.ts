@@ -24,6 +24,7 @@ import {
 } from '@mdm/core/state-handler/state-handler.service';
 import {
   Branch,
+  ChangedItem,
   ChangePaperPreview
 } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
@@ -60,6 +61,10 @@ export class ChangesHomeComponent implements OnInit {
     this.dataDictionary.getAvailableBranches().subscribe((branches) => {
       this.branch = branches.find((b) => b.id === this.branchId);
     });
+  }
+
+  getChangeTypeString(changedItem: ChangedItem) {
+    return changedItem.changes.map((c) => c.changeType).join(', ');
   }
 
   private load(): void {
