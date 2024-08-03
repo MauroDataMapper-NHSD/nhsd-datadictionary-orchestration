@@ -65,11 +65,19 @@ SPDX-License-Identifier: Apache-2.0
           <mat-list-item *ngFor="let error of selectedCategory.errors">
             <div class="mdm-branch-integrity-table__list-item">
               <div>
-                <mdm-domain-icon [type]="error.domainType"></mdm-domain-icon>
-                <em>{{ error.type }}</em>
+                <mdm-domain-icon [type]="error.component.domainType"></mdm-domain-icon>
+                <em>{{ error.component.domainType }}</em>
               </div>
               <div>
-                <a [href]="getDomainTypeUrl(error)" target="_blank">{{ error.label }}</a>
+                <a [href]="getDomainTypeUrl(error.component)" target="_blank">{{
+                  error.component.label
+                }}</a>
+              </div>
+              <div
+                *ngIf="error.details && error.details.length > 0"
+                class="mdm-branch-integrity-table__detail-list"
+              >
+                <p *ngFor="let detail of error.details">{{ detail }}</p>
               </div>
               <mat-divider inset="true"></mat-divider>
             </div>
