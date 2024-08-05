@@ -127,13 +127,18 @@ export interface IntegrityCheckItem {
   modelId: string;
 }
 
+export interface IntegrityCheckError {
+  component: IntegrityCheckItem;
+  details?: string[];
+}
+
 /**
  * Represents a category, or collection, of integrity check errors found under a certain rule.
  */
 export interface IntegrityCheck {
   checkName: string;
   description: string;
-  errors: IntegrityCheckItem[];
+  errors: IntegrityCheckError[];
 }
 
 export type IntegrityCheckResponse = MdmResourcesResponse<IntegrityCheck[]>;
