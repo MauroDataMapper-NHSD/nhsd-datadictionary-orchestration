@@ -38,6 +38,7 @@ import { finalize } from 'rxjs/operators';
 export class ChangesHomeComponent implements OnInit {
   branchId = '';
   branch?: Branch;
+  includeDataSets = false;
   running = false;
   changePaperPreview: ChangePaperPreview | undefined;
 
@@ -75,7 +76,7 @@ export class ChangesHomeComponent implements OnInit {
     this.running = true;
 
     this.dataDictionary
-      .getChangePaperPreview(this.branchId)
+      .getChangePaperPreview(this.branchId, this.includeDataSets)
       .pipe(finalize(() => (this.running = false)))
       .subscribe((changePaperPreview) => {
         this.changePaperPreview = changePaperPreview;

@@ -42,10 +42,11 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
 
   previewChangePaper(
     branch: string,
+    includeDataSets: boolean,
     queryStringParams?: QueryParameters,
     restHandlerOptions?: RequestSettings
   ): any {
-    const url = `${this.apiEndpoint}/nhsdd/${branch}/preview/changePaper`;
+    const url = `${this.apiEndpoint}/nhsdd/${branch}/preview/changePaper?includeDataSets=${includeDataSets}`;
     return this.simpleGet(url, queryStringParams, restHandlerOptions);
   }
 

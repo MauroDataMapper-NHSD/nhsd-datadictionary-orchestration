@@ -57,9 +57,12 @@ export class NhsDataDictionaryService {
       .pipe(map((response: StatisticsResponse) => response.body));
   }
 
-  previewChangePaper(branch: string): Observable<ChangePaperPreview> {
+  previewChangePaper(
+    branch: string,
+    includeDataSets: boolean
+  ): Observable<ChangePaperPreview> {
     return this.resources.dataDictionary
-      .previewChangePaper(branch)
+      .previewChangePaper(branch, includeDataSets)
       .pipe(map((response: ChangePaperPreviewResponse) => response.body));
   }
 

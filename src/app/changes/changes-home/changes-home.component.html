@@ -32,6 +32,11 @@ SPDX-License-Identifier: Apache-2.0
       </p>
     </div>
     <div class="mdm-branch-integrity__toolbar">
+      <mat-checkbox [(ngModel)]="includeDataSets" [disabled]="running"
+        >Include data set defintions</mat-checkbox
+      >
+    </div>
+    <div class="mdm-branch-integrity__toolbar">
       <button
         mat-flat-button
         color="primary"
