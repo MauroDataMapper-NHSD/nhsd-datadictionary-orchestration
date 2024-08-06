@@ -36,6 +36,7 @@ SPDX-License-Identifier: Apache-2.0
 
   $diffRemovedColor: rgb(255 187 187);
   $diffAddedColor: #d4e4f3;
+  $infoMessageColor: #f9e1be;
 
   $previewFontSize: 14px;
 
@@ -262,5 +263,10 @@ SPDX-License-Identifier: Apache-2.0
     dd {
       margin-left: 2em;
     }
+  }
+
+  .info-message {
+    background-color: $infoMessageColor;
+    padding: 8px;
   }
 }
