@@ -63,8 +63,11 @@ export class DataDictionaryService {
     );
   }
 
-  getChangePaperPreview(branch: string): Observable<ChangePaperPreview> {
-    return this.nhsDataDictionary.previewChangePaper(branch).pipe(
+  getChangePaperPreview(
+    branch: string,
+    includeDataSets: boolean
+  ): Observable<ChangePaperPreview> {
+    return this.nhsDataDictionary.previewChangePaper(branch, includeDataSets).pipe(
       catchError((error) => {
         this.logging.error(
           `There was a problem getting change paper preview for the "${branch}" branch.`,

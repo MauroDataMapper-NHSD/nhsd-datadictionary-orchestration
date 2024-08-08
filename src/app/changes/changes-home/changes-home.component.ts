@@ -24,6 +24,7 @@ import {
 } from '@mdm/core/state-handler/state-handler.service';
 import {
   Branch,
+  ChangedItem,
   ChangePaperPreview
 } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
@@ -37,6 +38,7 @@ import { finalize } from 'rxjs/operators';
 export class ChangesHomeComponent implements OnInit {
   branchId = '';
   branch?: Branch;
+  includeDataSets = false;
   running = false;
   changePaperPreview: ChangePaperPreview | undefined;
 
@@ -62,6 +64,10 @@ export class ChangesHomeComponent implements OnInit {
     });
   }
 
+  getChangeTypeString(changedItem: ChangedItem) {
+    return changedItem.changes.map((c) => c.changeType).join(', ');
+  }
+
   private load(): void {
     if (!this.branchId) {
       return;
@@ -70,7 +76,7 @@ export class ChangesHomeComponent implements OnInit {
     this.running = true;
 
     this.dataDictionary
-      .getChangePaperPreview(this.branchId)
+      .getChangePaperPreview(this.branchId, this.includeDataSets)
       .pipe(finalize(() => (this.running = false)))
       .subscribe((changePaperPreview) => {
         this.changePaperPreview = changePaperPreview;

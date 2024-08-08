@@ -34,6 +34,10 @@ SPDX-License-Identifier: Apache-2.0
   $tableBorderColor: #425563;
   $tableHeadBackgroundColor: $nhsDarkBlueColor;
 
+  $diffRemovedColor: rgb(255 187 187);
+  $diffAddedColor: #d4e4f3;
+  $infoMessageColor: #f9e1be;
+
   $previewFontSize: 14px;
 
   font-family: 'Frutiger W01', Helvetica, Arial, Sans-serif;
@@ -135,8 +139,6 @@ SPDX-License-Identifier: Apache-2.0
     border: 1px solid $tableBorderColor;
     margin-left: 0;
 
-
-
     strong,
     b {
       font-weight: bolder;
@@ -157,7 +159,13 @@ SPDX-License-Identifier: Apache-2.0
       }
     }
 
-    th.notes, td.mandation, td.rules, td.groupRepeats, td.mandation-header, td.or-header, td.elements-header {
+    th.notes,
+    td.mandation,
+    td.rules,
+    td.groupRepeats,
+    td.mandation-header,
+    td.or-header,
+    td.elements-header {
       width: 4em;
       text-align: center;
     }
@@ -165,7 +173,9 @@ SPDX-License-Identifier: Apache-2.0
       text-align: left;
     }
 
-    td.mandation-header, td.or-header, td.elements-header {
+    td.mandation-header,
+    td.or-header,
+    td.elements-header {
       vertical-align: middle;
       font-weight: bold;
     }
@@ -218,5 +228,45 @@ SPDX-License-Identifier: Apache-2.0
         }
       }
     }
+  }
+
+  .diff-html-removed,
+  .deleted {
+    background-color: $diffRemovedColor;
+    text-decoration: line-through;
+  }
+
+  .diff-html-added,
+  .new {
+    background-color: $diffAddedColor;
+  }
+
+  .attribute-name {
+    margin-right: 100px;
+  }
+
+  .attribute-key {
+    font-weight: bold;
+  }
+
+  table.alias-table,
+  table.codes-table {
+    border-collapse: separate;
+
+    th,
+    td {
+      padding: 4px;
+    }
+  }
+
+  div.format-length-detail {
+    dd {
+      margin-left: 2em;
+    }
+  }
+
+  .info-message {
+    background-color: $infoMessageColor;
+    padding: 8px;
   }
 }

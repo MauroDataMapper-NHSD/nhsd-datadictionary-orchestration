@@ -39,7 +39,9 @@ export class BranchPublishComponent implements OnInit {
   dialogTitles = new Map<string, string>([
     ['codeSystems', 'FHIR CodeSystems'],
     ['valueSets', 'FHIR ValueSets'],
-    ['changePaper', 'Change Paper']
+    ['changePaper', 'Change Paper'],
+    ['changePaperWithDataSet', 'Change Paper with Data Set Definitions'],
+    ['websiteDita', 'Data Dictionary website']
   ]);
 
   /*  generateFunctions = new Map<string, Function>( [
