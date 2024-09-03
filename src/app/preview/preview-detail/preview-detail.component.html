@@ -36,7 +36,10 @@ SPDX-License-Identifier: Apache-2.0
 
           <!-- Short Description -->
           <div *ngIf="detail!.shortDescription" class="- topic/body body">
-            <p class="- topic/shortdesc shortdesc">{{ detail!.shortDescription }}</p>
+            <p
+              class="- topic/shortdesc shortdesc"
+              [innerHTML]="detail!.shortDescription"
+            ></p>
           </div>
 
           <!-- Format / Length -->
