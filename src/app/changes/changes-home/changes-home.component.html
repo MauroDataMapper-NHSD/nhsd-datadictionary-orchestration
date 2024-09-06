@@ -97,7 +97,11 @@ SPDX-License-Identifier: Apache-2.0
         <table>
           <tr *ngFor="let changedItem of stereotypedChange.changedItems">
             <td>
-              <a href="">{{ changedItem.name }}</a>
+              <a
+                class="jump-link"
+                (click)="summaryLinkClicked(stereotypedChange, changedItem)"
+                >{{ changedItem.name }}</a
+              >
             </td>
             <td>
               {{ getChangeTypeString(changedItem) }}
@@ -109,6 +113,7 @@ SPDX-License-Identifier: Apache-2.0
       <div *ngFor="let stereotypedChange of changePaperPreview.changes">
         <h2>{{ stereotypedChange.stereotype }}</h2>
         <div *ngFor="let changedItem of stereotypedChange.changedItems">
+          <a [id]="getChangeId(stereotypedChange, changedItem)"></a>
           <h3>{{ changedItem.name }}</h3>
           <div *ngFor="let change of changedItem.changes">
             <h4>{{ change.changeType }}</h4>
