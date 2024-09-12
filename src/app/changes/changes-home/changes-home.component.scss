@@ -44,4 +44,11 @@ SPDX-License-Identifier: Apache-2.0
     flex-flow: row wrap;
     justify-content: space-around;
   }
+
+  /* These tags are not actual hyperlinks so style them to look like they are */
+  a.jump-link {
+    color: #3279b5;
+    text-decoration: underline;
+    cursor: pointer;
+  }
 }

@@ -25,10 +25,12 @@ import {
 import {
   Branch,
   ChangedItem,
-  ChangePaperPreview
+  ChangePaperPreview,
+  StereotypedChange
 } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { finalize } from 'rxjs/operators';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'mdm-changes-home',
@@ -45,7 +47,8 @@ export class ChangesHomeComponent implements OnInit {
   constructor(
     private dataDictionary: DataDictionaryService,
     private uiRouterGlobals: UIRouterGlobals,
-    private stateHandler: StateHandlerService
+    private stateHandler: StateHandlerService,
+    private viewportScroller: ViewportScroller
   ) {}
 
   run(): void {
@@ -66,6 +69,17 @@ export class ChangesHomeComponent implements OnInit {
 
   getChangeTypeString(changedItem: ChangedItem) {
     return changedItem.changes.map((c) => c.changeType).join(', ');
+  }
+
+  getChangeId(stereotypedChange: StereotypedChange, changedItem: ChangedItem) {
+    return `${stereotypedChange.stereotype}_${changedItem.name}`;
+  }
+
+  summaryLinkClicked(stereotypedChange: StereotypedChange, changedItem: ChangedItem) {
+    // Simulate an <a href="page#section"> link click
+    this.viewportScroller.scrollToAnchor(
+      this.getChangeId(stereotypedChange, changedItem)
+    );
   }
 
   private load(): void {
