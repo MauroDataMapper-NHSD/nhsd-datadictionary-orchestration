@@ -347,6 +347,7 @@ export interface PreviewReference {
   stereotype: Stereotype;
   catalogueId: string;
   retired: boolean;
+  description?: string;
 }
 
 export type PreviewReferenceResponse = MdmResourcesResponse<PreviewReference[]>;
