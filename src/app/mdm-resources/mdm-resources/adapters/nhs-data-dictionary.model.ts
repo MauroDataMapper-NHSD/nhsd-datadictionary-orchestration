@@ -292,6 +292,20 @@ export interface PreviewElementReference {
   key?: string;
 }
 
+export interface PreviewChangeLog {
+  changeRequestUrl: string;
+  headerText: string;
+  footerText: string;
+  entries?: PreviewChangeLogEntry[];
+}
+
+export interface PreviewChangeLogEntry {
+  description: string;
+  implementationDate: string;
+  reference: string;
+  referenceUrl?: string;
+}
+
 export interface PreviewRelationship {
   key: string;
   relationship: string;
@@ -320,6 +334,7 @@ export interface PreviewDetail {
   definition?: string;
   childFolders?: PreviewElementReference[];
   dataSets?: PreviewElementReference[];
+  changeLog?: PreviewChangeLog;
 }
 
 export type PreviewDetailResponse = MdmResourcesResponse<PreviewDetail>;
