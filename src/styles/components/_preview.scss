@@ -241,21 +241,21 @@ SPDX-License-Identifier: Apache-2.0
     background-color: $diffAddedColor;
   }
 
-  .attribute-name {
-    margin-right: 100px;
-  }
-
-  .attribute-key {
-    font-weight: bold;
-  }
-
   table.alias-table,
-  table.codes-table {
+  table.codes-table,
+  table.attribute-table,
+  table.relationship-table {
     border-collapse: separate;
 
     th,
     td {
       padding: 4px;
+    }
+
+    th {
+      background-color: $tableHeadBackgroundColor;
+      color: white;
+      text-align: center;
     }
   }
 
