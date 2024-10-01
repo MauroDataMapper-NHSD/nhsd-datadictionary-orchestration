@@ -59,6 +59,14 @@ export class PreviewDetailComponent implements OnInit {
 
   hasReferencesSection = false;
 
+  constructor(
+    private uiRouterGlobals: UIRouterGlobals,
+    private stateHandler: StateHandlerService,
+    private dataDictionary: DataDictionaryService,
+    private viewportScroller: ViewportScroller,
+    private toastr: ToastrService
+  ) {}
+
   get noun(): string {
     return previewDomainTypeNouns.get(this.domainType) ?? 'element';
   }
@@ -72,14 +80,6 @@ export class PreviewDetailComponent implements OnInit {
       return { context, value };
     });
   }
-
-  constructor(
-    private uiRouterGlobals: UIRouterGlobals,
-    private stateHandler: StateHandlerService,
-    private dataDictionary: DataDictionaryService,
-    private viewportScroller: ViewportScroller,
-    private toastr: ToastrService
-  ) {}
 
   ngOnInit(): void {
     this.branch = this.uiRouterGlobals.params.branch;
@@ -130,6 +130,10 @@ export class PreviewDetailComponent implements OnInit {
       .getPreviewReferences(this.branch, this.domainType, this.id)
       .pipe(finalize(() => (this.isLoadingReferences = false)))
       .subscribe((references) => (this.references = references));
+  }
+
+  prettifyStereotype(stereotype: string): string | undefined {
+    return stereotypeMapping.get(stereotype as Stereotype);
   }
 
   private createBreadcrumbs(detail: PreviewDetail): Breadcrumb[] {
@@ -241,10 +245,11 @@ export class PreviewDetailComponent implements OnInit {
       });
     }
 
-    return links;
-  }
+    links.push({
+      label: 'Change Log',
+      anchor: 'change-log'
+    });
 
-  prettifyStereotype(stereotype: string): string | undefined {
-    return stereotypeMapping.get(stereotype as Stereotype);
+    return links;
   }
 }

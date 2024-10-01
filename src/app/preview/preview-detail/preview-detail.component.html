@@ -410,6 +410,66 @@ SPDX-License-Identifier: Apache-2.0
             </div>
           </mdm-preview-expandable-panel>
         </article>
+
+        <!-- Change Log -->
+        <mdm-preview-expandable-panel
+          title="Change Log"
+          [anchor]="getTableOfContentsLink('Change Log')?.anchor"
+        >
+          <div class="- topic/body body">
+            <p
+              *ngIf="
+                detail.changeLog &&
+                detail.changeLog.entries &&
+                detail.changeLog.entries.length &&
+                detail.changeLog.headerText
+              "
+              class="- topic/p p"
+              [innerHtml]="detail.changeLog.headerText"
+            ></p>
+
+            <div
+              *ngIf="
+                detail.changeLog &&
+                detail.changeLog.entries &&
+                detail.changeLog.entries.length
+              "
+              class="simpletable-container"
+            >
+              <table class="simpletable table table-striped table-sm">
+                <colgroup>
+                  <col style="width: 20%" />
+                  <col style="width: 55%" />
+                  <col style="width: 25%" />
+                </colgroup>
+                <thead>
+                  <tr class="thead-light">
+                    <th>Change Request</th>
+                    <th>Change Request Description</th>
+                    <th>Implementation Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let change of detail.changeLog.entries">
+                    <td>
+                      <a *ngIf="change.referenceUrl" [href]="change.referenceUrl">{{
+                        change.reference
+                      }}</a>
+                      <span *ngIf="!change.referenceUrl">{{ change.reference }}</span>
+                    </td>
+                    <td>{{ change.description }}</td>
+                    <td>{{ change.implementationDate }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p
+              *ngIf="detail.changeLog?.footerText"
+              class="- topic/p p"
+              [innerHtml]="detail.changeLog?.footerText"
+            ></p>
+          </div>
+        </mdm-preview-expandable-panel>
       </article>
     </div>
   </div>
