@@ -321,7 +321,10 @@ export interface PreviewDetail {
   catalogueId: string;
   name: string;
   stereotype: Stereotype;
+  isRetired: boolean;
+  isPreparatory: boolean;
   shortDescription?: string;
+  attributeText?: string;
   formatLength?: string;
   description?: string;
   relationships?: PreviewRelationship[];

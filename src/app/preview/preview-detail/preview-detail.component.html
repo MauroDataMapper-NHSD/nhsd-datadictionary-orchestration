@@ -63,6 +63,11 @@ SPDX-License-Identifier: Apache-2.0
           >
             <div class="- topic/body body">
               <div class="- topic/div div">
+                <p
+                  class="- topic/p p"
+                  *ngIf="detail.attributeText"
+                  [innerHTML]="detail.attributeText"
+                ></p>
                 <p class="- topic/p p" [innerHTML]="detail!.description"></p>
               </div>
             </div>
@@ -312,7 +317,7 @@ SPDX-License-Identifier: Apache-2.0
 
           <!-- Where Used -->
           <mdm-preview-expandable-panel
-            *ngIf="hasReferencesSection"
+            *ngIf="hasReferencesSection && !detail.isRetired && !detail.isPreparatory"
             title="Where Used"
             [expanded]="false"
             [anchor]="getTableOfContentsLink('Where Used')?.anchor"
