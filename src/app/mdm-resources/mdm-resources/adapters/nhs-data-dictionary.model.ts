@@ -324,6 +324,7 @@ export interface PreviewDetail {
   isRetired: boolean;
   isPreparatory: boolean;
   shortDescription?: string;
+  attributeText?: string;
   formatLength?: string;
   description?: string;
   relationships?: PreviewRelationship[];
