@@ -110,6 +110,7 @@ export interface ChangePaperPreview {
   publicationDate: string;
   background: string;
   sponsor: string;
+  contactDetails: string;
   changes: StereotypedChange[];
 }
 
