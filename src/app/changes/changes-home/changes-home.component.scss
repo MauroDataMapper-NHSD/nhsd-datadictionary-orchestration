@@ -51,4 +51,10 @@ SPDX-License-Identifier: Apache-2.0
     text-decoration: underline;
     cursor: pointer;
   }
+
+  .change-item {
+    border-bottom: 1px solid gray;
+    padding: 8px 0;
+    margin: 8px 0;
+  }
 }

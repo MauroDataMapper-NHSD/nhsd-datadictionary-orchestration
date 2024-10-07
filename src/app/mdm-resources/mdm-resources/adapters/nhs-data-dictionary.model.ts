@@ -86,6 +86,7 @@ export interface StereotypedChange {
 
 export interface ChangedItem {
   name: string;
+  summaryOfChanges: string;
   changes: Change[];
 }
 
