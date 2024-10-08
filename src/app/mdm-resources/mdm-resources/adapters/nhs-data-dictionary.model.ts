@@ -86,6 +86,7 @@ export interface StereotypedChange {
 
 export interface ChangedItem {
   name: string;
+  summaryOfChanges: string;
   changes: Change[];
 }
 
@@ -110,6 +111,7 @@ export interface ChangePaperPreview {
   publicationDate: string;
   background: string;
   sponsor: string;
+  contactDetails: string;
   changes: StereotypedChange[];
 }
 

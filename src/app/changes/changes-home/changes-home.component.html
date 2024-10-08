@@ -85,6 +85,9 @@ SPDX-License-Identifier: Apache-2.0
 
         <dt>Sponsor</dt>
         <dd>{{ changePaperPreview.sponsor }}</dd>
+
+        <dt>Contact details</dt>
+        <dd [innerHTML]="changePaperPreview.contactDetails"></dd>
       </dl>
       <p>
         Note: New text is shown with a blue background. Deleted text is crossed out.
@@ -104,7 +107,7 @@ SPDX-License-Identifier: Apache-2.0
               >
             </td>
             <td>
-              {{ getChangeTypeString(changedItem) }}
+              {{ changedItem.summaryOfChanges }}
             </td>
           </tr>
         </table>
@@ -112,11 +115,14 @@ SPDX-License-Identifier: Apache-2.0
       <h1>Changes</h1>
       <div *ngFor="let stereotypedChange of changePaperPreview.changes">
         <h2>{{ stereotypedChange.stereotype }}</h2>
-        <div *ngFor="let changedItem of stereotypedChange.changedItems">
+        <div
+          *ngFor="let changedItem of stereotypedChange.changedItems"
+          class="change-item"
+        >
           <a [id]="getChangeId(stereotypedChange, changedItem)"></a>
           <h3>{{ changedItem.name }}</h3>
+          <h4>Changes: {{ changedItem.summaryOfChanges }}</h4>
           <div *ngFor="let change of changedItem.changes">
-            <h4>{{ change.changeType }}</h4>
             <div [innerHtml]="change.detail"></div>
           </div>
         </div>

@@ -67,10 +67,6 @@ export class ChangesHomeComponent implements OnInit {
     });
   }
 
-  getChangeTypeString(changedItem: ChangedItem) {
-    return changedItem.changes.map((c) => c.changeType).join(', ');
-  }
-
   getChangeId(stereotypedChange: StereotypedChange, changedItem: ChangedItem) {
     return `${stereotypedChange.stereotype}_${changedItem.name}`;
   }
