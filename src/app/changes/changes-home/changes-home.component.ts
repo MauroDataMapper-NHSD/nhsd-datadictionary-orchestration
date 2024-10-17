@@ -24,9 +24,9 @@ import {
 } from '@mdm/core/state-handler/state-handler.service';
 import {
   Branch,
-  ChangedItem,
   ChangePaperPreview,
-  StereotypedChange
+  ChangePaperPreviewItem,
+  ChangePaperPreviewStereotype
 } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { finalize } from 'rxjs/operators';
@@ -67,15 +67,16 @@ export class ChangesHomeComponent implements OnInit {
     });
   }
 
-  getChangeId(stereotypedChange: StereotypedChange, changedItem: ChangedItem) {
-    return `${stereotypedChange.stereotype}_${changedItem.name}`;
+  getChangeId(stereotype: ChangePaperPreviewStereotype, change: ChangePaperPreviewItem) {
+    return `${stereotype.name}_${change.name}`;
   }
 
-  summaryLinkClicked(stereotypedChange: StereotypedChange, changedItem: ChangedItem) {
+  summaryLinkClicked(
+    stereotype: ChangePaperPreviewStereotype,
+    change: ChangePaperPreviewItem
+  ) {
     // Simulate an <a href="page#section"> link click
-    this.viewportScroller.scrollToAnchor(
-      this.getChangeId(stereotypedChange, changedItem)
-    );
+    this.viewportScroller.scrollToAnchor(this.getChangeId(stereotype, change));
   }
 
   private load(): void {
