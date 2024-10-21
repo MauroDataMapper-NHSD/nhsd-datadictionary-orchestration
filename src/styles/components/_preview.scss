@@ -269,4 +269,22 @@ SPDX-License-Identifier: Apache-2.0
     background-color: $infoMessageColor;
     padding: 8px;
   }
+
+  .mdm-changes-home {
+    /* Table styles for change paper preview */
+    table,
+    th,
+    td {
+      border: 1px solid gray;
+    }
+
+    table {
+      margin: 1em 0;
+    }
+
+    th,
+    td {
+      padding: 1em;
+    }
+  }
 }
