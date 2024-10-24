@@ -79,29 +79,17 @@ export interface Statistics {
 
 export type StatisticsResponse = MdmResourcesResponse<Statistics>;
 
-export interface StereotypedChange {
-  stereotype: string;
-  changedItems: ChangedItem[];
-}
-
-export interface ChangedItem {
-  name: string;
-  summaryOfChanges: string;
-  changes: Change[];
-}
-
-export interface Change {
-  changeType: string;
-  stereotype: string;
-  detail: string;
-}
-
 /**
  * Represents the details of a change paper preview
  *
  */
 
 export interface ChangePaperPreview {
+  background: ChangePaperPreviewBackground;
+  stereotypes: ChangePaperPreviewStereotype[];
+}
+
+export interface ChangePaperPreviewBackground {
   reference: string;
   type: string;
   versionNo: string;
@@ -112,7 +100,17 @@ export interface ChangePaperPreview {
   background: string;
   sponsor: string;
   contactDetails: string;
-  changes: StereotypedChange[];
+}
+
+export interface ChangePaperPreviewStereotype {
+  name: string;
+  changes: ChangePaperPreviewItem[];
+}
+
+export interface ChangePaperPreviewItem {
+  name: string;
+  summary: string;
+  detail: string;
 }
 
 export type ChangePaperPreviewResponse = MdmResourcesResponse<ChangePaperPreview>;

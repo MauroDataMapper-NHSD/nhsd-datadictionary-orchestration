@@ -60,34 +60,34 @@ SPDX-License-Identifier: Apache-2.0
       <h1>Background</h1>
       <dl>
         <dt>Reference</dt>
-        <dd>{{ changePaperPreview.reference }}</dd>
+        <dd>{{ changePaperPreview.background.reference }}</dd>
 
         <dt>Type</dt>
-        <dd>{{ changePaperPreview.type }}</dd>
+        <dd>{{ changePaperPreview.background.type }}</dd>
 
         <dt>Version no.</dt>
-        <dd>{{ changePaperPreview.versionNo }}</dd>
+        <dd>{{ changePaperPreview.background.versionNo }}</dd>
 
         <dt>Subject</dt>
-        <dd>{{ changePaperPreview.subject }}</dd>
+        <dd>{{ changePaperPreview.background.subject }}</dd>
 
         <dt>Effective Date</dt>
-        <dd>{{ changePaperPreview.effectiveDate }}</dd>
+        <dd>{{ changePaperPreview.background.effectiveDate }}</dd>
 
         <dt>Reason for change</dt>
-        <dd>{{ changePaperPreview.reasonForChange }}</dd>
+        <dd>{{ changePaperPreview.background.reasonForChange }}</dd>
 
         <dt>Publication date</dt>
-        <dd>{{ changePaperPreview.publicationDate }}</dd>
+        <dd>{{ changePaperPreview.background.publicationDate }}</dd>
 
         <dt>Background</dt>
-        <dd [innerHTML]="changePaperPreview.background"></dd>
+        <dd [innerHTML]="changePaperPreview.background.background"></dd>
 
         <dt>Sponsor</dt>
-        <dd>{{ changePaperPreview.sponsor }}</dd>
+        <dd>{{ changePaperPreview.background.sponsor }}</dd>
 
         <dt>Contact details</dt>
-        <dd [innerHTML]="changePaperPreview.contactDetails"></dd>
+        <dd [innerHTML]="changePaperPreview.background.contactDetails"></dd>
       </dl>
       <p>
         Note: New text is shown with a blue background. Deleted text is crossed out.
@@ -95,36 +95,27 @@ SPDX-License-Identifier: Apache-2.0
       </p>
       <h1>Summary of Changes</h1>
 
-      <div *ngFor="let stereotypedChange of changePaperPreview.changes">
-        <h2>{{ stereotypedChange.stereotype }}</h2>
+      <div *ngFor="let stereotype of changePaperPreview.stereotypes">
+        <h2>{{ stereotype.name }}</h2>
         <table>
-          <tr *ngFor="let changedItem of stereotypedChange.changedItems">
+          <tr *ngFor="let change of stereotype.changes">
             <td>
-              <a
-                class="jump-link"
-                (click)="summaryLinkClicked(stereotypedChange, changedItem)"
-                >{{ changedItem.name }}</a
-              >
+              <a class="jump-link" (click)="summaryLinkClicked(stereotype, change)">{{
+                change.name
+              }}</a>
             </td>
             <td>
-              {{ changedItem.summaryOfChanges }}
+              {{ change.summary }}
             </td>
           </tr>
         </table>
       </div>
       <h1>Changes</h1>
-      <div *ngFor="let stereotypedChange of changePaperPreview.changes">
-        <h2>{{ stereotypedChange.stereotype }}</h2>
-        <div
-          *ngFor="let changedItem of stereotypedChange.changedItems"
-          class="change-item"
-        >
-          <a [id]="getChangeId(stereotypedChange, changedItem)"></a>
-          <h3>{{ changedItem.name }}</h3>
-          <h4>Changes: {{ changedItem.summaryOfChanges }}</h4>
-          <div *ngFor="let change of changedItem.changes">
-            <div [innerHtml]="change.detail"></div>
-          </div>
+      <div *ngFor="let stereotype of changePaperPreview.stereotypes">
+        <h2>{{ stereotype.name }}</h2>
+        <div *ngFor="let change of stereotype.changes" class="change-item">
+          <a [id]="getChangeId(stereotype, change)"></a>
+          <div [innerHTML]="change.detail"></div>
         </div>
       </div>
     </div>
