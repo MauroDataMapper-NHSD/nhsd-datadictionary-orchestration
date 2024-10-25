@@ -139,10 +139,7 @@ SPDX-License-Identifier: Apache-2.0
             title="Specification"
             [anchor]="getTableOfContentsLink('Specification')?.anchor"
           >
-            <div
-              class="- topic/body body specification"
-              [innerHTML]="detail.definition"
-            ></div>
+            <div [innerHTML]="detail.definition"></div>
           </mdm-preview-expandable-panel>
 
           <!-- Attributes (Table, for Classes only)-->
