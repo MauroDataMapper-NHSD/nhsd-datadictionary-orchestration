@@ -57,7 +57,7 @@ SPDX-License-Identifier: Apache-2.0
 
           <!-- Description -->
           <mdm-preview-expandable-panel
-            *ngIf="detail.description"
+            *ngIf="detail.description || detail.attributeText"
             title="Description"
             [anchor]="getTableOfContentsLink('Description')?.anchor"
           >
