@@ -63,12 +63,7 @@ SPDX-License-Identifier: Apache-2.0
           >
             <div class="- topic/body body">
               <div class="- topic/div div">
-                <p
-                  class="- topic/p p"
-                  *ngIf="detail.attributeText"
-                  [innerHTML]="detail.attributeText"
-                ></p>
-                <p class="- topic/p p" [innerHTML]="detail!.description"></p>
+                <p class="- topic/p p" [innerHTML]="detail!.htmlDescription"></p>
               </div>
             </div>
           </mdm-preview-expandable-panel>
@@ -135,17 +130,17 @@ SPDX-License-Identifier: Apache-2.0
 
           <!-- Specification -->
           <mdm-preview-expandable-panel
-            *ngIf="detail.definition"
+            *ngIf="detail.htmlStructure"
             title="Specification"
             [anchor]="getTableOfContentsLink('Specification')?.anchor"
           >
-            <div [innerHTML]="detail.definition"></div>
+            <div [innerHTML]="detail.htmlStructure"></div>
           </mdm-preview-expandable-panel>
 
           <!-- Attributes (Table, for Classes only)-->
           <mdm-preview-expandable-panel
             *ngIf="
-              detail.stereotype == 'class' &&
+              detail.stereotypeForPreview == 'class' &&
               detail.attributes &&
               detail.attributes.length > 0
             "
@@ -167,15 +162,15 @@ SPDX-License-Identifier: Apache-2.0
                   </thead>
                   <tbody>
                     <tr *ngFor="let element of detail.attributes">
-                      <td>{{ element.key }}</td>
+                      <td>{{ element.key?"Key":"" }}</td>
                       <td>
                         <a
-                          class="{{ element.stereotype }}"
+                          class="{{ element.stereotypeForPreview }}"
                           uiSref="app.container.preview.detail"
                           [uiParams]="{
                             branch: branch,
-                            index: element.stereotype,
-                            id: element.catalogueId
+                            index: element.stereotypeForPreview,
+                            id: element.catalogueItemId
                           }"
                           >{{ element.name }}</a
                         >
@@ -213,7 +208,7 @@ SPDX-License-Identifier: Apache-2.0
                   </thead>
                   <tbody>
                     <tr *ngFor="let relationship of detail.relationships">
-                      <td>{{ relationship.key }}</td>
+                      <td>{{ relationship.key?"Key":"" }}</td>
                       <td>{{ relationship.relationship }}</td>
                       <td>
                         <a
@@ -222,7 +217,7 @@ SPDX-License-Identifier: Apache-2.0
                           [uiParams]="{
                             branch: branch,
                             index: relationship.stereotype,
-                            id: relationship.catalogueId
+                            id: relationship.catalogueItemId
                           }"
                           >{{ relationship.name }}</a
                         >
@@ -233,7 +228,7 @@ SPDX-License-Identifier: Apache-2.0
               </div>
             </div>
           </mdm-preview-expandable-panel>
-          <!-- Child Folders (of Data Set Folder-->
+          <!-- Child Folders (of Data Set Folder) -->
           <mdm-preview-expandable-panel
             *ngIf="detail.childFolders && detail.childFolders.length > 0"
             title="Folders"
@@ -243,12 +238,12 @@ SPDX-License-Identifier: Apache-2.0
               <ul>
                 <li *ngFor="let element of detail.childFolders">
                   <a
-                    class="{{ element.stereotype }}"
+                    class="{{ element.stereotypeForPreview }}"
                     uiSref="app.container.preview.detail"
                     [uiParams]="{
                       branch: branch,
-                      index: element.stereotype,
-                      id: element.catalogueId
+                      index: element.stereotypeForPreview,
+                      id: element.catalogueItemId
                     }"
                     >{{ element.name }}</a
                   >
@@ -256,7 +251,7 @@ SPDX-License-Identifier: Apache-2.0
               </ul>
             </div>
           </mdm-preview-expandable-panel>
-          <!-- Child Folders (of Data Set Folder-->
+          <!-- Data Sets (of Data Set Folder) -->
           <mdm-preview-expandable-panel
             *ngIf="detail.dataSets && detail.dataSets.length > 0"
             title="Data Sets"
@@ -266,12 +261,12 @@ SPDX-License-Identifier: Apache-2.0
               <ul>
                 <li *ngFor="let element of detail.dataSets">
                   <a
-                    class="{{ element.stereotype }}"
+                    class="{{ element.stereotypeForPreview }}"
                     uiSref="app.container.preview.detail"
                     [uiParams]="{
                       branch: branch,
-                      index: element.stereotype,
-                      id: element.catalogueId
+                      index: element.stereotypeForPreview,
+                      id: element.catalogueItemId
                     }"
                     >{{ element.name }}</a
                   >
@@ -314,7 +309,7 @@ SPDX-License-Identifier: Apache-2.0
 
           <!-- Where Used -->
           <mdm-preview-expandable-panel
-            *ngIf="hasReferencesSection && !detail.isRetired && !detail.isPreparatory"
+            *ngIf="hasReferencesSection && !detail.retired && !detail.preparatory"
             title="Where Used"
             [expanded]="false"
             [anchor]="getTableOfContentsLink('Where Used')?.anchor"
@@ -349,7 +344,7 @@ SPDX-License-Identifier: Apache-2.0
                           [uiParams]="{
                             branch: branch,
                             index: reference.stereotype,
-                            id: reference.catalogueId
+                            id: reference.catalogueItemId
                           }"
                           title="{{ reference.name }}"
                           >{{ reference.name }}</a
@@ -373,12 +368,12 @@ SPDX-License-Identifier: Apache-2.0
               <ul>
                 <li *ngFor="let element of detail.dataElements">
                   <a
-                    class="{{ element.stereotype }}"
+                    class="{{ element.stereotypeForPreview }}"
                     uiSref="app.container.preview.detail"
                     [uiParams]="{
                       branch: branch,
-                      index: element.stereotype,
-                      id: element.catalogueId
+                      index: element.stereotypeForPreview,
+                      id: element.catalogueItemId
                     }"
                     >{{ element.name }}</a
                   >
@@ -390,7 +385,7 @@ SPDX-License-Identifier: Apache-2.0
           <!-- Attributes (Bullet List, not for Classes)-->
           <mdm-preview-expandable-panel
             *ngIf="
-              detail.stereotype !== 'class' &&
+              detail.stereotypeForPreview !== 'class' &&
               detail.attributes &&
               detail.attributes.length > 0
             "
@@ -401,12 +396,12 @@ SPDX-License-Identifier: Apache-2.0
               <ul>
                 <li *ngFor="let element of detail.attributes">
                   <a
-                    class="{{ element.stereotype }}"
+                    class="{{ element.stereotypeForPreview }}"
                     uiSref="app.container.preview.detail"
                     [uiParams]="{
                       branch: branch,
-                      index: element.stereotype,
-                      id: element.catalogueId
+                      index: element.stereotypeForPreview,
+                      id: element.catalogueItemId
                     }"
                     >{{ element.name }}</a
                   >

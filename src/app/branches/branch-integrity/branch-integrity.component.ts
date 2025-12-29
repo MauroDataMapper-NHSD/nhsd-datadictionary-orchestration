@@ -20,8 +20,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { IntegrityCheckCategory } from '@mdm/core/data-dictionary/data-dictionary.model';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { LoggingService } from '@mdm/core/logging/logging.service';
-import { Branch } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { catchError, finalize } from 'rxjs/operators';
+import { VersionedFolderDetail } from '../../../../../../mauro/mdm-resources';
 
 @Component({
   selector: 'mdm-branch-integrity',
@@ -29,7 +29,7 @@ import { catchError, finalize } from 'rxjs/operators';
   styleUrls: ['./branch-integrity.component.scss']
 })
 export class BranchIntegrityComponent implements OnInit {
-  @Input() branch?: Branch;
+  @Input() branch?: VersionedFolderDetail;
 
   running = false;
   categories: IntegrityCheckCategory[] = [];

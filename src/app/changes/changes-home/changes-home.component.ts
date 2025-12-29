@@ -23,7 +23,6 @@ import {
   StateHandlerService
 } from '@mdm/core/state-handler/state-handler.service';
 import {
-  Branch,
   ChangePaperPreview,
   ChangePaperPreviewItem,
   ChangePaperPreviewStereotype
@@ -31,6 +30,7 @@ import {
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { finalize } from 'rxjs/operators';
 import { ViewportScroller } from '@angular/common';
+import { VersionedFolderDetail } from '../../../../../../mauro/mdm-resources';
 
 @Component({
   selector: 'mdm-changes-home',
@@ -39,7 +39,7 @@ import { ViewportScroller } from '@angular/common';
 })
 export class ChangesHomeComponent implements OnInit {
   branchId = '';
-  branch?: Branch;
+  branch?: VersionedFolderDetail;
   includeDataSets = false;
   running = false;
   changePaperPreview: ChangePaperPreview | undefined;
@@ -74,7 +74,7 @@ export class ChangesHomeComponent implements OnInit {
   summaryLinkClicked(
     stereotype: ChangePaperPreviewStereotype,
     change: ChangePaperPreviewItem
-  ) {
+  ): void {
     // Simulate an <a href="page#section"> link click
     this.viewportScroller.scrollToAnchor(this.getChangeId(stereotype, change));
   }

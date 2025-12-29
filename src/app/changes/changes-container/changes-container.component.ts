@@ -22,8 +22,8 @@ import {
   CommonUiStates,
   StateHandlerService
 } from '@mdm/core/state-handler/state-handler.service';
-import { Branch } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/core';
+import { VersionedFolderDetail } from '../../../../../../mauro/mdm-resources';
 
 @Component({
   selector: 'mdm-changes-container',
@@ -31,7 +31,7 @@ import { UIRouterGlobals } from '@uirouter/core';
   styleUrls: ['./changes-container.component.scss']
 })
 export class ChangesContainerComponent implements OnInit {
-  branches: Branch[] = [];
+  branches: VersionedFolderDetail[] = [];
   selectedBranch = '';
 
   constructor(

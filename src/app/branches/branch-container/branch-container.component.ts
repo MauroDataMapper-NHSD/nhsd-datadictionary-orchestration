@@ -22,8 +22,8 @@ import {
   CommonUiStates,
   StateHandlerService
 } from '@mdm/core/state-handler/state-handler.service';
-import { Branch } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/angular';
+import { VersionedFolderDetail } from '../../../../../../mauro/mdm-resources';
 
 @Component({
   selector: 'mdm-branch-container',
@@ -31,7 +31,7 @@ import { UIRouterGlobals } from '@uirouter/angular';
   styleUrls: ['./branch-container.component.scss']
 })
 export class BranchContainerComponent implements OnInit {
-  branches: Branch[] = [];
+  branches: VersionedFolderDetail[] = [];
   selectedBranch = '';
 
   constructor(
@@ -48,7 +48,7 @@ export class BranchContainerComponent implements OnInit {
     });
   }
 
-  onSelectedBranchChange(name: string) {
+  onSelectedBranchChange(name: string): void {
     this.stateHandler.goTo(CommonUiStates.BranchDetail, { branch: name, tabView: null });
   }
 }

@@ -20,24 +20,18 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
-  Branch,
-  BranchResponse,
   ChangePaperPreview,
   ChangePaperPreviewResponse,
   IntegrityCheck,
-  IntegrityCheckResponse,
-  PreviewDetail,
-  PreviewDetailResponse,
+  IntegrityCheckResponse, NhsDataDictionaryComponent, NhsDataDictionaryComponentResponse,
   PreviewDomainType,
-  PreviewIndexItem,
   PreviewIndexResponse,
-  PreviewReference,
-  PreviewReferenceResponse,
   Statistics,
   StatisticsResponse
 } from './nhs-data-dictionary.model';
 import { MdmResourcesService } from '../mdm-resources.service';
 import { HttpResponse } from '@angular/common/http';
+import { VersionedFolderDetail } from '../../../../../../../mauro/mdm-resources';
 
 @Injectable({
   providedIn: 'root'
@@ -45,20 +39,20 @@ import { HttpResponse } from '@angular/common/http';
 export class NhsDataDictionaryService {
   constructor(private resources: MdmResourcesService) {}
 
-  availableBranches(): Observable<Branch[]> {
+  availableBranches(): Observable<VersionedFolderDetail[]> {
     return this.resources.dataDictionary
       .availableBranches()
-      .pipe(map((response: BranchResponse) => response.body));
+      .pipe(map((response: VersionedFolderDetail) => response.body));
   }
 
-  statistics(branch: string): Observable<Statistics> {
+  statistics(branch: string | undefined): Observable<Statistics> {
     return this.resources.dataDictionary
       .statistics(branch)
       .pipe(map((response: StatisticsResponse) => response.body));
   }
 
   previewChangePaper(
-    branch: string,
+    branch: string | undefined,
     includeDataSets: boolean
   ): Observable<ChangePaperPreview> {
     return this.resources.dataDictionary
@@ -66,58 +60,58 @@ export class NhsDataDictionaryService {
       .pipe(map((response: ChangePaperPreviewResponse) => response.body));
   }
 
-  integrityChecks(branch: string): Observable<IntegrityCheck[]> {
+  integrityChecks(branch: string | undefined): Observable<IntegrityCheck[]> {
     return this.resources.dataDictionary
       .integrityChecks(branch)
       .pipe(map((response: IntegrityCheckResponse) => response.body));
   }
 
   previewIndex(
-    branch: string,
+    branch: string | undefined,
     domainType: PreviewDomainType
-  ): Observable<PreviewIndexItem[]> {
+  ): Observable<NhsDataDictionaryComponent[]> {
     return this.resources.dataDictionary
       .preview(branch, domainType)
       .pipe(map((response: PreviewIndexResponse) => response.body));
   }
 
   previewDetail(
-    branch: string,
+    branch: string | undefined,
     domainType: PreviewDomainType,
     id: string
-  ): Observable<PreviewDetail> {
+  ): Observable<NhsDataDictionaryComponent> {
     return this.resources.dataDictionary
       .preview(branch, domainType, id)
-      .pipe(map((response: PreviewDetailResponse) => response.body));
+      .pipe(map((response: NhsDataDictionaryComponentResponse) => response.body));
   }
 
   previewReferences(
-    branch: string,
+    branch: string | undefined,
     domainType: PreviewDomainType,
     id: string
-  ): Observable<PreviewReference[]> {
+  ): Observable<NhsDataDictionaryComponent[]> {
     return this.resources.dataDictionary
       .previewReferences(branch, domainType, id)
-      .pipe(map((response: PreviewReferenceResponse) => response.body));
+      .pipe(map((response: NhsDataDictionaryComponentResponse) => response.body));
   }
 
-  generateDita(branch: string): Observable<HttpResponse<Blob>> {
+  generateDita(branch: string | undefined): Observable<HttpResponse<Blob>> {
     return this.resources.dataDictionary.generateDita(branch);
   }
 
-  generateCodeSystems(branch: string): Observable<HttpResponse<Blob>> {
+  generateCodeSystems(branch: string | undefined): Observable<HttpResponse<Blob>> {
     return this.resources.dataDictionary.generateCodeSystems(branch);
   }
 
-  generateValueSets(branch: string): Observable<HttpResponse<Blob>> {
+  generateValueSets(branch: string | undefined): Observable<HttpResponse<Blob>> {
     return this.resources.dataDictionary.generateValueSets(branch);
   }
 
-  generateChangePaper(branch: string): Observable<HttpResponse<Blob>> {
+  generateChangePaper(branch: string | undefined): Observable<HttpResponse<Blob>> {
     return this.resources.dataDictionary.generateChangePaper(branch);
   }
 
-  generateChangePaperWithDataSet(branch: string): Observable<HttpResponse<Blob>> {
+  generateChangePaperWithDataSet(branch: string | undefined): Observable<HttpResponse<Blob>> {
     return this.resources.dataDictionary.generateChangePaperWithDataSet(branch);
   }
 }

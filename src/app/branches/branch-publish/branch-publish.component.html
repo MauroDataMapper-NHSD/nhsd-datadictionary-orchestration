@@ -22,7 +22,7 @@ SPDX-License-Identifier: Apache-2.0
       <p>
         Generate artefacts from the
         <span class="branch"
-          ><i class="fas fa-code-branch"></i>{{ branch?.versionDisplay }}</span
+          ><i class="fas fa-code-branch"></i>{{ branch?.modelVersionTag ?? branch?.modelVersion ?? branch?.branchName }}</span
         >
         branch of the Data Dictionary.
       </p>

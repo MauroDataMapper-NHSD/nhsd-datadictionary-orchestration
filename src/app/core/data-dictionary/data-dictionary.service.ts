@@ -19,12 +19,8 @@ SPDX-License-Identifier: Apache-2.0
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-  Branch,
-  ChangePaperPreview,
-  PreviewDetail,
+  ChangePaperPreview, NhsDataDictionaryComponent,
   PreviewDomainType,
-  PreviewIndexItem,
-  PreviewReference,
   Statistics
 } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { NhsDataDictionaryService } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.service';
@@ -32,6 +28,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { LoggingService } from '../logging/logging.service';
 import { IntegrityCheckCategory, PreviewIndexGroup } from './data-dictionary.model';
+import { VersionedFolderDetail } from '../../../../../../mauro/mdm-resources';
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +39,7 @@ export class DataDictionaryService {
     private logging: LoggingService
   ) {}
 
-  getAvailableBranches(): Observable<Branch[]> {
+  getAvailableBranches(): Observable<VersionedFolderDetail[]> {
     return this.nhsDataDictionary.availableBranches().pipe(
       catchError((error) => {
         this.logging.error('There was a problem finding available branches.', error);
@@ -51,7 +48,7 @@ export class DataDictionaryService {
     );
   }
 
-  getBranchStatistics(branch: string): Observable<Statistics> {
+  getBranchStatistics(branch: string | undefined | undefined): Observable<Statistics> {
     return this.nhsDataDictionary.statistics(branch).pipe(
       catchError((error) => {
         this.logging.error(
@@ -64,7 +61,7 @@ export class DataDictionaryService {
   }
 
   getChangePaperPreview(
-    branch: string,
+    branch: string | undefined,
     includeDataSets: boolean
   ): Observable<ChangePaperPreview> {
     return this.nhsDataDictionary.previewChangePaper(branch, includeDataSets).pipe(
@@ -78,7 +75,7 @@ export class DataDictionaryService {
     );
   }
 
-  runIntegrityChecks(branch: string): Observable<IntegrityCheckCategory[]> {
+  runIntegrityChecks(branch: string | undefined): Observable<IntegrityCheckCategory[]> {
     return this.nhsDataDictionary.integrityChecks(branch).pipe(
       catchError((error) => {
         this.logging.error(
@@ -92,7 +89,7 @@ export class DataDictionaryService {
   }
 
   getPreviewIndex(
-    branch: string,
+    branch: string | undefined,
     domainType: PreviewDomainType
   ): Observable<PreviewIndexGroup[]> {
     return this.nhsDataDictionary.previewIndex(branch, domainType).pipe(
@@ -104,7 +101,7 @@ export class DataDictionaryService {
         return throwError(error);
       }),
       map((items) => {
-        const groups = items.groupBy((item: PreviewIndexItem) =>
+        const groups = items.groupBy((item: NhsDataDictionaryComponent) =>
           item.name[0].toUpperCase()
         );
         return Object.keys(groups).map((key) => {
@@ -118,10 +115,10 @@ export class DataDictionaryService {
   }
 
   getPreviewDetail(
-    branch: string,
+    branch: string | undefined,
     domainType: PreviewDomainType,
     id: string
-  ): Observable<PreviewDetail> {
+  ): Observable<NhsDataDictionaryComponent> {
     return this.nhsDataDictionary.previewDetail(branch, domainType, id).pipe(
       catchError((error) => {
         this.logging.error(
@@ -134,10 +131,10 @@ export class DataDictionaryService {
   }
 
   getPreviewReferences(
-    branch: string,
+    branch: string | undefined,
     domainType: PreviewDomainType,
     id: string
-  ): Observable<PreviewReference[]> {
+  ): Observable<NhsDataDictionaryComponent[]> {
     return this.nhsDataDictionary.previewReferences(branch, domainType, id).pipe(
       catchError((error) => {
         this.logging.error(
@@ -149,7 +146,7 @@ export class DataDictionaryService {
     );
   }
 
-  generateDita(branch: string): Observable<HttpResponse<Blob>> {
+  generateDita(branch: string | undefined): Observable<HttpResponse<Blob>> {
     return this.nhsDataDictionary.generateDita(branch).pipe(
       catchError((error) => {
         if (error.status === 403) {
@@ -165,7 +162,7 @@ export class DataDictionaryService {
     );
   }
 
-  generateCodeSystems(branch: string): Observable<HttpResponse<Blob>> {
+  generateCodeSystems(branch: string | undefined): Observable<HttpResponse<Blob>> {
     return this.nhsDataDictionary.generateCodeSystems(branch).pipe(
       catchError((error) => {
         if (error.status === 403) {
@@ -183,7 +180,7 @@ export class DataDictionaryService {
     );
   }
 
-  generateValueSets(branch: string): Observable<HttpResponse<Blob>> {
+  generateValueSets(branch: string | undefined): Observable<HttpResponse<Blob>> {
     return this.nhsDataDictionary.generateValueSets(branch).pipe(
       catchError((error) => {
         if (error.status === 403) {
@@ -201,7 +198,7 @@ export class DataDictionaryService {
     );
   }
 
-  generateChangePaper(branch: string): Observable<HttpResponse<Blob>> {
+  generateChangePaper(branch: string | undefined): Observable<HttpResponse<Blob>> {
     return this.nhsDataDictionary.generateChangePaper(branch).pipe(
       catchError((error) => {
         this.logging.error(
@@ -213,7 +210,7 @@ export class DataDictionaryService {
     );
   }
 
-  generateChangePaperWithDataSet(branch: string): Observable<HttpResponse<Blob>> {
+  generateChangePaperWithDataSet(branch: string | undefined): Observable<HttpResponse<Blob>> {
     return this.nhsDataDictionary.generateChangePaperWithDataSet(branch).pipe(
       catchError((error) => {
         this.logging.error(

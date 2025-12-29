@@ -21,12 +21,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { ProgressDialogComponent } from '@mdm/dialogs/progress-dialog/progress-dialog.component';
 import { ProgressDialogOptions } from '@mdm/dialogs/progress-dialog/progress-dialog.model';
-import { Branch } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
 import * as fileSaver from 'file-saver';
 import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
+import { VersionedFolderDetail } from '../../../../../../mauro/mdm-resources';
 
 @Component({
   selector: 'mdm-branch-publish',
@@ -34,7 +34,7 @@ import { HttpResponse } from '@angular/common/http';
   styleUrls: ['./branch-publish.component.scss']
 })
 export class BranchPublishComponent implements OnInit {
-  @Input() branch?: Branch;
+  @Input() branch?: VersionedFolderDetail;
 
   dialogTitles = new Map<string, string>([
     ['codeSystems', 'FHIR CodeSystems'],

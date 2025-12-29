@@ -26,14 +26,14 @@ SPDX-License-Identifier: Apache-2.0
       <p>
         Generate change paper preview on the
         <span class="branch"
-          ><i class="fas fa-code-branch"></i>{{ branch.versionDisplay }}</span
+          ><i class="fas fa-code-branch"></i>{{ branch.modelVersionTag ?? branch.modelVersion ?? branch.branchName }}</span
         >
         branch of the Data Dictionary.
       </p>
     </div>
     <div class="mdm-branch-integrity__toolbar">
       <mat-checkbox [(ngModel)]="includeDataSets" [disabled]="running"
-        >Include data set defintions</mat-checkbox
+        >Include data set definitions</mat-checkbox
       >
     </div>
     <div class="mdm-branch-integrity__toolbar">
@@ -115,7 +115,7 @@ SPDX-License-Identifier: Apache-2.0
         <h2>{{ stereotype.name }}</h2>
         <div *ngFor="let change of stereotype.changes" class="change-item">
           <a [id]="getChangeId(stereotype, change)"></a>
-          <div [innerHTML]="change.detail"></div>
+          <div [innerHTML]="change.htmlOutput"></div>
         </div>
       </div>
     </div>
