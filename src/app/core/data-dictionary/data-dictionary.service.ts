@@ -28,7 +28,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { LoggingService } from '../logging/logging.service';
 import { IntegrityCheckCategory, PreviewIndexGroup } from './data-dictionary.model';
-import { VersionedFolderDetail } from '../../../../../../mauro/mdm-resources';
+import { VersionedFolderDetail } from '@maurodatamapper/mdm-resources';
 
 @Injectable({
   providedIn: 'root'

@@ -23,7 +23,7 @@ import {
   StatisticsItem
 } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { finalize } from 'rxjs/operators';
-import { VersionedFolderDetail } from '../../../../../../mauro/mdm-resources';
+import { VersionedFolderDetail } from '@maurodatamapper/mdm-resources';
 
 interface StatisticsTableRow {
   name: string;

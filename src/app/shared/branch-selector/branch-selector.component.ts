@@ -18,7 +18,7 @@ SPDX-License-Identifier: Apache-2.0
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
-import { VersionedFolderDetail } from '../../../../../../mauro/mdm-resources';
+import { VersionedFolderDetail } from '@maurodatamapper/mdm-resources';
 
 @Component({
   selector: 'mdm-branch-selector',

@@ -31,7 +31,7 @@ import {
 } from './nhs-data-dictionary.model';
 import { MdmResourcesService } from '../mdm-resources.service';
 import { HttpResponse } from '@angular/common/http';
-import { VersionedFolderDetail } from '../../../../../../../mauro/mdm-resources';
+import { VersionedFolderDetail } from '@maurodatamapper/mdm-resources';
 
 @Injectable({
   providedIn: 'root'

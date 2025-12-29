@@ -21,7 +21,7 @@ import { IntegrityCheckCategory } from '@mdm/core/data-dictionary/data-dictionar
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { LoggingService } from '@mdm/core/logging/logging.service';
 import { catchError, finalize } from 'rxjs/operators';
-import { VersionedFolderDetail } from '../../../../../../mauro/mdm-resources';
+import { VersionedFolderDetail } from '@maurodatamapper/mdm-resources';
 
 @Component({
   selector: 'mdm-branch-integrity',

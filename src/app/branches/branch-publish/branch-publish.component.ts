@@ -26,7 +26,7 @@ import { finalize } from 'rxjs/operators';
 import * as fileSaver from 'file-saver';
 import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
-import { VersionedFolderDetail } from '../../../../../../mauro/mdm-resources';
+import { VersionedFolderDetail } from '@maurodatamapper/mdm-resources';
 
 @Component({
   selector: 'mdm-branch-publish',

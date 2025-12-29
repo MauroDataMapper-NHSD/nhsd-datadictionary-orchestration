@@ -30,7 +30,7 @@ import {
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import { finalize } from 'rxjs/operators';
 import { ViewportScroller } from '@angular/common';
-import { VersionedFolderDetail } from '../../../../../../mauro/mdm-resources';
+import { VersionedFolderDetail } from '@maurodatamapper/mdm-resources';
 
 @Component({
   selector: 'mdm-changes-home',

@@ -23,7 +23,7 @@ import {
   StateHandlerService
 } from '@mdm/core/state-handler/state-handler.service';
 import { UIRouterGlobals } from '@uirouter/angular';
-import { VersionedFolderDetail } from '../../../../../../mauro/mdm-resources';
+import { VersionedFolderDetail } from '@maurodatamapper/mdm-resources';
 
 @Component({
   selector: 'mdm-branch-container',
