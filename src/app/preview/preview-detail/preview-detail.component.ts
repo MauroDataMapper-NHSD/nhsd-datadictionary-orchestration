@@ -24,13 +24,12 @@ import {
   StateHandlerService
 } from '@mdm/core/state-handler/state-handler.service';
 import {
-  PreviewDetail,
+  NhsDataDictionaryComponent,
   PreviewDomainType,
   previewDomainTypeNouns,
   previewIndexDomainMap,
   previewIndexPageTitles,
   PreviewIndexType,
-  PreviewReference,
   Stereotype,
   stereotypeMapping
 } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
@@ -51,11 +50,11 @@ export class PreviewDetailComponent implements OnInit {
   index: PreviewIndexType = PreviewIndexType.All;
   domainType: PreviewDomainType = PreviewDomainType.All;
   id = '';
-  detail?: PreviewDetail;
+  detail?: NhsDataDictionaryComponent;
   breadcrumbs: Breadcrumb[] = [];
   tableOfContentLinks: TableOfContentsLink[] = [];
   isLoadingReferences = false;
-  references: PreviewReference[] = [];
+  references: NhsDataDictionaryComponent[] = [];
 
   hasReferencesSection = false;
 
@@ -136,7 +135,7 @@ export class PreviewDetailComponent implements OnInit {
     return stereotypeMapping.get(stereotype as Stereotype);
   }
 
-  private createBreadcrumbs(detail: PreviewDetail): Breadcrumb[] {
+  private createBreadcrumbs(detail: NhsDataDictionaryComponent): Breadcrumb[] {
     return [
       {
         label: previewIndexPageTitles.get(this.domainType) ?? '',
@@ -158,7 +157,7 @@ export class PreviewDetailComponent implements OnInit {
     ];
   }
 
-  private createTableOfContentLinks(detail: PreviewDetail): TableOfContentsLink[] {
+  private createTableOfContentLinks(detail: NhsDataDictionaryComponent): TableOfContentsLink[] {
     const links: TableOfContentsLink[] = [];
 
     if (!detail) {

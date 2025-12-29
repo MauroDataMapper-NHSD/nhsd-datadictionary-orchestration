@@ -39,38 +39,35 @@ SPDX-License-Identifier: Apache-2.0
 
           <span
             *ngIf="
-              selectedBranchDetails?.versionDisplay &&
-              selectedBranchDetails?.modelVersionFinalised
+              (selectedBranchDetails?.modelVersionTag || selectedBranchDetails?.modelVersion) &&
+              selectedBranchDetails?.finalised
             "
             class="fas fa-tag"
           >
           </span>
 
           <span
-            *ngIf="
-              selectedBranchDetails?.branchName &&
-              !selectedBranchDetails?.modelVersionFinalised
-            "
+            *ngIf="selectedBranchDetails?.branchName && !selectedBranchDetails?.finalised"
             class="fas fa-code-branch"
           >
           </span>
-          {{ selectedBranchDetails?.versionDisplay }}
+          {{ selectedBranchDetails?.modelVersionTag ?? selectedBranchDetails?.modelVersion ?? selectedBranchDetails?.branchName }}
         </mat-select-trigger>
         <mat-option *ngFor="let branch of branches" [value]="branch.id">
           {{ branch.label }}
 
           <span
-            *ngIf="branch.versionDisplay && branch.modelVersionFinalised"
+            *ngIf="(branch?.modelVersionTag || branch?.modelVersion) && branch?.finalised"
             class="fas fa-tag"
           >
           </span>
 
           <span
-            *ngIf="branch.branchName && !branch.modelVersionFinalised"
+            *ngIf="branch?.branchName && !branch?.finalised"
             class="fas fa-code-branch"
           >
           </span>
-          {{ branch.versionDisplay }}
+          {{ branch?.modelVersionTag ?? branch?.modelVersion ?? branch?.branchName }}
         </mat-option>
       </mat-select>
     </div>

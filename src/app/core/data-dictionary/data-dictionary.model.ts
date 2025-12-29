@@ -17,31 +17,32 @@ SPDX-License-Identifier: Apache-2.0
 */
 
 import {
-  IntegrityCheck,
-  PreviewIndexItem
+  IntegrityCheck, IntegrityCheckError, NhsDataDictionaryComponent
 } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 
 export class IntegrityCheckCategory {
-  get checkName() {
+
+  constructor(private source: IntegrityCheck) {}
+
+  get checkName(): string {
     return this.source.checkName;
   }
 
-  get description() {
+  get description(): string {
     return this.source.description;
   }
 
-  get errors() {
+  get errors(): IntegrityCheckError[] {
     return this.source.errors;
   }
 
-  get hasErrors() {
+  get hasErrors(): boolean {
     return !!this.errors && this.errors.length > 0;
   }
 
-  constructor(private source: IntegrityCheck) {}
 }
 
 export interface PreviewIndexGroup {
   key: string;
-  items: PreviewIndexItem[];
+  items: NhsDataDictionaryComponent[];
 }

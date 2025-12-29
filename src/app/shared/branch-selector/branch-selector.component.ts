@@ -18,7 +18,7 @@ SPDX-License-Identifier: Apache-2.0
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
-import { Branch } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
+import { VersionedFolderDetail } from '@maurodatamapper/mdm-resources';
 
 @Component({
   selector: 'mdm-branch-selector',
@@ -27,7 +27,7 @@ import { Branch } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dicti
 })
 export class BranchSelectorComponent implements OnInit {
   @Input()
-  branches: Branch[] = [];
+  branches: VersionedFolderDetail[] = [];
 
   @Input()
   selectedBranch = '';
@@ -37,13 +37,13 @@ export class BranchSelectorComponent implements OnInit {
 
   constructor() {}
 
-  get selectedBranchDetails(): Branch | undefined {
+  get selectedBranchDetails(): VersionedFolderDetail | undefined {
     return this.branches.find((b) => b.id === this.selectedBranch);
   }
 
   ngOnInit(): void {}
 
-  onBranchChanged(change: MatSelectChange) {
+  onBranchChanged(change: MatSelectChange): void {
     this.selectedBranchChange.emit(change.value);
   }
 }

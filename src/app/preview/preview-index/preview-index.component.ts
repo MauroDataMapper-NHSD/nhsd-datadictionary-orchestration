@@ -25,11 +25,11 @@ import {
   StateHandlerService
 } from '@mdm/core/state-handler/state-handler.service';
 import {
+  NhsDataDictionaryComponent,
   PreviewDomainType,
   previewIndexDomainMap,
   previewIndexPageTitles,
-  PreviewIndexType,
-  PreviewIndexItem
+  PreviewIndexType
 } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/core';
 import { ToastrService } from 'ngx-toastr';
@@ -100,7 +100,7 @@ export class PreviewIndexComponent implements OnInit {
       });
   }
 
-  getIndexTitle() {
+  getIndexTitle(): string {
     return previewIndexPageTitles.get(this.domainType) ?? '';
   }
 
@@ -108,15 +108,15 @@ export class PreviewIndexComponent implements OnInit {
     return this.tableOfContentLinks.find((toc) => toc.label === topic.key);
   }
 
-  getCssClass(indexItem: PreviewIndexItem): string {
-    if (indexItem.isRetired) {
+  getCssClass(indexItem: NhsDataDictionaryComponent): string {
+    if (indexItem.retired) {
       return indexItem.stereotype + ' retired';
     } else {
       return indexItem.stereotype;
     }
   }
 
-  onTableOfContentsClick(link: TableOfContentsLink) {
+  onTableOfContentsClick(link: TableOfContentsLink): void {
     // Simulate an <a href="page#section"> link click
     this.viewportScroller.scrollToAnchor(link.anchor);
   }

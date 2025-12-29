@@ -23,7 +23,7 @@ import { SharedService } from '../shared/shared.service';
 type DomainTypeUrlPatternCallback = (
   modelId: string,
   parentId: string,
-  catalogueId: string
+  catalogueItemId: string
 ) => string;
 
 @Injectable({
@@ -34,43 +34,43 @@ export class UrlGeneratorService {
     DomainType,
     DomainTypeUrlPatternCallback
   >([
-    [DomainType.Folder, (modelId, parentId, catalogueId) => `/folder/${catalogueId}`],
+    [DomainType.Folder, (modelId, parentId, catalogueItemId) => `/folder/${catalogueItemId}`],
     [
       DomainType.DataModel,
-      (modelId, parentId, catalogueId) => `/dataModel/${catalogueId}`
+      (modelId, parentId, catalogueItemId) => `/dataModel/${catalogueItemId}`
     ],
     [
       DomainType.ReferenceDataModel,
-      (modelId, parentId, catalogueId) => `/referenceDataModel/${catalogueId}`
+      (modelId, parentId, catalogueItemId) => `/referenceDataModel/${catalogueItemId}`
     ],
     [
       DomainType.Terminology,
-      (modelId, parentId, catalogueId) => `/terminology/${catalogueId}`
+      (modelId, parentId, catalogueItemId) => `/terminology/${catalogueItemId}`
     ],
     [
       DomainType.DataClass,
-      (modelId, parentId, catalogueId) =>
-        `/dataClass/${modelId}/${parentId}/${catalogueId}`
+      (modelId, parentId, catalogueItemId) =>
+        `/dataClass/${modelId}/${parentId}/${catalogueItemId}`
     ],
     [
       DomainType.DataElement,
-      (modelId, parentId, catalogueId) =>
-        `/dataElement/${modelId}/${parentId}/${catalogueId}`
+      (modelId, parentId, catalogueItemId) =>
+        `/dataElement/${modelId}/${parentId}/${catalogueItemId}`
     ],
     [
       DomainType.Classification,
-      (modelId, parentId, catalogueId) => `/classification/${catalogueId}`
+      (modelId, parentId, catalogueItemId) => `/classification/${catalogueItemId}`
     ],
     [
       DomainType.EnumerationType,
-      (modelId, parentId, catalogueId) =>
-        `/enumerationType/${modelId}/${parentId}/${catalogueId}`
+      (modelId, parentId, catalogueItemId) =>
+        `/enumerationType/${modelId}/${parentId}/${catalogueItemId}`
     ],
     [
       DomainType.Term,
-      (modelId, parentId, catalogueId) => `/term/${modelId}/${catalogueId}`
+      (modelId, parentId, catalogueItemId) => `/term/${modelId}/${catalogueItemId}`
     ],
-    [DomainType.CodeSet, (modelId, parentId, catalogueId) => `/codeSet/${catalogueId}`]
+    [DomainType.CodeSet, (modelId, parentId, catalogueItemId) => `/codeSet/${catalogueItemId}`]
   ]);
 
   constructor(private shared: SharedService) {}
@@ -79,13 +79,13 @@ export class UrlGeneratorService {
     domainType: DomainType,
     modelId: string,
     parentId: string,
-    catalogueId: string
+    catalogueItemId: string
   ): string {
     const converter = this.domainTypeUrlPatterns.get(domainType);
     if (!converter) {
       return '';
     }
 
-    return `${this.shared.mauroBaseUrl}/#/catalogue${converter(modelId, parentId, catalogueId)}`;
+    return `${this.shared.mauroBaseUrl}/#/catalogue${converter(modelId, parentId, catalogueItemId)}`;
   }
 }

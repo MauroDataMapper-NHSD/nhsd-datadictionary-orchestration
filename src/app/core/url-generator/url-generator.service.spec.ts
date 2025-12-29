@@ -55,8 +55,8 @@ describe('UrlGeneratorService', () => {
     [`${mauroBaseUrl}/#/catalogue/codeSet/3`, DomainType.CodeSet, '1', '2', '3']
   ])(
     'should return %s for domain %o',
-    (expected, domainType, modelId, parentId, catalogueId) => {
-      const actual = service.getMauroUrl(domainType, modelId, parentId, catalogueId);
+    (expected, domainType, modelId, parentId, catalogueItemId) => {
+      const actual = service.getMauroUrl(domainType, modelId, parentId, catalogueItemId);
       expect(actual).toBe(expected);
     }
   );

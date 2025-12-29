@@ -32,7 +32,7 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
   }
 
   statistics(
-    branch: string,
+    branch: string | undefined,
     queryStringParams?: QueryParameters,
     restHandlerOptions?: RequestSettings
   ): any {
@@ -41,7 +41,7 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
   }
 
   previewChangePaper(
-    branch: string,
+    branch: string | undefined,
     includeDataSets: boolean,
     queryStringParams?: QueryParameters,
     restHandlerOptions?: RequestSettings
@@ -51,7 +51,7 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
   }
 
   integrityChecks(
-    branch: string,
+    branch: string | undefined,
     queryStringParams?: QueryParameters,
     restHandlerOptions?: RequestSettings
   ): any {
@@ -60,7 +60,7 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
   }
 
   preview(
-    branch: string,
+    branch: string | undefined,
     domainType: string,
     id?: string,
     queryStringParams?: QueryParameters,
@@ -72,7 +72,7 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
   }
 
   previewReferences(
-    branch: string,
+    branch: string | undefined,
     domainType: string,
     id: string,
     queryStringParams?: QueryParameters,
@@ -83,7 +83,7 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
   }
 
   generateDita(
-    branch: string,
+    branch: string | undefined,
     queryStringParams?: QueryParameters,
     restHandlerOptions?: RequestSettings
   ): any {
@@ -96,7 +96,7 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
   }
 
   generateCodeSystems(
-    branch: string,
+    branch: string | undefined,
     queryStringParams?: QueryParameters,
     restHandlerOptions?: RequestSettings
   ): any {
@@ -109,7 +109,7 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
   }
 
   generateValueSets(
-    branch: string,
+    branch: string | undefined,
     queryStringParams?: QueryParameters,
     restHandlerOptions?: RequestSettings
   ): any {
@@ -122,7 +122,7 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
   }
 
   generateChangePaper(
-    branch: string,
+    branch: string | undefined,
     queryStringParams?: QueryParameters,
     restHandlerOptions?: RequestSettings
   ): any {
@@ -135,7 +135,7 @@ export class MdmPluginNhsDataDictionaryResource extends MdmResource {
   }
 
   generateChangePaperWithDataSet(
-    branch: string,
+    branch: string | undefined,
     queryStringParams?: QueryParameters,
     restHandlerOptions?: RequestSettings
   ): any {

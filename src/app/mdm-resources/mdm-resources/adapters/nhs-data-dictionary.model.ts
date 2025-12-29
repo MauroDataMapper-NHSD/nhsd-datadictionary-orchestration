@@ -19,43 +19,6 @@ SPDX-License-Identifier: Apache-2.0
 import { DomainType, MdmResourcesResponse } from '../mdm-resources.model';
 
 /**
- * Represents a branch of the NHS Data Dictionary.
- */
-export interface Branch {
-  /**
-   * The unique name of the branch
-   */
-  branchName: string;
-
-  /**
-   * The display label for the branch
-   */
-  label: string;
-
-  /**
-   * The UUID of the exact model this branch refers to.
-   */
-  modelId: string;
-
-  /**
-   * The UUID of the exact versionedFolder this branch refers to.
-   */
-  id: string;
-
-  /**
-   * The branch / model version name that should be displayed.
-   */
-  versionDisplay: string;
-
-  /**
-   * A value to indicate if the branch has been finalised.
-   */
-  modelVersionFinalised: Boolean;
-}
-
-export type BranchResponse = MdmResourcesResponse<Branch[]>;
-
-/**
  * Represents a statistics item to attach to a list of statistics.
  *
  * **Note:** properties are uppercase due to JSON deserialization of response from the server.
@@ -110,7 +73,7 @@ export interface ChangePaperPreviewStereotype {
 export interface ChangePaperPreviewItem {
   name: string;
   summary: string;
-  detail: string;
+  htmlOutput: string;
 }
 
 export type ChangePaperPreviewResponse = MdmResourcesResponse<ChangePaperPreview>;
@@ -240,14 +203,7 @@ export const stereotypeMapping = new Map<Stereotype, string>([
   [Stereotype.DataSetFolder, 'Data Set Folder']
 ]);
 
-export interface PreviewIndexItem {
-  catalogueId: string;
-  name: string;
-  stereotype: Stereotype;
-  isRetired: boolean;
-}
-
-export type PreviewIndexResponse = MdmResourcesResponse<PreviewIndexItem[]>;
+export type PreviewIndexResponse = MdmResourcesResponse<NhsDataDictionaryComponent[]>;
 
 export interface PreviewAliases {
   [context: string]: string;
@@ -256,40 +212,6 @@ export interface PreviewAliases {
 export interface PreviewCodeReference {
   code: string;
   description: string;
-}
-
-/**
- * Represents a cross-reference to another data element in the dictionary.
- */
-export interface PreviewElementReference {
-  /**
-   * The UUID of the catalogue element to reference.
-   */
-  catalogueId: string;
-
-  /**
-   * The name of the element.
-   */
-  name: string;
-
-  /**
-   * The stereotype of the element to correctly identify its type.
-   */
-  stereotype: Stereotype;
-
-  /**
-   * Whether the item is retired or not
-   */
-
-  retired: boolean;
-
-  /**
-   * Optional key for the reference.
-   *
-   * This is only used in the case when a Data Class is returned, this key is then used within a table of attributes. If not
-   * provided, assume that this is a simple list of references.
-   */
-  key?: string;
 }
 
 export interface PreviewChangeLog {
@@ -309,7 +231,7 @@ export interface PreviewChangeLogEntry {
 export interface PreviewRelationship {
   key: string;
   relationship: string;
-  catalogueId: string;
+  catalogueItemId: string;
   name: string;
   stereotype: Stereotype;
 }
@@ -317,40 +239,33 @@ export interface PreviewRelationship {
 /**
  * Represents the detail of a particular Data Dictionary preview page.
  */
-export interface PreviewDetail {
-  catalogueId: string;
+export interface NhsDataDictionaryComponent {
+  catalogueItemId: string;
+  stereotypeForPreview: Stereotype;
+  stereotype: string;
   name: string;
-  stereotype: Stereotype;
-  isRetired: boolean;
-  isPreparatory: boolean;
+  metadataNamespace?: string;
+  retired: boolean;
+  preparatory: boolean;
+  activePage?: boolean;
   shortDescription?: string;
+  description?: string;
+  htmlDescription?: string;
+  changeLog?: PreviewChangeLog;
+
+  childFolders?: NhsDataDictionaryComponent[];
+  dataSets?: NhsDataDictionaryComponent[];
   attributeText?: string;
   formatLength?: string;
-  description?: string;
   relationships?: PreviewRelationship[];
   alsoKnownAs?: PreviewAliases;
   nationalCodes?: PreviewCodeReference[];
   defaultCodes?: PreviewCodeReference[];
-  dataElements?: PreviewElementReference[];
-  attributes?: PreviewElementReference[];
+  dataElements?: NhsDataDictionaryComponent[];
+  attributes?: NhsDataDictionaryComponent[];
   specifications?: string;
-  definition?: string;
-  childFolders?: PreviewElementReference[];
-  dataSets?: PreviewElementReference[];
-  changeLog?: PreviewChangeLog;
+  htmlStructure?: string;
+  key?: string;
 }
 
-export type PreviewDetailResponse = MdmResourcesResponse<PreviewDetail>;
-
-/**
- * Represents a reference to another Mauro entity which is related or used in.
- */
-export interface PreviewReference {
-  name: string;
-  stereotype: Stereotype;
-  catalogueId: string;
-  retired: boolean;
-  description?: string;
-}
-
-export type PreviewReferenceResponse = MdmResourcesResponse<PreviewReference[]>;
+export type NhsDataDictionaryComponentResponse = MdmResourcesResponse<NhsDataDictionaryComponent>;

@@ -19,11 +19,11 @@ SPDX-License-Identifier: Apache-2.0
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { DataDictionaryService } from '@mdm/core/data-dictionary/data-dictionary.service';
 import {
-  Branch,
   Statistics,
   StatisticsItem
 } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { finalize } from 'rxjs/operators';
+import { VersionedFolderDetail } from '@maurodatamapper/mdm-resources';
 
 interface StatisticsTableRow {
   name: string;
@@ -36,7 +36,7 @@ interface StatisticsTableRow {
   styleUrls: ['./branch-statistics.component.scss']
 })
 export class BranchStatisticsComponent implements OnInit, OnChanges {
-  @Input() branch?: Branch;
+  @Input() branch?: VersionedFolderDetail;
 
   running = false;
   statistics: Statistics = {};

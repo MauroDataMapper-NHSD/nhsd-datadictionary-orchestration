@@ -22,8 +22,8 @@ import {
   CommonUiStates,
   StateHandlerService
 } from '@mdm/core/state-handler/state-handler.service';
-import { Branch } from '@mdm/mdm-resources/mdm-resources/adapters/nhs-data-dictionary.model';
 import { UIRouterGlobals } from '@uirouter/core';
+import { VersionedFolderDetail } from '@maurodatamapper/mdm-resources';
 
 interface TabViewDetail {
   index: number;
@@ -37,7 +37,7 @@ interface TabViewDetail {
 })
 export class BranchDetailComponent implements OnInit {
   branchName = '';
-  details?: Branch;
+  details?: VersionedFolderDetail;
   activeTab?: TabViewDetail;
 
   readonly tabs: TabViewDetail[] = [
