@@ -16,16 +16,17 @@ limitations under the License.
 SPDX-License-Identifier: Apache-2.0
 */
 import { Component, OnInit } from '@angular/core';
-import { SecurityService } from '../../core/security/security.service';
-import { BroadcastService } from '../../core/broadcast/broadcast.service';
-import { EMPTY, catchError, finalize, of, switchMap } from 'rxjs';
-import { SignInError, SignInErrorType } from '../../core/security/security.model';
+import { SecurityService } from '@mdm/core/security/security.service';
+import { BroadcastService } from '@mdm/core/broadcast/broadcast.service';
 import {
   CommonUiStates,
   StateHandlerService
-} from '../../core/state-handler/state-handler.service';
-import { BroadcastEvent } from '../../core/broadcast/broadcast.model';
+} from '@mdm/core/state-handler/state-handler.service';
 import { ToastrService } from 'ngx-toastr';
+import { MdmResourcesService } from '@mdm/mdm-resources/mdm-resources/mdm-resources.service';
+import { SignInError, SignInErrorType, UserDetails } from '@mdm/core/security/security.model';
+import { catchError, finalize } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'mdm-open-id-connect-authorize',
@@ -40,11 +41,12 @@ export class OpenIdConnectAuthorizeComponent implements OnInit {
     private security: SecurityService,
     private broadcast: BroadcastService,
     private stateHandler: StateHandlerService,
+    private resourcesService: MdmResourcesService,
     private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
-    if (this.security.isSignedIn()) {
+    if (this.verifyLoggedIn()) {
       return;
     }
 
@@ -59,11 +61,47 @@ export class OpenIdConnectAuthorizeComponent implements OnInit {
     const code = params.get('code');
 
     if (!state || !sessionState || !code) {
-      this.authorizing = false;
-      this.errorMessage = 'OpenID Connect session state has not been provided.';
-      return;
+      this.resourcesService.catalogueUser.get('currentUser').pipe(
+        catchError(() => {
+          this.authorizing = false;
+          this.errorMessage = 'OpenID Connect session state has not been provided, and can\'t authenticate current user.';
+          return EMPTY;
+        })
+      ).subscribe((result: { body: UserDetails }) => {
+        this.security.addUserToLocalStorage(result.body);
+        this.verifyLoggedIn();
+        }
+      );
+    } else {
+      this.security
+        .authorizeOpenIdConnectSession({
+          state,
+          sessionState,
+          code
+        })
+        .pipe(
+          catchError((error: SignInError) => {
+            switch (error.type) {
+              case SignInErrorType.InvalidCredentials:
+                this.errorMessage = 'Invalid username or password!';
+                break;
+              case SignInErrorType.AlreadySignedIn:
+                this.errorMessage = 'A user is already signed in, please sign out first.';
+                break;
+              default:
+                this.errorMessage = 'Unable to sign in. Please try again later.';
+                break;
+            }
+            return EMPTY;
+          }),
+          finalize(() => this.authorizing = false)
+        )
+        .subscribe(() => {
+          this.verifyLoggedIn();
+        });
     }
 
+/*
     const providerId = localStorage.getItem('openIdConnectProviderId');
     if (!providerId) {
       throw new Error('Cannot retrieve OpenID Connect provider identifier.');
@@ -120,5 +158,21 @@ export class OpenIdConnectAuthorizeComponent implements OnInit {
           { reload: true, inherit: false }
         );
       });
+ */
+  }
+
+  private verifyLoggedIn(): boolean {
+    if (this.security.isSignedIn()) {
+      // this.messages.loggedInChanged(true);
+      // this.broadcast.dispatch(BroadcastEvent.SignedIn, user);
+      this.toastr.clear();
+      this.stateHandler.goTo(
+        CommonUiStates.Branches,
+        {},
+        { reload: true, inherit: false }
+      );
+      return true;
+    }
+    return false;
   }
 }

@@ -23,7 +23,7 @@ import {
   MdmSessionResource,
   MdmAdminResource,
   MdmApiPropertyResources,
-  MdmPluginOpenIdConnectResource
+  MdmPluginOpenIdConnectResource, MdmCatalogueUserResource
 } from '@maurodatamapper/mdm-resources';
 import { MdmRestHandlerService } from '../mdm-rest-handler/mdm-rest-handler.service';
 import { MdmPluginNhsDataDictionaryResource } from '../plugins/mdm-plugin-nhs-data-dictionary.resource';
@@ -41,6 +41,11 @@ export class MdmResourcesService {
     this.restHandler
   );
   pluginOpenIdConnect = new MdmPluginOpenIdConnectResource(
+    this.resourcesConfig,
+    this.restHandler
+  );
+
+  catalogueUser = new MdmCatalogueUserResource(
     this.resourcesConfig,
     this.restHandler
   );

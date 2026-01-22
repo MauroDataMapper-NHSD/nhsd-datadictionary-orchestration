@@ -27,7 +27,7 @@ export const OPENID_CONNECT_CONFIG = new InjectionToken<OpenIdConnectConfigurati
 );
 
 export interface OpenIdConnectSession {
-  providerId: string;
+  providerId?: string | null;
   state: string;
   sessionState: string;
   code: string;

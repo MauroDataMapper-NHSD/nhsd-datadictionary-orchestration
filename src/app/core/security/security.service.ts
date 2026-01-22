@@ -215,11 +215,16 @@ export class SecurityService {
    * @returns An observable to return a `UserDetails` object representing the signed in user.
    * @throws `SignInError` in the observable chain if sign-in failed.
    *
-   * @see {@link SecurityHandlerService.authenticateWithOpenIdConnect}
+   * @see {@link SecurityService.authenticateWithOpenIdConnect}
    */
   authorizeOpenIdConnectSession(params: OpenIdConnectSession): Observable<UserDetails> {
+    const providerId = localStorage.getItem('openIdConnectProviderId');
+    if (!providerId) {
+      return throwError(() => new Error('Cannot retrieve OpenID Connect provider identifier.'));
+    }
+
     return this.signIn({
-      openidConnectProviderId: params.providerId,
+      openidConnectProviderId: providerId,
       state: params.state,
       sessionState: params.sessionState,
       code: params.code,
@@ -227,7 +232,7 @@ export class SecurityService {
     });
   }
 
-  private addUserToLocalStorage(user: UserDetails) {
+  addUserToLocalStorage(user: UserDetails): void {
     // Keep username for 100 days
     const expiryDate = new Date();
     expiryDate.setDate(expiryDate.getDate() + 1);
