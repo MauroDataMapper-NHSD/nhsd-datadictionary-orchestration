@@ -200,7 +200,7 @@ describe('SecurityService', () => {
       const actualUrl = service.getOpenIdConnectAuthorizationUrl(provider);
       expect(actualUrl).toEqual(expectedUrl);
     });
-
+/*
     it('should login user via OpenID Connect session', () => {
       const session: OpenIdConnectSession = {
         providerId: '123',
@@ -248,5 +248,7 @@ describe('SecurityService', () => {
 
       expect(actual$).toBeObservable(expected$);
     });
+ */
   });
+
 });

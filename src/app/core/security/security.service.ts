@@ -218,8 +218,9 @@ export class SecurityService {
    * @see {@link SecurityService.authenticateWithOpenIdConnect}
    */
   authorizeOpenIdConnectSession(params: OpenIdConnectSession): Observable<UserDetails> {
-    const providerId = localStorage.getItem('openIdConnectProviderId');
+    let providerId = localStorage.getItem('openIdConnectProviderId');
     if (!providerId) {
+      providerId = params.providerId ?? '';
       return throwError(() => new Error('Cannot retrieve OpenID Connect provider identifier.'));
     }
 
