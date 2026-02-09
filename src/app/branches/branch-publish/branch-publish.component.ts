@@ -72,7 +72,7 @@ export class BranchPublishComponent implements OnInit {
     >(ProgressDialogComponent, {
       data: {
         title: this.dialogTitles.get(generationType),
-        message: `Generating the ${this.dialogTitles.get(generationType)} now for the branch "${this.branch?.branchName ?? this.branch?.versionDisplay ?? ''}". This will take some time, please wait...`
+        message: `Generating the ${this.dialogTitles.get(generationType)} now for the branch "${this.branch?.branchName ?? this.branch?.modelVersionTag ?? this.branch?.modelVersion ?? ''}". This will take some time, please wait...`
       }
     });
     this.isBusy = true;
