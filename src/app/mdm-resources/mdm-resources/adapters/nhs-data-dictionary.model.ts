@@ -90,8 +90,7 @@ export interface IntegrityCheckItem {
   modelId: string;
 }
 
-export interface IntegrityCheckError {
-  component: IntegrityCheckItem;
+export interface IntegrityCheckError extends IntegrityCheckItem {
   details?: string[];
 }
 
