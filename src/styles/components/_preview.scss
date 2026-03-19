@@ -280,11 +280,22 @@ SPDX-License-Identifier: Apache-2.0
 
     table {
       margin: 1em 0;
+      width: 100%;
+
+      tr {
+        th:first-child,
+        td:first-child {
+          width: 75%;
+        }
+        th,
+        td {
+          padding: 1em;
+        }
+      }
+
     }
 
-    th,
-    td {
-      padding: 1em;
-    }
+
+
   }
 }

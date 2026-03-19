@@ -18,10 +18,10 @@ SPDX-License-Identifier: Apache-2.0
 
 <footer>
   <div class="container">
-    <div class="footer__container" flex fxLayout="row" fxLayoutAlign="space-between">
+    <div class="footer__container" fxLayout="row" fxLayoutAlign="space-between">
       <div class="footer__logo">
-        <p class="text-muted">
-          Powered by &nbsp;
+        <p class="text-muted footer__powered-by">
+          <span>Powered by</span>
           <img
             class="footer__logo--mdm"
             src="assets/images/mdm-logo.png"
@@ -29,17 +29,12 @@ SPDX-License-Identifier: Apache-2.0
           />
         </p>
       </div>
-      <div>
-        <div class="footer__box" flex fxLayout="column" fxLayoutAlign="space-between">
-          <div class="footer__links">
-            <a [href]="mauroBaseUrl" target="_blank">Mauro Data Mapper</a>
-          </div>
-        </div>
-        <div class="footer__box mt-2">
-          <small class="text-muted">Version {{ version }}</small
-          >&nbsp;&nbsp;
-          <small class="text-muted">Copyright &copy; {{ year }} NHS England</small>
-        </div>
+
+      <div class="footer__right">
+        <small class="text-muted footer__line">Version {{ version }}</small>
+        <small class="text-muted footer__line"
+          >Copyright &copy; {{ year }} NHS England</small
+        >
       </div>
     </div>
   </div>
