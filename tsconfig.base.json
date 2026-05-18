@@ -1,0 +1,21 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": false,
+    "target": "ES2022",
+    "module": "es2020",
+    "lib": ["es2018", "dom"],
+    "baseUrl": ".",
+    "paths": {
+      "@env/*": ["src/environments/*"],
+      "@mdm/*": ["src/app/*"],
+      "api-client": ["libs/api-client/src/index.ts"],
+      "ui": ["libs/ui/src/index.ts"]
+    }
+  }
+}

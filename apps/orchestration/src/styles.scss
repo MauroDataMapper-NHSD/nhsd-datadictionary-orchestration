@@ -1,0 +1,16 @@
+@import '../../../src/styles/abstracts/variables';
+@import '../../../src/styles/abstracts/mixins';
+@import '../../../src/styles/abstracts/helpers';
+@import '../../../src/styles/main';
+@import '../../../src/styles/default';
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #f8fafc;
+}
