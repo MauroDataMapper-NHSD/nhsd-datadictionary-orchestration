@@ -42,7 +42,8 @@ import {
 } from 'api-client';
 import { saveAs } from 'file-saver';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import styles from './app.module.scss';
 import { BranchPicker, PreviewBreadcrumb, PreviewToc, TocLink } from 'ui';
 
 const apiBaseUrl =
@@ -123,37 +124,40 @@ const previewTiles = [
   {
     index: 'dataSetFolder',
     title: 'Data Sets',
-    description: 'Data Sets provide the specification for data collections and analyses.'
+    description: 'Data Sets provide the specification for data collections and for data analyses.'
   },
   {
     index: 'element',
     title: 'Data Elements',
-    description: 'Data Elements are the data items used within data sets.'
+    description: 'Data Elements are the data items used within Data Sets.'
   },
   {
     index: 'attribute',
     title: 'Attributes',
-    description: 'Attributes define characteristics of classes in the data model.'
+    description:
+      'The part of the data model describing the characteristics of Classes. Attributes define the data within the data model.'
   },
   {
     index: 'class',
     title: 'Classes',
-    description: 'Classes describe significant aspects of the health and care business.'
+    description:
+      'The part of the data model describing the aspects of the health and care business with significant characteristics.'
   },
   {
     index: 'businessDefinition',
     title: 'NHS Business Definitions',
-    description: 'Links logical classes to health and care business context.'
+    description:
+      'The part of the data model that links the logical classes to the context of the health and care business.'
   },
   {
     index: 'supportingInformation',
     title: 'Supporting Information',
-    description: 'Additional guidance to understand NHS Data Model content.'
+    description: 'Provide information to help users understand content in the NHS Data Model and Dictionary.'
   },
   {
     index: 'dataSetConstraint',
     title: 'Data Set Constraints',
-    description: 'Constraint information applied to data set content.'
+    description: ''
   },
   {
     index: 'allItemsIndex',
@@ -228,18 +232,47 @@ function scrollToAnchor(anchor: string) {
 
 function PreviewSection({
   title,
-  children
+  children,
+  defaultExpanded = true,
+  onExpand
 }: {
   title: string;
   children: ReactNode;
+  defaultExpanded?: boolean;
+  onExpand?: () => void;
 }) {
   const id = sectionId(title);
+  const contentId = `${id}-content`;
+  const [expanded, setExpanded] = useState(defaultExpanded);
+
+  const handleToggle = () => {
+    setExpanded((current) => {
+      const next = !current;
+      if (next) {
+        onExpand?.();
+      }
+      return next;
+    });
+  };
 
   return (
-    <Card withBorder id={id}>
-      <Title order={4} mb="sm">{title}</Title>
-      {children}
-    </Card>
+    <article className="mdm-preview-expandable-panel">
+      <div className="mdm-preview-expandable-panel__header">
+        <h2 className="title topictitle2">
+          <button type="button" onClick={handleToggle} aria-expanded={expanded} aria-controls={contentId}>
+            <span aria-hidden="true">{expanded ? '▾' : '▸'}</span>
+          </button>
+          {title}
+          <span id={id} />
+        </h2>
+      </div>
+      <div
+        id={contentId}
+        className={`mdm-preview-expandable-panel__content ${expanded ? 'expanded' : 'collapsed'}`}
+      >
+        {children}
+      </div>
+    </article>
   );
 }
 
@@ -326,6 +359,49 @@ function resolvePreviewItemId(item: Record<string, unknown>) {
   }
 
   return undefined;
+}
+
+function getPreviewItemClassName(item: {
+  stereotype?: string;
+  isRetired?: boolean;
+  retired?: boolean;
+}) {
+  return [item.stereotype, item.isRetired || item.retired ? 'retired' : undefined]
+    .filter(Boolean)
+    .join(' ');
+}
+
+const previewTypeLabelMap: Record<string, string> = {
+  element: 'Data Element',
+  attribute: 'Attribute',
+  class: 'Class',
+  dataSet: 'Data Set',
+  businessDefinition: 'Business Definition',
+  supportingInformation: 'Supporting Information',
+  dataSetConstraint: 'Data Set Constraint',
+  dataSetFolder: 'Data Set Folder',
+  allItemsIndex: 'All Items Index'
+};
+
+function prettifyPreviewStereotype(stereotype: string | undefined) {
+  if (!stereotype) {
+    return '-';
+  }
+
+  const normalized = normalizePreviewRouteIndex(stereotype);
+  return (normalized && previewTypeLabelMap[normalized]) ?? stereotype;
+}
+
+function PreviewInfoMessage({ children }: { children: ReactNode }) {
+  return <div className="info-message">{children}</div>;
+}
+
+function PreviewTable({ children, className }: { children: ReactNode; className?: string }) {
+  const classes = ['simpletable', 'table', 'table-striped', 'table-sm', className]
+    .filter(Boolean)
+    .join(' ');
+
+  return <Table className={classes}>{children}</Table>;
 }
 
 function downloadArtifact(artifact: GeneratedArtifact) {
@@ -480,30 +556,42 @@ export function ErrorStatePage({ variant }: { variant: ErrorVariant }) {
 export function BranchesPage() {
   const { branches, loading, error } = useBranches();
   const navigate = useNavigate();
+  const location = useLocation();
+  const showInitialBranchPicker = (location.state as { showInitialBranchPicker?: boolean } | null)?.showInitialBranchPicker === true;
+  const selectedBranchId = localStorage.getItem('selectedBranchId');
+
+  useEffect(() => {
+    if (!showInitialBranchPicker && selectedBranchId) {
+      navigate(`/branches/${selectedBranchId}/statistics`, { replace: true });
+    }
+  }, [navigate, selectedBranchId, showInitialBranchPicker]);
 
   if (loading) return <Loader />;
+  if (!showInitialBranchPicker && selectedBranchId) return <Loader />;
 
   return (
     <Stack>
-      <Title order={2}>Branches</Title>
-      <Text>Please select a branch to view statistics, integrity checks, and publishing actions.</Text>
+      {showInitialBranchPicker ? (
+        <Card withBorder p="xl" className={styles.initialBranchCard}>
+          <Title order={2}>Which branch would you like to start working with?</Title>
+          <Text mt="sm">Choose a branch to view statistics, integrity checks, and publishing actions.</Text>
+          <Box mt="lg" className={styles.largeBranchPicker}>
+            <BranchPicker
+              label="Start with branch"
+              size="lg"
+              options={branches.map((branch) => ({ value: branch.id, label: getBranchLabel(branch) }))}
+              onChange={(value) => value && navigate(`/branches/${value}/statistics`)}
+            />
+          </Box>
+        </Card>
+      ) : (
+        <Card withBorder>
+          <Title order={3}>Branch workspace</Title>
+          <Text mt="sm">Use the branch selector under the main header to switch branch context at any time.</Text>
+        </Card>
+      )}
+
       {error && <Alert color="red">{error}</Alert>}
-      <BranchPicker
-        options={branches.map((branch) => ({ value: branch.id, label: getBranchLabel(branch) }))}
-        onChange={(value) => value && navigate(`/branches/${value}/statistics`)}
-      />
-      <SimpleGrid cols={{ base: 1, sm: 2 }}>
-        {branches.map((branch) => (
-          <Card key={branch.id} withBorder>
-            <Stack gap="xs">
-              <Text fw={600}>{getBranchLabel(branch)}</Text>
-              <Anchor component={Link} to={`/branches/${branch.id}/statistics`}>
-                Open branch
-              </Anchor>
-            </Stack>
-          </Card>
-        ))}
-      </SimpleGrid>
     </Stack>
   );
 }
@@ -851,10 +939,16 @@ export function ChangesPage() {
   const api = useApi();
   const { branch: branchId } = useParams();
   const navigate = useNavigate();
-  const { branches, loading, error } = useBranches();
   const [includeDataSets, setIncludeDataSets] = useState(false);
   const [running, setRunning] = useState(false);
   const [preview, setPreview] = useState<ChangePaperPreview | null>(null);
+  const selectedBranchId = localStorage.getItem('selectedBranchId');
+
+  useEffect(() => {
+    if (!branchId && selectedBranchId) {
+      navigate(`/changes/${selectedBranchId}`, { replace: true });
+    }
+  }, [branchId, navigate, selectedBranchId]);
 
   const runPreview = () => {
     if (!branchId) return;
@@ -865,31 +959,19 @@ export function ChangesPage() {
       .finally(() => setRunning(false));
   };
 
-  if (loading) return <Loader />;
+  if (!branchId && selectedBranchId) return <Loader />;
 
   return (
     <Stack>
       <Title order={2}>Change Paper Preview</Title>
-      {error && <Alert color="red">{error}</Alert>}
       <Alert color="blue">
         This is a <strong>preview</strong> only. Some content may not exactly match the final published change paper.
       </Alert>
-      <BranchPicker
-        value={branchId ?? null}
-        options={branches.map((branch) => ({ value: branch.id, label: getBranchLabel(branch) }))}
-        onChange={(value) => navigate(value ? `/changes/${value}` : '/changes')}
-      />
 
-      {!branchId && (
-        <SimpleGrid cols={{ base: 1, sm: 2 }}>
-          {branches.map((branch) => (
-            <Card key={branch.id} withBorder>
-              <Anchor component={Link} to={`/changes/${branch.id}`}>
-                {getBranchLabel(branch)}
-              </Anchor>
-            </Card>
-          ))}
-        </SimpleGrid>
+      {!branchId && !selectedBranchId && (
+        <Alert color="yellow">
+          No branch selected yet. Choose a branch using the selector under the header.
+        </Alert>
       )}
 
       {branchId && (
@@ -902,7 +984,6 @@ export function ChangesPage() {
               disabled={running}
             />
             <Button onClick={runPreview} loading={running}>Run</Button>
-            <Button variant="light" onClick={() => navigate('/changes')}>Change branch</Button>
           </Group>
 
           {preview?.background && (
@@ -975,32 +1056,26 @@ export function ChangesPage() {
 }
 
 export function PreviewDefaultPage() {
-  const { branches, loading } = useBranches();
   const navigate = useNavigate();
+  const selectedBranchId = localStorage.getItem('selectedBranchId');
 
-  if (loading) return <Loader />;
+  useEffect(() => {
+    if (selectedBranchId) {
+      navigate(`/preview/${selectedBranchId}`, { replace: true });
+    }
+  }, [navigate, selectedBranchId]);
+
+  if (selectedBranchId) return <Loader />;
 
   return (
-    <Stack>
-      <Title order={2}>Preview</Title>
-      <Text>Select a branch to open the preview navigation.</Text>
-      <Alert color="blue">
-        This is a <strong>preview</strong> only. Some content may not exactly match the final published data dictionary.
-      </Alert>
-      <BranchPicker
-        options={branches.map((branch) => ({ value: branch.id, label: getBranchLabel(branch) }))}
-        onChange={(value) => value && navigate(`/preview/${value}`)}
-      />
-      <SimpleGrid cols={{ base: 1, sm: 2 }}>
-        {branches.map((branch) => (
-          <Card key={branch.id} withBorder>
-            <Anchor component={Link} to={`/preview/${branch.id}`}>
-              {getBranchLabel(branch)}
-            </Anchor>
-          </Card>
-        ))}
-      </SimpleGrid>
-    </Stack>
+    <div className="mdm-dd-preview">
+      <div className="mdm-shadow-block">
+        <div className="mdm-preview-default">
+          <h3>Data Dictionary Preview</h3>
+          <p>No branch selected yet. Choose a branch using the selector under the header.</p>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -1012,39 +1087,60 @@ export function PreviewHomePage() {
   }
 
   return (
-    <Stack>
-      <Title order={2}>Welcome to the NHS Data Model and Dictionary for England.</Title>
-      <Text>
-        The NHS Data Model and Dictionary provides a reference point for approved Information Standards Notices.
-      </Text>
-      <Box ta="center">
-        <img
-          src="/images/4pics.gif"
-          alt="NHS Data Dictionary images"
-          style={{ maxWidth: '100%', height: 'auto' }}
-        />
-      </Box>
-      <SimpleGrid cols={{ base: 1, sm: 2 }}>
+    <div className="mdm-dd-preview mdm-preview-home">
+      <Grid align="center" gutter="xl">
+        <Grid.Col span={{ base: 12, md: 8 }}>
+          <h2>Welcome to the NHS Data Model and Dictionary for England.</h2>
+          <p>
+            The NHS Data Model and Dictionary provides a reference point for approved Information Standards Notices to
+            support health care activities within the NHS in England. It has been developed for everyone who is
+            actively involved in the collection of data and the management of information in the NHS.
+          </p>
+          <p>
+            The NHS Data Model and Dictionary is maintained and published by the{' '}
+            <Anchor href="https://digital.nhs.uk/services/nhs-data-model-and-dictionary-service" target="_blank" rel="noreferrer">
+              NHS Data Model and Dictionary Service
+            </Anchor>
+            .
+          </p>
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, md: 4 }}>
+          <Box ta="center">
+            <img
+              className="preview-home-image"
+              src="/images/4pics.gif"
+              alt="NHS Data Dictionary images"
+            />
+          </Box>
+        </Grid.Col>
+      </Grid>
+
+      <div className="mdm-preview-home__tile-container">
         {previewTiles.map((tile) => (
-          <Card withBorder key={tile.index}>
-            <Stack gap="xs">
-              <Text fw={600}>{tile.title}</Text>
-              <Text size="sm">{tile.description}</Text>
-              <Anchor
-                component={Link}
-                to={
-                  tile.index === 'dataSetFolder'
-                    ? `/preview/${branchId}/dataSetFolder/root`
-                    : `/preview/${branchId}/${tile.index}`
-                }
-              >
-                {tile.index === 'dataSetFolder' ? 'Open root folder' : 'Open index'}
-              </Anchor>
-            </Stack>
-          </Card>
+          <div className="mdm-preview-tile" key={tile.index}>
+            <div>
+              <div className="mdm-preview-tile__text">
+                <div className="mdm-preview-tile__text__title">
+                  <span>
+                    <Anchor
+                      component={Link}
+                      to={
+                        tile.index === 'dataSetFolder'
+                          ? `/preview/${branchId}/dataSetFolder/root`
+                          : `/preview/${branchId}/${tile.index}`
+                      }
+                    >
+                      {tile.title}
+                    </Anchor>
+                  </span>
+                </div>
+                <div className="mdm-preview-tile__text__description">{tile.description}</div>
+              </div>
+            </div>
+          </div>
         ))}
-      </SimpleGrid>
-    </Stack>
+      </div>
+    </div>
   );
 }
 
@@ -1084,51 +1180,60 @@ export function PreviewIndexPage() {
   const tocLinks = groups.map(([key]) => ({ label: key, anchor: sectionId(key) }));
 
   return (
-    <Stack>
+    <div className="mdm-dd-preview">
       <PreviewBreadcrumb
         items={[
           { label: 'Preview', to: `/preview/${branchId}` },
           { label: indexTitleMap[normalizedIndex] ?? normalizedIndex }
         ]}
       />
-      <Grid>
-        <Grid.Col span={{ base: 12, md: 9 }}>
-          <Stack>
-            <Title order={2}>{indexTitleMap[normalizedIndex] ?? normalizedIndex}</Title>
-            <Alert color="blue">
-              For preview only, this index page does not include the final published description block.
-            </Alert>
+      <Grid gutter="xl">
+        <Grid.Col span={{ base: 12, md: 10 }}>
+          <div>
+            <h1 className="title topictitle1">{indexTitleMap[normalizedIndex] ?? normalizedIndex}</h1>
+            <PreviewInfoMessage>
+              For preview only, this index page does not include the final published description block. The final
+              published output will include a description.
+            </PreviewInfoMessage>
             {groups.map(([key, groupItems]) => (
               <PreviewSection key={key} title={key}>
-                <Table>
+                <div className="simpletable-container">
+                <PreviewTable>
+                  <Table.Thead>
+                    <Table.Tr className="thead-light">
+                      <Table.Th>Item Name</Table.Th>
+                    </Table.Tr>
+                  </Table.Thead>
                   <Table.Tbody>
                     {groupItems.map((item) => (
                       <Table.Tr key={resolvePreviewItemId(item) || item.name}>
                         <Table.Td>
                           {resolvePreviewItemId(item) ? (
                             <Anchor
+                              className={getPreviewItemClassName(item)}
                               component={Link}
                               to={`/preview/${branchId}/${mapLinkIndex(item.stereotype)}/${resolvePreviewItemId(item)}`}
                             >
                               {item.name}
                             </Anchor>
                           ) : (
-                            <Text>{item.name}</Text>
+                            <span className={getPreviewItemClassName(item)}>{item.name}</span>
                           )}
                         </Table.Td>
                       </Table.Tr>
                     ))}
                   </Table.Tbody>
-                </Table>
+                </PreviewTable>
+                </div>
               </PreviewSection>
             ))}
-          </Stack>
+          </div>
         </Grid.Col>
-        <Grid.Col span={{ base: 12, md: 3 }}>
+        <Grid.Col span={{ base: 12, md: 2 }}>
           <PreviewToc links={tocLinks} onNavigate={scrollToAnchor} />
         </Grid.Col>
       </Grid>
-    </Stack>
+    </div>
   );
 }
 
@@ -1194,26 +1299,29 @@ export function PreviewDetailPage() {
   tocLinks.push({ label: 'Change Log', anchor: sectionId('Change Log') });
 
    const renderLinkList = (items: PreviewLinkItem[]) => (
-     <List spacing="xs">
-       {items.map((item) => (
-         <List.Item key={resolvePreviewItemId(item) || item.name}>
-           {resolvePreviewItemId(item) ? (
-             <Anchor
-               component={Link}
-               to={`/preview/${branchId}/${mapLinkIndex(item.stereotype)}/${resolvePreviewItemId(item)}`}
-             >
-               {item.name}
-             </Anchor>
-           ) : (
-             <Text>{item.name}</Text>
-           )}
-         </List.Item>
-       ))}
-     </List>
+     <div className="- topic/body body">
+       <ul>
+         {items.map((item) => (
+           <li key={resolvePreviewItemId(item) || item.name}>
+             {resolvePreviewItemId(item) ? (
+               <Anchor
+                 className={getPreviewItemClassName(item)}
+                 component={Link}
+                 to={`/preview/${branchId}/${mapLinkIndex(item.stereotype)}/${resolvePreviewItemId(item)}`}
+               >
+                 {item.name}
+               </Anchor>
+             ) : (
+               <span className={getPreviewItemClassName(item)}>{item.name}</span>
+             )}
+           </li>
+         ))}
+       </ul>
+     </div>
    );
 
   return (
-    <Stack>
+    <div className="mdm-dd-preview">
       <PreviewBreadcrumb
         items={[
           { label: 'Preview', to: `/preview/${branchId}` },
@@ -1225,34 +1333,46 @@ export function PreviewDetailPage() {
         ]}
       />
 
-      <Grid>
-        <Grid.Col span={{ base: 12, md: 9 }}>
-          <Stack>
-            <Title order={1}>{detail.name}</Title>
+      <Grid gutter="xl">
+        <Grid.Col span={{ base: 12, md: 10 }}>
+          <div className="mdm-preview-detail">
+            <h1 className={`title topictitle1 ${getPreviewItemClassName(detail)}`}>{detail.name}</h1>
             {detail.shortDescription && (
-              <Text dangerouslySetInnerHTML={{ __html: detail.shortDescription }} />
+              <div className="- topic/body body">
+                <p className="- topic/shortdesc shortdesc" dangerouslySetInnerHTML={{ __html: detail.shortDescription }} />
+              </div>
             )}
 
             {detail.formatLength && (
               <PreviewSection title="Format / Length">
-                <Text dangerouslySetInnerHTML={{ __html: detail.formatLength }} />
+                <div className="- topic/body body">
+                  <div className="- topic/div div">
+                    <p className="- topic/p p" dangerouslySetInnerHTML={{ __html: detail.formatLength }} />
+                  </div>
+                </div>
               </PreviewSection>
             )}
 
             {detail.description && (
               <PreviewSection title="Description">
+                <div className="- topic/body body">
+                  <div className="- topic/div div">
                 {detail.attributeText && (
-                  <Text mb="xs" dangerouslySetInnerHTML={{ __html: detail.attributeText }} />
+                  <p className="- topic/p p" dangerouslySetInnerHTML={{ __html: detail.attributeText }} />
                 )}
-                <Text dangerouslySetInnerHTML={{ __html: detail.description }} />
+                <p className="- topic/p p" dangerouslySetInnerHTML={{ __html: detail.description }} />
+                  </div>
+                </div>
               </PreviewSection>
             )}
 
             {detail.nationalCodes && detail.nationalCodes.length > 0 && (
               <PreviewSection title="National Codes">
-                <Table>
+                <div className="- topic/body body">
+                <div className="simpletable-container">
+                <PreviewTable className="codes-table">
                   <Table.Thead>
-                    <Table.Tr>
+                    <Table.Tr className="thead-light">
                       <Table.Th>Code</Table.Th>
                       <Table.Th>Description</Table.Th>
                     </Table.Tr>
@@ -1267,15 +1387,19 @@ export function PreviewDetailPage() {
                       </Table.Tr>
                     ))}
                   </Table.Tbody>
-                </Table>
+                </PreviewTable>
+                </div>
+                </div>
               </PreviewSection>
             )}
 
             {detail.defaultCodes && detail.defaultCodes.length > 0 && (
               <PreviewSection title="Default Codes">
-                <Table>
+                <div className="- topic/body body">
+                <div className="simpletable-container">
+                <PreviewTable className="codes-table">
                   <Table.Thead>
-                    <Table.Tr>
+                    <Table.Tr className="thead-light">
                       <Table.Th>Code</Table.Th>
                       <Table.Th>Description</Table.Th>
                     </Table.Tr>
@@ -1290,22 +1414,26 @@ export function PreviewDetailPage() {
                       </Table.Tr>
                     ))}
                   </Table.Tbody>
-                </Table>
+                </PreviewTable>
+                </div>
+                </div>
               </PreviewSection>
             )}
 
             {detail.definition && (
               <PreviewSection title="Specification">
-                <Box dangerouslySetInnerHTML={{ __html: detail.definition }} />
+                <div className="specification" dangerouslySetInnerHTML={{ __html: detail.definition }} />
               </PreviewSection>
             )}
 
             {detail.attributes && detail.attributes.length > 0 && (
               detail.stereotype === 'class' ? (
                 <PreviewSection title="Attributes">
-                  <Table>
+                  <div className="- topic/body body">
+                  <div className="simpletable-container">
+                  <PreviewTable className="attribute-table">
                     <Table.Thead>
-                      <Table.Tr>
+                      <Table.Tr className="thead-light">
                         <Table.Th style={{ width: '10%' }}>Key</Table.Th>
                         <Table.Th>Attribute Name</Table.Th>
                       </Table.Tr>
@@ -1317,19 +1445,22 @@ export function PreviewDetailPage() {
                            <Table.Td>
                              {resolvePreviewItemId(item) ? (
                                <Anchor
+                                  className={getPreviewItemClassName(item)}
                                  component={Link}
                                  to={`/preview/${branchId}/${mapLinkIndex(item.stereotype)}/${resolvePreviewItemId(item)}`}
                                >
                                  {item.name}
                                </Anchor>
                              ) : (
-                               <Text>{item.name}</Text>
+                                <span className={getPreviewItemClassName(item)}>{item.name}</span>
                              )}
                            </Table.Td>
                          </Table.Tr>
                        ))}
                     </Table.Tbody>
-                  </Table>
+                  </PreviewTable>
+                  </div>
+                  </div>
                 </PreviewSection>
               ) : (
                 <PreviewSection title="Attributes">{renderLinkList(detail.attributes)}</PreviewSection>
@@ -1338,9 +1469,12 @@ export function PreviewDetailPage() {
 
             {detail.relationships && detail.relationships.length > 0 && (
               <PreviewSection title="Relationships">
-                <Table>
+                <div className="- topic/body body">
+                  <p className="- topic/p p">Each {detail.name}</p>
+                <div className="simpletable-container">
+                <PreviewTable className="relationship-table">
                   <Table.Thead>
-                    <Table.Tr>
+                    <Table.Tr className="thead-light">
                       <Table.Th>Key</Table.Th>
                       <Table.Th>Relationship</Table.Th>
                       <Table.Th>Class</Table.Th>
@@ -1354,19 +1488,22 @@ export function PreviewDetailPage() {
                         <Table.Td>
                           {resolvePreviewItemId(relationship) ? (
                             <Anchor
+                              className={getPreviewItemClassName(relationship)}
                               component={Link}
                               to={`/preview/${branchId}/${mapLinkIndex(relationship.stereotype)}/${resolvePreviewItemId(relationship)}`}
                             >
                               {relationship.name}
                             </Anchor>
                           ) : (
-                            <Text>{relationship.name}</Text>
+                            <span className={getPreviewItemClassName(relationship)}>{relationship.name}</span>
                           )}
                         </Table.Td>
                       </Table.Tr>
                     ))}
                   </Table.Tbody>
-                </Table>
+                </PreviewTable>
+                </div>
+                </div>
               </PreviewSection>
             )}
 
@@ -1380,9 +1517,12 @@ export function PreviewDetailPage() {
 
             {aliases.length > 0 && (
               <PreviewSection title="Also Known As">
-                <Table>
+                <div className="- topic/body body">
+                  <p className="- topic/p p">This {prettifyPreviewStereotype(detail.stereotype).toLowerCase()} is also known by these names:</p>
+                <div className="simpletable-container">
+                <PreviewTable className="alias-table">
                   <Table.Thead>
-                    <Table.Tr>
+                    <Table.Tr className="thead-light">
                       <Table.Th>Context</Table.Th>
                       <Table.Th>Alias</Table.Th>
                     </Table.Tr>
@@ -1395,21 +1535,31 @@ export function PreviewDetailPage() {
                       </Table.Tr>
                     ))}
                   </Table.Tbody>
-                </Table>
+                </PreviewTable>
+                </div>
+                </div>
               </PreviewSection>
             )}
 
             {showWhereUsed && (
-              <PreviewSection title="Where Used">
-                <Group mb="sm">
-                  <Button variant="light" onClick={loadReferences} loading={loadingRefs}>
-                    Load references
-                  </Button>
-                </Group>
+              <PreviewSection
+                title="Where Used"
+                defaultExpanded={false}
+                onExpand={() => {
+                  if (!loadingRefs && references.length === 0) {
+                    loadReferences();
+                  }
+                }}
+              >
+                {loadingRefs && (
+                  <PreviewInfoMessage>Loading references, please wait...</PreviewInfoMessage>
+                )}
                 {references.length > 0 && (
-                  <Table>
+                  <div className="- topic/body body">
+                  <div className="simpletable-container">
+                  <PreviewTable>
                     <Table.Thead>
-                      <Table.Tr>
+                      <Table.Tr className="thead-light">
                         <Table.Th>Type</Table.Th>
                         <Table.Th>Link</Table.Th>
                         <Table.Th>How used</Table.Th>
@@ -1418,10 +1568,11 @@ export function PreviewDetailPage() {
                     <Table.Tbody>
                        {references.map((reference, idx) => (
                          <Table.Tr key={resolvePreviewItemId(reference) || idx}>
-                           <Table.Td>{reference.stereotype ?? '-'}</Table.Td>
+                            <Table.Td>{prettifyPreviewStereotype(reference.stereotype)}</Table.Td>
                            <Table.Td>
                              {resolvePreviewItemId(reference) ? (
                                <Anchor
+                                  className={getPreviewItemClassName(reference)}
                                  component={Link}
                                  to={`/preview/${branchId}/${mapLinkIndex(reference.stereotype)}/${resolvePreviewItemId(reference)}`}
                                >
@@ -1435,7 +1586,9 @@ export function PreviewDetailPage() {
                          </Table.Tr>
                        ))}
                     </Table.Tbody>
-                  </Table>
+                  </PreviewTable>
+                  </div>
+                  </div>
                 )}
               </PreviewSection>
             )}
@@ -1446,12 +1599,16 @@ export function PreviewDetailPage() {
 
             <PreviewSection title="Change Log">
               {detail.changeLog?.headerText && (
-                <Box mb="sm" dangerouslySetInnerHTML={{ __html: detail.changeLog.headerText }} />
+                <div className="- topic/body body">
+                  <p className="- topic/p p" dangerouslySetInnerHTML={{ __html: detail.changeLog.headerText }} />
+                </div>
               )}
               {detail.changeLog?.entries && detail.changeLog.entries.length > 0 && (
-                <Table>
+                <div className="- topic/body body">
+                <div className="simpletable-container">
+                <PreviewTable>
                   <Table.Thead>
-                    <Table.Tr>
+                    <Table.Tr className="thead-light">
                       <Table.Th>Change Request</Table.Th>
                       <Table.Th>Description</Table.Th>
                       <Table.Th>Implementation Date</Table.Th>
@@ -1474,22 +1631,33 @@ export function PreviewDetailPage() {
                       </Table.Tr>
                     ))}
                   </Table.Tbody>
-                </Table>
+                </PreviewTable>
+                </div>
+                </div>
               )}
               {detail.changeLog?.footerText && (
-                <Box mt="sm" dangerouslySetInnerHTML={{ __html: detail.changeLog.footerText }} />
+                <div className="- topic/body body">
+                  <p className="- topic/p p" dangerouslySetInnerHTML={{ __html: detail.changeLog.footerText }} />
+                </div>
               )}
             </PreviewSection>
-          </Stack>
+          </div>
         </Grid.Col>
 
-        <Grid.Col span={{ base: 12, md: 3 }}>
+        <Grid.Col span={{ base: 12, md: 2 }}>
           <PreviewToc links={tocLinks} onNavigate={scrollToAnchor} />
         </Grid.Col>
       </Grid>
-    </Stack>
+    </div>
   );
 }
+
+
+
+
+
+
+
 
 
 

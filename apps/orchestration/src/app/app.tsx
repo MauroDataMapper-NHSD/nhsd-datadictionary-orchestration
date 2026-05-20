@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { AppLayout, NavItem } from 'ui';
 import { OrchestrationApiClient, PublicOpenIdConnectProvider } from 'api-client';
@@ -32,7 +32,10 @@ const apiClient = new OrchestrationApiClient({ baseUrl: mauroBaseUrl });
 
 export function App(): JSX.Element {
   const [openIdConnectProviders, setOpenIdConnectProviders] = useState<PublicOpenIdConnectProvider[]>([]);
+  const [branches, setBranches] = useState<Array<{ id: string; label: string }>>([]);
+  const [selectedBranchId, setSelectedBranchId] = useState<string | null>(() => localStorage.getItem('selectedBranchId'));
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     // Load OpenID Connect providers
@@ -48,8 +51,28 @@ export function App(): JSX.Element {
     loadProviders();
   }, []);
 
+  useEffect(() => {
+    const loadBranches = async () => {
+      try {
+        const items = await apiClient.getBranches();
+        setBranches(
+          items.map((branch) => ({
+            id: branch.id,
+            label: branch.versionDisplay ?? branch.branchName ?? branch.name
+          }))
+        );
+      } catch {
+        setBranches([]);
+      }
+    };
+
+    loadBranches();
+  }, []);
+
   const handleSignOut = async () => {
     clearUserSession();
+    localStorage.removeItem('selectedBranchId');
+    setSelectedBranchId(null);
 
     try {
       await apiClient.signOut();
@@ -64,7 +87,7 @@ export function App(): JSX.Element {
     try {
       const result = await apiClient.signIn({ username, password });
       persistUserSession(result);
-      navigate('/branches', { replace: true });
+      navigate('/branches', { replace: true, state: { showInitialBranchPicker: true } });
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Invalid username or password!';
       throw new Error(errorMessage);
@@ -85,11 +108,80 @@ export function App(): JSX.Element {
     window.location.href = authUrl.toString();
   };
 
+  useEffect(() => {
+    const pathBranchMatch = location.pathname.match(/^\/(branches|preview|changes)\/([^/]+)/);
+    const branchIdFromPath = pathBranchMatch?.[2] ?? null;
+
+    if (branchIdFromPath) {
+      setSelectedBranchId(branchIdFromPath);
+      localStorage.setItem('selectedBranchId', branchIdFromPath);
+    }
+  }, [location.pathname]);
+
+  const handleBranchChange = (branchId: string) => {
+    setSelectedBranchId(branchId);
+    localStorage.setItem('selectedBranchId', branchId);
+
+    if (location.pathname.startsWith('/preview')) {
+      navigate(`/preview/${branchId}`);
+      return;
+    }
+
+    if (location.pathname.startsWith('/changes')) {
+      navigate(`/changes/${branchId}`);
+      return;
+    }
+
+    navigate(`/branches/${branchId}/statistics`);
+  };
+
+  const handleLoadStatistics = async (branchId: string) => {
+    const stats = await apiClient.getBranchStatistics(branchId);
+
+    return Object.entries(stats).map(([name, values]) => ({
+      name,
+      preparatory: values.Preparatory ?? 0,
+      retired: values.Retired ?? 0,
+      total: values.Total ?? 0
+    }));
+  };
+
+  const handleLoadIntegrityChecks = async (branchId: string) => {
+    const checks = await apiClient.getIntegrityChecks(branchId);
+
+    return checks.map((check) => ({
+      checkName: check.checkName,
+      description: check.description,
+      errors: (check.errors ?? []).map((error) => ({
+        component: error.component
+          ? {
+              id: error.component.id,
+              label: error.component.label,
+              domainType: error.component.domainType,
+              modelId: error.component.modelId,
+              parentId: error.component.parentId
+            }
+          : undefined,
+        details: error.details ?? []
+      }))
+    }));
+  };
+
+  const showInitialBranchPicker =
+    location.pathname === '/branches' &&
+    ((location.state as { showInitialBranchPicker?: boolean } | null)?.showInitialBranchPicker === true);
+
   return (
     <AppLayout
       appTitle="Data Dictionary Orchestrator"
       version={appVersion}
       links={navLinks}
+      branchOptions={branches.map((branch) => ({ value: branch.id, label: branch.label }))}
+      selectedBranchId={selectedBranchId}
+      onBranchChange={handleBranchChange}
+      onLoadStatistics={handleLoadStatistics}
+      onLoadIntegrityChecks={handleLoadIntegrityChecks}
+      hideBranchSelector={showInitialBranchPicker}
       signInHref={mauroBaseUrl}
       onSignIn={handleSignIn}
       onSignOut={handleSignOut}
