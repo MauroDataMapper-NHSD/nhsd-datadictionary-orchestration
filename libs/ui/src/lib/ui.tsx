@@ -20,7 +20,7 @@ import {
   Text
 } from '@mantine/core';
 import { ReactNode, useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import styles from './ui.module.scss';
 import SignInDialog, { OpenIdConnectProvider } from './sign-in-dialog';
 export interface NavItem {
@@ -39,6 +39,7 @@ export interface AppLayoutProps {
   hideBranchSelector?: boolean;
   onLoadStatistics?: (branchId: string) => Promise<StatisticsMenuRow[]>;
   onLoadIntegrityChecks?: (branchId: string) => Promise<IntegrityCheckMenuCheck[]>;
+  onGeneratePublish?: (branchId: string, action: PublishMenuAction) => Promise<void>;
   mauroBaseUrl?: string;
   signInHref?: string;
   onSignIn?: (username: string, password: string) => Promise<void>;
@@ -74,7 +75,15 @@ export interface IntegrityCheckMenuCheck {
   errors: IntegrityCheckMenuIssue[];
 }
 
-export function AppLayout({ appTitle, version, links, branchOptions = [], selectedBranchId = null, onBranchChange, hideBranchSelector = false, onLoadStatistics, onLoadIntegrityChecks, mauroBaseUrl = '', signInHref, onSignIn, onSignOut, onOpenIdConnect, openIdConnectProviders = [], children }: AppLayoutProps): JSX.Element {
+export type PublishMenuAction =
+  | 'codeSystems'
+  | 'valueSets'
+  | 'changePaper'
+  | 'changePaperWithDataSet'
+  | 'website';
+
+export function AppLayout({ appTitle, version, links, branchOptions = [], selectedBranchId = null, onBranchChange, hideBranchSelector = false, onLoadStatistics, onLoadIntegrityChecks, onGeneratePublish, mauroBaseUrl = '', signInHref, onSignIn, onSignOut, onOpenIdConnect, openIdConnectProviders = [], children }: AppLayoutProps): JSX.Element {
+  const location = useLocation();
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [signInDialogOpened, setSignInDialogOpened] = useState(false);
   const [signInError, setSignInError] = useState('');
@@ -88,6 +97,7 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
   const [integrityError, setIntegrityError] = useState<string | null>(null);
   const [integrityRows, setIntegrityRows] = useState<IntegrityCheckMenuCheck[]>([]);
   const [selectedIntegrityCheck, setSelectedIntegrityCheck] = useState<IntegrityCheckMenuCheck | null>(null);
+  const [publishActionRunning, setPublishActionRunning] = useState<PublishMenuAction | null>(null);
 
   useEffect(() => {
     const hasSession =
@@ -95,7 +105,7 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
       !!localStorage.getItem('userId') ||
       !!localStorage.getItem('userName');
     setIsSignedIn(hasSession);
-  }, []);
+  }, [location.key]);
 
   const handleSignOut = () => {
     localStorage.removeItem('userId');
@@ -193,6 +203,19 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
     }
   };
 
+  const runPublishAction = async (action: PublishMenuAction) => {
+    if (!selectedBranchId || !onGeneratePublish) {
+      return;
+    }
+
+    setPublishActionRunning(action);
+    try {
+      await onGeneratePublish(selectedBranchId, action);
+    } finally {
+      setPublishActionRunning(null);
+    }
+  };
+
   const getMauroComponentUrl = (component: IntegrityCheckMenuComponent): string => {
     const { domainType = '', modelId = '', parentId = '', id } = component;
     const domainTypePatterns: Record<string, string> = {
@@ -272,7 +295,7 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
                           className={styles.menuButton}
                           variant="outline"
                           color="dark"
-                          disabled={!selectedBranchId || (!onLoadStatistics && !onLoadIntegrityChecks)}
+                          disabled={!selectedBranchId || (!onLoadStatistics && !onLoadIntegrityChecks && !onGeneratePublish)}
                         >
                           Menu
                         </Button>
@@ -282,6 +305,43 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
                         <Menu.Label>Application</Menu.Label>
                         <Menu.Item disabled={!onLoadStatistics} onClick={() => void openStatistics()}>Statistics</Menu.Item>
                         <Menu.Item disabled={!onLoadIntegrityChecks} onClick={() => void openIntegrityChecks()}>Integrity checks</Menu.Item>
+                        <Menu.Divider />
+                        <Menu.Label>Publish</Menu.Label>
+                        <Menu.Item
+                          disabled={!selectedBranchId || !onGeneratePublish}
+                          onClick={() => void runPublishAction('codeSystems')}
+                          rightSection={publishActionRunning === 'codeSystems' ? <Loader size="xs" /> : undefined}
+                        >
+                          Generate CodeSystems
+                        </Menu.Item>
+                        <Menu.Item
+                          disabled={!selectedBranchId || !onGeneratePublish}
+                          onClick={() => void runPublishAction('valueSets')}
+                          rightSection={publishActionRunning === 'valueSets' ? <Loader size="xs" /> : undefined}
+                        >
+                          Generate ValueSets
+                        </Menu.Item>
+                        <Menu.Item
+                          disabled={!selectedBranchId || !onGeneratePublish}
+                          onClick={() => void runPublishAction('changePaper')}
+                          rightSection={publishActionRunning === 'changePaper' ? <Loader size="xs" /> : undefined}
+                        >
+                          Generate change paper
+                        </Menu.Item>
+                        <Menu.Item
+                          disabled={!selectedBranchId || !onGeneratePublish}
+                          onClick={() => void runPublishAction('changePaperWithDataSet')}
+                          rightSection={publishActionRunning === 'changePaperWithDataSet' ? <Loader size="xs" /> : undefined}
+                        >
+                          Generate change paper (with Data Set definitions)
+                        </Menu.Item>
+                        <Menu.Item
+                          disabled={!selectedBranchId || !onGeneratePublish}
+                          onClick={() => void runPublishAction('website')}
+                          rightSection={publishActionRunning === 'website' ? <Loader size="xs" /> : undefined}
+                        >
+                          Generate website
+                        </Menu.Item>
                       </Menu.Dropdown>
                     </Menu>
                   </Box>
@@ -470,12 +530,19 @@ export interface BranchPickerProps {
 }
 
 export function BranchPicker({ value = null, options, onChange, size = 'sm', label = 'Current branch' }: BranchPickerProps): JSX.Element {
+  const selectData = options
+    .filter((option) => typeof option?.value === 'string' && option.value.trim().length > 0)
+    .map((option) => ({
+      value: option.value,
+      label: (option.label ?? option.value).toString()
+    }));
+
   return (
     <Select
       {...(label ? { label } : {})}
       placeholder="Select a branch"
       value={value}
-      data={options}
+      data={selectData}
       onChange={onChange}
       size={size}
     />
@@ -537,4 +604,3 @@ export function PreviewToc({ links, onNavigate }: PreviewTocProps): JSX.Element 
     </div>
   );
 }
-

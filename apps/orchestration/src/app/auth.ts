@@ -33,6 +33,6 @@ export function clearUserSession(): void {
 }
 
 export function getOpenIdConnectRedirectUri(): string {
-  return new URL('/redirects/open-id-connect-redirect.html', window.location.origin).toString();
+  return new URL(`${import.meta.env.BASE_URL}redirects/open-id-connect-redirect.html`, window.location.origin).toString();
 }
 

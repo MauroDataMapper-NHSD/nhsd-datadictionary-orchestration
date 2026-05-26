@@ -11,9 +11,7 @@ import {
   Group,
   List,
   Loader,
-  Modal,
   Paper,
-  Progress,
   ScrollArea,
   SimpleGrid,
   Stack,
@@ -24,12 +22,10 @@ import {
   Title,
   UnstyledButton
 } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
 import {
   BranchStatistics,
   BranchSummary,
   ChangePaperPreview,
-  GeneratedArtifact,
   IntegrityCheck,
   IntegrityCheckComponent,
   MauroModule,
@@ -40,7 +36,6 @@ import {
   PreviewReference,
   createOrchestrationApiClient
 } from 'api-client';
-import { saveAs } from 'file-saver';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import styles from './app.module.scss';
@@ -220,7 +215,7 @@ function sectionId(label: string) {
 }
 
 function getBranchLabel(branch: BranchSummary) {
-  return branch.versionDisplay ?? branch.branchName ?? branch.name;
+  return branch.versionDisplay ?? branch.branchName ?? branch.name ?? branch.id ?? 'Unnamed branch';
 }
 
 function scrollToAnchor(anchor: string) {
@@ -404,10 +399,6 @@ function PreviewTable({ children, className }: { children: ReactNode; className?
   return <Table className={classes}>{children}</Table>;
 }
 
-function downloadArtifact(artifact: GeneratedArtifact) {
-  saveAs(artifact.blob, artifact.filename);
-}
-
 function getMauroComponentUrl(component: IntegrityCheckComponent): string {
   const { domainType = '', modelId = '', parentId = '', id } = component;
   const domainTypePatterns: Record<string, string> = {
@@ -425,11 +416,6 @@ function getMauroComponentUrl(component: IntegrityCheckComponent): string {
   const path = domainTypePatterns[domainType];
   return path ? `${mauroBaseUrl}/#/catalogue${path}` : mauroBaseUrl;
 }
-
-type ProgressModal = {
-  title: string;
-  message: string;
-};
 
 export function HomePage() {
   return (
@@ -605,8 +591,6 @@ export function BranchDetailPage() {
   const [selectedCheck, setSelectedCheck] = useState<IntegrityCheck | null>(null);
   const [loadingStats, setLoadingStats] = useState(false);
   const [loadingChecks, setLoadingChecks] = useState(false);
-  const [progressModal, setProgressModal] = useState<ProgressModal | null>(null);
-  const [publishError, setPublishError] = useState<string | null>(null);
 
   const activeTab = tabView ?? 'statistics';
   const navigate = useNavigate();
@@ -642,79 +626,12 @@ export function BranchDetailPage() {
       .finally(() => setLoadingChecks(false));
   };
 
-  const dialogTitles: Record<string, string> = {
-    codeSystems: 'FHIR CodeSystems',
-    valueSets: 'FHIR ValueSets',
-    changePaper: 'Change Paper',
-    changePaperWithDataSet: 'Change Paper with Data Set Definitions',
-    website: 'Data Dictionary Website'
-  };
-
-  const generate = async (type: string) => {
-    if (!branchId) return;
-    setPublishError(null);
-    const title = dialogTitles[type] ?? type;
-    const branchLabel = branch ? getBranchLabel(branch) : branchId;
-
-    setProgressModal({
-      title,
-      message: `Generating ${title} for branch "${branchLabel}". This may take some time, please wait...`
-    });
-
-    try {
-      let artifact: GeneratedArtifact;
-
-      if (type === 'codeSystems') {
-        artifact = await api.generateCodeSystems(branchId);
-      } else if (type === 'valueSets') {
-        artifact = await api.generateValueSets(branchId);
-      } else if (type === 'changePaper') {
-        artifact = await api.generateChangePaper(branchId, false);
-      } else if (type === 'changePaperWithDataSet') {
-        artifact = await api.generateChangePaper(branchId, true);
-      } else {
-        artifact = await api.generateWebsite(branchId);
-      }
-
-      downloadArtifact(artifact);
-      notifications.show({
-        color: 'green',
-        title: `${title} generated`,
-        message: `${title} generated successfully for branch "${branchLabel}".`
-      });
-    } catch {
-      setPublishError(`Could not generate ${title} for this branch.`);
-      notifications.show({
-        color: 'red',
-        title: 'Generation failed',
-        message: `Could not generate ${title} for branch "${branchLabel}".`
-      });
-    } finally {
-      setProgressModal(null);
-    }
-  };
-
   if (!branchId) {
     return <Alert color="yellow">No branch selected.</Alert>;
   }
 
   return (
     <Stack>
-      <Modal
-        opened={!!progressModal}
-        onClose={() => {}}
-        title={progressModal?.title}
-        centered
-        closeOnClickOutside={false}
-        closeOnEscape={false}
-        withCloseButton={false}
-      >
-        <Stack gap="sm">
-          <Text size="sm">{progressModal?.message}</Text>
-          <Progress value={100} animated />
-        </Stack>
-      </Modal>
-
       <Title order={2}>{branch ? getBranchLabel(branch) : branchId}</Title>
       <Tabs value={activeTab} onChange={(value) => value && navigate(`/branches/${branchId}/${value}`)}>
         <Tabs.List>
@@ -874,49 +791,9 @@ export function BranchDetailPage() {
         <Tabs.Panel value="publish" pt="md">
           <Stack>
             <Text>
-              Generate artefacts from the <strong>{branch ? getBranchLabel(branch) : branchId}</strong> branch.
+              Publish actions for <strong>{branch ? getBranchLabel(branch) : branchId}</strong> are now available in
+              the header <strong>Menu</strong> under <strong>Publish</strong>.
             </Text>
-            {publishError && <Alert color="red">{publishError}</Alert>}
-            <Card withBorder>
-              <Title order={4}>Terminology Server integration</Title>
-              <Stack mt="sm">
-                <Group justify="space-between">
-                  <Text size="sm">Generate CodeSystem resource bundle (whole dictionary)</Text>
-                  <Button onClick={() => generate('codeSystems')}>
-                    Generate
-                  </Button>
-                </Group>
-                <Group justify="space-between">
-                  <Text size="sm">Generate ValueSet resource bundle (whole dictionary)</Text>
-                  <Button onClick={() => generate('valueSets')}>
-                    Generate
-                  </Button>
-                </Group>
-              </Stack>
-            </Card>
-            <Card withBorder>
-              <Title order={4}>DITA Outputs</Title>
-              <Stack mt="sm">
-                <Group justify="space-between">
-                  <Text size="sm">Generate change paper</Text>
-                  <Button onClick={() => generate('changePaper')}>
-                    Generate
-                  </Button>
-                </Group>
-                <Group justify="space-between">
-                  <Text size="sm">Generate change paper (with Data Set definitions)</Text>
-                  <Button onClick={() => generate('changePaperWithDataSet')}>
-                    Generate
-                  </Button>
-                </Group>
-                <Group justify="space-between">
-                  <Text size="sm">Generate Data Dictionary website</Text>
-                  <Button onClick={() => generate('website')}>
-                    Generate
-                  </Button>
-                </Group>
-              </Stack>
-            </Card>
             <Card withBorder>
               <Title order={4}>Other reports</Title>
               <Stack mt="sm">

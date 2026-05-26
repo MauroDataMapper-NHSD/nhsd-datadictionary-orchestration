@@ -6,7 +6,9 @@
     <title>Redirecting...</title>
     <script>
       (function () {
-        var target = '/auth/openid-connect/callback' + window.location.search + window.location.hash;
+        var path = window.location.pathname;
+        var basePath = path.replace(/\/redirects\/open-id-connect-redirect\.html$/, '');
+        var target = basePath + '/auth/openid-connect/callback' + window.location.search + window.location.hash;
         window.location.replace(target);
       })();
     </script>

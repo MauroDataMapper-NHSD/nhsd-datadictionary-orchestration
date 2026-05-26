@@ -1,7 +1,9 @@
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { AppLayout, NavItem } from 'ui';
+import { AppLayout, NavItem, PublishMenuAction } from 'ui';
 import { OrchestrationApiClient, PublicOpenIdConnectProvider } from 'api-client';
+import { notifications } from '@mantine/notifications';
+import { saveAs } from 'file-saver';
 import { clearUserSession, getOpenIdConnectRedirectUri, persistUserSession } from './auth';
 import { OpenIdConnectCallbackPage } from './openid-connect-callback';
 import {
@@ -58,7 +60,7 @@ export function App(): JSX.Element {
         setBranches(
           items.map((branch) => ({
             id: branch.id,
-            label: branch.versionDisplay ?? branch.branchName ?? branch.name
+            label: branch.versionDisplay ?? branch.branchName ?? branch.name ?? branch.id ?? 'Unnamed branch'
           }))
         );
       } catch {
@@ -167,6 +169,71 @@ export function App(): JSX.Element {
     }));
   };
 
+  const handleGeneratePublish = async (branchId: string, action: PublishMenuAction) => {
+    const branchLabel = branches.find((branch) => branch.id === branchId)?.label ?? branchId;
+
+    try {
+      if (action === 'codeSystems') {
+        const artifact = await apiClient.generateCodeSystems(branchId);
+        saveAs(artifact.blob, artifact.filename);
+        notifications.show({
+          color: 'green',
+          title: 'CodeSystems generated',
+          message: `CodeSystems generated successfully for branch "${branchLabel}".`
+        });
+        return;
+      }
+
+      if (action === 'valueSets') {
+        const artifact = await apiClient.generateValueSets(branchId);
+        saveAs(artifact.blob, artifact.filename);
+        notifications.show({
+          color: 'green',
+          title: 'ValueSets generated',
+          message: `ValueSets generated successfully for branch "${branchLabel}".`
+        });
+        return;
+      }
+
+      if (action === 'changePaper') {
+        const artifact = await apiClient.generateChangePaper(branchId, false);
+        saveAs(artifact.blob, artifact.filename);
+        notifications.show({
+          color: 'green',
+          title: 'Change paper generated',
+          message: `Change paper generated successfully for branch "${branchLabel}".`
+        });
+        return;
+      }
+
+      if (action === 'changePaperWithDataSet') {
+        const artifact = await apiClient.generateChangePaper(branchId, true);
+        saveAs(artifact.blob, artifact.filename);
+        notifications.show({
+          color: 'green',
+          title: 'Change paper generated',
+          message: `Change paper (with Data Set definitions) generated successfully for branch "${branchLabel}".`
+        });
+        return;
+      }
+
+      const artifact = await apiClient.generateWebsite(branchId);
+      saveAs(artifact.blob, artifact.filename);
+      notifications.show({
+        color: 'green',
+        title: 'Website generated',
+        message: `Website generated successfully for branch "${branchLabel}".`
+      });
+    } catch {
+      notifications.show({
+        color: 'red',
+        title: 'Generation failed',
+        message: `Could not complete publish action for branch "${branchLabel}".`
+      });
+      throw new Error('Publish action failed');
+    }
+  };
+
   const showInitialBranchPicker =
     location.pathname === '/branches' &&
     ((location.state as { showInitialBranchPicker?: boolean } | null)?.showInitialBranchPicker === true);
@@ -181,6 +248,7 @@ export function App(): JSX.Element {
       onBranchChange={handleBranchChange}
       onLoadStatistics={handleLoadStatistics}
       onLoadIntegrityChecks={handleLoadIntegrityChecks}
+      onGeneratePublish={handleGeneratePublish}
       hideBranchSelector={showInitialBranchPicker}
       signInHref={mauroBaseUrl}
       onSignIn={handleSignIn}
