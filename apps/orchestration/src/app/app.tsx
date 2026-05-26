@@ -1,16 +1,17 @@
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { AppLayout, NavItem, PublishMenuAction } from 'ui';
-import { OrchestrationApiClient, PublicOpenIdConnectProvider } from 'api-client';
+import { AppLayout, PublishMenuAction } from 'ui';
+import {
+  MauroModule,
+  MauroStatus,
+  OrchestrationApiClient,
+  PublicOpenIdConnectProvider
+} from 'api-client';
 import { notifications } from '@mantine/notifications';
 import { saveAs } from 'file-saver';
 import { clearUserSession, getOpenIdConnectRedirectUri, persistUserSession } from './auth';
 import { OpenIdConnectCallbackPage } from './openid-connect-callback';
 import {
-  AboutPage,
-  BranchDetailPage,
-  BranchesPage,
-  ChangesPage,
   ErrorStatePage,
   HomePage,
   PreviewDefaultPage,
@@ -18,24 +19,27 @@ import {
   PreviewHomePage,
   PreviewIndexPage
 } from './features';
-
-const navLinks: NavItem[] = [
-  { label: 'Home', to: '/' },
-  { label: 'Branches', to: '/branches', onlySignedIn: true },
-  { label: 'Preview', to: '/preview', onlySignedIn: true },
-  { label: 'Changes', to: '/changes', onlySignedIn: true },
-  { label: 'About', to: '/about' }
-];
+import {
+  ROUTES,
+  STORAGE_KEYS,
+  API_CONFIG,
+  PATTERNS,
+  ERROR_MESSAGES,
+  NOTIFICATION_TITLES,
+  NOTIFICATION_MESSAGES
+} from './constants';
 
 const appVersion = import.meta.env.VITE_APP_VERSION ?? '1.0.0';
-const mauroBaseUrl = import.meta.env.VITE_MAURO_BASE_URL ?? 'http://localhost:8080';
+const mauroBaseUrl = import.meta.env.VITE_MAURO_BASE_URL ?? API_CONFIG.DEFAULT_BASE_URL;
 
 const apiClient = new OrchestrationApiClient({ baseUrl: mauroBaseUrl });
 
 export function App(): JSX.Element {
   const [openIdConnectProviders, setOpenIdConnectProviders] = useState<PublicOpenIdConnectProvider[]>([]);
   const [branches, setBranches] = useState<Array<{ id: string; label: string }>>([]);
-  const [selectedBranchId, setSelectedBranchId] = useState<string | null>(() => localStorage.getItem('selectedBranchId'));
+  const [selectedBranchId, setSelectedBranchId] = useState<string | null>(() =>
+    localStorage.getItem(STORAGE_KEYS.SELECTED_BRANCH_ID)
+  );
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -73,7 +77,7 @@ export function App(): JSX.Element {
 
   const handleSignOut = async () => {
     clearUserSession();
-    localStorage.removeItem('selectedBranchId');
+    localStorage.removeItem(STORAGE_KEYS.SELECTED_BRANCH_ID);
     setSelectedBranchId(null);
 
     try {
@@ -82,16 +86,16 @@ export function App(): JSX.Element {
       console.error('Failed to sign out cleanly:', err);
     }
 
-    navigate('/', { replace: true });
+    navigate(ROUTES.HOME, { replace: true });
   };
 
   const handleSignIn = async (username: string, password: string) => {
     try {
       const result = await apiClient.signIn({ username, password });
       persistUserSession(result);
-      navigate('/branches', { replace: true, state: { showInitialBranchPicker: true } });
+      navigate(ROUTES.PREVIEW, { replace: true, state: { showInitialBranchPicker: true } });
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Invalid username or password!';
+      const errorMessage = err instanceof Error ? err.message : ERROR_MESSAGES.SIGN_IN_FAILED;
       throw new Error(errorMessage);
     }
   };
@@ -101,7 +105,7 @@ export function App(): JSX.Element {
       throw new Error(`Unable to authenticate with ${provider.label} because of a missing endpoint.`);
     }
 
-    localStorage.setItem('openIdConnectProviderId', provider.id);
+    localStorage.setItem(STORAGE_KEYS.OPENID_CONNECT_PROVIDER_ID, provider.id);
 
     const redirectUrl = getOpenIdConnectRedirectUri();
     const authUrl = new URL(provider.authorizationEndpoint);
@@ -111,30 +115,20 @@ export function App(): JSX.Element {
   };
 
   useEffect(() => {
-    const pathBranchMatch = location.pathname.match(/^\/(branches|preview|changes)\/([^/]+)/);
-    const branchIdFromPath = pathBranchMatch?.[2] ?? null;
+    const pathBranchMatch = location.pathname.match(PATTERNS.PREVIEW_BRANCH_PATH);
+    const branchIdFromPath = pathBranchMatch?.[1] ?? null;
 
     if (branchIdFromPath) {
       setSelectedBranchId(branchIdFromPath);
-      localStorage.setItem('selectedBranchId', branchIdFromPath);
+      localStorage.setItem(STORAGE_KEYS.SELECTED_BRANCH_ID, branchIdFromPath);
     }
   }, [location.pathname]);
 
   const handleBranchChange = (branchId: string) => {
     setSelectedBranchId(branchId);
-    localStorage.setItem('selectedBranchId', branchId);
+    localStorage.setItem(STORAGE_KEYS.SELECTED_BRANCH_ID, branchId);
 
-    if (location.pathname.startsWith('/preview')) {
-      navigate(`/preview/${branchId}`);
-      return;
-    }
-
-    if (location.pathname.startsWith('/changes')) {
-      navigate(`/changes/${branchId}`);
-      return;
-    }
-
-    navigate(`/branches/${branchId}/statistics`);
+    navigate(`${ROUTES.PREVIEW}/${branchId}`);
   };
 
   const handleLoadStatistics = async (branchId: string) => {
@@ -169,86 +163,108 @@ export function App(): JSX.Element {
     }));
   };
 
+  const handleRunChangePaperPreview = async (branchId: string, includeDataSets: boolean) => {
+    return apiClient.getChangePaperPreview(branchId, includeDataSets);
+  };
+
+  const handleLoadAbout = async () => {
+    const [status, modules] = await Promise.all([
+      apiClient.getMauroStatus(),
+      apiClient.getMauroModules()
+    ]);
+    const typedStatus = status as MauroStatus;
+    const typedModules = modules as MauroModule[];
+    return {
+      mauroVersion: typedStatus['Mauro Data Mapper Version'] ?? 'Unknown',
+      pluginVersion:
+        typedModules.find((m) => m.name === API_CONFIG.MAURO_MODULE_NAME)?.version ?? 'Unknown'
+    };
+  };
+
+  const showPublishNotification = (branchLabel: string, action: PublishMenuAction, success: boolean) => {
+    if (!success) {
+      notifications.show({
+        color: 'red',
+        title: NOTIFICATION_TITLES.GENERATION_FAILED,
+        message: ERROR_MESSAGES.PUBLISH_FAILED.replace('{branch}', branchLabel)
+      });
+      return;
+    }
+
+    const titleMap: Record<PublishMenuAction, string> = {
+      codeSystems: NOTIFICATION_TITLES.CODE_SYSTEMS_GENERATED,
+      valueSets: NOTIFICATION_TITLES.VALUE_SETS_GENERATED,
+      changePaper: NOTIFICATION_TITLES.CHANGE_PAPER_GENERATED,
+      changePaperWithDataSet: NOTIFICATION_TITLES.CHANGE_PAPER_GENERATED,
+      website: NOTIFICATION_TITLES.WEBSITE_GENERATED
+    };
+
+    const messageMap: Record<PublishMenuAction, string> = {
+      codeSystems: NOTIFICATION_MESSAGES.CODE_SYSTEMS_GENERATED(branchLabel),
+      valueSets: NOTIFICATION_MESSAGES.VALUE_SETS_GENERATED(branchLabel),
+      changePaper: NOTIFICATION_MESSAGES.CHANGE_PAPER_GENERATED(branchLabel),
+      changePaperWithDataSet: NOTIFICATION_MESSAGES.CHANGE_PAPER_WITH_DATASET_GENERATED(branchLabel),
+      website: NOTIFICATION_MESSAGES.WEBSITE_GENERATED(branchLabel)
+    };
+
+    notifications.show({
+      color: 'green',
+      title: titleMap[action],
+      message: messageMap[action]
+    });
+  };
+
   const handleGeneratePublish = async (branchId: string, action: PublishMenuAction) => {
     const branchLabel = branches.find((branch) => branch.id === branchId)?.label ?? branchId;
 
     try {
-      if (action === 'codeSystems') {
-        const artifact = await apiClient.generateCodeSystems(branchId);
-        saveAs(artifact.blob, artifact.filename);
-        notifications.show({
-          color: 'green',
-          title: 'CodeSystems generated',
-          message: `CodeSystems generated successfully for branch "${branchLabel}".`
-        });
-        return;
+      let artifact;
+
+      switch (action) {
+        case 'codeSystems':
+          artifact = await apiClient.generateCodeSystems(branchId);
+          break;
+        case 'valueSets':
+          artifact = await apiClient.generateValueSets(branchId);
+          break;
+        case 'changePaper':
+          artifact = await apiClient.generateChangePaper(branchId, false);
+          break;
+        case 'changePaperWithDataSet':
+          artifact = await apiClient.generateChangePaper(branchId, true);
+          break;
+        case 'website':
+          artifact = await apiClient.generateWebsite(branchId);
+          break;
+        default:
+          throw new Error(`Unknown publish action: ${action}`);
       }
 
-      if (action === 'valueSets') {
-        const artifact = await apiClient.generateValueSets(branchId);
-        saveAs(artifact.blob, artifact.filename);
-        notifications.show({
-          color: 'green',
-          title: 'ValueSets generated',
-          message: `ValueSets generated successfully for branch "${branchLabel}".`
-        });
-        return;
-      }
-
-      if (action === 'changePaper') {
-        const artifact = await apiClient.generateChangePaper(branchId, false);
-        saveAs(artifact.blob, artifact.filename);
-        notifications.show({
-          color: 'green',
-          title: 'Change paper generated',
-          message: `Change paper generated successfully for branch "${branchLabel}".`
-        });
-        return;
-      }
-
-      if (action === 'changePaperWithDataSet') {
-        const artifact = await apiClient.generateChangePaper(branchId, true);
-        saveAs(artifact.blob, artifact.filename);
-        notifications.show({
-          color: 'green',
-          title: 'Change paper generated',
-          message: `Change paper (with Data Set definitions) generated successfully for branch "${branchLabel}".`
-        });
-        return;
-      }
-
-      const artifact = await apiClient.generateWebsite(branchId);
       saveAs(artifact.blob, artifact.filename);
-      notifications.show({
-        color: 'green',
-        title: 'Website generated',
-        message: `Website generated successfully for branch "${branchLabel}".`
-      });
+      showPublishNotification(branchLabel, action, true);
     } catch {
-      notifications.show({
-        color: 'red',
-        title: 'Generation failed',
-        message: `Could not complete publish action for branch "${branchLabel}".`
-      });
+      showPublishNotification(branchLabel, action, false);
       throw new Error('Publish action failed');
     }
   };
 
   const showInitialBranchPicker =
-    location.pathname === '/branches' &&
+    location.pathname === '/preview' &&
     ((location.state as { showInitialBranchPicker?: boolean } | null)?.showInitialBranchPicker === true);
 
   return (
     <AppLayout
       appTitle="Data Dictionary Orchestrator"
       version={appVersion}
-      links={navLinks}
+      links={[]}
       branchOptions={branches.map((branch) => ({ value: branch.id, label: branch.label }))}
       selectedBranchId={selectedBranchId}
       onBranchChange={handleBranchChange}
       onLoadStatistics={handleLoadStatistics}
       onLoadIntegrityChecks={handleLoadIntegrityChecks}
+      onRunChangePaperPreview={handleRunChangePaperPreview}
       onGeneratePublish={handleGeneratePublish}
+      onLoadAbout={handleLoadAbout}
       hideBranchSelector={showInitialBranchPicker}
       signInHref={mauroBaseUrl}
       onSignIn={handleSignIn}
@@ -257,22 +273,17 @@ export function App(): JSX.Element {
       openIdConnectProviders={openIdConnectProviders}
     >
       <Routes>
-        <Route path="/auth/openid-connect/callback" element={<OpenIdConnectCallbackPage />} />
-        <Route path="/" element={<HomePage />} />
+        <Route path={ROUTES.AUTH_CALLBACK} element={<OpenIdConnectCallbackPage />} />
+        <Route path={ROUTES.HOME} element={<HomePage />} />
         <Route path="/home" element={<HomePage />} />
-        <Route path="/branches" element={<BranchesPage />} />
-        <Route path="/branches/:branch/:tabView" element={<BranchDetailPage />} />
-        <Route path="/preview" element={<PreviewDefaultPage />} />
-        <Route path="/preview/:branch" element={<PreviewHomePage />} />
-        <Route path="/preview/:branch/:index" element={<PreviewIndexPage />} />
-        <Route path="/preview/:branch/:index/:id" element={<PreviewDetailPage />} />
-        <Route path="/changes" element={<ChangesPage />} />
-        <Route path="/changes/:branch" element={<ChangesPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/not-authorized" element={<ErrorStatePage variant="not-authorized" />} />
-        <Route path="/not-found" element={<ErrorStatePage variant="not-found" />} />
-        <Route path="/not-implemented" element={<ErrorStatePage variant="not-implemented" />} />
-        <Route path="/server-error" element={<ErrorStatePage variant="server-error" />} />
+        <Route path={ROUTES.PREVIEW} element={<PreviewDefaultPage />} />
+        <Route path={`${ROUTES.PREVIEW}/:branch`} element={<PreviewHomePage />} />
+        <Route path={`${ROUTES.PREVIEW}/:branch/:index`} element={<PreviewIndexPage />} />
+        <Route path={`${ROUTES.PREVIEW}/:branch/:index/:id`} element={<PreviewDetailPage />} />
+        <Route path={ROUTES.NOT_AUTHORIZED} element={<ErrorStatePage variant="not-authorized" />} />
+        <Route path={ROUTES.NOT_FOUND} element={<ErrorStatePage variant="not-found" />} />
+        <Route path={ROUTES.NOT_IMPLEMENTED} element={<ErrorStatePage variant="not-implemented" />} />
+        <Route path={ROUTES.SERVER_ERROR} element={<ErrorStatePage variant="server-error" />} />
         <Route path="*" element={<ErrorStatePage variant="not-found" />} />
       </Routes>
     </AppLayout>

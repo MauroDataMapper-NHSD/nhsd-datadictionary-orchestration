@@ -1,6 +1,7 @@
 import {
   AppShell,
   Alert,
+  Anchor,
   Badge,
   Box,
   Button,
@@ -17,6 +18,7 @@ import {
   Stack,
   Table,
   ThemeIcon,
+  Title,
   Text
 } from '@mantine/core';
 import { ReactNode, useEffect, useState } from 'react';
@@ -39,7 +41,9 @@ export interface AppLayoutProps {
   hideBranchSelector?: boolean;
   onLoadStatistics?: (branchId: string) => Promise<StatisticsMenuRow[]>;
   onLoadIntegrityChecks?: (branchId: string) => Promise<IntegrityCheckMenuCheck[]>;
+  onRunChangePaperPreview?: (branchId: string, includeDataSets: boolean) => Promise<ChangePaperPreviewData>;
   onGeneratePublish?: (branchId: string, action: PublishMenuAction) => Promise<void>;
+  onLoadAbout?: () => Promise<AboutData>;
   mauroBaseUrl?: string;
   signInHref?: string;
   onSignIn?: (username: string, password: string) => Promise<void>;
@@ -82,7 +86,28 @@ export type PublishMenuAction =
   | 'changePaperWithDataSet'
   | 'website';
 
-export function AppLayout({ appTitle, version, links, branchOptions = [], selectedBranchId = null, onBranchChange, hideBranchSelector = false, onLoadStatistics, onLoadIntegrityChecks, onGeneratePublish, mauroBaseUrl = '', signInHref, onSignIn, onSignOut, onOpenIdConnect, openIdConnectProviders = [], children }: AppLayoutProps): JSX.Element {
+export interface ChangePaperPreviewItem {
+  name: string;
+  summary: string;
+  detail: string;
+}
+
+export interface ChangePaperPreviewStereotype {
+  name: string;
+  changes: ChangePaperPreviewItem[];
+}
+
+export interface ChangePaperPreviewData {
+  background?: Record<string, string | undefined>;
+  stereotypes: ChangePaperPreviewStereotype[];
+}
+
+export interface AboutData {
+  mauroVersion: string;
+  pluginVersion: string;
+}
+
+export function AppLayout({ appTitle, version, links, branchOptions = [], selectedBranchId = null, onBranchChange, hideBranchSelector = false, onLoadStatistics, onLoadIntegrityChecks, onRunChangePaperPreview, onGeneratePublish, onLoadAbout, mauroBaseUrl = '', signInHref, onSignIn, onSignOut, onOpenIdConnect, openIdConnectProviders = [], children }: AppLayoutProps): JSX.Element {
   const location = useLocation();
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [signInDialogOpened, setSignInDialogOpened] = useState(false);
@@ -98,6 +123,15 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
   const [integrityRows, setIntegrityRows] = useState<IntegrityCheckMenuCheck[]>([]);
   const [selectedIntegrityCheck, setSelectedIntegrityCheck] = useState<IntegrityCheckMenuCheck | null>(null);
   const [publishActionRunning, setPublishActionRunning] = useState<PublishMenuAction | null>(null);
+  const [changePaperOpened, setChangePaperOpened] = useState(false);
+  const [changePaperLoading, setChangePaperLoading] = useState(false);
+  const [changePaperError, setChangePaperError] = useState<string | null>(null);
+  const [changePaperData, setChangePaperData] = useState<ChangePaperPreviewData | null>(null);
+  const [changePaperTitle, setChangePaperTitle] = useState('Change Paper Preview');
+  const [aboutOpened, setAboutOpened] = useState(false);
+  const [aboutLoading, setAboutLoading] = useState(false);
+  const [aboutError, setAboutError] = useState<string | null>(null);
+  const [aboutData, setAboutData] = useState<AboutData | null>(null);
 
   useEffect(() => {
     const hasSession =
@@ -159,7 +193,7 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
   };
 
   const showBranchSelector = isSignedIn && !hideBranchSelector && branchOptions.length > 0 && !!onBranchChange;
-  const headerHeight = showBranchSelector ? 228 : 140;
+  const headerHeight = showBranchSelector ? 160 : 80;
 
   const openStatistics = async () => {
     if (!selectedBranchId || !onLoadStatistics) {
@@ -216,6 +250,68 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
     }
   };
 
+  const openChangePaperPreview = async (includeDataSets: boolean) => {
+    if (!selectedBranchId || !onRunChangePaperPreview) return;
+
+    setChangePaperTitle(
+      includeDataSets ? 'Change Paper Preview (with Data Set Definitions)' : 'Change Paper Preview'
+    );
+    setChangePaperOpened(true);
+    setChangePaperLoading(true);
+    setChangePaperError(null);
+    setChangePaperData(null);
+
+    try {
+      const data = await onRunChangePaperPreview(selectedBranchId, includeDataSets);
+      setChangePaperData(data);
+    } catch {
+      setChangePaperError('Could not load the change paper preview. Please try again.');
+    } finally {
+      setChangePaperLoading(false);
+    }
+  };
+
+  const changePaperAnchorId = (stereotype: string, name: string) =>
+    `cp-${stereotype}-${name}`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+  const changePaperScrollTo = (anchor: string) => {
+    document.getElementById(anchor)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const backgroundLabelMap: Record<string, string> = {
+    reference: 'Reference',
+    type: 'Type',
+    versionNo: 'Version No.',
+    subject: 'Subject',
+    effectiveDate: 'Effective Date',
+    reasonForChange: 'Reason for Change',
+    publicationDate: 'Publication Date',
+    background: 'Background',
+    sponsor: 'Sponsor',
+    contactDetails: 'Contact Details'
+  };
+
+  const openAbout = async () => {
+    setAboutOpened(true);
+    setAboutLoading(true);
+    setAboutError(null);
+    setAboutData(null);
+
+    if (!onLoadAbout) {
+      setAboutLoading(false);
+      return;
+    }
+
+    try {
+      const data = await onLoadAbout();
+      setAboutData(data);
+    } catch {
+      setAboutError('Could not load version information.');
+    } finally {
+      setAboutLoading(false);
+    }
+  };
+
   const getMauroComponentUrl = (component: IntegrityCheckMenuComponent): string => {
     const { domainType = '', modelId = '', parentId = '', id } = component;
     const domainTypePatterns: Record<string, string> = {
@@ -238,23 +334,10 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
     <>
       <AppShell header={{ height: headerHeight }} padding="md">
         <AppShell.Header className={styles.header}>
-          <Group justify="space-between" className={styles.headerContent}>
+          <Group justify="space-between" align="center" className={styles.headerContent}>
               <Group>
                 <img className={styles.logo} src="/images/mdm-logo.png" alt="Mauro Data Mapper logo" />
                 <Text className={styles.brand}>Data Dictionary Orchestrator</Text>
-              </Group>
-              <Group visibleFrom="md" className={styles.links}>
-                {links
-                  .filter((link) => !link.onlySignedIn || isSignedIn)
-                  .map((link) => (
-                    <NavLink
-                      key={link.to}
-                      to={link.to}
-                      className={({ isActive }) => (isActive ? styles.linkActive : styles.link)}
-                    >
-                      {link.label}
-                    </NavLink>
-                  ))}
               </Group>
               {isSignedIn ? (
                 <Button
@@ -289,59 +372,79 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
                     </Box>
                   </Group>
                   <Box className={styles.menuSelector}>
-                    <Menu shadow="md" width={180} position="bottom-end">
+                    <Menu shadow="md" width={360} position="bottom-end">
                       <Menu.Target>
                         <Button
                           className={styles.menuButton}
                           variant="outline"
                           color="dark"
-                          disabled={!selectedBranchId || (!onLoadStatistics && !onLoadIntegrityChecks && !onGeneratePublish)}
+                          disabled={!selectedBranchId || (!onLoadStatistics && !onLoadIntegrityChecks && !onRunChangePaperPreview && !onGeneratePublish)}
                         >
-                          Menu
+                          Generate
                         </Button>
                       </Menu.Target>
 
                       <Menu.Dropdown>
-                        <Menu.Label>Application</Menu.Label>
+                        <Menu.Label>Overview</Menu.Label>
                         <Menu.Item disabled={!onLoadStatistics} onClick={() => void openStatistics()}>Statistics</Menu.Item>
                         <Menu.Item disabled={!onLoadIntegrityChecks} onClick={() => void openIntegrityChecks()}>Integrity checks</Menu.Item>
                         <Menu.Divider />
-                        <Menu.Label>Publish</Menu.Label>
+                        <Menu.Label>Preview</Menu.Label>
                         <Menu.Item
-                          disabled={!selectedBranchId || !onGeneratePublish}
-                          onClick={() => void runPublishAction('codeSystems')}
-                          rightSection={publishActionRunning === 'codeSystems' ? <Loader size="xs" /> : undefined}
+                          disabled={!selectedBranchId || !onRunChangePaperPreview}
+                          onClick={() => void openChangePaperPreview(false)}
                         >
-                          Generate CodeSystems
+                          Change Paper
                         </Menu.Item>
                         <Menu.Item
-                          disabled={!selectedBranchId || !onGeneratePublish}
-                          onClick={() => void runPublishAction('valueSets')}
-                          rightSection={publishActionRunning === 'valueSets' ? <Loader size="xs" /> : undefined}
+                          disabled={!selectedBranchId || !onRunChangePaperPreview}
+                          onClick={() => void openChangePaperPreview(true)}
                         >
-                          Generate ValueSets
+                          Change Paper (with Data Set Definitions)
                         </Menu.Item>
+                        <Menu.Divider />
+                        <Menu.Label>Download</Menu.Label>
                         <Menu.Item
                           disabled={!selectedBranchId || !onGeneratePublish}
                           onClick={() => void runPublishAction('changePaper')}
                           rightSection={publishActionRunning === 'changePaper' ? <Loader size="xs" /> : undefined}
                         >
-                          Generate change paper
+                          Change Paper
                         </Menu.Item>
                         <Menu.Item
                           disabled={!selectedBranchId || !onGeneratePublish}
                           onClick={() => void runPublishAction('changePaperWithDataSet')}
                           rightSection={publishActionRunning === 'changePaperWithDataSet' ? <Loader size="xs" /> : undefined}
                         >
-                          Generate change paper (with Data Set definitions)
+                          Change Paper (with Data Set Definitions)
+                        </Menu.Item>
+                        <Menu.Item
+                          disabled={!selectedBranchId || !onGeneratePublish}
+                          onClick={() => void runPublishAction('codeSystems')}
+                          rightSection={publishActionRunning === 'codeSystems' ? <Loader size="xs" /> : undefined}
+                        >
+                          CodeSystems
+                        </Menu.Item>
+                        <Menu.Item
+                          disabled={!selectedBranchId || !onGeneratePublish}
+                          onClick={() => void runPublishAction('valueSets')}
+                          rightSection={publishActionRunning === 'valueSets' ? <Loader size="xs" /> : undefined}
+                        >
+                          ValueSets
                         </Menu.Item>
                         <Menu.Item
                           disabled={!selectedBranchId || !onGeneratePublish}
                           onClick={() => void runPublishAction('website')}
                           rightSection={publishActionRunning === 'website' ? <Loader size="xs" /> : undefined}
                         >
-                          Generate website
+                          Website
                         </Menu.Item>
+                        <Menu.Item disabled>
+                          Data elements usage spreadsheet
+                        </Menu.Item>
+                        <Menu.Divider />
+                        <Menu.Label>Info</Menu.Label>
+                        <Menu.Item onClick={() => void openAbout()}>About</Menu.Item>
                       </Menu.Dropdown>
                     </Menu>
                   </Box>
@@ -486,6 +589,156 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
               )}
             </Grid.Col>
           </Grid>
+        )}
+      </Modal>
+
+      <Modal
+        opened={changePaperOpened}
+        onClose={() => setChangePaperOpened(false)}
+        title={<Title order={3}>{changePaperTitle}</Title>}
+        size="90%"
+        styles={{
+          content: { display: 'flex', flexDirection: 'column', maxHeight: '92vh' },
+          body: { flex: 1, overflowY: 'auto', padding: '1rem 1.5rem' }
+        }}
+      >
+        {changePaperLoading && (
+          <Stack align="center" gap="md" py="xl">
+            <Loader size="lg" />
+            <Text size="lg" fw={500}>Generating change paper preview…</Text>
+            <Text size="sm" c="dimmed">This may take a moment, please wait.</Text>
+          </Stack>
+        )}
+
+        {!changePaperLoading && changePaperError && (
+          <Alert color="red" title="Error loading preview" mt="md">{changePaperError}</Alert>
+        )}
+
+        {!changePaperLoading && !changePaperError && changePaperData && (
+          <Stack gap="xl">
+            <Alert color="blue" variant="light">
+              This is a <strong>preview</strong> only. Some content may not exactly match the final published change paper.
+            </Alert>
+
+            {changePaperData.background && Object.keys(changePaperData.background).length > 0 && (
+              <Box>
+                <Title order={4} mb="sm">Background</Title>
+                <Table withTableBorder withColumnBorders>
+                  <Table.Tbody>
+                    {Object.entries(changePaperData.background)
+                      .filter(([, value]) => value !== undefined && value !== '')
+                      .map(([key, value]) => (
+                        <Table.Tr key={key}>
+                          <Table.Td fw={600} style={{ width: '25%' }}>
+                            {backgroundLabelMap[key] ?? key}
+                          </Table.Td>
+                          <Table.Td>
+                            <Box dangerouslySetInnerHTML={{ __html: value ?? '' }} />
+                          </Table.Td>
+                        </Table.Tr>
+                      ))}
+                  </Table.Tbody>
+                </Table>
+              </Box>
+            )}
+
+            {changePaperData.stereotypes.length > 0 && (
+              <Box>
+                <Title order={4} mb="sm">Summary of Changes</Title>
+                {changePaperData.stereotypes.map((stereotype) => (
+                  <Box key={`summary-${stereotype.name}`} mb="md">
+                    <Title order={5} mb="xs">{stereotype.name}</Title>
+                    <Table withTableBorder withColumnBorders>
+                      <Table.Tbody>
+                        {stereotype.changes.map((change) => {
+                          const anchor = changePaperAnchorId(stereotype.name, change.name);
+                          return (
+                            <Table.Tr key={anchor}>
+                              <Table.Td style={{ width: '35%' }}>
+                                <Anchor onClick={() => changePaperScrollTo(anchor)} style={{ cursor: 'pointer' }}>
+                                  {change.name}
+                                </Anchor>
+                              </Table.Td>
+                              <Table.Td>{change.summary}</Table.Td>
+                            </Table.Tr>
+                          );
+                        })}
+                      </Table.Tbody>
+                    </Table>
+                  </Box>
+                ))}
+              </Box>
+            )}
+
+            {changePaperData.stereotypes.length > 0 && (
+              <Box>
+                <Title order={4} mb="sm">Changes</Title>
+                {changePaperData.stereotypes.map((stereotype) => (
+                  <Box key={`detail-${stereotype.name}`} mb="lg">
+                    <Title order={5} mb="xs">{stereotype.name}</Title>
+                    {stereotype.changes.map((change) => {
+                      const anchor = changePaperAnchorId(stereotype.name, change.name);
+                      return (
+                        <Paper key={anchor} id={anchor} withBorder p="md" mb="sm">
+                          <Text fw={600} mb="xs">{change.name}</Text>
+                          <Divider mb="xs" />
+                          <Box dangerouslySetInnerHTML={{ __html: change.detail ?? '' }} />
+                        </Paper>
+                      );
+                    })}
+                  </Box>
+                ))}
+              </Box>
+            )}
+          </Stack>
+        )}
+      </Modal>
+
+      <Modal
+        opened={aboutOpened}
+        onClose={() => setAboutOpened(false)}
+        title={<Title order={3}>About</Title>}
+        size="lg"
+        centered
+      >
+        {aboutLoading && (
+          <Stack align="center" gap="md" py="xl">
+            <Loader size="md" />
+            <Text size="sm" c="dimmed">Loading version information…</Text>
+          </Stack>
+        )}
+
+        {!aboutLoading && aboutError && (
+          <Alert color="red" mt="md">{aboutError}</Alert>
+        )}
+
+        {!aboutLoading && (
+          <Stack gap="md">
+            <Table>
+              <Table.Tbody>
+                <Table.Tr>
+                  <Table.Td style={{ width: '50%' }} fw={600}>UI Version</Table.Td>
+                  <Table.Td>{version}</Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td fw={600}>Mauro Data Mapper</Table.Td>
+                  <Table.Td>{aboutData?.mauroVersion ?? (aboutError ? 'Unavailable' : '—')}</Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td fw={600}>NHS Data Dictionary Plugin</Table.Td>
+                  <Table.Td>{aboutData?.pluginVersion ?? (aboutError ? 'Unavailable' : '—')}</Table.Td>
+                </Table.Tr>
+              </Table.Tbody>
+            </Table>
+            {mauroBaseUrl && (
+              <Text c="dimmed" size="sm">
+                <Anchor href={mauroBaseUrl} target="_blank" rel="noreferrer">
+                  Open Mauro Data Mapper
+                </Anchor>{' '}
+                for platform access and management.
+              </Text>
+            )}
+          </Stack>
         )}
       </Modal>
 

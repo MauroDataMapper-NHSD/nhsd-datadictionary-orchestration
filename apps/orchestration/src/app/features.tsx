@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   Card,
-  Checkbox,
   Divider,
   Grid,
   Group,
@@ -25,21 +24,26 @@ import {
 import {
   BranchStatistics,
   BranchSummary,
-  ChangePaperPreview,
   IntegrityCheck,
   IntegrityCheckComponent,
-  MauroModule,
-  MauroStatus,
   PreviewCodeReference,
   PreviewDetail,
   PreviewLinkItem,
   PreviewReference,
   createOrchestrationApiClient
 } from 'api-client';
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import styles from './app.module.scss';
 import { BranchPicker, PreviewBreadcrumb, PreviewToc, TocLink } from 'ui';
+import {
+  indexTitleMap,
+  previewEndpointMap,
+  previewRouteIndexAliases,
+  previewTiles,
+  stereotypeToRouteIndex
+} from './pages/shared/helpers';
+import type { PreviewIndexItem } from './pages/shared/helpers';
 
 const apiBaseUrl =
   import.meta.env.VITE_MAURO_BASE_URL ??
@@ -47,119 +51,6 @@ const apiBaseUrl =
   'http://localhost:8080';
 const mauroBaseUrl = import.meta.env.VITE_MAURO_BASE_URL ?? 'http://localhost:4200';
 const appVersion = import.meta.env.VITE_APP_VERSION ?? '1.0.0';
-
-type PreviewIndexItem = {
-  catalogueId?: string;
-  id?: string;
-  name: string;
-  stereotype: string;
-  isRetired: boolean;
-};
-
-const previewEndpointMap: Record<string, string> = {
-  element: 'elements',
-  attribute: 'attributes',
-  class: 'classes',
-  dataSet: 'dataSets',
-  businessDefinition: 'businessDefinitions',
-  supportingInformation: 'supportingInformation',
-  dataSetConstraint: 'dataSetConstraints',
-  dataSetFolder: 'dataSetFolders',
-  allItemsIndex: 'allItemsIndex'
-};
-
-const previewRouteIndexAliases: Record<string, string> = {
-  element: 'element',
-  elements: 'element',
-  dataelement: 'element',
-  dataelements: 'element',
-  attribute: 'attribute',
-  attributes: 'attribute',
-  class: 'class',
-  classes: 'class',
-  dataclass: 'class',
-  dataclasses: 'class',
-  dataset: 'dataSet',
-  datasets: 'dataSet',
-  businessdefinition: 'businessDefinition',
-  businessdefinitions: 'businessDefinition',
-  supportinginformation: 'supportingInformation',
-  datasetconstraint: 'dataSetConstraint',
-  datasetconstraints: 'dataSetConstraint',
-  datasetfolder: 'dataSetFolder',
-  datasetfolders: 'dataSetFolder',
-  allitemsindex: 'allItemsIndex'
-};
-
-const stereotypeToRouteIndex: Record<string, string> = {
-  element: 'element',
-  attribute: 'attribute',
-  class: 'class',
-  dataSet: 'dataSet',
-  businessDefinition: 'businessDefinition',
-  supportingInformation: 'supportingInformation',
-  dataSetConstraint: 'dataSetConstraint',
-  dataSetFolder: 'dataSetFolder',
-  allItemsIndex: 'allItemsIndex'
-};
-
-const indexTitleMap: Record<string, string> = {
-  element: 'Data Elements',
-  attribute: 'Attributes',
-  class: 'Classes',
-  dataSet: 'Data Sets',
-  businessDefinition: 'NHS Business Definitions',
-  supportingInformation: 'Supporting Information',
-  dataSetConstraint: 'Data Set Constraints',
-  dataSetFolder: 'Data Set Folders',
-  allItemsIndex: 'All Items Index'
-};
-
-const previewTiles = [
-  {
-    index: 'dataSetFolder',
-    title: 'Data Sets',
-    description: 'Data Sets provide the specification for data collections and for data analyses.'
-  },
-  {
-    index: 'element',
-    title: 'Data Elements',
-    description: 'Data Elements are the data items used within Data Sets.'
-  },
-  {
-    index: 'attribute',
-    title: 'Attributes',
-    description:
-      'The part of the data model describing the characteristics of Classes. Attributes define the data within the data model.'
-  },
-  {
-    index: 'class',
-    title: 'Classes',
-    description:
-      'The part of the data model describing the aspects of the health and care business with significant characteristics.'
-  },
-  {
-    index: 'businessDefinition',
-    title: 'NHS Business Definitions',
-    description:
-      'The part of the data model that links the logical classes to the context of the health and care business.'
-  },
-  {
-    index: 'supportingInformation',
-    title: 'Supporting Information',
-    description: 'Provide information to help users understand content in the NHS Data Model and Dictionary.'
-  },
-  {
-    index: 'dataSetConstraint',
-    title: 'Data Set Constraints',
-    description: ''
-  },
-  {
-    index: 'allItemsIndex',
-    title: 'All Items Index',
-    description: 'Lists all items in the dictionary alphabetically.'
-  }
-];
 
 type RichPreviewDetail = PreviewDetail & {
   shortDescription?: string;
@@ -447,59 +338,6 @@ export function HomePage() {
         </Grid.Col>
       </Grid>
     </Card>
-  );
-}
-
-export function AboutPage() {
-  const api = useApi();
-  const [isLoading, setIsLoading] = useState(true);
-  const [mauroVersion, setMauroVersion] = useState('');
-  const [pluginVersion, setPluginVersion] = useState('');
-
-  useEffect(() => {
-    Promise.all([api.getMauroStatus(), api.getMauroModules()])
-      .then(([status, modules]) => {
-        const typedStatus = status as MauroStatus;
-        const typedModules = modules as MauroModule[];
-        setMauroVersion(typedStatus['Mauro Data Mapper Version'] ?? 'Unknown');
-        setPluginVersion(
-          typedModules.find((module) => module.name === 'mdm.pluginNhsDataDictionary')
-            ?.version ?? 'Unknown'
-        );
-      })
-      .catch(() => {
-        setMauroVersion('Unavailable');
-        setPluginVersion('Unavailable');
-      })
-      .finally(() => setIsLoading(false));
-  }, [api]);
-
-  return (
-    <Stack>
-      <Title order={2}>About</Title>
-      <Table>
-        <Table.Tbody>
-          <Table.Tr>
-            <Table.Td style={{ width: '35%' }}>UI Version</Table.Td>
-            <Table.Td>{appVersion}</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td>Mauro Data Mapper</Table.Td>
-            <Table.Td>{isLoading ? 'Loading...' : mauroVersion}</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td>NHS Data Dictionary Plugin</Table.Td>
-            <Table.Td>{isLoading ? 'Loading...' : pluginVersion}</Table.Td>
-          </Table.Tr>
-        </Table.Tbody>
-      </Table>
-      <Text c="dimmed">
-        <Anchor href={mauroBaseUrl} target="_blank" rel="noreferrer">
-          Open Mauro Data Mapper
-        </Anchor>{' '}
-        for platform access and management.
-      </Text>
-    </Stack>
   );
 }
 
@@ -812,146 +650,46 @@ export function BranchDetailPage() {
   );
 }
 
-export function ChangesPage() {
-  const api = useApi();
-  const { branch: branchId } = useParams();
-  const navigate = useNavigate();
-  const [includeDataSets, setIncludeDataSets] = useState(false);
-  const [running, setRunning] = useState(false);
-  const [preview, setPreview] = useState<ChangePaperPreview | null>(null);
-  const selectedBranchId = localStorage.getItem('selectedBranchId');
-
-  useEffect(() => {
-    if (!branchId && selectedBranchId) {
-      navigate(`/changes/${selectedBranchId}`, { replace: true });
-    }
-  }, [branchId, navigate, selectedBranchId]);
-
-  const runPreview = () => {
-    if (!branchId) return;
-    setRunning(true);
-    api
-      .getChangePaperPreview(branchId, includeDataSets)
-      .then(setPreview)
-      .finally(() => setRunning(false));
-  };
-
-  if (!branchId && selectedBranchId) return <Loader />;
-
-  return (
-    <Stack>
-      <Title order={2}>Change Paper Preview</Title>
-      <Alert color="blue">
-        This is a <strong>preview</strong> only. Some content may not exactly match the final published change paper.
-      </Alert>
-
-      {!branchId && !selectedBranchId && (
-        <Alert color="yellow">
-          No branch selected yet. Choose a branch using the selector under the header.
-        </Alert>
-      )}
-
-      {branchId && (
-        <Stack>
-          <Group>
-            <Checkbox
-              checked={includeDataSets}
-              onChange={(event) => setIncludeDataSets(event.currentTarget.checked)}
-              label="Include data set definitions"
-              disabled={running}
-            />
-            <Button onClick={runPreview} loading={running}>Run</Button>
-          </Group>
-
-          {preview?.background && (
-            <Card withBorder>
-              <Title order={3}>Background</Title>
-              <Table mt="sm">
-                <Table.Tbody>
-                  {Object.entries(preview.background).map(([key, value]) => (
-                    <Table.Tr key={key}>
-                      <Table.Td style={{ width: '25%' }}>{key}</Table.Td>
-                      <Table.Td>
-                        <Box dangerouslySetInnerHTML={{ __html: value ?? '' }} />
-                      </Table.Td>
-                    </Table.Tr>
-                  ))}
-                </Table.Tbody>
-              </Table>
-            </Card>
-          )}
-
-          {preview && (
-            <Card withBorder>
-              <Title order={3}>Summary of changes</Title>
-              {preview.stereotypes.map((stereotype) => (
-                <Box key={stereotype.name} mt="md">
-                  <Title order={4}>{stereotype.name}</Title>
-                  <Table mt="xs">
-                    <Table.Tbody>
-                      {stereotype.changes.map((change) => {
-                        const anchor = ChangeAnchorId(stereotype.name, change.name);
-                        return (
-                          <Table.Tr key={anchor}>
-                            <Table.Td style={{ width: '30%' }}>
-                              <Anchor onClick={() => scrollToAnchor(anchor)}>{change.name}</Anchor>
-                            </Table.Td>
-                            <Table.Td>{change.summary}</Table.Td>
-                          </Table.Tr>
-                        );
-                      })}
-                    </Table.Tbody>
-                  </Table>
-                </Box>
-              ))}
-            </Card>
-          )}
-
-          {preview && (
-            <Card withBorder>
-              <Title order={3}>Changes</Title>
-              {preview.stereotypes.map((stereotype) => (
-                <Box key={`detail-${stereotype.name}`} mt="md">
-                  <Title order={4}>{stereotype.name}</Title>
-                  {stereotype.changes.map((change) => {
-                    const anchor = ChangeAnchorId(stereotype.name, change.name);
-                    return (
-                      <Paper key={anchor} withBorder p="sm" mt="sm" id={anchor}>
-                        <Text fw={600} mb="xs">{change.name}</Text>
-                        <Box dangerouslySetInnerHTML={{ __html: change.detail ?? '' }} />
-                      </Paper>
-                    );
-                  })}
-                </Box>
-              ))}
-            </Card>
-          )}
-        </Stack>
-      )}
-    </Stack>
-  );
-}
-
 export function PreviewDefaultPage() {
+  const { branches, loading } = useBranches();
   const navigate = useNavigate();
+  const location = useLocation();
   const selectedBranchId = localStorage.getItem('selectedBranchId');
+  const showInitialBranchPicker =
+    (location.state as { showInitialBranchPicker?: boolean } | null)?.showInitialBranchPicker === true;
 
   useEffect(() => {
-    if (selectedBranchId) {
+    if (!showInitialBranchPicker && selectedBranchId) {
       navigate(`/preview/${selectedBranchId}`, { replace: true });
     }
-  }, [navigate, selectedBranchId]);
+  }, [navigate, selectedBranchId, showInitialBranchPicker]);
 
-  if (selectedBranchId) return <Loader />;
+  if (loading) return <Loader />;
+  if (!showInitialBranchPicker && selectedBranchId) return <Loader />;
 
   return (
     <div className="mdm-dd-preview">
-      <div className="mdm-shadow-block">
-        <div className="mdm-preview-default">
-          <h3>Data Dictionary Preview</h3>
-          <p>No branch selected yet. Choose a branch using the selector under the header.</p>
+      {showInitialBranchPicker ? (
+        <Card withBorder p="xl" className={styles.initialBranchCard}>
+          <Title order={2}>Which branch would you like to start working with?</Title>
+          <Text mt="sm">Choose a branch to start previewing the data dictionary.</Text>
+          <Box mt="lg" className={styles.largeBranchPicker}>
+            <BranchPicker
+              label="Start with branch"
+              size="lg"
+              options={branches.map((branch) => ({ value: branch.id, label: getBranchLabel(branch) }))}
+              onChange={(value) => value && navigate(`/preview/${value}`, { replace: true })}
+            />
+          </Box>
+        </Card>
+      ) : (
+        <div className="mdm-shadow-block">
+          <div className="mdm-preview-default">
+            <h3>Data Dictionary Preview</h3>
+            <p>No branch selected yet. Choose a branch using the selector under the header.</p>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
@@ -1528,6 +1266,23 @@ export function PreviewDetailPage() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
