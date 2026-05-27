@@ -5,6 +5,7 @@ import { Notifications } from '@mantine/notifications';
 import { BrowserRouter } from 'react-router-dom';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
+import '@mantine/tiptap/styles.css';
 import './styles.scss';
 
 import App from './app/app';

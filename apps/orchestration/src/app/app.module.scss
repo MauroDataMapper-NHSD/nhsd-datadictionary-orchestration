@@ -7,3 +7,23 @@
   width: 100%;
   max-width: 700px;
 }
+
+.editSection {
+  border: 1px solid #d9e2ef;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.editSectionHeader {
+  background: #eef4fb;
+  border-bottom: 1px solid #d9e2ef;
+  padding: 0.6rem 0.85rem;
+  color: #003087;
+}
+
+.editSectionTable {
+  :global(td) {
+    vertical-align: top;
+  }
+}

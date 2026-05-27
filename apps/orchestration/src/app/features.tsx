@@ -35,7 +35,7 @@ import {
 import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import styles from './app.module.scss';
-import { BranchPicker, PreviewBreadcrumb, PreviewToc, TocLink } from 'ui';
+import { BranchPicker, PageOption, PreviewBreadcrumb, PreviewToc, TocLink } from 'ui';
 import {
   indexTitleMap,
   previewEndpointMap,
@@ -60,6 +60,18 @@ type RichPreviewDetail = PreviewDetail & {
   stereotype?: string;
   isRetired?: boolean;
   isPreparatory?: boolean;
+  retiredDate?: string;
+  validFrom?: string;
+  validTo?: string;
+  titleCaseName?: string;
+  websitePageHeading?: string;
+  noAliasesRequired?: boolean;
+  shortName?: string;
+  alsoKnownAsText?: string;
+  plural?: string;
+  formerly?: string;
+  fullName?: string;
+  indexName?: string;
   alsoKnownAs?: Record<string, string>;
   nationalCodes?: PreviewCodeReference[];
   defaultCodes?: PreviewCodeReference[];
@@ -79,6 +91,24 @@ type RichPreviewDetail = PreviewDetail & {
     }>;
   };
 };
+
+export interface BusinessDefinitionEditData {
+  name: string;
+  status: 'Preparatory' | 'Live' | 'Retired';
+  retiredDate: string;
+  validFrom: string;
+  validTo: string;
+  titleCaseName: string;
+  websitePageHeading: string;
+  noAliasesRequired: boolean;
+  shortName: string;
+  alsoKnownAs: string;
+  plural: string;
+  formerly: string;
+  fullName: string;
+  indexName: string;
+  description: string;
+}
 
 function useApi() {
   return useMemo(() => createOrchestrationApiClient(apiBaseUrl), []);
@@ -852,7 +882,13 @@ export function PreviewIndexPage() {
   );
 }
 
-export function PreviewDetailPage() {
+export function PreviewDetailPage({
+  onPageOptionsChange,
+  onEditBusinessDefinition
+}: {
+  onPageOptionsChange?: (options: PageOption[]) => void;
+  onEditBusinessDefinition?: (data: BusinessDefinitionEditData) => void;
+}) {
   const api = useApi();
   const { branch: branchId, index, id } = useParams();
   const [detail, setDetail] = useState<RichPreviewDetail | null>(null);
@@ -887,6 +923,43 @@ export function PreviewDetailPage() {
        })
        .finally(() => setLoadingRefs(false));
    };
+
+  const isBusinessDefinitionPreview =
+    normalizedIndex === 'businessDefinition' ||
+    normalizePreviewRouteIndex(detail?.stereotype) === 'businessDefinition';
+
+  useEffect(() => {
+    if (!detail || !isBusinessDefinitionPreview || !onPageOptionsChange) {
+      onPageOptionsChange?.([]);
+      return;
+    }
+
+    onPageOptionsChange([
+      {
+        label: 'Edit this page...',
+        onClick: () =>
+          onEditBusinessDefinition?.({
+            name: detail.name,
+            status: detail.isRetired ? 'Retired' : detail.isPreparatory ? 'Preparatory' : 'Live',
+            retiredDate: detail.retiredDate ?? '',
+            validFrom: detail.validFrom ?? '',
+            validTo: detail.validTo ?? '',
+            titleCaseName: detail.titleCaseName ?? '',
+            websitePageHeading: detail.websitePageHeading ?? '',
+            noAliasesRequired: !!detail.noAliasesRequired,
+            shortName: detail.shortName ?? '',
+            alsoKnownAs: detail.alsoKnownAsText ?? '',
+            plural: detail.plural ?? '',
+            formerly: detail.formerly ?? '',
+            fullName: detail.fullName ?? '',
+            indexName: detail.indexName ?? '',
+            description: detail.description ?? ''
+          })
+      }
+    ]);
+
+    return () => onPageOptionsChange([]);
+  }, [detail, isBusinessDefinitionPreview, onEditBusinessDefinition, onPageOptionsChange]);
 
   if (!branchId || !normalizedIndex || !id) {
     return <Alert color="yellow">Preview detail route is incomplete.</Alert>;
@@ -1266,6 +1339,11 @@ export function PreviewDetailPage() {
     </div>
   );
 }
+
+
+
+
+
 
 
 

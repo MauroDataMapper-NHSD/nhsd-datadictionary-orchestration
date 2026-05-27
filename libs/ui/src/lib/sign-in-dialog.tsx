@@ -11,6 +11,7 @@ import {
   Loader,
   Image
 } from '@mantine/core';
+import type { ReactElement } from 'react';
 import { useState, useEffect } from 'react';
 
 export interface OpenIdConnectProvider {
@@ -38,7 +39,7 @@ export function SignInDialog({
   providers = [],
   isLoading = false,
   error: initialError = ''
-}: SignInDialogProps): JSX.Element {
+}: SignInDialogProps): ReactElement {
   const [error, setError] = useState<string>(initialError);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [email, setEmail] = useState('');
@@ -183,6 +184,7 @@ export function SignInDialog({
 }
 
 export default SignInDialog;
+
 
 
 

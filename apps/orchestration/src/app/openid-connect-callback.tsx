@@ -1,4 +1,5 @@
 import { Alert, Loader, Stack, Text, Title } from '@mantine/core';
+import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createOrchestrationApiClient } from 'api-client';
@@ -17,7 +18,7 @@ function getCallbackParams() {
   };
 }
 
-export function OpenIdConnectCallbackPage(): JSX.Element {
+export function OpenIdConnectCallbackPage(): ReactElement {
   const navigate = useNavigate();
   const [message, setMessage] = useState('Completing OpenID Connect sign in...');
   const [error, setError] = useState('');
@@ -62,6 +63,7 @@ export function OpenIdConnectCallbackPage(): JSX.Element {
 }
 
 export default OpenIdConnectCallbackPage;
+
 
 
 

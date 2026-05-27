@@ -1,6 +1,8 @@
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { AppLayout, PublishMenuAction } from 'ui';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import type { ReactElement } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { AppLayout, HtmlEditor, PageDialog, PageOption, PublishMenuAction } from 'ui';
+import { Box, Checkbox, Select, Stack, Table, Text, TextInput, Title } from '@mantine/core';
 import {
   MauroModule,
   MauroStatus,
@@ -12,6 +14,7 @@ import { saveAs } from 'file-saver';
 import { clearUserSession, getOpenIdConnectRedirectUri, persistUserSession } from './auth';
 import { OpenIdConnectCallbackPage } from './openid-connect-callback';
 import {
+  BusinessDefinitionEditData,
   ErrorStatePage,
   HomePage,
   PreviewDefaultPage,
@@ -28,20 +31,269 @@ import {
   NOTIFICATION_TITLES,
   NOTIFICATION_MESSAGES
 } from './constants';
+import styles from './app.module.scss';
 
 const appVersion = import.meta.env.VITE_APP_VERSION ?? '1.0.0';
 const mauroBaseUrl = import.meta.env.VITE_MAURO_BASE_URL ?? API_CONFIG.DEFAULT_BASE_URL;
 
 const apiClient = new OrchestrationApiClient({ baseUrl: mauroBaseUrl });
 
-export function App(): JSX.Element {
+function BusinessDefinitionEditForm({
+  value,
+  onChange
+}: {
+  value: BusinessDefinitionEditData;
+  onChange: (next: BusinessDefinitionEditData) => void;
+}): ReactElement {
+  const statusOptions: Array<BusinessDefinitionEditData['status']> = [
+    'Preparatory',
+    'Live',
+    'Retired'
+  ];
+
+  return (
+    <Stack gap="md">
+      <Box className={styles.editSection}>
+        <Title order={4} className={styles.editSectionHeader}>
+          Publication Status
+        </Title>
+        <Table className={styles.editSectionTable} withTableBorder withColumnBorders>
+          <Table.Tbody>
+            <Table.Tr>
+              <Table.Td w="220" fw={600}>
+                Status
+              </Table.Td>
+              <Table.Td>
+                <Box maw={280}>
+                  <Select
+                    data={statusOptions}
+                    value={value.status}
+                    allowDeselect={false}
+                    onChange={(status) =>
+                      status &&
+                      onChange({
+                        ...value,
+                        status,
+                        retiredDate: status === 'Retired' ? value.retiredDate : ''
+                      })
+                    }
+                  />
+                </Box>
+              </Table.Td>
+            </Table.Tr>
+            {value.status === 'Retired' && (
+              <Table.Tr>
+                <Table.Td fw={600}>Retired Date</Table.Td>
+                <Table.Td>
+                  <Box maw={420}>
+                    <TextInput
+                      maxLength={50}
+                      value={value.retiredDate}
+                      onChange={(event) => onChange({ ...value, retiredDate: event.currentTarget.value })}
+                    />
+                  </Box>
+                </Table.Td>
+              </Table.Tr>
+            )}
+            <Table.Tr>
+              <Table.Td fw={600}>Valid From</Table.Td>
+              <Table.Td>
+                <Box maw={420}>
+                  <TextInput
+                    maxLength={50}
+                    value={value.validFrom}
+                    onChange={(event) => onChange({ ...value, validFrom: event.currentTarget.value })}
+                  />
+                </Box>
+              </Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td fw={600}>Valid To</Table.Td>
+              <Table.Td>
+                <Box maw={420}>
+                  <TextInput
+                    maxLength={50}
+                    value={value.validTo}
+                    onChange={(event) => onChange({ ...value, validTo: event.currentTarget.value })}
+                  />
+                </Box>
+              </Table.Td>
+            </Table.Tr>
+          </Table.Tbody>
+        </Table>
+      </Box>
+
+      <Box className={styles.editSection}>
+        <Title order={4} className={styles.editSectionHeader}>
+          Content
+        </Title>
+        <Table className={styles.editSectionTable} withTableBorder withColumnBorders>
+          <Table.Tbody>
+            <Table.Tr>
+              <Table.Td w="220" fw={600}>
+                Description
+              </Table.Td>
+              <Table.Td>
+                <HtmlEditor
+                  value={value.description}
+                  onChange={(description) => onChange({ ...value, description })}
+                />
+              </Table.Td>
+            </Table.Tr>
+          </Table.Tbody>
+        </Table>
+      </Box>
+
+      <Box className={styles.editSection}>
+        <Title order={4} className={styles.editSectionHeader}>
+          Naming and Aliases
+        </Title>
+        <Table className={styles.editSectionTable} withTableBorder withColumnBorders>
+          <Table.Tbody>
+            <Table.Tr>
+              <Table.Td w="220" fw={600}>
+                Name
+              </Table.Td>
+              <Table.Td>
+                <Text>{value.name}</Text>
+              </Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td fw={600}>Title Case Name</Table.Td>
+              <Table.Td>
+                <Box maw={420}>
+                  <TextInput
+                    maxLength={50}
+                    value={value.titleCaseName}
+                    onChange={(event) => onChange({ ...value, titleCaseName: event.currentTarget.value })}
+                  />
+                </Box>
+              </Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td fw={600}>Website Page Heading</Table.Td>
+              <Table.Td>
+                <Box maw={420}>
+                  <TextInput
+                    maxLength={50}
+                    value={value.websitePageHeading}
+                    onChange={(event) =>
+                      onChange({ ...value, websitePageHeading: event.currentTarget.value })
+                    }
+                  />
+                </Box>
+              </Table.Td>
+            </Table.Tr>
+            <Table.Tr>
+              <Table.Td fw={600}>No aliases required</Table.Td>
+              <Table.Td>
+                <Checkbox
+                  label='No aliases required'
+                  checked={value.noAliasesRequired}
+                  onChange={(event) =>
+                    onChange({
+                      ...value,
+                      noAliasesRequired: event.currentTarget.checked
+                    })
+                  }
+                />
+              </Table.Td>
+            </Table.Tr>
+            {!value.noAliasesRequired && (
+              <>
+                <Table.Tr>
+                  <Table.Td fw={600}>Short Name</Table.Td>
+                  <Table.Td>
+                    <Box maw={420}>
+                      <TextInput
+                        maxLength={50}
+                        value={value.shortName}
+                        onChange={(event) => onChange({ ...value, shortName: event.currentTarget.value })}
+                      />
+                    </Box>
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td fw={600}>Also known as</Table.Td>
+                  <Table.Td>
+                    <Box maw={420}>
+                      <TextInput
+                        maxLength={50}
+                        value={value.alsoKnownAs}
+                        onChange={(event) => onChange({ ...value, alsoKnownAs: event.currentTarget.value })}
+                      />
+                    </Box>
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td fw={600}>Plural</Table.Td>
+                  <Table.Td>
+                    <Box maw={420}>
+                      <TextInput
+                        maxLength={50}
+                        value={value.plural}
+                        onChange={(event) => onChange({ ...value, plural: event.currentTarget.value })}
+                      />
+                    </Box>
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td fw={600}>Formerly</Table.Td>
+                  <Table.Td>
+                    <Box maw={420}>
+                      <TextInput
+                        maxLength={50}
+                        value={value.formerly}
+                        onChange={(event) => onChange({ ...value, formerly: event.currentTarget.value })}
+                      />
+                    </Box>
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td fw={600}>Full Name</Table.Td>
+                  <Table.Td>
+                    <Box maw={420}>
+                      <TextInput
+                        maxLength={50}
+                        value={value.fullName}
+                        onChange={(event) => onChange({ ...value, fullName: event.currentTarget.value })}
+                      />
+                    </Box>
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td fw={600}>Index Name</Table.Td>
+                  <Table.Td>
+                    <Box maw={420}>
+                      <TextInput
+                        maxLength={50}
+                        value={value.indexName}
+                        onChange={(event) => onChange({ ...value, indexName: event.currentTarget.value })}
+                      />
+                    </Box>
+                  </Table.Td>
+                </Table.Tr>
+              </>
+            )}
+          </Table.Tbody>
+        </Table>
+      </Box>
+    </Stack>
+  );
+}
+
+export function App(): ReactElement {
   const [openIdConnectProviders, setOpenIdConnectProviders] = useState<PublicOpenIdConnectProvider[]>([]);
   const [branches, setBranches] = useState<Array<{ id: string; label: string }>>([]);
+  const [pageOptions, setPageOptions] = useState<PageOption[]>([]);
+  const [editDialogOpened, setEditDialogOpened] = useState(false);
+  const [editDialogTitle, setEditDialogTitle] = useState('Edit page');
+  const [businessDefinitionEditData, setBusinessDefinitionEditData] =
+    useState<BusinessDefinitionEditData | null>(null);
   const [selectedBranchId, setSelectedBranchId] = useState<string | null>(() =>
     localStorage.getItem(STORAGE_KEYS.SELECTED_BRANCH_ID)
   );
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
     // Load OpenID Connect providers
@@ -79,6 +331,7 @@ export function App(): JSX.Element {
     clearUserSession();
     localStorage.removeItem(STORAGE_KEYS.SELECTED_BRANCH_ID);
     setSelectedBranchId(null);
+    setPageOptions([]);
 
     try {
       await apiClient.signOut();
@@ -127,8 +380,24 @@ export function App(): JSX.Element {
   const handleBranchChange = (branchId: string) => {
     setSelectedBranchId(branchId);
     localStorage.setItem(STORAGE_KEYS.SELECTED_BRANCH_ID, branchId);
+    setPageOptions([]);
 
     navigate(`${ROUTES.PREVIEW}/${branchId}`);
+  };
+
+  const handlePageOptionsChange = useCallback((options: PageOption[]) => {
+    setPageOptions(options);
+  }, []);
+
+  const handleEditBusinessDefinition = useCallback((data: BusinessDefinitionEditData) => {
+    setEditDialogTitle(`Edit ${data.name}`);
+    setBusinessDefinitionEditData(data);
+    setEditDialogOpened(true);
+  }, []);
+
+  const handleSaveEditDialog = async () => {
+    // Save wiring will be added once backend edit endpoint is available.
+    setEditDialogOpened(false);
   };
 
   const handleLoadStatistics = async (branchId: string) => {
@@ -248,15 +517,13 @@ export function App(): JSX.Element {
     }
   };
 
-  const showInitialBranchPicker =
-    location.pathname === '/preview' &&
-    ((location.state as { showInitialBranchPicker?: boolean } | null)?.showInitialBranchPicker === true);
-
   return (
+    <>
     <AppLayout
       appTitle="Data Dictionary Orchestrator"
       version={appVersion}
       links={[]}
+      pageOptions={pageOptions}
       branchOptions={branches.map((branch) => ({ value: branch.id, label: branch.label }))}
       selectedBranchId={selectedBranchId}
       onBranchChange={handleBranchChange}
@@ -265,7 +532,6 @@ export function App(): JSX.Element {
       onRunChangePaperPreview={handleRunChangePaperPreview}
       onGeneratePublish={handleGeneratePublish}
       onLoadAbout={handleLoadAbout}
-      hideBranchSelector={showInitialBranchPicker}
       signInHref={mauroBaseUrl}
       onSignIn={handleSignIn}
       onSignOut={handleSignOut}
@@ -279,7 +545,15 @@ export function App(): JSX.Element {
         <Route path={ROUTES.PREVIEW} element={<PreviewDefaultPage />} />
         <Route path={`${ROUTES.PREVIEW}/:branch`} element={<PreviewHomePage />} />
         <Route path={`${ROUTES.PREVIEW}/:branch/:index`} element={<PreviewIndexPage />} />
-        <Route path={`${ROUTES.PREVIEW}/:branch/:index/:id`} element={<PreviewDetailPage />} />
+        <Route
+          path={`${ROUTES.PREVIEW}/:branch/:index/:id`}
+          element={
+            <PreviewDetailPage
+              onPageOptionsChange={handlePageOptionsChange}
+              onEditBusinessDefinition={handleEditBusinessDefinition}
+            />
+          }
+        />
         <Route path={ROUTES.NOT_AUTHORIZED} element={<ErrorStatePage variant="not-authorized" />} />
         <Route path={ROUTES.NOT_FOUND} element={<ErrorStatePage variant="not-found" />} />
         <Route path={ROUTES.NOT_IMPLEMENTED} element={<ErrorStatePage variant="not-implemented" />} />
@@ -287,6 +561,22 @@ export function App(): JSX.Element {
         <Route path="*" element={<ErrorStatePage variant="not-found" />} />
       </Routes>
     </AppLayout>
+      <PageDialog
+        opened={editDialogOpened}
+        title={editDialogTitle}
+        onClose={() => setEditDialogOpened(false)}
+        onSave={handleSaveEditDialog}
+      >
+        {businessDefinitionEditData ? (
+          <BusinessDefinitionEditForm
+            value={businessDefinitionEditData}
+            onChange={setBusinessDefinitionEditData}
+          />
+        ) : (
+          <Text c="dimmed">No Business Definition selected for editing.</Text>
+        )}
+      </PageDialog>
+    </>
   );
 }
 

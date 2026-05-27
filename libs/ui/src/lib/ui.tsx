@@ -21,7 +21,8 @@ import {
   Title,
   Text
 } from '@mantine/core';
-import { ReactNode, useEffect, useState } from 'react';
+import type { ReactElement, ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import styles from './ui.module.scss';
 import SignInDialog, { OpenIdConnectProvider } from './sign-in-dialog';
@@ -31,14 +32,21 @@ export interface NavItem {
   onlySignedIn?: boolean;
 }
 
+export interface PageOption {
+  label: string;
+  onClick: () => void;
+  disabled?: boolean;
+}
+
 export interface AppLayoutProps {
   appTitle: string;
   version: string;
   links: NavItem[];
+  pageOptions?: PageOption[];
+  pageOptionsLabel?: string;
   branchOptions?: BranchPickerOption[];
   selectedBranchId?: string | null;
   onBranchChange?: (branchId: string) => void;
-  hideBranchSelector?: boolean;
   onLoadStatistics?: (branchId: string) => Promise<StatisticsMenuRow[]>;
   onLoadIntegrityChecks?: (branchId: string) => Promise<IntegrityCheckMenuCheck[]>;
   onRunChangePaperPreview?: (branchId: string, includeDataSets: boolean) => Promise<ChangePaperPreviewData>;
@@ -107,7 +115,12 @@ export interface AboutData {
   pluginVersion: string;
 }
 
-export function AppLayout({ appTitle, version, links, branchOptions = [], selectedBranchId = null, onBranchChange, hideBranchSelector = false, onLoadStatistics, onLoadIntegrityChecks, onRunChangePaperPreview, onGeneratePublish, onLoadAbout, mauroBaseUrl = '', signInHref, onSignIn, onSignOut, onOpenIdConnect, openIdConnectProviders = [], children }: AppLayoutProps): JSX.Element {
+export function AppLayout({ appTitle, version, links, pageOptions = [], pageOptionsLabel = 'Page options...', branchOptions = [], selectedBranchId = null,
+                            onBranchChange, onLoadStatistics,
+                            onLoadIntegrityChecks, onRunChangePaperPreview, onGeneratePublish,
+                            onLoadAbout, mauroBaseUrl = '', signInHref,
+                            onSignIn, onSignOut, onOpenIdConnect, openIdConnectProviders = [], children }
+                          : AppLayoutProps): ReactElement {
   const location = useLocation();
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [signInDialogOpened, setSignInDialogOpened] = useState(false);
@@ -192,7 +205,8 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
     }
   };
 
-  const showBranchSelector = isSignedIn && !hideBranchSelector && branchOptions.length > 0 && !!onBranchChange;
+  const showBranchSelector = isSignedIn && branchOptions.length > 0 && !!onBranchChange;
+  const showPageOptions = showBranchSelector && pageOptions.length > 0;
   const headerHeight = showBranchSelector ? 160 : 80;
 
   const openStatistics = async () => {
@@ -251,7 +265,7 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
   };
 
   const openChangePaperPreview = async (includeDataSets: boolean) => {
-    if (!selectedBranchId || !onRunChangePaperPreview) return;
+    if (!selectedBranchId || !onRunChangePaperPreview) { return; }
 
     setChangePaperTitle(
       includeDataSets ? 'Change Paper Preview (with Data Set Definitions)' : 'Change Paper Preview'
@@ -332,122 +346,146 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
 
   return (
     <>
-      <AppShell header={{ height: headerHeight }} padding="md">
+      <AppShell header={{ height: headerHeight }} padding='md'>
         <AppShell.Header className={styles.header}>
-          <Group justify="space-between" align="center" className={styles.headerContent}>
+          <Group justify='space-between' align='center' className={styles.headerContent}>
               <Group>
-                <img className={styles.logo} src="/images/mdm-logo.png" alt="Mauro Data Mapper logo" />
+                <img className={styles.logo} src='/images/nhs-logo.png' alt='NHS logo' />
                 <Text className={styles.brand}>Data Dictionary Orchestrator</Text>
               </Group>
               {isSignedIn ? (
                 <Button
-                  variant="filled"
-                  color="red"
+                  variant='filled'
+                  color='red'
                   onClick={handleSignOut}
-                  visibleFrom="md"
+                  visibleFrom='md'
                   className={styles.signOutButton}
                 >
                   Sign out
                 </Button>
               ) : (
-                <Button onClick={handleOpenSignInDialog} variant="outline" visibleFrom="md">
+                <Button onClick={handleOpenSignInDialog} variant='outline' visibleFrom='md'>
                   Sign in
                 </Button>
               )}
             </Group>
           {showBranchSelector && (
             <div className={styles.branchSelectorBar}>
-              <Container size="xl" className={styles.branchSelectorBarContent}>
-                <Group align="flex-end" justify="space-between" wrap="nowrap" gap="md">
-                  <Group align="flex-end" gap="sm" className={styles.branchSelectorGroup} wrap="nowrap">
-                    <Text className={styles.branchSelectorLabel}>Current branch</Text>
-                    <Box className={styles.branchSelectorInput}>
-                      <BranchPicker
-                        value={selectedBranchId}
-                        label=""
-                        size="md"
-                        options={branchOptions}
-                        onChange={(value) => value && onBranchChange(value)}
-                      />
+              <Container size='xl' className={styles.branchSelectorBarContent}>
+                <Group align='flex-end' justify='space-between' wrap='nowrap' gap='md'>
+                  <Group align='flex-end' gap='sm' className={styles.branchControls} wrap='nowrap'>
+                    <Group align='flex-end' gap='sm' className={styles.branchSelectorGroup} wrap='nowrap'>
+                      <Text className={styles.branchSelectorLabel}>Current branch</Text>
+                      <Box className={styles.branchSelectorInput}>
+                        <BranchPicker
+                          value={selectedBranchId}
+                          label=''
+                          size='md'
+                          options={branchOptions}
+                          onChange={(value) => value && onBranchChange(value)}
+                        />
+                      </Box>
+                    </Group>
+
+                    <Box className={styles.menuSelector}>
+                      <Menu shadow='md' width={360} position='bottom-end'>
+                        <Menu.Target>
+                          <Button
+                            className={styles.menuButton}
+                            variant='outline'
+                            color='dark'
+                            disabled={!selectedBranchId || (!onLoadStatistics && !onLoadIntegrityChecks &&
+                              !onRunChangePaperPreview && !onGeneratePublish)}
+                          >
+                            Branch options...
+                          </Button>
+                        </Menu.Target>
+
+                        <Menu.Dropdown>
+                          <Menu.Label>Overview</Menu.Label>
+                          <Menu.Item disabled={!onLoadStatistics} onClick={() => void openStatistics()}>Statistics</Menu.Item>
+                          <Menu.Item disabled={!onLoadIntegrityChecks} onClick={() => void openIntegrityChecks()}>Integrity checks</Menu.Item>
+                          <Menu.Divider />
+                          <Menu.Label>Preview Change Paper</Menu.Label>
+                          <Menu.Item
+                            disabled={!selectedBranchId || !onRunChangePaperPreview}
+                            onClick={() => void openChangePaperPreview(false)}
+                          >
+                            Change Paper
+                          </Menu.Item>
+                          <Menu.Item
+                            disabled={!selectedBranchId || !onRunChangePaperPreview}
+                            onClick={() => void openChangePaperPreview(true)}
+                          >
+                            Change Paper (with Data Set Definitions)
+                          </Menu.Item>
+                          <Menu.Divider />
+                          <Menu.Label>Generate and Download</Menu.Label>
+                          <Menu.Item
+                            disabled={!selectedBranchId || !onGeneratePublish}
+                            onClick={() => void runPublishAction('changePaper')}
+                            rightSection={publishActionRunning === 'changePaper' ? <Loader size='xs' /> : undefined}
+                          >
+                            Change Paper
+                          </Menu.Item>
+                          <Menu.Item
+                            disabled={!selectedBranchId || !onGeneratePublish}
+                            onClick={() => void runPublishAction('changePaperWithDataSet')}
+                            rightSection={publishActionRunning === 'changePaperWithDataSet' ? <Loader size='xs' /> : undefined}
+                          >
+                            Change Paper (with Data Set Definitions)
+                          </Menu.Item>
+                          <Menu.Item
+                            disabled={!selectedBranchId || !onGeneratePublish}
+                            onClick={() => void runPublishAction('codeSystems')}
+                            rightSection={publishActionRunning === 'codeSystems' ? <Loader size='xs' /> : undefined}
+                          >
+                            CodeSystems
+                          </Menu.Item>
+                          <Menu.Item
+                            disabled={!selectedBranchId || !onGeneratePublish}
+                            onClick={() => void runPublishAction('valueSets')}
+                            rightSection={publishActionRunning === 'valueSets' ? <Loader size='xs' /> : undefined}
+                          >
+                            ValueSets
+                          </Menu.Item>
+                          <Menu.Item
+                            disabled={!selectedBranchId || !onGeneratePublish}
+                            onClick={() => void runPublishAction('website')}
+                            rightSection={publishActionRunning === 'website' ? <Loader size='xs' /> : undefined}
+                          >
+                            Website
+                          </Menu.Item>
+                          <Menu.Item disabled>
+                            Data elements usage spreadsheet
+                          </Menu.Item>
+                          <Menu.Divider />
+                          <Menu.Label>Info</Menu.Label>
+                          <Menu.Item onClick={() => void openAbout()}>About</Menu.Item>
+                        </Menu.Dropdown>
+                      </Menu>
                     </Box>
                   </Group>
-                  <Box className={styles.menuSelector}>
-                    <Menu shadow="md" width={360} position="bottom-end">
-                      <Menu.Target>
-                        <Button
-                          className={styles.menuButton}
-                          variant="outline"
-                          color="dark"
-                          disabled={!selectedBranchId || (!onLoadStatistics && !onLoadIntegrityChecks && !onRunChangePaperPreview && !onGeneratePublish)}
-                        >
-                          Generate
-                        </Button>
-                      </Menu.Target>
 
-                      <Menu.Dropdown>
-                        <Menu.Label>Overview</Menu.Label>
-                        <Menu.Item disabled={!onLoadStatistics} onClick={() => void openStatistics()}>Statistics</Menu.Item>
-                        <Menu.Item disabled={!onLoadIntegrityChecks} onClick={() => void openIntegrityChecks()}>Integrity checks</Menu.Item>
-                        <Menu.Divider />
-                        <Menu.Label>Preview</Menu.Label>
-                        <Menu.Item
-                          disabled={!selectedBranchId || !onRunChangePaperPreview}
-                          onClick={() => void openChangePaperPreview(false)}
-                        >
-                          Change Paper
-                        </Menu.Item>
-                        <Menu.Item
-                          disabled={!selectedBranchId || !onRunChangePaperPreview}
-                          onClick={() => void openChangePaperPreview(true)}
-                        >
-                          Change Paper (with Data Set Definitions)
-                        </Menu.Item>
-                        <Menu.Divider />
-                        <Menu.Label>Download</Menu.Label>
-                        <Menu.Item
-                          disabled={!selectedBranchId || !onGeneratePublish}
-                          onClick={() => void runPublishAction('changePaper')}
-                          rightSection={publishActionRunning === 'changePaper' ? <Loader size="xs" /> : undefined}
-                        >
-                          Change Paper
-                        </Menu.Item>
-                        <Menu.Item
-                          disabled={!selectedBranchId || !onGeneratePublish}
-                          onClick={() => void runPublishAction('changePaperWithDataSet')}
-                          rightSection={publishActionRunning === 'changePaperWithDataSet' ? <Loader size="xs" /> : undefined}
-                        >
-                          Change Paper (with Data Set Definitions)
-                        </Menu.Item>
-                        <Menu.Item
-                          disabled={!selectedBranchId || !onGeneratePublish}
-                          onClick={() => void runPublishAction('codeSystems')}
-                          rightSection={publishActionRunning === 'codeSystems' ? <Loader size="xs" /> : undefined}
-                        >
-                          CodeSystems
-                        </Menu.Item>
-                        <Menu.Item
-                          disabled={!selectedBranchId || !onGeneratePublish}
-                          onClick={() => void runPublishAction('valueSets')}
-                          rightSection={publishActionRunning === 'valueSets' ? <Loader size="xs" /> : undefined}
-                        >
-                          ValueSets
-                        </Menu.Item>
-                        <Menu.Item
-                          disabled={!selectedBranchId || !onGeneratePublish}
-                          onClick={() => void runPublishAction('website')}
-                          rightSection={publishActionRunning === 'website' ? <Loader size="xs" /> : undefined}
-                        >
-                          Website
-                        </Menu.Item>
-                        <Menu.Item disabled>
-                          Data elements usage spreadsheet
-                        </Menu.Item>
-                        <Menu.Divider />
-                        <Menu.Label>Info</Menu.Label>
-                        <Menu.Item onClick={() => void openAbout()}>About</Menu.Item>
-                      </Menu.Dropdown>
-                    </Menu>
-                  </Box>
+                  {showPageOptions && (
+                    <Box className={styles.menuSelector}>
+                      <Menu shadow='md' width={360} position='bottom-end'>
+                        <Menu.Target>
+                          <Button className={styles.menuButton} variant='outline' color='dark'>
+                            {pageOptionsLabel}
+                          </Button>
+                        </Menu.Target>
+
+                        <Menu.Dropdown>
+                          {pageOptions.map((option) => (
+                            <Menu.Item key={option.label} disabled={option.disabled} onClick={option.onClick}>
+                              {option.label}
+                            </Menu.Item>
+                          ))}
+                        </Menu.Dropdown>
+                      </Menu>
+                    </Box>
+                  )}
                 </Group>
               </Container>
             </div>
@@ -455,21 +493,24 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
         </AppShell.Header>
 
         <AppShell.Main className={styles.main} style={{ minHeight: `calc(100vh - ${headerHeight}px)` }}>
-          <Container size="lg" className={`container ${styles.contentContainer}`}>
+          <Container size='lg' className={`container ${styles.contentContainer}`}>
             {children}
           </Container>
-          <Box component="footer" className={styles.footer}>
-            <Container size="lg" className={styles.footerContainer}>
-              <Text>Powered by Mauro Data Mapper</Text>
-              <Text>Version {version}</Text>
+          <Box component='footer' className={styles.footer}>
+            <Container fluid className={styles.footerContainer}>
+              <Group gap='sm' className={styles.footerLeft}>
+                <img className={styles.footerLogo} src='/images/mdm-logo.png' alt='Mauro Data Mapper logo' />
+                <Text>Powered by Mauro Data Mapper</Text>
+              </Group>
+              <Text className={styles.footerVersion}>Version {version}</Text>
             </Container>
           </Box>
         </AppShell.Main>
       </AppShell>
 
-      <Modal opened={statisticsOpened} onClose={() => setStatisticsOpened(false)} title="Statistics" size="xl" centered>
+      <Modal opened={statisticsOpened} onClose={() => setStatisticsOpened(false)} title='Statistics' size='xl' centered>
         {statisticsLoading && <Loader />}
-        {!statisticsLoading && statisticsError && <Alert color="red">{statisticsError}</Alert>}
+        {!statisticsLoading && statisticsError && <Alert color='red'>{statisticsError}</Alert>}
         {!statisticsLoading && !statisticsError && statisticsRows.length === 0 && (
           <Text>No statistics available for this branch.</Text>
         )}
@@ -497,9 +538,9 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
         )}
       </Modal>
 
-      <Modal opened={integrityOpened} onClose={() => setIntegrityOpened(false)} title="Integrity checks" size="xl" centered>
+      <Modal opened={integrityOpened} onClose={() => setIntegrityOpened(false)} title='Integrity checks' size='xl' centered>
         {integrityLoading && <Loader />}
-        {!integrityLoading && integrityError && <Alert color="red">{integrityError}</Alert>}
+        {!integrityLoading && integrityError && <Alert color='red'>{integrityError}</Alert>}
         {!integrityLoading && !integrityError && integrityRows.length === 0 && (
           <Text>No integrity checks available for this branch.</Text>
         )}
@@ -507,7 +548,7 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
           <Grid>
             <Grid.Col span={{ base: 12, md: 5 }}>
               <ScrollArea mah={420}>
-                <Stack gap="xs">
+                <Stack gap='xs'>
                   {integrityRows.map((check) => {
                     const hasErrors = (check.errors?.length ?? 0) > 0;
                     const isSelected = selectedIntegrityCheck?.checkName === check.checkName;
@@ -515,20 +556,20 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
                     return (
                       <button
                         key={check.checkName}
-                        type="button"
+                        type='button'
                         className={styles.integrityListItem}
                         data-selected={isSelected}
                         onClick={() => setSelectedIntegrityCheck(check)}
                       >
-                        <Group gap="xs" wrap="nowrap">
-                          <ThemeIcon color={hasErrors ? 'red' : 'green'} variant="light" size="sm" style={{ flexShrink: 0 }}>
+                        <Group gap='xs' wrap='nowrap'>
+                          <ThemeIcon color={hasErrors ? 'red' : 'green'} variant='light' size='sm' style={{ flexShrink: 0 }}>
                             {hasErrors ? '!' : '✓'}
                           </ThemeIcon>
-                          <Text size="sm" fw={isSelected ? 700 : 400} style={{ flex: 1 }}>
+                          <Text size='sm' fw={isSelected ? 700 : 400} style={{ flex: 1 }}>
                             {check.checkName}
                           </Text>
                           {hasErrors && (
-                            <Badge color="red" size="sm" style={{ flexShrink: 0 }}>
+                            <Badge color='red' size='sm' style={{ flexShrink: 0 }}>
                               {check.errors.length}
                             </Badge>
                           )}
@@ -541,43 +582,44 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 7 }}>
               {!selectedIntegrityCheck && (
-                <Text size="sm" c="dimmed" fs="italic">Select a category to view further details.</Text>
+                <Text size='sm' c='dimmed' fs='italic'>Select a category to view further details.</Text>
               )}
               {selectedIntegrityCheck && (
-                <Paper withBorder p="sm">
-                  <Group justify="space-between" align="center">
+                <Paper withBorder p='sm'>
+                  <Group justify='space-between' align='center'>
                     <Text fw={700}>{selectedIntegrityCheck.checkName}</Text>
-                    <Button variant="light" size="xs" onClick={() => void openIntegrityChecks()}>
+                    <Button variant='light' size='xs' onClick={() => void openIntegrityChecks()}>
                       Run
                     </Button>
                   </Group>
-                  <Text size="sm" mt="xs">{selectedIntegrityCheck.description}</Text>
-                  <Divider my="sm" />
+                  <Text size='sm' mt='xs'>{selectedIntegrityCheck.description}</Text>
+                  <Divider my='sm' />
                   {(selectedIntegrityCheck.errors?.length ?? 0) === 0 ? (
-                    <Group gap="xs">
-                      <ThemeIcon color="green" variant="light" size="sm">✓</ThemeIcon>
-                      <Text size="sm" c="green">No issues found</Text>
+                    <Group gap='xs'>
+                      <ThemeIcon color='green' variant='light' size='sm'>✓</ThemeIcon>
+                      <Text size='sm' c='green'>No issues found</Text>
                     </Group>
                   ) : (
-                    <Stack gap="xs">
-                      <Group gap="xs">
-                        <ThemeIcon color="red" variant="light" size="sm">!</ThemeIcon>
-                        <Text size="sm" c="red">{selectedIntegrityCheck.errors.length} issue(s) found</Text>
+                    <Stack gap='xs'>
+                      <Group gap='xs'>
+                        <ThemeIcon color='red' variant='light' size='sm'>!</ThemeIcon>
+                        <Text size='sm' c='red'>{selectedIntegrityCheck.errors.length} issue(s) found</Text>
                       </Group>
                       <ScrollArea mah={310}>
-                        <Stack gap="xs">
+                        <Stack gap='xs'>
                           {selectedIntegrityCheck.errors.map((error, index) => (
-                            <Paper key={`${selectedIntegrityCheck.checkName}-${index}`} withBorder p="xs">
+                            <Paper key={`${selectedIntegrityCheck.checkName}-${index}`} withBorder p='xs'>
                               {error.component?.domainType && (
-                                <Text size="xs" c="dimmed" mb={2}>{error.component.domainType}</Text>
+                                <Text size='xs' c='dimmed' mb={2}>{error.component.domainType}</Text>
                               )}
                               {error.component ? (
-                                <a href={getMauroComponentUrl(error.component)} target="_blank" rel="noreferrer" className={styles.integrityComponentLink}>
+                                <a href={getMauroComponentUrl(error.component)} target='_blank' rel='noreferrer'
+                                   className={styles.integrityComponentLink}>
                                   {error.component.label}
                                 </a>
                               ) : null}
                               {error.details?.map((detail, detailIndex) => (
-                                <Text key={detailIndex} size="xs" c="dimmed" mt={2}>{detail}</Text>
+                                <Text key={detailIndex} size='xs' c='dimmed' mt={2}>{detail}</Text>
                               ))}
                             </Paper>
                           ))}
@@ -596,33 +638,33 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
         opened={changePaperOpened}
         onClose={() => setChangePaperOpened(false)}
         title={<Title order={3}>{changePaperTitle}</Title>}
-        size="90%"
+        size='90%'
         styles={{
           content: { display: 'flex', flexDirection: 'column', maxHeight: '92vh' },
           body: { flex: 1, overflowY: 'auto', padding: '1rem 1.5rem' }
         }}
       >
         {changePaperLoading && (
-          <Stack align="center" gap="md" py="xl">
-            <Loader size="lg" />
-            <Text size="lg" fw={500}>Generating change paper preview…</Text>
-            <Text size="sm" c="dimmed">This may take a moment, please wait.</Text>
+          <Stack align='center' gap='md' py='xl'>
+            <Loader size='lg' />
+            <Text size='lg' fw={500}>Generating change paper preview…</Text>
+            <Text size='sm' c='dimmed'>This may take a moment, please wait.</Text>
           </Stack>
         )}
 
         {!changePaperLoading && changePaperError && (
-          <Alert color="red" title="Error loading preview" mt="md">{changePaperError}</Alert>
+          <Alert color='red' title='Error loading preview' mt='md'>{changePaperError}</Alert>
         )}
 
         {!changePaperLoading && !changePaperError && changePaperData && (
-          <Stack gap="xl">
-            <Alert color="blue" variant="light">
+          <Stack gap='xl'>
+            <Alert color='blue' variant='light'>
               This is a <strong>preview</strong> only. Some content may not exactly match the final published change paper.
             </Alert>
 
             {changePaperData.background && Object.keys(changePaperData.background).length > 0 && (
               <Box>
-                <Title order={4} mb="sm">Background</Title>
+                <Title order={4} mb='sm'>Background</Title>
                 <Table withTableBorder withColumnBorders>
                   <Table.Tbody>
                     {Object.entries(changePaperData.background)
@@ -644,10 +686,10 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
 
             {changePaperData.stereotypes.length > 0 && (
               <Box>
-                <Title order={4} mb="sm">Summary of Changes</Title>
+                <Title order={4} mb='sm'>Summary of Changes</Title>
                 {changePaperData.stereotypes.map((stereotype) => (
-                  <Box key={`summary-${stereotype.name}`} mb="md">
-                    <Title order={5} mb="xs">{stereotype.name}</Title>
+                  <Box key={`summary-${stereotype.name}`} mb='md'>
+                    <Title order={5} mb='xs'>{stereotype.name}</Title>
                     <Table withTableBorder withColumnBorders>
                       <Table.Tbody>
                         {stereotype.changes.map((change) => {
@@ -672,16 +714,16 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
 
             {changePaperData.stereotypes.length > 0 && (
               <Box>
-                <Title order={4} mb="sm">Changes</Title>
+                <Title order={4} mb='sm'>Changes</Title>
                 {changePaperData.stereotypes.map((stereotype) => (
-                  <Box key={`detail-${stereotype.name}`} mb="lg">
-                    <Title order={5} mb="xs">{stereotype.name}</Title>
+                  <Box key={`detail-${stereotype.name}`} mb='lg'>
+                    <Title order={5} mb='xs'>{stereotype.name}</Title>
                     {stereotype.changes.map((change) => {
                       const anchor = changePaperAnchorId(stereotype.name, change.name);
                       return (
-                        <Paper key={anchor} id={anchor} withBorder p="md" mb="sm">
-                          <Text fw={600} mb="xs">{change.name}</Text>
-                          <Divider mb="xs" />
+                        <Paper key={anchor} id={anchor} withBorder p='md' mb='sm'>
+                          <Text fw={600} mb='xs'>{change.name}</Text>
+                          <Divider mb='xs' />
                           <Box dangerouslySetInnerHTML={{ __html: change.detail ?? '' }} />
                         </Paper>
                       );
@@ -698,22 +740,22 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
         opened={aboutOpened}
         onClose={() => setAboutOpened(false)}
         title={<Title order={3}>About</Title>}
-        size="lg"
+        size='lg'
         centered
       >
         {aboutLoading && (
-          <Stack align="center" gap="md" py="xl">
-            <Loader size="md" />
-            <Text size="sm" c="dimmed">Loading version information…</Text>
+          <Stack align='center' gap='md' py='xl'>
+            <Loader size='md' />
+            <Text size='sm' c='dimmed'>Loading version information…</Text>
           </Stack>
         )}
 
         {!aboutLoading && aboutError && (
-          <Alert color="red" mt="md">{aboutError}</Alert>
+          <Alert color='red' mt='md'>{aboutError}</Alert>
         )}
 
         {!aboutLoading && (
-          <Stack gap="md">
+          <Stack gap='md'>
             <Table>
               <Table.Tbody>
                 <Table.Tr>
@@ -731,8 +773,8 @@ export function AppLayout({ appTitle, version, links, branchOptions = [], select
               </Table.Tbody>
             </Table>
             {mauroBaseUrl && (
-              <Text c="dimmed" size="sm">
-                <Anchor href={mauroBaseUrl} target="_blank" rel="noreferrer">
+              <Text c='dimmed' size='sm'>
+                <Anchor href={mauroBaseUrl} target='_blank' rel='noreferrer'>
                   Open Mauro Data Mapper
                 </Anchor>{' '}
                 for platform access and management.
@@ -760,7 +802,7 @@ export interface FeaturePageProps {
   description: string;
 }
 
-export function FeaturePage({ title, description }: FeaturePageProps): JSX.Element {
+export function FeaturePage({ title, description }: FeaturePageProps): ReactElement {
   return (
     <Box className={styles.featureCard}>
       <h2>{title}</h2>
@@ -782,7 +824,7 @@ export interface BranchPickerProps {
   label?: string;
 }
 
-export function BranchPicker({ value = null, options, onChange, size = 'sm', label = 'Current branch' }: BranchPickerProps): JSX.Element {
+export function BranchPicker({ value = null, options, onChange, size = 'sm', label = 'Current branch' }: BranchPickerProps): ReactElement {
   const selectData = options
     .filter((option) => typeof option?.value === 'string' && option.value.trim().length > 0)
     .map((option) => ({
@@ -793,7 +835,7 @@ export function BranchPicker({ value = null, options, onChange, size = 'sm', lab
   return (
     <Select
       {...(label ? { label } : {})}
-      placeholder="Select a branch"
+      placeholder='Select a branch'
       value={value}
       data={selectData}
       onChange={onChange}
@@ -807,9 +849,9 @@ export interface BreadcrumbItem {
   to?: string;
 }
 
-export function PreviewBreadcrumb({ items }: { items: BreadcrumbItem[] }): JSX.Element {
+export function PreviewBreadcrumb({ items }: { items: BreadcrumbItem[] }): ReactElement {
   return (
-    <ul className="mdm-preview-breadcrumb">
+    <ul className='mdm-preview-breadcrumb'>
       {items.map((item, index) => {
         const isLast = index === items.length - 1;
 
@@ -837,18 +879,18 @@ export interface PreviewTocProps {
   onNavigate: (anchor: string) => void;
 }
 
-export function PreviewToc({ links, onNavigate }: PreviewTocProps): JSX.Element | null {
+export function PreviewToc({ links, onNavigate }: PreviewTocProps): ReactElement | null {
   if (links.length === 0) {
     return null;
   }
 
   return (
-    <div className="mdm-preview-toc">
-      <div className="mdm-preview-toc__label">On this page</div>
+    <div className='mdm-preview-toc'>
+      <div className='mdm-preview-toc__label'>On this page</div>
       <ul>
         {links.map((link) => (
           <li key={link.anchor}>
-            <button type="button" className="mdm-preview-toc__link" onClick={() => onNavigate(link.anchor)}>
+            <button type='button' className='mdm-preview-toc__link' onClick={() => onNavigate(link.anchor)}>
               {link.label}
             </button>
           </li>
