@@ -2,6 +2,7 @@ import { Button, Modal, Stack, Text, Textarea } from '@mantine/core';
 import { RichTextEditor } from '@mantine/tiptap';
 import { IconCode, IconEye, IconLinkPlus } from '@tabler/icons-react';
 import Link from '@tiptap/extension-link';
+import { Table, TableCell, TableHeader, TableRow } from '@tiptap/extension-table';
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import type { KeyboardEvent as ReactKeyboardEvent, ReactElement } from 'react';
@@ -27,7 +28,14 @@ export function HtmlEditor({ value, onChange, stickyOffset = 60 }: HtmlEditorPro
   }, []);
 
   const editor = useEditor({
-    extensions: [StarterKit, Link.configure({ openOnClick: false })],
+    extensions: [
+      StarterKit,
+      Link.configure({ openOnClick: false }),
+      Table.configure({ resizable: true }),
+      TableRow,
+      TableHeader,
+      TableCell
+    ],
     content: value,
     onUpdate: ({ editor: currentEditor }) => {
       if (!sourceMode) {
@@ -93,7 +101,27 @@ export function HtmlEditor({ value, onChange, stickyOffset = 60 }: HtmlEditorPro
 
   return (
     <>
-      <RichTextEditor editor={editor}>
+      <RichTextEditor
+        editor={editor}
+        styles={{
+          content: {
+            '& table': {
+              borderCollapse: 'collapse',
+              tableLayout: 'fixed',
+              width: '100%'
+            },
+            '& td, & th': {
+              border: '1px solid var(--mantine-color-gray-4)',
+              padding: '0.5rem',
+              verticalAlign: 'top'
+            },
+            '& th': {
+              backgroundColor: 'var(--mantine-color-gray-0)',
+              fontWeight: 600
+            }
+          }
+        }}
+      >
         <RichTextEditor.Toolbar sticky stickyOffset={stickyOffset}>
           <RichTextEditor.ControlsGroup>
             <RichTextEditor.Control
@@ -123,6 +151,38 @@ export function HtmlEditor({ value, onChange, stickyOffset = 60 }: HtmlEditorPro
                 <RichTextEditor.BulletList />
                 <RichTextEditor.OrderedList />
                 <RichTextEditor.Blockquote />
+              </RichTextEditor.ControlsGroup>
+              <RichTextEditor.ControlsGroup>
+                <RichTextEditor.Control
+                  aria-label='Insert table'
+                  title='Insert table'
+                  onClick={() =>
+                    editor?.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
+                  }
+                >
+                  Table
+                </RichTextEditor.Control>
+                <RichTextEditor.Control
+                  aria-label='Add table row'
+                  title='Add table row'
+                  onClick={() => editor?.chain().focus().addRowAfter().run()}
+                >
+                  + Row
+                </RichTextEditor.Control>
+                <RichTextEditor.Control
+                  aria-label='Add table column'
+                  title='Add table column'
+                  onClick={() => editor?.chain().focus().addColumnAfter().run()}
+                >
+                  + Col
+                </RichTextEditor.Control>
+                <RichTextEditor.Control
+                  aria-label='Delete table'
+                  title='Delete table'
+                  onClick={() => editor?.chain().focus().deleteTable().run()}
+                >
+                  Del Table
+                </RichTextEditor.Control>
               </RichTextEditor.ControlsGroup>
               <RichTextEditor.ControlsGroup>
                 <RichTextEditor.Link />

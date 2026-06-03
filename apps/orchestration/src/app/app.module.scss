@@ -26,4 +26,12 @@
   :global(td) {
     vertical-align: top;
   }
+
+  :global(.mantine-Checkbox-label) {
+    font-size: 1rem;
+  }
+
+  :global(tr:has(.mantine-TextInput-root):not(:has(.mantine-RichTextEditor-root))) :global(td) {
+    height: 54px;
+  }
 }

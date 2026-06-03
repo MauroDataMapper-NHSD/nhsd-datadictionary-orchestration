@@ -1,14 +1,3 @@
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import type { ReactElement } from 'react';
-import { useCallback, useEffect, useState } from 'react';
-import { AppLayout, HtmlEditor, PageDialog, PageOption, PublishMenuAction } from 'ui';
-import { Box, Checkbox, Select, Stack, Table, Text, TextInput, Title } from '@mantine/core';
-import {
-  MauroModule,
-  MauroStatus,
-  OrchestrationApiClient,
-  PublicOpenIdConnectProvider
-} from 'api-client';
 import { notifications } from '@mantine/notifications';
 import { saveAs } from 'file-saver';
 import { clearUserSession, getOpenIdConnectRedirectUri, persistUserSession } from './auth';
@@ -32,9 +21,14 @@ import {
   NOTIFICATION_MESSAGES
 } from './constants';
 import styles from './app.module.scss';
+import { OrchestrationApiClient } from 'api-client';
+import { ReactElement, ReactNode, useCallback, useEffect, useState } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Box, Checkbox, Select, Stack, Table, Text, TextInput, Title } from '@mantine/core';
+import { AppLayout, HtmlEditor, PageDialog } from 'ui';
 
-const appVersion = import.meta.env.VITE_APP_VERSION ?? '1.0.0';
-const mauroBaseUrl = import.meta.env.VITE_MAURO_BASE_URL ?? API_CONFIG.DEFAULT_BASE_URL;
+const appVersion = import .meta.env.VITE_APP_VERSION ?? '1.0.0';
+const mauroBaseUrl = import .meta.env.VITE_MAURO_BASE_URL ?? API_CONFIG.DEFAULT_BASE_URL;
 
 const apiClient = new OrchestrationApiClient({ baseUrl: mauroBaseUrl });
 
@@ -125,15 +119,52 @@ function BusinessDefinitionEditForm({
 
       <Box className={styles.editSection}>
         <Title order={4} className={styles.editSectionHeader}>
-          Content
+          Descriptions
         </Title>
         <Table className={styles.editSectionTable} withTableBorder withColumnBorders>
           <Table.Tbody>
             <Table.Tr>
-              <Table.Td w="220" fw={600}>
-                Description
+              <Table.Td w='220' fw={600}>
+                Short Description
               </Table.Td>
               <Table.Td>
+                <Stack gap='xs' maw={720}>
+                  <Checkbox
+                    label='Default short description'
+                    checked={value.defaultShortDescription}
+                    onChange={(event) =>
+                      onChange({
+                        ...value,
+                        defaultShortDescription: event.currentTarget.checked
+                      })
+                    }
+                  />
+                  {value.defaultShortDescription ? (
+                    <Text c='dimmed'>
+                      Default short description will be generated automatically when available.
+                    </Text>
+                  ) : (
+                    <Box maw={720}>
+                      <TextInput
+                        maxLength={100}
+                        value={value.shortDescription}
+                        onChange={(event) =>
+                          onChange({
+                            ...value,
+                            shortDescription: event.currentTarget.value
+                          })
+                        }
+                      />
+                    </Box>
+                  )}
+                </Stack>
+              </Table.Td>
+            </Table.Tr>
+             <Table.Tr>
+               <Table.Td w="220" fw={600}>
+                 Description
+               </Table.Td>
+               <Table.Td>
                 <HtmlEditor
                   value={value.description}
                   onChange={(description) => onChange({ ...value, description })}
@@ -146,7 +177,7 @@ function BusinessDefinitionEditForm({
 
       <Box className={styles.editSection}>
         <Title order={4} className={styles.editSectionHeader}>
-          Naming and Aliases
+          Naming
         </Title>
         <Table className={styles.editSectionTable} withTableBorder withColumnBorders>
           <Table.Tbody>
@@ -159,7 +190,7 @@ function BusinessDefinitionEditForm({
               </Table.Td>
             </Table.Tr>
             <Table.Tr>
-              <Table.Td fw={600}>Title Case Name</Table.Td>
+              <Table.Td w="220" fw={600}>Title Case Name</Table.Td>
               <Table.Td>
                 <Box maw={420}>
                   <TextInput
@@ -184,8 +215,18 @@ function BusinessDefinitionEditForm({
                 </Box>
               </Table.Td>
             </Table.Tr>
+          </Table.Tbody>
+        </Table>
+      </Box>
+
+      <Box className={styles.editSection}>
+        <Title order={4} className={styles.editSectionHeader}>
+          Aliases
+        </Title>
+        <Table className={styles.editSectionTable} withTableBorder withColumnBorders>
+          <Table.Tbody>
             <Table.Tr>
-              <Table.Td fw={600}>No aliases required</Table.Td>
+              <Table.Td w="220" fw={600}>No aliases required</Table.Td>
               <Table.Td>
                 <Checkbox
                   label='No aliases required'
@@ -214,7 +255,7 @@ function BusinessDefinitionEditForm({
                   </Table.Td>
                 </Table.Tr>
                 <Table.Tr>
-                  <Table.Td fw={600}>Also known as</Table.Td>
+                  <Table.Td w="220" fw={600}>Also known as</Table.Td>
                   <Table.Td>
                     <Box maw={420}>
                       <TextInput
@@ -238,7 +279,7 @@ function BusinessDefinitionEditForm({
                   </Table.Td>
                 </Table.Tr>
                 <Table.Tr>
-                  <Table.Td fw={600}>Formerly</Table.Td>
+                  <Table.Td w="220" fw={600}>Formerly</Table.Td>
                   <Table.Td>
                     <Box maw={420}>
                       <TextInput
@@ -287,7 +328,7 @@ export function App(): ReactElement {
   const [branches, setBranches] = useState<Array<{ id: string; label: string }>>([]);
   const [pageOptions, setPageOptions] = useState<PageOption[]>([]);
   const [editDialogOpened, setEditDialogOpened] = useState(false);
-  const [editDialogTitle, setEditDialogTitle] = useState('Edit page');
+  const [editDialogTitle, setEditDialogTitle] = useState<ReactNode>('Edit page');
   const [businessDefinitionEditData, setBusinessDefinitionEditData] =
     useState<BusinessDefinitionEditData | null>(null);
   const [selectedBranchId, setSelectedBranchId] = useState<string | null>(() =>
@@ -390,7 +431,14 @@ export function App(): ReactElement {
   }, []);
 
   const handleEditBusinessDefinition = useCallback((data: BusinessDefinitionEditData) => {
-    setEditDialogTitle(`Edit ${data.name}`);
+    setEditDialogTitle(
+      <span>
+        Edit{' '}
+        <span className={data.titleClassName || data.stereotypeForPreview} data-role='edit-dialog-item-name'>
+          {data.name}
+        </span>
+      </span>
+    );
     setBusinessDefinitionEditData(data);
     setEditDialogOpened(true);
   }, []);

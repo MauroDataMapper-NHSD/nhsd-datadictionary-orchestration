@@ -58,6 +58,7 @@ type RichPreviewDetail = PreviewDetail & {
   formatLength?: string;
   definition?: string;
   stereotype?: string;
+  stereotypeForPreview?: string;
   isRetired?: boolean;
   isPreparatory?: boolean;
   retiredDate?: string;
@@ -94,10 +95,14 @@ type RichPreviewDetail = PreviewDetail & {
 
 export interface BusinessDefinitionEditData {
   name: string;
+  stereotypeForPreview?: string;
+  titleClassName: string;
   status: 'Preparatory' | 'Live' | 'Retired';
   retiredDate: string;
   validFrom: string;
   validTo: string;
+  defaultShortDescription: boolean;
+  shortDescription: string;
   titleCaseName: string;
   websitePageHeading: string;
   noAliasesRequired: boolean;
@@ -940,10 +945,18 @@ export function PreviewDetailPage({
         onClick: () =>
           onEditBusinessDefinition?.({
             name: detail.name,
+            stereotypeForPreview: detail.stereotypeForPreview ?? detail.stereotype,
+            titleClassName:
+              detail.stereotypeForPreview ??
+              detail.stereotype ??
+              normalizedIndex ??
+              'businessDefinition',
             status: detail.isRetired ? 'Retired' : detail.isPreparatory ? 'Preparatory' : 'Live',
             retiredDate: detail.retiredDate ?? '',
             validFrom: detail.validFrom ?? '',
             validTo: detail.validTo ?? '',
+            defaultShortDescription: !detail.shortDescription,
+            shortDescription: detail.shortDescription ?? '',
             titleCaseName: detail.titleCaseName ?? '',
             websitePageHeading: detail.websitePageHeading ?? '',
             noAliasesRequired: !!detail.noAliasesRequired,
@@ -970,10 +983,14 @@ export function PreviewDetailPage({
 
   const aliases = detail.alsoKnownAs ? Object.entries(detail.alsoKnownAs) : [];
   const showWhereUsed = !detail.isRetired && !detail.isPreparatory;
+  const detailTitleClassName = getPreviewItemClassName({
+    ...detail,
+    stereotype: detail.stereotypeForPreview ?? detail.stereotype
+  });
 
-  const tocLinks: TocLink[] = [];
-  if (detail.formatLength) tocLinks.push({ label: 'Format / Length', anchor: sectionId('Format / Length') });
-  if (detail.description) tocLinks.push({ label: 'Description', anchor: sectionId('Description') });
+   const tocLinks: TocLink[] = [];
+   if (detail.formatLength) tocLinks.push({ label: 'Format / Length', anchor: sectionId('Format / Length') });
+   if (detail.htmlDescription) tocLinks.push({ label: 'Description', anchor: sectionId('Description') });
   if (detail.nationalCodes?.length) tocLinks.push({ label: 'National Codes', anchor: sectionId('National Codes') });
   if (detail.defaultCodes?.length) tocLinks.push({ label: 'Default Codes', anchor: sectionId('Default Codes') });
   if (detail.definition) tocLinks.push({ label: 'Specification', anchor: sectionId('Specification') });
@@ -1024,7 +1041,7 @@ export function PreviewDetailPage({
       <Grid gutter="xl">
         <Grid.Col span={{ base: 12, md: 10 }}>
           <div className="mdm-preview-detail">
-            <h1 className={`title topictitle1 ${getPreviewItemClassName(detail)}`}>{detail.name}</h1>
+            <h1 className={`title topictitle1 ${detailTitleClassName}`}>{detail.name}</h1>
             {detail.shortDescription && (
               <div className="- topic/body body">
                 <p className="- topic/shortdesc shortdesc" dangerouslySetInnerHTML={{ __html: detail.shortDescription }} />
@@ -1041,18 +1058,18 @@ export function PreviewDetailPage({
               </PreviewSection>
             )}
 
-            {detail.description && (
-              <PreviewSection title="Description">
-                <div className="- topic/body body">
-                  <div className="- topic/div div">
-                {detail.attributeText && (
-                  <p className="- topic/p p" dangerouslySetInnerHTML={{ __html: detail.attributeText }} />
-                )}
-                <p className="- topic/p p" dangerouslySetInnerHTML={{ __html: detail.description }} />
-                  </div>
-                </div>
-              </PreviewSection>
-            )}
+             {detail.htmlDescription && (
+               <PreviewSection title="Description">
+                 <div className="- topic/body body">
+                   <div className="- topic/div div">
+                 {detail.attributeText && (
+                   <p className="- topic/p p" dangerouslySetInnerHTML={{ __html: detail.attributeText }} />
+                 )}
+                 <p className="- topic/p p" dangerouslySetInnerHTML={{ __html: detail.htmlDescription }} />
+                   </div>
+                 </div>
+               </PreviewSection>
+             )}
 
             {detail.nationalCodes && detail.nationalCodes.length > 0 && (
               <PreviewSection title="National Codes">
@@ -1339,6 +1356,12 @@ export function PreviewDetailPage({
     </div>
   );
 }
+
+
+
+
+
+
 
 
 
