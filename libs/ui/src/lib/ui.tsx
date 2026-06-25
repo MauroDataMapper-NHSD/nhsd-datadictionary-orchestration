@@ -9,6 +9,7 @@ import {
   Divider,
   Grid,
   Group,
+  Kbd,
   Loader,
   Menu,
   Modal,
@@ -22,10 +23,14 @@ import {
   Text
 } from '@mantine/core';
 import type { ReactElement, ReactNode } from 'react';
-import { useEffect, useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import styles from './ui.module.scss';
 import SignInDialog, { OpenIdConnectProvider } from './sign-in-dialog';
+import { FindDialog, FindDialogItem, FindSearchPage, FindSearchRequest } from './find-dialog';
+
+export type { OpenIdConnectProvider } from './sign-in-dialog';
+export type { FindDialogItem, FindSearchPage, FindSearchRequest } from './find-dialog';
 export interface NavItem {
   label: string;
   to: string;
@@ -58,6 +63,7 @@ export interface AppLayoutProps {
   onSignOut?: () => void;
   onOpenIdConnect?: (provider: OpenIdConnectProvider) => Promise<void>;
   openIdConnectProviders?: OpenIdConnectProvider[];
+  onFindSelect?: (item: FindDialogItem) => void;
   children: ReactNode;
 }
 
@@ -119,9 +125,11 @@ export function AppLayout({ appTitle, version, links, pageOptions = [], pageOpti
                             onBranchChange, onLoadStatistics,
                             onLoadIntegrityChecks, onRunChangePaperPreview, onGeneratePublish,
                             onLoadAbout, mauroBaseUrl = '', signInHref,
-                            onSignIn, onSignOut, onOpenIdConnect, openIdConnectProviders = [], children }
+                            onSignIn, onSignOut, onOpenIdConnect, openIdConnectProviders = [],
+                            onFindSelect, children }
                           : AppLayoutProps): ReactElement {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [signInDialogOpened, setSignInDialogOpened] = useState(false);
   const [signInError, setSignInError] = useState('');
@@ -145,6 +153,15 @@ export function AppLayout({ appTitle, version, links, pageOptions = [], pageOpti
   const [aboutLoading, setAboutLoading] = useState(false);
   const [aboutError, setAboutError] = useState<string | null>(null);
   const [aboutData, setAboutData] = useState<AboutData | null>(null);
+  const [findOpened, setFindOpened] = useState(false);
+
+  const findShortcutLabel = useMemo(
+    () =>
+      typeof navigator !== 'undefined' && /mac/i.test(navigator.platform)
+        ? 'Cmd+Shift+F'
+        : 'Ctrl+Shift+F',
+    []
+  );
 
   useEffect(() => {
     const hasSession =
@@ -203,6 +220,37 @@ export function AppLayout({ appTitle, version, links, pageOptions = [], pageOpti
     if (onOpenIdConnect) {
       await onOpenIdConnect(provider);
     }
+  };
+
+  const findSearch = async ({ prefix, offset, max }: FindSearchRequest): Promise<FindSearchPage> => {
+    if (!selectedBranchId || !mauroBaseUrl) {
+      return { count: 0, items: [] };
+    }
+
+    const url = new URL(
+      `${mauroBaseUrl}/api/nhsdd/${encodeURIComponent(selectedBranchId)}/allItems`
+    );
+    url.searchParams.set('max', String(max));
+    url.searchParams.set('offset', String(offset));
+
+    if (prefix && prefix.trim().length > 0) {
+      url.searchParams.set('prefix', prefix.trim());
+    }
+
+    const response = await fetch(url.toString(), { credentials: 'include' });
+
+    if (!response.ok) {
+      throw new Error(`Request failed: ${response.status} ${response.statusText}`);
+    }
+
+    const data: unknown = await response.json();
+
+    if (data && typeof data === 'object' && 'body' in data) {
+      const wrapped = data as { body?: FindSearchPage };
+      return wrapped.body ?? { count: 0, items: [] };
+    }
+
+    return data as FindSearchPage;
   };
 
   const showBranchSelector = isSignedIn && branchOptions.length > 0 && !!onBranchChange;
@@ -326,6 +374,43 @@ export function AppLayout({ appTitle, version, links, pageOptions = [], pageOpti
     }
   };
 
+  const openFind = () => {
+    setFindOpened(true);
+  };
+
+  const closeFind = () => {
+    setFindOpened(false);
+  };
+
+  const selectFindResult = (item: FindDialogItem) => {
+    onFindSelect?.(item);
+    setFindOpened(false);
+
+    if (selectedBranchId) {
+      navigate(`/preview/${encodeURIComponent(selectedBranchId)}/${encodeURIComponent(item.stereotype)}/${encodeURIComponent(item.catalogueItemId)}`);
+    }
+  };
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      const isFindShortcut =
+        event.key.toLowerCase() === 'f' && event.shiftKey && (event.metaKey || event.ctrlKey);
+
+      if (!isFindShortcut || !showBranchSelector) {
+        return;
+      }
+
+      event.preventDefault();
+      openFind();
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [showBranchSelector]);
+
   const getMauroComponentUrl = (component: IntegrityCheckMenuComponent): string => {
     const { domainType = '', modelId = '', parentId = '', id } = component;
     const domainTypePatterns: Record<string, string> = {
@@ -386,6 +471,18 @@ export function AppLayout({ appTitle, version, links, pageOptions = [], pageOpti
                         />
                       </Box>
                     </Group>
+
+                    <Box className={styles.findSelector}>
+                      <Button
+                        className={styles.findButton}
+                        variant='outline'
+                        color='dark'
+                        onClick={openFind}
+                        rightSection={<Kbd size='xs'>{findShortcutLabel}</Kbd>}
+                      >
+                        Find
+                      </Button>
+                    </Box>
 
                     <Box className={styles.menuSelector}>
                       <Menu shadow='md' width={360} position='bottom-end'>
@@ -792,6 +889,12 @@ export function AppLayout({ appTitle, version, links, pageOptions = [], pageOpti
         providers={openIdConnectProviders}
         isLoading={isSigningIn}
         error={signInError}
+      />
+      <FindDialog
+        opened={findOpened}
+        onClose={closeFind}
+        onSearch={findSearch}
+        onSelect={selectFindResult}
       />
     </>
   );

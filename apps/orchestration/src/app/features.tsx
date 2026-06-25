@@ -1058,18 +1058,21 @@ export function PreviewDetailPage({
               </PreviewSection>
             )}
 
-             {detail.htmlDescription && (
-               <PreviewSection title="Description">
-                 <div className="- topic/body body">
-                   <div className="- topic/div div">
-                 {detail.attributeText && (
-                   <p className="- topic/p p" dangerouslySetInnerHTML={{ __html: detail.attributeText }} />
-                 )}
-                 <p className="- topic/p p" dangerouslySetInnerHTML={{ __html: detail.htmlDescription }} />
-                   </div>
-                 </div>
-               </PreviewSection>
-             )}
+            {Boolean(detail.htmlDescription) && (
+              <PreviewSection title='Description'>
+                <div className='- topic/body body'>
+                  <div className='- topic/div div'>
+                    {detail.attributeText && (
+                      <p className='- topic/p p' dangerouslySetInnerHTML={{ __html: detail.attributeText }} />
+                    )}
+                    <p
+                      className='- topic/p p'
+                      dangerouslySetInnerHTML={{ __html: String(detail.htmlDescription ?? '') }}
+                    />
+                  </div>
+                </div>
+              </PreviewSection>
+            )}
 
             {detail.nationalCodes && detail.nationalCodes.length > 0 && (
               <PreviewSection title="National Codes">
@@ -1356,6 +1359,7 @@ export function PreviewDetailPage({
     </div>
   );
 }
+
 
 
 

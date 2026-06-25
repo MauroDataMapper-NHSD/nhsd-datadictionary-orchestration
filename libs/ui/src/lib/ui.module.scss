@@ -63,6 +63,17 @@
   }
 }
 
+.findSelector {
+  width: 200px;
+  min-width: 200px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.findButton {
+  min-width: 180px;
+}
+
 .menuButton {
   min-width: 160px;
 }
@@ -217,6 +228,15 @@
   .menuSelector {
     width: 180px;
     min-width: 180px;
+  }
+
+  .findSelector {
+    width: 155px;
+    min-width: 155px;
+  }
+
+  .findButton {
+    min-width: 140px;
   }
 
   .footerContainer {

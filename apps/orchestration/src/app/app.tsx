@@ -21,11 +21,18 @@ import {
   NOTIFICATION_MESSAGES
 } from './constants';
 import styles from './app.module.scss';
-import { OrchestrationApiClient } from 'api-client';
+import { MauroModule, MauroStatus, OrchestrationApiClient } from 'api-client';
 import { ReactElement, ReactNode, useCallback, useEffect, useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Box, Checkbox, Select, Stack, Table, Text, TextInput, Title } from '@mantine/core';
-import { AppLayout, HtmlEditor, PageDialog } from 'ui';
+import {
+  AppLayout,
+  HtmlEditor,
+  PageDialog,
+  PageOption,
+  PublishMenuAction,
+  OpenIdConnectProvider
+} from 'ui';
 
 const appVersion = import .meta.env.VITE_APP_VERSION ?? '1.0.0';
 const mauroBaseUrl = import .meta.env.VITE_MAURO_BASE_URL ?? API_CONFIG.DEFAULT_BASE_URL;
@@ -67,7 +74,7 @@ function BusinessDefinitionEditForm({
                       status &&
                       onChange({
                         ...value,
-                        status,
+                        status: status as BusinessDefinitionEditData['status'],
                         retiredDate: status === 'Retired' ? value.retiredDate : ''
                       })
                     }
@@ -324,7 +331,7 @@ function BusinessDefinitionEditForm({
 }
 
 export function App(): ReactElement {
-  const [openIdConnectProviders, setOpenIdConnectProviders] = useState<PublicOpenIdConnectProvider[]>([]);
+  const [openIdConnectProviders, setOpenIdConnectProviders] = useState<OpenIdConnectProvider[]>([]);
   const [branches, setBranches] = useState<Array<{ id: string; label: string }>>([]);
   const [pageOptions, setPageOptions] = useState<PageOption[]>([]);
   const [editDialogOpened, setEditDialogOpened] = useState(false);
@@ -394,7 +401,7 @@ export function App(): ReactElement {
     }
   };
 
-  const handleOpenIdConnect = async (provider: PublicOpenIdConnectProvider) => {
+  const handleOpenIdConnect = async (provider: OpenIdConnectProvider) => {
     if (!provider.authorizationEndpoint) {
       throw new Error(`Unable to authenticate with ${provider.label} because of a missing endpoint.`);
     }
@@ -585,6 +592,7 @@ export function App(): ReactElement {
       onSignOut={handleSignOut}
       onOpenIdConnect={handleOpenIdConnect}
       openIdConnectProviders={openIdConnectProviders}
+      mauroBaseUrl={mauroBaseUrl}
     >
       <Routes>
         <Route path={ROUTES.AUTH_CALLBACK} element={<OpenIdConnectCallbackPage />} />
