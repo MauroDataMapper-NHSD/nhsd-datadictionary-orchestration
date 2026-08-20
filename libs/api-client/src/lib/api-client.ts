@@ -8,7 +8,8 @@ export type BranchSummary = {
   id: string;
   name: string;
   branchName?: string;
-  versionDisplay?: string;
+  modelVersionTag?: string;
+  modelVersion?: string;
   createdBy?: string;
 };
 

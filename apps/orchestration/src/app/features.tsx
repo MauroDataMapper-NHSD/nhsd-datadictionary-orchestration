@@ -35,7 +35,7 @@ import {
 import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import styles from './app.module.scss';
-import { BranchPicker, PageOption, PreviewBreadcrumb, PreviewToc, TocLink } from 'ui';
+import { BranchPicker, BranchPickerOption, PageOption, PreviewBreadcrumb, PreviewToc, TocLink } from 'ui';
 import {
   indexTitleMap,
   previewEndpointMap,
@@ -141,7 +141,17 @@ function sectionId(label: string) {
 }
 
 function getBranchLabel(branch: BranchSummary) {
-  return branch.versionDisplay ?? branch.branchName ?? branch.name ?? branch.id ?? 'Unnamed branch';
+  return branch.modelVersionTag ?? branch.versionDisplay ?? branch.branchName ?? branch.name ?? branch.id ?? 'Unnamed branch';
+}
+
+function getBranchPickerOption(branch: BranchSummary): BranchPickerOption {
+  const versionLabel = branch.modelVersionTag ?? branch.versionDisplay;
+
+  return {
+    value: branch.id,
+    label: getBranchLabel(branch),
+    icon: versionLabel ? 'version' : 'branch'
+  };
 }
 
 function scrollToAnchor(anchor: string) {
@@ -438,7 +448,7 @@ export function BranchesPage() {
             <BranchPicker
               label="Start with branch"
               size="lg"
-              options={branches.map((branch) => ({ value: branch.id, label: getBranchLabel(branch) }))}
+              options={branches.map(getBranchPickerOption)}
               onChange={(value) => value && navigate(`/branches/${value}/statistics`)}
             />
           </Box>
@@ -712,7 +722,7 @@ export function PreviewDefaultPage() {
             <BranchPicker
               label="Start with branch"
               size="lg"
-              options={branches.map((branch) => ({ value: branch.id, label: getBranchLabel(branch) }))}
+              options={branches.map(getBranchPickerOption)}
               onChange={(value) => value && navigate(`/preview/${value}`, { replace: true })}
             />
           </Box>
@@ -1359,8 +1369,6 @@ export function PreviewDetailPage({
     </div>
   );
 }
-
-
 
 
 

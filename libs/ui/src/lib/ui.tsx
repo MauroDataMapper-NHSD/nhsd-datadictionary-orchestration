@@ -22,6 +22,8 @@ import {
   Title,
   Text
 } from '@mantine/core';
+import { IconCircleCheck, IconGitBranch } from '@tabler/icons-react';
+import type { ComboboxItem, ComboboxItemGroup } from '@mantine/core';
 import type { ReactElement, ReactNode } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
@@ -917,6 +919,7 @@ export function FeaturePage({ title, description }: FeaturePageProps): ReactElem
 export interface BranchPickerOption {
   value: string;
   label: string;
+  icon?: 'branch' | 'version';
 }
 
 export interface BranchPickerProps {
@@ -927,13 +930,48 @@ export interface BranchPickerProps {
   label?: string;
 }
 
+function getBranchPickerIcon(optionIcon?: BranchPickerOption['icon']): typeof IconCircleCheck | typeof IconGitBranch {
+  return optionIcon === 'version' ? IconCircleCheck : IconGitBranch;
+}
+
+function getBranchPickerIconColor(optionIcon?: BranchPickerOption['icon']): string {
+  return optionIcon === 'version' ? 'green' : 'blue';
+}
+
+function getBranchPickerOptionIcon(option: BranchPickerOption | ComboboxItem): 'branch' | 'version' {
+  const optionIcon = 'icon' in option && (option.icon === 'branch' || option.icon === 'version') ? option.icon : undefined;
+  return optionIcon ?? 'branch';
+}
+
 export function BranchPicker({ value = null, options, onChange, size = 'sm', label = 'Current branch' }: BranchPickerProps): ReactElement {
-  const selectData = options
+  const selectOptions = options
     .filter((option) => typeof option?.value === 'string' && option.value.trim().length > 0)
     .map((option) => ({
       value: option.value,
-      label: (option.label ?? option.value).toString()
-    }));
+      label: (option.label ?? option.value).toString(),
+      icon: option.icon ?? 'branch'
+    }))
+    .sort((left, right) => left.label.localeCompare(right.label));
+  const inProgressBranches = selectOptions.filter((option) => option.icon === 'branch');
+  const finalisedReleases = selectOptions.filter((option) => option.icon === 'version');
+  const selectData: Array<ComboboxItemGroup<ComboboxItem> | ComboboxItem> = [];
+
+  if (inProgressBranches.length > 0) {
+    selectData.push({
+      group: 'In-progress branches',
+      items: inProgressBranches
+    });
+  }
+
+  if (finalisedReleases.length > 0) {
+    selectData.push({
+      group: 'Finalised releases',
+      items: finalisedReleases
+    });
+  }
+
+  const selectedOption = selectOptions.find((option) => option.value === value);
+  const SelectedIcon = selectedOption ? getBranchPickerIcon(selectedOption.icon) : null;
 
   return (
     <Select
@@ -943,6 +981,37 @@ export function BranchPicker({ value = null, options, onChange, size = 'sm', lab
       data={selectData}
       onChange={onChange}
       size={size}
+      leftSection={
+        selectedOption ? (
+          <ThemeIcon
+            variant='transparent'
+            color={getBranchPickerIconColor(selectedOption.icon)}
+            size='md'
+            data-testid={`branch-picker-selected-icon-${selectedOption.icon}`}
+          >
+            {SelectedIcon ? <SelectedIcon size={18} aria-hidden='true' /> : null}
+          </ThemeIcon>
+        ) : undefined
+      }
+      leftSectionWidth={40}
+      renderOption={({ option }) => {
+        const optionIcon = getBranchPickerOptionIcon(option);
+        const Icon = getBranchPickerIcon(optionIcon);
+
+        return (
+          <Group gap='sm' wrap='nowrap'>
+            <ThemeIcon
+              variant='transparent'
+              color={getBranchPickerIconColor(optionIcon)}
+              size='md'
+              data-testid={`branch-picker-option-icon-${optionIcon}`}
+            >
+              <Icon size={18} aria-hidden='true' />
+            </ThemeIcon>
+            <span>{option.label}</span>
+          </Group>
+        );
+      }}
     />
   );
 }

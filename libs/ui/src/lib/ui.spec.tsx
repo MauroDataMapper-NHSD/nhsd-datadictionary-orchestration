@@ -1,7 +1,7 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { MantineProvider } from '@mantine/core';
 
-import { FeaturePage } from './ui';
+import { BranchPicker, FeaturePage } from './ui';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -25,5 +25,51 @@ describe('Ui', () => {
       </MantineProvider>
     );
     expect(baseElement).toBeTruthy();
+  });
+
+  it('should show icons for branch and finalised version options', () => {
+    render(
+      <MantineProvider>
+        <BranchPicker
+          label='Current branch'
+          value='release-2026'
+          options={[
+            { value: 'release-2026', label: '2026.1', icon: 'version' },
+            { value: 'feature-branch', label: 'feature/preview-icons', icon: 'branch' }
+          ]}
+          onChange={() => undefined}
+        />
+      </MantineProvider>
+    );
+
+    expect(screen.getByTestId('branch-picker-selected-icon-version')).toBeTruthy();
+
+    fireEvent.click(screen.getByLabelText('Current branch'));
+
+    expect(screen.getAllByTestId('branch-picker-option-icon-version')).toHaveLength(1);
+    expect(screen.getAllByTestId('branch-picker-option-icon-branch')).toHaveLength(1);
+  });
+
+  it('should group branch options before finalised releases', () => {
+    render(
+      <MantineProvider>
+        <BranchPicker
+          label='Current branch'
+          options={[
+            { value: 'release-2026', label: '2026.1', icon: 'version' },
+            { value: 'feature-zeta', label: 'zeta', icon: 'branch' },
+            { value: 'feature-alpha', label: 'alpha', icon: 'branch' }
+          ]}
+          onChange={() => undefined}
+        />
+      </MantineProvider>
+    );
+
+    fireEvent.click(screen.getByLabelText('Current branch'));
+
+    const dropdownText = screen.getByRole('listbox').textContent ?? '';
+    expect(dropdownText.indexOf('In-progress branches')).toBeLessThan(dropdownText.indexOf('Finalised releases'));
+    expect(dropdownText.indexOf('alpha')).toBeLessThan(dropdownText.indexOf('zeta'));
+    expect(dropdownText.indexOf('zeta')).toBeLessThan(dropdownText.indexOf('2026.1'));
   });
 });

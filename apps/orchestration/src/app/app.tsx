@@ -27,6 +27,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Box, Checkbox, Select, Stack, Table, Text, TextInput, Title } from '@mantine/core';
 import {
   AppLayout,
+  BranchPickerOption,
   HtmlEditor,
   PageDialog,
   PageOption,
@@ -38,6 +39,22 @@ const appVersion = import .meta.env.VITE_APP_VERSION ?? '1.0.0';
 const mauroBaseUrl = import .meta.env.VITE_MAURO_BASE_URL ?? API_CONFIG.DEFAULT_BASE_URL;
 
 const apiClient = new OrchestrationApiClient({ baseUrl: mauroBaseUrl });
+
+function getBranchPickerOption(branch: {
+  id: string;
+  name?: string;
+  branchName?: string;
+  modelVersionTag?: string;
+  versionDisplay?: string;
+}): BranchPickerOption {
+  const versionLabel = branch.modelVersionTag ?? branch.versionDisplay;
+
+  return {
+    value: branch.id,
+    label: versionLabel ?? branch.branchName ?? branch.name ?? branch.id ?? 'Unnamed branch',
+    icon: versionLabel ? 'version' : 'branch'
+  };
+}
 
 function BusinessDefinitionEditForm({
   value,
@@ -332,7 +349,7 @@ function BusinessDefinitionEditForm({
 
 export function App(): ReactElement {
   const [openIdConnectProviders, setOpenIdConnectProviders] = useState<OpenIdConnectProvider[]>([]);
-  const [branches, setBranches] = useState<Array<{ id: string; label: string }>>([]);
+  const [branches, setBranches] = useState<BranchPickerOption[]>([]);
   const [pageOptions, setPageOptions] = useState<PageOption[]>([]);
   const [editDialogOpened, setEditDialogOpened] = useState(false);
   const [editDialogTitle, setEditDialogTitle] = useState<ReactNode>('Edit page');
@@ -361,12 +378,7 @@ export function App(): ReactElement {
     const loadBranches = async () => {
       try {
         const items = await apiClient.getBranches();
-        setBranches(
-          items.map((branch) => ({
-            id: branch.id,
-            label: branch.versionDisplay ?? branch.branchName ?? branch.name ?? branch.id ?? 'Unnamed branch'
-          }))
-        );
+        setBranches(items.map(getBranchPickerOption));
       } catch {
         setBranches([]);
       }
@@ -579,7 +591,7 @@ export function App(): ReactElement {
       version={appVersion}
       links={[]}
       pageOptions={pageOptions}
-      branchOptions={branches.map((branch) => ({ value: branch.id, label: branch.label }))}
+      branchOptions={branches}
       selectedBranchId={selectedBranchId}
       onBranchChange={handleBranchChange}
       onLoadStatistics={handleLoadStatistics}
