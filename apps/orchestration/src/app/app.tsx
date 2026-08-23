@@ -21,8 +21,9 @@ import {
   NOTIFICATION_MESSAGES
 } from './constants';
 import styles from './app.module.scss';
-import { MauroModule, MauroStatus, OrchestrationApiClient } from 'api-client';
+import { BranchSummary, MauroModule, MauroStatus, OrchestrationApiClient } from 'api-client';
 import { ReactElement, ReactNode, useCallback, useEffect, useState } from 'react';
+import { BranchesContext } from './branches-context';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Box, Checkbox, Select, Stack, Table, Text, TextInput, Title } from '@mantine/core';
 import {
@@ -40,19 +41,15 @@ const mauroBaseUrl = import .meta.env.VITE_MAURO_BASE_URL ?? API_CONFIG.DEFAULT_
 
 const apiClient = new OrchestrationApiClient({ baseUrl: mauroBaseUrl });
 
-function getBranchPickerOption(branch: {
-  id: string;
-  name?: string;
-  branchName?: string;
-  modelVersionTag?: string;
-  versionDisplay?: string;
-}): BranchPickerOption {
-  const versionLabel = branch.modelVersionTag ?? branch.versionDisplay;
+function getBranchLabel(branch: BranchSummary): string {
+  return branch.modelVersionTag ?? branch.branchName ?? branch.name ?? branch.id ?? 'Unnamed branch';
+}
 
+function getBranchPickerOption(branch: BranchSummary): BranchPickerOption {
   return {
     value: branch.id,
-    label: versionLabel ?? branch.branchName ?? branch.name ?? branch.id ?? 'Unnamed branch',
-    icon: versionLabel ? 'version' : 'branch'
+    label: getBranchLabel(branch),
+    icon: branch.modelVersionTag ? 'version' : 'branch'
   };
 }
 
@@ -349,7 +346,9 @@ function BusinessDefinitionEditForm({
 
 export function App(): ReactElement {
   const [openIdConnectProviders, setOpenIdConnectProviders] = useState<OpenIdConnectProvider[]>([]);
-  const [branches, setBranches] = useState<BranchPickerOption[]>([]);
+  const [branches, setBranches] = useState<BranchSummary[]>([]);
+  const [branchesLoading, setBranchesLoading] = useState(true);
+  const [branchesError, setBranchesError] = useState<string | null>(null);
   const [pageOptions, setPageOptions] = useState<PageOption[]>([]);
   const [editDialogOpened, setEditDialogOpened] = useState(false);
   const [editDialogTitle, setEditDialogTitle] = useState<ReactNode>('Edit page');
@@ -378,9 +377,12 @@ export function App(): ReactElement {
     const loadBranches = async () => {
       try {
         const items = await apiClient.getBranches();
-        setBranches(items.map(getBranchPickerOption));
+        setBranches(items);
       } catch {
         setBranches([]);
+        setBranchesError('Could not load branches.');
+      } finally {
+        setBranchesLoading(false);
       }
     };
 
@@ -551,7 +553,8 @@ export function App(): ReactElement {
   };
 
   const handleGeneratePublish = async (branchId: string, action: PublishMenuAction) => {
-    const branchLabel = branches.find((branch) => branch.id === branchId)?.label ?? branchId;
+    const found = branches.find((branch) => branch.id === branchId);
+    const branchLabel = found ? getBranchLabel(found) : branchId;
 
     try {
       let artifact;
@@ -585,13 +588,14 @@ export function App(): ReactElement {
   };
 
   return (
+    <BranchesContext.Provider value={{ branches, loading: branchesLoading, error: branchesError }}>
     <>
     <AppLayout
       appTitle="Data Dictionary Orchestrator"
       version={appVersion}
       links={[]}
       pageOptions={pageOptions}
-      branchOptions={branches}
+      branchOptions={branches.map(getBranchPickerOption)}
       selectedBranchId={selectedBranchId}
       onBranchChange={handleBranchChange}
       onLoadStatistics={handleLoadStatistics}
@@ -645,6 +649,7 @@ export function App(): ReactElement {
         )}
       </PageDialog>
     </>
+    </BranchesContext.Provider>
   );
 }
 

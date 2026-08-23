@@ -191,6 +191,24 @@ const withSession = (init?: RequestInit): RequestInit => ({
   credentials: 'include'
 });
 
+const inFlightJsonRequests = new Map<string, Promise<unknown>>();
+
+const fetchJsonDedup = async <T>(url: string): Promise<T> => {
+  const existing = inFlightJsonRequests.get(url);
+  if (existing) {
+    return existing as Promise<T>;
+  }
+
+  const request = fetch(url, withSession())
+    .then((response) => asJson<T>(response))
+    .finally(() => {
+      inFlightJsonRequests.delete(url);
+    });
+
+  inFlightJsonRequests.set(url, request as Promise<unknown>);
+  return request;
+};
+
 const asArtifact = async (response: Response, defaultFilename: string): Promise<GeneratedArtifact> => {
   if (!response.ok) {
     throw new Error(`Request failed: ${response.status} ${response.statusText}`);
@@ -210,8 +228,7 @@ export class OrchestrationApiClient {
   constructor(private readonly config: ApiClientConfig) {}
 
   async getBranches(): Promise<BranchSummary[]> {
-    const response = await fetch(`${this.config.baseUrl}/api/nhsdd/branches`, withSession());
-    return asJson<BranchSummary[]>(response);
+    return fetchJsonDedup<BranchSummary[]>(`${this.config.baseUrl}/api/nhsdd/branches`);
   }
 
   async getBranchStatistics(branchId: string): Promise<BranchStatistics> {
@@ -250,34 +267,30 @@ export class OrchestrationApiClient {
   }
 
   async getPreviewIndex(branchId: string, index: string): Promise<PreviewIndexItem[]> {
-    const response = await fetch(
-      `${this.config.baseUrl}/api/nhsdd/${encodeURIComponent(branchId)}/preview/${encodeURIComponent(index)}`,
-      withSession()
+    return fetchJsonDedup<PreviewIndexItem[]>(
+      `${this.config.baseUrl}/api/nhsdd/${encodeURIComponent(branchId)}/preview/${encodeURIComponent(index)}`
     );
-    return asJson<PreviewIndexItem[]>(response);
   }
 
-   async getPreviewDetail(branchId: string, index: string, id: string): Promise<PreviewDetail> {
-     if (!id || id === 'undefined') {
-       throw new Error('Invalid preview detail ID');
-     }
-     const response = await fetch(
-       `${this.config.baseUrl}/api/nhsdd/${encodeURIComponent(branchId)}/preview/${encodeURIComponent(index)}/${encodeURIComponent(id)}`,
-       withSession()
-     );
-     return asJson<PreviewDetail>(response);
-   }
+  async getPreviewDetail(branchId: string, index: string, id: string): Promise<PreviewDetail> {
+    if (!id || id === 'undefined') {
+      throw new Error('Invalid preview detail ID');
+    }
 
-   async getPreviewReferences(branchId: string, index: string, id: string): Promise<PreviewReference[]> {
-     if (!id || id === 'undefined') {
-       throw new Error('Invalid preview reference ID');
-     }
-     const response = await fetch(
-       `${this.config.baseUrl}/api/nhsdd/${encodeURIComponent(branchId)}/preview/${encodeURIComponent(index)}/${encodeURIComponent(id)}/whereUsed`,
-       withSession()
-     );
-     return asJson<PreviewReference[]>(response);
-   }
+    return fetchJsonDedup<PreviewDetail>(
+      `${this.config.baseUrl}/api/nhsdd/${encodeURIComponent(branchId)}/preview/${encodeURIComponent(index)}/${encodeURIComponent(id)}`
+    );
+  }
+
+  async getPreviewReferences(branchId: string, index: string, id: string): Promise<PreviewReference[]> {
+    if (!id || id === 'undefined') {
+      throw new Error('Invalid preview reference ID');
+    }
+
+    return fetchJsonDedup<PreviewReference[]>(
+      `${this.config.baseUrl}/api/nhsdd/${encodeURIComponent(branchId)}/preview/${encodeURIComponent(index)}/${encodeURIComponent(id)}/whereUsed`
+    );
+  }
 
   async generateCodeSystems(branchId: string): Promise<GeneratedArtifact> {
     const response = await fetch(
@@ -365,4 +378,3 @@ export class OrchestrationApiClient {
 export const createOrchestrationApiClient = (baseUrl: string) => {
   return new OrchestrationApiClient({ baseUrl });
 };
-

@@ -36,6 +36,7 @@ import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import styles from './app.module.scss';
 import { BranchPicker, BranchPickerOption, PageOption, PreviewBreadcrumb, PreviewToc, TocLink } from 'ui';
+import { useBranchesContext } from './branches-context';
 import {
   indexTitleMap,
   previewEndpointMap,
@@ -119,38 +120,19 @@ function useApi() {
   return useMemo(() => createOrchestrationApiClient(apiBaseUrl), []);
 }
 
-function useBranches() {
-  const api = useApi();
-  const [branches, setBranches] = useState<BranchSummary[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    api
-      .getBranches()
-      .then(setBranches)
-      .catch(() => setError('Could not load branches.'))
-      .finally(() => setLoading(false));
-  }, [api]);
-
-  return { branches, loading, error };
-}
-
 function sectionId(label: string) {
   return `section-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 }
 
 function getBranchLabel(branch: BranchSummary) {
-  return branch.modelVersionTag ?? branch.versionDisplay ?? branch.branchName ?? branch.name ?? branch.id ?? 'Unnamed branch';
+  return branch.modelVersionTag ?? branch.branchName ?? branch.name ?? branch.id ?? 'Unnamed branch';
 }
 
 function getBranchPickerOption(branch: BranchSummary): BranchPickerOption {
-  const versionLabel = branch.modelVersionTag ?? branch.versionDisplay;
-
   return {
     value: branch.id,
     label: getBranchLabel(branch),
-    icon: versionLabel ? 'version' : 'branch'
+    icon: branch.modelVersionTag ? 'version' : 'branch'
   };
 }
 
@@ -423,7 +405,7 @@ export function ErrorStatePage({ variant }: { variant: ErrorVariant }) {
 }
 
 export function BranchesPage() {
-  const { branches, loading, error } = useBranches();
+  const { branches, loading, error } = useBranchesContext();
   const navigate = useNavigate();
   const location = useLocation();
   const showInitialBranchPicker = (location.state as { showInitialBranchPicker?: boolean } | null)?.showInitialBranchPicker === true;
@@ -440,7 +422,7 @@ export function BranchesPage() {
 
   return (
     <Stack>
-      {showInitialBranchPicker ? (
+      {!selectedBranchId ? (
         <Card withBorder p="xl" className={styles.initialBranchCard}>
           <Title order={2}>Which branch would you like to start working with?</Title>
           <Text mt="sm">Choose a branch to view statistics, integrity checks, and publishing actions.</Text>
@@ -468,7 +450,8 @@ export function BranchesPage() {
 export function BranchDetailPage() {
   const api = useApi();
   const { branch: branchId, tabView } = useParams();
-  const [branch, setBranch] = useState<BranchSummary | null>(null);
+  const { branches: allBranches } = useBranchesContext();
+  const branch = allBranches.find((item) => item.id === branchId) ?? null;
   const [stats, setStats] = useState<BranchStatistics | null>(null);
   const [checks, setChecks] = useState<IntegrityCheck[]>([]);
   const [selectedCheck, setSelectedCheck] = useState<IntegrityCheck | null>(null);
@@ -477,13 +460,6 @@ export function BranchDetailPage() {
 
   const activeTab = tabView ?? 'statistics';
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!branchId) return;
-    api
-      .getBranches()
-      .then((items) => setBranch(items.find((item) => item.id === branchId) ?? null));
-  }, [api, branchId]);
 
   const runStats = () => {
     if (!branchId) return;
@@ -696,7 +672,7 @@ export function BranchDetailPage() {
 }
 
 export function PreviewDefaultPage() {
-  const { branches, loading } = useBranches();
+  const { branches, loading } = useBranchesContext();
   const navigate = useNavigate();
   const location = useLocation();
   const selectedBranchId = localStorage.getItem('selectedBranchId');
@@ -714,7 +690,7 @@ export function PreviewDefaultPage() {
 
   return (
     <div className="mdm-dd-preview">
-      {showInitialBranchPicker ? (
+      {!selectedBranchId ? (
         <Card withBorder p="xl" className={styles.initialBranchCard}>
           <Title order={2}>Which branch would you like to start working with?</Title>
           <Text mt="sm">Choose a branch to start previewing the data dictionary.</Text>
@@ -814,11 +790,21 @@ export function PreviewIndexPage() {
 
   useEffect(() => {
     if (!branchId || !endpoint || !normalizedIndex) return;
+    const controller = new AbortController();
     setLoading(true);
     api
       .getPreviewIndex(branchId, endpoint)
-      .then(setItems)
-      .finally(() => setLoading(false));
+      .then((result) => {
+        if (!controller.signal.aborted) {
+          setItems(result);
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      });
+    return () => controller.abort();
   }, [api, branchId, endpoint, normalizedIndex]);
 
   if (!branchId || !normalizedIndex || !endpoint) {
@@ -915,15 +901,27 @@ export function PreviewDetailPage({
 
    useEffect(() => {
      if (!branchId || !endpoint || !id) return;
+     const controller = new AbortController();
      setLoading(true);
      api
        .getPreviewDetail(branchId, endpoint, id)
-       .then((response) => setDetail(response as RichPreviewDetail))
-       .catch((error) => {
-         console.error('Failed to load preview detail:', error);
-         setDetail(null);
+       .then((response) => {
+         if (!controller.signal.aborted) {
+           setDetail(response as RichPreviewDetail);
+         }
        })
-       .finally(() => setLoading(false));
+       .catch((error) => {
+         if (!controller.signal.aborted) {
+           console.error('Failed to load preview detail:', error);
+           setDetail(null);
+         }
+       })
+       .finally(() => {
+         if (!controller.signal.aborted) {
+           setLoading(false);
+         }
+       });
+     return () => controller.abort();
    }, [api, branchId, endpoint, id]);
 
    const loadReferences = () => {

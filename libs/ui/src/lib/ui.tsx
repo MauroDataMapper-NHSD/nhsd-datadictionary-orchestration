@@ -255,7 +255,7 @@ export function AppLayout({ appTitle, version, links, pageOptions = [], pageOpti
     return data as FindSearchPage;
   };
 
-  const showBranchSelector = isSignedIn && branchOptions.length > 0 && !!onBranchChange;
+  const showBranchSelector = isSignedIn && branchOptions.length > 0 && !!onBranchChange && !!selectedBranchId;
   const showPageOptions = showBranchSelector && pageOptions.length > 0;
   const headerHeight = showBranchSelector ? 160 : 80;
 
