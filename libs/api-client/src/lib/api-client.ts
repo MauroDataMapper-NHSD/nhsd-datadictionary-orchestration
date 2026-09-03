@@ -43,6 +43,10 @@ export type IntegrityCheckComponent = {
 };
 
 export type IntegrityIssue = {
+  name?: string;
+  stereotype?: string;
+  retired?: boolean;
+  catalogueItemId?: string;
   component?: IntegrityCheckComponent;
   details?: string[];
 };

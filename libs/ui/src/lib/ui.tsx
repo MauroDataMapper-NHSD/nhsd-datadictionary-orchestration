@@ -85,6 +85,10 @@ export interface IntegrityCheckMenuComponent {
 }
 
 export interface IntegrityCheckMenuIssue {
+  name?: string;
+  stereotype?: string;
+  retired?: boolean;
+  catalogueItemId?: string;
   component?: IntegrityCheckMenuComponent;
   details?: string[];
 }
@@ -314,6 +318,14 @@ export function AppLayout({ appTitle, version, links, pageOptions = [], pageOpti
     }
   };
 
+  const publishActionLabelMap: Record<PublishMenuAction, string> = {
+    changePaper: 'Change Paper',
+    changePaperWithDataSet: 'Change Paper (with Data Set Definitions)',
+    codeSystems: 'CodeSystems',
+    valueSets: 'ValueSets',
+    website: 'Website'
+  };
+
   const openChangePaperPreview = async (includeDataSets: boolean) => {
     if (!selectedBranchId || !onRunChangePaperPreview) { return; }
 
@@ -429,6 +441,84 @@ export function AppLayout({ appTitle, version, links, pageOptions = [], pageOpti
     };
     const path = domainTypePatterns[domainType];
     return path ? `${mauroBaseUrl}/#/catalogue${path}` : mauroBaseUrl;
+  };
+
+  const previewRouteIndexAliases: Record<string, string> = {
+    element: 'element',
+    elements: 'element',
+    dataelement: 'element',
+    dataelements: 'element',
+    attribute: 'attribute',
+    attributes: 'attribute',
+    class: 'class',
+    classes: 'class',
+    dataclass: 'class',
+    dataclasses: 'class',
+    dataset: 'dataSet',
+    datasets: 'dataSet',
+    businessdefinition: 'businessDefinition',
+    businessdefinitions: 'businessDefinition',
+    supportinginformation: 'supportingInformation',
+    datasetconstraint: 'dataSetConstraint',
+    datasetconstraints: 'dataSetConstraint',
+    datasetfolder: 'dataSetFolder',
+    datasetfolders: 'dataSetFolder',
+    allitemsindex: 'allItemsIndex'
+  };
+
+  const previewStereotypeMap: Record<string, string> = {
+    element: 'element',
+    attribute: 'attribute',
+    class: 'class',
+    dataSet: 'dataSet',
+    businessDefinition: 'businessDefinition',
+    supportingInformation: 'supportingInformation',
+    dataSetConstraint: 'dataSetConstraint',
+    dataSetFolder: 'dataSetFolder',
+    allItemsIndex: 'allItemsIndex'
+  };
+
+  const normalizePreviewRouteIndex = (value?: string): string | undefined => {
+    if (!value) {
+      return undefined;
+    }
+
+    const compact = value.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+    return previewRouteIndexAliases[compact] ?? previewStereotypeMap[value] ?? previewRouteIndexAliases[value.toLowerCase()];
+  };
+
+  const getIssueLinkClassName = (issue: IntegrityCheckMenuIssue): string => {
+    const stereotype = issue.stereotype ?? issue.component?.domainType;
+    if (!stereotype) {
+      return '';
+    }
+
+    const compact = stereotype.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+    const stereotypeClass = {
+      dataelement: 'element',
+      dataclass: 'class',
+      dataset: 'dataSet',
+      datasetfolder: 'dataSetFolder',
+      businessdefinition: 'businessDefinition',
+      supportinginformation: 'supportingInformation',
+      datasetconstraint: 'dataSetConstraint'
+    }[compact] ?? compact;
+
+    return [stereotypeClass, issue.retired ? 'retired' : undefined].filter(Boolean).join(' ');
+  };
+
+  const getIntegrityIssuePreviewUrl = (issue: IntegrityCheckMenuIssue): string | undefined => {
+    const catalogueItemId = [issue.catalogueItemId, issue.component?.id].find(
+      (value) => typeof value === 'string' && value.trim().length > 0
+    );
+
+    if (!selectedBranchId || !catalogueItemId) {
+      return undefined;
+    }
+
+    const stereotype = issue.stereotype ?? issue.component?.domainType;
+    const routeIndex = normalizePreviewRouteIndex(stereotype) ?? 'allItemsIndex';
+    return `/preview/${encodeURIComponent(selectedBranchId)}/${encodeURIComponent(routeIndex)}/${encodeURIComponent(catalogueItemId)}`;
   };
 
   return (
@@ -637,16 +727,49 @@ export function AppLayout({ appTitle, version, links, pageOptions = [], pageOpti
         )}
       </Modal>
 
-      <Modal opened={integrityOpened} onClose={() => setIntegrityOpened(false)} title='Integrity checks' size='xl' centered>
+      <Modal
+        opened={publishActionRunning !== null}
+        onClose={() => undefined}
+        title='Preparing download'
+        centered
+        closeOnClickOutside={false}
+        closeOnEscape={false}
+        withCloseButton={false}
+      >
+        <Stack align='center' gap='md' py='md'>
+          <Loader size='lg' />
+          <Text size='sm' ta='center'>
+            Retrieving{' '}
+            {publishActionRunning ? publishActionLabelMap[publishActionRunning] : 'file'}
+            {' '}from the API. Your download will start automatically.
+          </Text>
+        </Stack>
+      </Modal>
+
+      <Modal
+        opened={integrityOpened}
+        onClose={() => setIntegrityOpened(false)}
+        title='Integrity checks'
+        size='90%'
+        styles={{
+          content: { maxHeight: '90vh' },
+          body: { maxHeight: 'calc(90vh - 80px)', overflow: 'hidden' }
+        }}
+      >
         {integrityLoading && <Loader />}
         {!integrityLoading && integrityError && <Alert color='red'>{integrityError}</Alert>}
         {!integrityLoading && !integrityError && integrityRows.length === 0 && (
           <Text>No integrity checks available for this branch.</Text>
         )}
         {!integrityLoading && !integrityError && integrityRows.length > 0 && (
-          <Grid>
-            <Grid.Col span={{ base: 12, md: 5 }}>
-              <ScrollArea mah={420}>
+          <Grid gutter='sm' style={{ height: '70vh', minHeight: '520px', display: 'flex', flexDirection: 'row', overflow: 'hidden' }}>
+            <Grid.Col span={{ base: 12, md: 4 }} style={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
+              <Group justify='flex-start' mb='xs' style={{ flexShrink: 0 }}>
+                <Button variant='light' size='xs' onClick={() => void openIntegrityChecks()}>
+                  Re-run
+                </Button>
+              </Group>
+              <ScrollArea style={{ flex: 1, minHeight: 0, height: '100%' }}>
                 <Stack gap='xs'>
                   {integrityRows.map((check) => {
                     const hasErrors = (check.errors?.length ?? 0) > 0;
@@ -679,53 +802,73 @@ export function AppLayout({ appTitle, version, links, pageOptions = [], pageOpti
                 </Stack>
               </ScrollArea>
             </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 7 }}>
+            <Grid.Col span={{ base: 12, md: 8 }} style={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
               {!selectedIntegrityCheck && (
                 <Text size='sm' c='dimmed' fs='italic'>Select a category to view further details.</Text>
               )}
               {selectedIntegrityCheck && (
-                <Paper withBorder p='sm'>
-                  <Group justify='space-between' align='center'>
+                <Paper withBorder p='sm' style={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0, flex: 1, overflow: 'hidden' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, flex: 1, overflow: 'hidden' }}>
                     <Text fw={700}>{selectedIntegrityCheck.checkName}</Text>
-                    <Button variant='light' size='xs' onClick={() => void openIntegrityChecks()}>
-                      Run
-                    </Button>
-                  </Group>
-                  <Text size='sm' mt='xs'>{selectedIntegrityCheck.description}</Text>
-                  <Divider my='sm' />
-                  {(selectedIntegrityCheck.errors?.length ?? 0) === 0 ? (
-                    <Group gap='xs'>
-                      <ThemeIcon color='green' variant='light' size='sm'>✓</ThemeIcon>
-                      <Text size='sm' c='green'>No issues found</Text>
-                    </Group>
-                  ) : (
-                    <Stack gap='xs'>
+                    <Text size='sm' mt='xs'>{selectedIntegrityCheck.description}</Text>
+                    <Divider my='sm' />
+                    {(selectedIntegrityCheck.errors?.length ?? 0) === 0 ? (
                       <Group gap='xs'>
-                        <ThemeIcon color='red' variant='light' size='sm'>!</ThemeIcon>
-                        <Text size='sm' c='red'>{selectedIntegrityCheck.errors.length} issue(s) found</Text>
+                        <ThemeIcon color='green' variant='light' size='sm'>✓</ThemeIcon>
+                        <Text size='sm' c='green'>No issues found</Text>
                       </Group>
-                      <ScrollArea mah={310}>
-                        <Stack gap='xs'>
-                          {selectedIntegrityCheck.errors.map((error, index) => (
-                            <Paper key={`${selectedIntegrityCheck.checkName}-${index}`} withBorder p='xs'>
-                              {error.component?.domainType && (
-                                <Text size='xs' c='dimmed' mb={2}>{error.component.domainType}</Text>
-                              )}
-                              {error.component ? (
-                                <a href={getMauroComponentUrl(error.component)} target='_blank' rel='noreferrer'
-                                   className={styles.integrityComponentLink}>
-                                  {error.component.label}
-                                </a>
-                              ) : null}
-                              {error.details?.map((detail, detailIndex) => (
-                                <Text key={detailIndex} size='xs' c='dimmed' mt={2}>{detail}</Text>
-                              ))}
-                            </Paper>
-                          ))}
-                        </Stack>
-                      </ScrollArea>
-                    </Stack>
-                  )}
+                    ) : (
+                      <Stack gap='xs' style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
+                        <Group gap='xs'>
+                          <ThemeIcon color='red' variant='light' size='sm'>!</ThemeIcon>
+                          <Text size='sm' c='red'>{selectedIntegrityCheck.errors.length} issue(s) found</Text>
+                        </Group>
+                        <ScrollArea h='100%' type='auto' style={{ flex: 1, minHeight: 0, height: '100%' }}>
+                          <Stack gap='xs'>
+                            {selectedIntegrityCheck.errors.map((error, index) => {
+                              const issuePreviewUrl = getIntegrityIssuePreviewUrl(error);
+                              const issueLabel = [error.name, error.component?.label, error.label, error.title].find(
+                                (value) => typeof value === 'string' && value.trim().length > 0
+                              ) ?? 'Unknown item';
+
+                              return (
+                                <Paper key={`${selectedIntegrityCheck.checkName}-${index}`} withBorder p='xs'>
+                                  {error.component?.domainType && (
+                                    <Text size='xs' c='dimmed' mb={2}>{error.component.domainType}</Text>
+                                  )}
+                                  {issuePreviewUrl ? (
+                                    <Anchor
+                                      href={issuePreviewUrl}
+                                      target='_blank'
+                                      rel='noreferrer'
+                                      size='sm'
+                                      className={getIssueLinkClassName(error)}
+                                    >
+                                      {issueLabel}
+                                    </Anchor>
+                                  ) : (
+                                    <Text size='sm' fw={500} className={getIssueLinkClassName(error)}>{issueLabel}</Text>
+                                  )}
+                                  {error.details && error.details.length > 0 ? (
+                                    <ul style={{ margin: '0.5rem 0 0 1.25rem', padding: 0 }}>
+                                      {error.details.map((detail, detailIndex) => (
+                                        <li key={detailIndex}>
+                                          <Text size='xs' mt={2}>{detail}</Text>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  ) : null}
+                                  {!error.component && (!error.details || error.details.length === 0) && (
+                                    <Text size='xs' c='dimmed' fs='italic' mt={4}>No details available.</Text>
+                                  )}
+                                </Paper>
+                              );
+                            })}
+                          </Stack>
+                        </ScrollArea>
+                      </Stack>
+                    )}
+                  </div>
                 </Paper>
               )}
             </Grid.Col>

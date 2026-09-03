@@ -128,7 +128,11 @@ export interface IntegrityCheckItem {
 }
 
 export interface IntegrityCheckError {
-  component: IntegrityCheckItem;
+  name?: string;
+  stereotype?: string;
+  retired?: boolean;
+  catalogueItemId?: string;
+  component?: IntegrityCheckItem;
   details?: string[];
 }
 

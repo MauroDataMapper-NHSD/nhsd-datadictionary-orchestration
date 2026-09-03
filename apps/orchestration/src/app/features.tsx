@@ -197,6 +197,38 @@ function mapLinkIndex(stereotype: string | undefined) {
   return normalizePreviewRouteIndex(stereotype) ?? 'allItemsIndex';
 }
 
+function getIssueStereotype(issue: { stereotype?: string; domainType?: string }) {
+  return issue.stereotype ?? issue.domainType;
+}
+
+function getIssueLinkClassName(issue: { stereotype?: string; domainType?: string; retired?: boolean }) {
+  const stereotype = getIssueStereotype(issue);
+  if (!stereotype) {
+    return '';
+  }
+
+  const compact = stereotype.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+  const stereotypeClass = {
+    dataelement: 'element',
+    dataclass: 'class',
+    dataset: 'dataSet',
+    datasetfolder: 'dataSetFolder',
+    businessdefinition: 'businessDefinition',
+    supportinginformation: 'supportingInformation',
+    datasetconstraint: 'dataSetConstraint'
+  }[compact] ?? compact;
+
+  return [stereotypeClass, issue.retired ? 'retired' : undefined].filter(Boolean).join(' ');
+}
+
+function getIssuePreviewUrl(branchId: string | undefined, issue: { stereotype?: string; domainType?: string; catalogueItemId?: string }) {
+  if (!branchId || !issue.catalogueItemId) {
+    return undefined;
+  }
+
+  return `/preview/${encodeURIComponent(branchId)}/${encodeURIComponent(mapLinkIndex(getIssueStereotype(issue)))}/${encodeURIComponent(issue.catalogueItemId)}`;
+}
+
 function normalizePreviewRouteIndex(value: string | undefined): string | undefined {
   if (!value) {
     return undefined;
@@ -275,11 +307,12 @@ function resolvePreviewItemId(item: Record<string, unknown>) {
 }
 
 function getPreviewItemClassName(item: {
+  stereotypeForPreview?: string;
   stereotype?: string;
   isRetired?: boolean;
   retired?: boolean;
 }) {
-  return [item.stereotype, item.isRetired || item.retired ? 'retired' : undefined]
+  return [item.stereotypeForPreview || item.stereotype, item.isRetired || item.retired ? 'retired' : undefined]
     .filter(Boolean)
     .join(' ');
 }
@@ -593,12 +626,12 @@ export function BranchDetailPage() {
                     </Stack>
                   </ScrollArea>
                 </Grid.Col>
-                <Grid.Col span={{ base: 12, md: 7 }}>
+                <Grid.Col span={{ base: 12, md: 7 }} style={{ display: 'flex', minHeight: 0, flexDirection: 'column' }}>
                   {!selectedCheck && (
                     <Text size="sm" c="dimmed" fs="italic">Select a category to view further details.</Text>
                   )}
                   {selectedCheck && (
-                    <Card withBorder>
+                    <Card withBorder style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
                       <Title order={4}>{selectedCheck.checkName}</Title>
                       <Text size="sm" mt="xs">{selectedCheck.description}</Text>
                       <Divider my="sm" />
@@ -608,33 +641,54 @@ export function BranchDetailPage() {
                           <Text size="sm" c="green">No issues found</Text>
                         </Group>
                       ) : (
-                        <Stack gap="xs">
+                        <Stack gap="xs" style={{ flex: 1, minHeight: 0 }}>
                           <Group gap="xs">
                             <ThemeIcon color="red" variant="light" size="sm">!</ThemeIcon>
                             <Text size="sm" c="red">{selectedCheck.errors.length} issue(s) found</Text>
                           </Group>
-                          <ScrollArea mah={350}>
+                          <ScrollArea style={{ flex: 1, minHeight: 0 }}>
                             <Stack gap="xs">
-                              {selectedCheck.errors.map((error, idx) => (
-                                <Paper key={idx} withBorder p="xs">
-                                  {error.component?.domainType && (
-                                    <Text size="xs" c="dimmed" mb={2}>{error.component.domainType}</Text>
-                                  )}
-                                  {error.component ? (
-                                    <Anchor
-                                      href={getMauroComponentUrl(error.component)}
-                                      target="_blank"
-                                      rel="noreferrer"
-                                      size="sm"
-                                    >
-                                      {error.component.label}
-                                    </Anchor>
-                                  ) : null}
-                                  {error.details?.map((detail, di) => (
-                                    <Text key={di} size="xs" c="dimmed" mt={2}>{detail}</Text>
-                                  ))}
-                                </Paper>
-                              ))}
+                              {selectedCheck.errors.map((error, idx) => {
+                                const issuePreviewUrl = getIssuePreviewUrl(branchId, error);
+                                const issueClassName = getIssueLinkClassName(error);
+                                const issueLabel = [error.name, error.component?.label, error.label, error.title].find(
+                                  (value) => typeof value === 'string' && value.trim().length > 0
+                                ) ?? 'Unknown item';
+
+                                return (
+                                  <Paper key={idx} withBorder p="xs">
+                                    {error.component?.domainType && (
+                                      <Text size="xs" c="dimmed" mb={2}>{error.component.domainType}</Text>
+                                    )}
+                                    {issuePreviewUrl ? (
+                                      <Anchor component={Link} to={issuePreviewUrl} size="sm" className={issueClassName}>
+                                        {issueLabel}
+                                      </Anchor>
+                                    ) : error.component ? (
+                                      <Anchor
+                                        href={getMauroComponentUrl(error.component)}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        size="sm"
+                                        className={issueClassName}
+                                      >
+                                        {error.component.label}
+                                      </Anchor>
+                                    ) : (
+                                      <Text size="sm" fw={500} className={issueClassName}>{issueLabel}</Text>
+                                    )}
+                                    {error.details && error.details.length > 0 ? (
+                                      <ul style={{ margin: '0.5rem 0 0 1.25rem', padding: 0 }}>
+                                        {error.details.map((detail, di) => (
+                                          <li key={di}>
+                                            <Text size="xs" mt={2}>{detail}</Text>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    ) : null}
+                                  </Paper>
+                                );
+                              })}
                             </Stack>
                           </ScrollArea>
                         </Stack>
@@ -1224,7 +1278,7 @@ export function PreviewDetailPage({
             )}
 
             {detail.childFolders && detail.childFolders.length > 0 && (
-              <PreviewSection title="Folders">{renderLinkList(detail.childFolders)}</PreviewSection>
+              <PreviewSection title="Folders">{renderLinkList(detail.childFolders.filter((f) => !f.retired))}</PreviewSection>
             )}
 
             {detail.dataSets && detail.dataSets.length > 0 && (

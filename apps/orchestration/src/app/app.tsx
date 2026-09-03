@@ -486,18 +486,32 @@ export function App(): ReactElement {
     return checks.map((check) => ({
       checkName: check.checkName,
       description: check.description,
-      errors: (check.errors ?? []).map((error) => ({
-        component: error.component
-          ? {
-              id: error.component.id,
-              label: error.component.label,
-              domainType: error.component.domainType,
-              modelId: error.component.modelId,
-              parentId: error.component.parentId
-            }
-          : undefined,
-        details: error.details ?? []
-      }))
+      errors: (check.errors ?? []).map((error) => {
+        const name = [error.name, error.component?.label, error.label, error.title].find(
+          (value) => typeof value === 'string' && value.trim().length > 0
+        ) as string | undefined;
+        const catalogueItemId = [error.catalogueItemId, error.component?.id, error.id, error.itemId].find(
+          (value) => typeof value === 'string' && value.trim().length > 0
+        ) as string | undefined;
+        const stereotype = error.stereotype ?? error.component?.domainType ?? error.domainType;
+
+        return {
+          name,
+          stereotype,
+          retired: error.retired ?? false,
+          catalogueItemId,
+          component: error.component
+            ? {
+                id: error.component.id,
+                label: error.component.label,
+                domainType: error.component.domainType,
+                modelId: error.component.modelId,
+                parentId: error.component.parentId
+              }
+            : undefined,
+          details: Array.isArray(error.details) ? error.details : []
+        };
+      })
     }));
   };
 
