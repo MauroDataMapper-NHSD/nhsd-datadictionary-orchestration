@@ -94,8 +94,7 @@ SPDX-License-Identifier: Apache-2.0
   @include mdm-dd-preview-element-link(
     supportingInformation,
     $supportingInfoColor,
-    'i',
-    normal
+    'i'
   );
   @include mdm-dd-preview-element-link(
     dataSetConstraint,
